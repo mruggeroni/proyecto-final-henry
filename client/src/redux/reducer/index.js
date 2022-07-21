@@ -1,5 +1,11 @@
 const initialState = {
-    
+    allPackages: [],
+    activities: [],
+    destinations: [],
+    types: [],
+    seasons: [],
+    detailPackages: {},
+    user: {}
 }
 
 const rootReducer = (state = initialState, action) => {
