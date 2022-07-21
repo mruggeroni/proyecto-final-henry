@@ -106,6 +106,10 @@
     font-size: 24px;
 }
 
+.nav_menu_container a:hover {
+    color: #4a9eaae6;
+}
+
 .nav_menu::-webkit-scrollbar{
     width: 10px;
     background-color: #F5F5F5;
