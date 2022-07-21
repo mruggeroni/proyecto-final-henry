@@ -117,3 +117,9 @@
 .nav_menu::-webkit-scrollbar-thumb{
     background-color: #4a9eaae6; 
 }
+
+@media (max-width: 760px) {
+    .nav_menu {
+        width: 70%;
+    }
+}
