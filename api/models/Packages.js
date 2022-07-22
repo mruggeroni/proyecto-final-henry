@@ -1,13 +1,15 @@
+//RUTA EXCLUSIVA PARA CARGAR DATOS A LA DATABASE
+
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../db.js';
-import { Category } from './Categories.js';
-
-export const Package = sequelize.define('packages', {
+import { Destination } from './Destinations.js';
+import { Activity } from './Activities.js';
+export const Package = sequelize.define('package', {
 	name: {
 		type: DataTypes.STRING
 	},
 	description: {
-		type: DataTypes.STRING
+		type: DataTypes.TEXT
 	},
 	main_image: {
 		type: DataTypes.STRING,
@@ -18,7 +20,7 @@ export const Package = sequelize.define('packages', {
 		allowNull: true,
 	},
 	price: {
-		type: DataTypes.DECIMAL(10,2)
+		type: DataTypes.INTEGER
 	},
 	featured: {
 		type: DataTypes.BOOLEAN,
@@ -29,12 +31,12 @@ export const Package = sequelize.define('packages', {
 		defaultValue: true,
 	},
 	on_sale: {
-		type: DataTypes.BOOLEAN,
-		defaultValue: false,
+		type: DataTypes.INTEGER,
 	}
 }, {
 	timestamps: false
 });
-
-Category.hasMany(Package);
-Package.belongsTo(Category);
+Package.belongsToMany(Destination, {through: 'Package_Destination'})
+Destination.belongsToMany(Package, {through: 'Package_Destination'})
+Package.belongsToMany(Activity, {through: 'Package_Activity'})
+Activity.belongsToMany(Package, {through: 'Package_Activity'})
