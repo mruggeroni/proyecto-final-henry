@@ -110,6 +110,10 @@
     color: #4a9eaae6;
 }
 
+.nav_container a:hover {
+    color: #fff;
+}
+
 .nav_menu::-webkit-scrollbar{
     width: 10px;
     background-color: #F5F5F5;
