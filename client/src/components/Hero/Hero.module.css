@@ -1,6 +1,7 @@
 .hero_container {
     background-image: url('./../../assets/img/background-image.jpg');
-    background-position: center;
+    background-position: bottom left;
+    background-size: cover;
     object-fit: cover;
     height: 90vh;
     width: 100%;
@@ -40,17 +41,23 @@
     width: 20%;
     height: 60%;
     font-size: 18px;
-    padding: 5px;
     cursor: pointer;
 }
 
 .form_button {
+    width: 20%;
     background-color: #fff;
     border: thin solid #000;
 }
 
 .form_button:hover {
     background-color: #f7f1f1;
+}
+
+.form_date {
+    padding: 5px;
+    width: 20%;
+    height: 60%;
 }
 
 /* Responsive */

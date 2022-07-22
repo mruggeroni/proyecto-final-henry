@@ -1,22 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getDestinations, searchPackages } from "../../../redux/actions";
 import style from './../Hero.module.css';
 
 export default function FilterSearch({ regions }) {
     const navigate = useNavigate();
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
+    const [fromDate, setFromDate] = useState('')
+    const [untilDate, setUntilDate] = useState('')
     const destinations = [];
 
     const handleChange = (e) => {
-        dispatch(searchPackages(e.target.value));
+        // dispatch(searchPackages(e.target.value));
+        
     }
 
     const handleClick = (e) => {
         e.preventDefault();
         // actions filter
         // dispatch()
+        console.log(fromDate)
+        console.log(untilDate)
         navigate("/search");
     }
 
@@ -30,22 +34,17 @@ export default function FilterSearch({ regions }) {
                     </option> )
                 }
             </select>
-            <select id="destinations" className={style.form_select}>
-            <option value="all">From...</option>
-                {
-                    destinations?.map( (d) => <option key={`from-${d.name}`} value={d.name}>
-                        { d.name }
-                    </option> )
-                }
-            </select>
-            <select id="destinations" className={style.form_select}>
-            <option value="all">Until...</option>
-                {
-                    destinations?.map( (d) => <option key={`until-${d.name}`} value={d.name}>
-                        { d.name }
-                    </option> )
-                }
-            </select>
+            <input type="date"
+                    value={fromDate}
+                    min={new Date('yyyy-mm-dd')}
+                    onChange={ (e) => setFromDate(e.target.value) }
+                    className={style.form_date}/>
+            <input type="date"
+                    value={untilDate}
+                    min={fromDate}
+                    onChange={ (e) => setUntilDate(e.target.value) }
+                    className={style.form_date}/>
+
             <button onClick={ (e) => handleClick(e) } className={style.form_button}>
                 Buscar
             </button>
