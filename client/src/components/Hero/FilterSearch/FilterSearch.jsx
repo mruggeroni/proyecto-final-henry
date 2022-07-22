@@ -3,22 +3,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import style from './../Hero.module.css';
 
-export default function FilterSearch({ regions }) {
+export default function FilterSearch({ destinations }) {
     const navigate = useNavigate();
     // const dispatch = useDispatch();
     const [fromDate, setFromDate] = useState('')
     const [untilDate, setUntilDate] = useState('')
-    const destinations = [];
 
     const handleChange = (e) => {
-        // dispatch(searchPackages(e.target.value));
-        
+
     }
 
     const handleClick = (e) => {
         e.preventDefault();
-        // actions filter
-        // dispatch()
+
         console.log(fromDate)
         console.log(untilDate)
         navigate("/search");
@@ -29,7 +26,7 @@ export default function FilterSearch({ regions }) {
             <select id="destinations" onChange={ (e) => handleChange(e) } className={style.form_select}>
                 <option value="all">All destinations</option>
                 {
-                    regions?.map( (r) => <option key={`restination-${r}`} value={r}>
+                    destinations?.map( (r) => <option key={`restination-${r}`} value={r}>
                         { r }
                     </option> )
                 }

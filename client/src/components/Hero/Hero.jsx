@@ -6,17 +6,12 @@ import FilterSearch from "./FilterSearch/FilterSearch.jsx";
 
 export default function Hero() {
     const dispatch = useDispatch();
-    const regions = useSelector( (state) => state.regions )
-
-    useEffect( () => {
-        dispatch(getRegions());
-    }, [])
-
+    const destinations = [];
     return (
         <div className={style.hero_container}>
             <div className={style.hero_filter}>
                 <div className={style.filter_container}>
-                    <FilterSearch regions={regions} />
+                    <FilterSearch destinations={destinations} />
                 </div>
             </div>
         </div>
