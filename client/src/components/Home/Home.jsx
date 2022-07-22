@@ -11,7 +11,7 @@ export default function Home() {
             <div className={style.cards_container}>
                 {
                     // Para probar como se ven las cartas de descatados/ofertas
-                    Array.from({ length: 1 }).map((_, idx) => (
+                    Array.from({ length: 3 }).map((_, idx) => (
                         <CardGeneric feature={{
                             id: 1,
                             img: imgTest,

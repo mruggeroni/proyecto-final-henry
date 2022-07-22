@@ -1,11 +1,9 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import style from './../Hero.module.css';
 
 export default function FilterSearch({ destinations }) {
     const navigate = useNavigate();
-    // const dispatch = useDispatch();
     const [fromDate, setFromDate] = useState('')
     const [untilDate, setUntilDate] = useState('')
 
