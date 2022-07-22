@@ -28,7 +28,7 @@ export default function Navbar() {
                             X
                         </button>
                     </div>
-                    <NavLink to='/home' onClick={ () => handleClose() } className={style.nav_menu_item}>Inicio</NavLink>
+                    <NavLink to='/' onClick={ () => handleClose() } className={style.nav_menu_item}>Inicio</NavLink>
                     <button onClick={ () => handleOpen('nav_menu_promotions') } className={style.nav_menu_item}>
                         Promociones <BsFillCaretRightFill/>
                     </button>
