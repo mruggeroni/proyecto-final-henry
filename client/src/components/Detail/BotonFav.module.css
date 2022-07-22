@@ -1,0 +1,259 @@
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+
+body {
+  line-height: 1;
+}
+
+ol,
+ul {
+  list-style: none;
+}
+
+blockquote,
+q {
+  quotes: none;
+}
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: "";
+  content: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/*---------------- REINICIADO ----------------*/
+
+.heart_switch {
+  --duration: 0.45s;
+  --stroke: #d1d6ee;
+  --stroke-active: #f51d1d;
+  --fill: #fff;
+  --fill-active: #f51d1d;
+  --shadow: rgba(0, 9, 61, 0.25);
+  cursor: pointer;
+  position: relative;
+  transform: scale(var(--s, 1)) translateZ(0);
+  transition: transform 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.heart_switch:active {
+  --s: 0.95;
+}
+.heart_switch input {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  position: absolute;
+  outline: none;
+  border: none;
+  pointer-events: none;
+  z-index: 1;
+  margin: 0;
+  padding: 0;
+  left: 1px;
+  top: 1px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px 0 var(--shadow);
+}
+.heart_switch input + svg {
+  width: 36px;
+  height: 25px;
+  fill: var(--fill);
+  stroke: var(--stroke);
+  stroke-width: 1px;
+  stroke-linejoin: round;
+  display: block;
+  transition: stroke var(--duration), fill var(--duration);
+}
+.heart_switch input:not(:checked) {
+  animation: uncheck var(--duration) linear forwards;
+}
+.heart_switch input:checked {
+  animation: check var(--duration) linear forwards;
+}
+.heart_switch input:checked + svg {
+  --fill: var(--fill-active);
+  --stroke: var(--stroke-active);
+}
+@keyframes uncheck {
+  0% {
+    transform: rotate(-30deg) translateX(13.5px) translateY(8px);
+  }
+  50% {
+    transform: rotate(30deg) translateX(9px);
+  }
+  75% {
+    transform: rotate(30deg) translateX(4.5px) scaleX(1.1);
+  }
+  100% {
+    transform: rotate(30deg);
+  }
+}
+@keyframes check {
+  0% {
+    transform: rotate(30deg);
+  }
+  25% {
+    transform: rotate(30deg) translateX(4.5px) scaleX(1.1);
+  }
+  50% {
+    transform: rotate(30deg) translateX(9px);
+  }
+  100% {
+    transform: rotate(-30deg) translateX(13.5px) translateY(8px);
+  }
+}
+html {
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+}
+* {
+  box-sizing: inherit;
+}
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+body {
+  min-height: 100vh;
+  display: flex;
+  font-family: "Roboto", Arial;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background: #f6f8ff;
+}
+body .heart_switch {
+  margin: 12px 0;
+}
+body .dribbble {
+  position: fixed;
+  display: block;
+  right: 20px;
+  bottom: 20px;
+}
+body .dribbble img {
+  display: block;
+  height: 28px;
+}
+body .twitter {
+  position: fixed;
+  display: block;
+  right: 64px;
+  bottom: 14px;
+}
+body .twitter svg {
+  width: 32px;
+  height: 32px;
+  fill: #1da1f2;
+}
