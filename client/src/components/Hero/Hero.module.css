@@ -5,6 +5,7 @@
     object-fit: cover;
     height: 90vh;
     width: 100%;
+    margin-bottom: 15px;
 }
 
 .hero_filter {
@@ -18,6 +19,8 @@
 /* FilterSearch */
 
 .filter_container {
+    position: absolute;
+    bottom: 35px;
     width: 100%;
     display: flex;
     justify-content: center;
