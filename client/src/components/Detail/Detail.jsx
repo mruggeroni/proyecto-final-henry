@@ -3,6 +3,7 @@ import s from "./Detail.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import ControlledCarousel from "./Carousel"
 import BotonFav from "./BotonFav"
+import Card from "../Cards/CardGeneric/CardGeneric"
 
 export default function Detail(props) {
 
@@ -145,8 +146,26 @@ export default function Detail(props) {
                         <div className={s.contenedorBotonComprar}>
                             <button onClick={() => handleBotonComprar} className={s.botonComprar}>COMPRAR</button>
                         </div>
+                        <div className={s.tituloDestacados}>Quizas tambien te interesen estos paquetes!!</div>
+                        <div className={s.cards_container}>
+                            {
+                                // Para probar como se ven las cartas de descatados/ofertas
+                                Array.from({ length: 3 }).map((_, idx) => (
+                                    <Card feature={{
+                                        id: 1,
+                                        img: main_image,
+                                        title: 'Package Title (10 days)',
+                                        description: 'Starting from $$$ per person'
+                                    }} />
+                                ))
+                            }
+                        </div>
                     </div>
                 )}
+
+
+
+
 
             </div >
         </div>

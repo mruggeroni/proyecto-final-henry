@@ -216,6 +216,30 @@
   padding: 3px;
 }
 
+
+
+/* PERSONALIZACION DE ESTILO DE LAS TARJETAS DE RECOMENDADOS PARA LA PAGINA DETALLES */
+.tituloDestacados {
+  color: white;
+  font-size: 2em;
+  align-items: flex-start;
+  padding-top: 1%;
+}
+
+.cards_container {
+  width: 100%;
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 24rem));
+  gap: 2rem;
+  justify-content: center;
+}
+
+.cards_container > div > div {
+  background-color: white;
+}
+
+
 /* SPINNER */
 .contenedorSpinner {
   display: flex;
@@ -266,9 +290,9 @@
     top: 14px;
   }
   .body {
-  display: flex;
-  justify-content: space-around;
-}
+    display: flex;
+    justify-content: space-around;
+  }
 }
 
 @media (max-width: 760px) {
@@ -293,3 +317,4 @@
     top: 10px;
   }
 }
+
