@@ -9,7 +9,7 @@ async function main() {
 		app.listen(process.env.PORT, () => {
 			console.log('Server listening on http://localhost:3001');
 		});
-	} catch (error) {
+	} catch (error) { 
 		console.error('Unable to connect to the database:', error);
 	}
 }
