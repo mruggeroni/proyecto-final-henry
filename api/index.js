@@ -6,7 +6,7 @@ async function main() {
 		// await sequelize.sync({ force: false })
 		await sequelize.sync({ alter: true })
 		console.log('Connection has been established successfully.');
-		app.listen(3001, () => {
+		app.listen(process.env.PORT, () => {
 			console.log('Server listening on http://localhost:3001');
 		});
 	} catch (error) {
