@@ -1,0 +1,27 @@
+.card{
+  display: flex;
+  flex-direction: row;
+  color: black;
+}
+
+.rectangle{
+  
+}
+
+.hide {
+  display: none;
+}
+
+.card:hover + .rectangle{
+  
+}
+
+.card:hover + .hide {
+  display: inline-flex;
+  color: #fafafa;
+}
+
+.card:hover + .price{
+  color: #fafafa;
+}
+
