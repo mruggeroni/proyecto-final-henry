@@ -9,5 +9,6 @@ export const sequelize = new Sequelize(
 	{
 		host: DB_HOST,
 		dialect: DB_DIALECT,
+		logging: false
 	}
 );

@@ -9,9 +9,10 @@ async function main() {
 		app.listen(3001, () => {
 			console.log('Server listening on http://localhost:3001');
 		});
-	  } catch (error) {
+		// await rutas();
+	} catch (error) {
 		console.error('Unable to connect to the database:', error);
-	  }
+	}
 }
 
 main();
