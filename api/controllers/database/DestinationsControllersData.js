@@ -4,14 +4,14 @@ import * as fs from 'fs';
 export const getDestinationData = async (req, res) =>{
     try {
        
-        let dataJson = fs.readFile('../../data/destinations.json', "utf8", (error, data) =>{
+        let dataJson = fs.readFile('/home/sadnena/pf/proyecto-final-henry/api/data/destinations.json', "utf8", (error, data) =>{
             let dataDestinations = JSON.parse(data)
             console.log(error)
             dataDestinations.map((destino) => {
-                Destination.create({
-                    
-                    name: destino.name,
-                    image: destino.image
+                Destination.findOrCreate({
+                    where:
+                    {name: destino.name,
+                    image: destino.image}
                 })
             })
         })

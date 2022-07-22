@@ -1,21 +1,28 @@
 import { Activity } from "../../models/Activities.js";
 import * as fs from 'fs';
+import { Classification } from "../../models/Classification.js";
 
 export const getActivitiesData = async (req, res) =>{
     try {
-        let dataJson = fs.readFile('api/data/activities.json', "utf8", (error, data) =>{
+        //CAMBIAR A PATH RELATIVO
+        let dataJson = await Promise.all (fs.readFile('/home/sadnena/pf/proyecto-final-henry/api/data/activities.json', "utf8", (error, data) =>{
+            //console.log('AQUI')
+            //console.log(data)
             let dataActivities = JSON.parse(data)
-            dataActivities.map((actividad) => {
-                Activity.create({
-                    
-                    name: actividad.name,
-                    description: actividad.description,
-                    image: actividad.image,
-                    price: actividad.price,
-                    classification: actividad.classification
+            dataActivities.map( async (actividad) => {
+                Activity.findOrCreate({
+                    where:{
+                        name: actividad.name,
+                        description: actividad.description,
+                        image: actividad.image,
+                        price: actividad.price,
+                        
+                    },
                 })
+                let clasificacion = await Classification.findAll({where: {name: actividad.clasificacion}})
+                Activity.addClasification(clasificacion)
             })
-        })
+        }))
         let dataActivitiesResult = await Activity.findAll()
         res.status(200).json(dataActivitiesResult)
         

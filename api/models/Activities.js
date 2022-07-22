@@ -21,5 +21,5 @@ export const Activity = sequelize.define('activitie', {
 }, {
 	timestamps: false,
 });
-Activity.hasOne(Classification)
-Activity.belongsTo(Classification, {foreignKey: 'id'})
+ Classification.hasMany(Activity)
+ Classification.belongsTo(Activity, {foreignKey: 'id'})

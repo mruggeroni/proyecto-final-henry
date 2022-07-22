@@ -8,6 +8,7 @@ import { sequelize } from '../db.js';
 export const Classification = sequelize.define('classification', {
 	name: {
 		type: DataTypes.STRING,
+		unique: true,
 	},
 	image: {
 		type: DataTypes.STRING,
