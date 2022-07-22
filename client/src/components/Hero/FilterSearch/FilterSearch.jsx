@@ -4,11 +4,20 @@ import style from './../Hero.module.css';
 
 export default function FilterSearch({ destinations }) {
     const navigate = useNavigate();
-    const [fromDate, setFromDate] = useState('')
-    const [untilDate, setUntilDate] = useState('')
+    const dataNow = new Date().toISOString().split('T')[0];
+    const [fromDate, setFromDate] = useState(dataNow)
+    const [untilDate, setUntilDate] = useState(dataNow)
+
+    console.log()
 
     const handleChange = (e) => {
-
+        e.preventDefault();
+        if(e.target.id === 'from') {
+            setFromDate(e.target.value)
+            setUntilDate(e.target.value);
+        } else {
+            setUntilDate(e.target.value)
+        }
     }
 
     const handleClick = (e) => {
@@ -24,20 +33,22 @@ export default function FilterSearch({ destinations }) {
             <select id="destinations" onChange={ (e) => handleChange(e) } className={style.form_select}>
                 <option value="all">All destinations</option>
                 {
-                    destinations?.map( (r) => <option key={`restination-${r}`} value={r}>
-                        { r }
+                    destinations?.map( (el) => <option key={`restination-${el}`} value={el}>
+                        { el }
                     </option> )
                 }
             </select>
             <input type="date"
+                    id='from'
                     value={fromDate}
-                    min={new Date('yyyy-mm-dd')}
-                    onChange={ (e) => setFromDate(e.target.value) }
+                    min={dataNow}
+                    onChange={ (e) => handleChange(e) }
                     className={style.form_date}/>
             <input type="date"
+                    id='until'
                     value={untilDate}
                     min={fromDate}
-                    onChange={ (e) => setUntilDate(e.target.value) }
+                    onChange={ (e) => handleChange(e) }
                     className={style.form_date}/>
 
             <button onClick={ (e) => handleClick(e) } className={style.form_button}>
