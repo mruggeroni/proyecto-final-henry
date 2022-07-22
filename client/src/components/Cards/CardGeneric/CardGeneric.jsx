@@ -4,10 +4,6 @@ import style from './CardGeneric.module.css';
 
 export default function CardGeneric({ feature }) {
 
-    const handleClick = (e) => {
-        e.preventDefault();
-    }
-
     return (
         <div className="container">
             <div className={style.cardG_container}>
