@@ -125,14 +125,21 @@
 }
 
 .descriptionActividad {
-  display: none;
-  font-size: 0.6em;
-}
-.actividad:hover .descriptionActividad {
+  /* display: none; */
   display: flex;
+  visibility: hidden;
+  opacity: 0;
+  height: 0;
   flex-direction: row;
   justify-content: space-evenly;
   align-items: center;
+  font-size: 0.6em;
+  transition: 1s;
+}
+.actividad:hover .descriptionActividad {
+  visibility: visible;
+  opacity: 1;
+  height: 200px;
 }
 
 .descriptionActividad img {
@@ -215,8 +222,6 @@
   background-color: white;
   padding: 3px;
 }
-
-
 
 /* PERSONALIZACION DE ESTILO DE LAS TARJETAS DE RECOMENDADOS PARA LA PAGINA DETALLES */
 .tituloDestacados {
@@ -312,4 +317,3 @@
     top: 10px;
   }
 }
-
