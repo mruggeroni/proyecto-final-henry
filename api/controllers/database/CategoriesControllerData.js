@@ -1,7 +1,7 @@
 import { Classification } from '../../models/Classification.js';
 import * as fs from 'fs';
 
-export const getCategoriesData = async (req, res) => {
+export const getCategoriesData = async () => {
     try {
        //CAMBIAR A PATH RELATIVO
         let dataJson = fs.readFile('/home/sadnena/pf/proyecto-final-henry/api/data/classification.json', "utf8", (error, data) => {
@@ -13,8 +13,7 @@ export const getCategoriesData = async (req, res) => {
             })
         })
         })
-        let dataClassificationResult = await Classification.findAll()
-        res.status(200).json(dataClassificationResult)
+        //let dataClassificationResult = await Classification.findAll()
         
          
     }catch (error){

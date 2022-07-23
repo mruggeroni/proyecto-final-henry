@@ -1,46 +1,46 @@
 import { Package } from '../../models/Packages.js';
 import { Destination } from '../../models/Destinations.js';
 import * as fs from 'fs';
-export const getPackageData = async (req, res) =>{
+import { Activity } from '../../models/Activities.js';
+export const getPackageData = async () =>{
     try {
         
         let dataJson = await Promise.all(
-            fs.readFile('api/data/run_resultsasia.json', "utf8", (error, data) =>{
+            fs.readFile('/home/sadnena/pf/proyecto-final-henry/api/data/JSON_paquetes.json', "utf8", (error, data) =>{
                 let dataPackage = JSON.parse(data)
+                //console.log(dataPackage)
                 dataPackage.map(async (paquete) => {
-                    let newPaquete = await Package.create({
+                    let newPaquete = await Package.findOrCreate({
                         
-                        name: paquete.name,
-                        price: paquete.price,
-                        description: paquete.description,
-                        main_image: paquete.main_image,
+                       where:{name: paquete.name, price: paquete.price, 
+                        description: paquete.description, 
                         images: paquete.images,
-                        featured: paquete.featured,
-                        destinations: paquete.id_destination,
-                        start_date: paquete.start_date,
-                        end_date: paquete.end_date,
-                        available: paquete.available,
                         on_sale: paquete.on_sale,
                         region: paquete.region,
                         seasson: paquete.seasson,
                         type: paquete.type,
-                        //activities:["Tour de Highlights", "Tour Gastronomía Nacional", "Tour de Monumentos"]
+                    },
+                       default: { 
+                        main_image: paquete.main_image,
+                        destinations: paquete.destinations,
+                        featured: paquete.featured, start_date: paquete.start_date,
+                        end_date: paquete.end_date,
+                        available: paquete.available,
+                        
+                       }
                     })
-                    //console.log(paquete.id_destination[0])
-                    const destinationfind = await Destination.findOrCreate({ where: { name: paquete.id_destination[0]}})
-                    console.log('AQUI')
-                    console.log(destinationfind[0])
-                    await newPaquete.addDestination(destinationfind[0])
-                    return true
+                    // console.log("paquete")
+                    // console.log(paquete.price)
+                    const destinationfind = await Destination.findOne({ where: { name: paquete.destinations[0]}})
+                    const actividadesfind = await Activity.findOne({where: {name: "Tour de Highlights" }})
+                    const actividadesfind2 = await Activity.findOne({where: {name: "Tour de Museos" }})
+                    await newPaquete[0].addDestinations(destinationfind)
+                    await newPaquete[0].addActivities(actividadesfind)
+                    await newPaquete[0].addActivities(actividadesfind2)
                 })
-                return true
-            })
-        ) 
-        console.log("potato")
-        let dataPackageResult = await Package.findAll()
-        console.log(dataPackageResult)
-        res.status(200).json(dataPackageResult)
-        
+                })).then((data)=>{
+                    console.log(data)
+                })
     }catch (error){
         console.log(error.message)
     }

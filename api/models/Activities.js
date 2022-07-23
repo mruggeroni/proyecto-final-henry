@@ -5,7 +5,7 @@ import { sequelize } from '../db.js';
 import { Classification } from './Classification.js';
 //import { Package } from './Packages.js';
 
-export const Activity = sequelize.define('activitie', {
+export const Activity = sequelize.define('activity', {
 	name: {
 		type: DataTypes.STRING,
 	},
@@ -18,9 +18,10 @@ export const Activity = sequelize.define('activitie', {
 	price: {
 		type: DataTypes.INTEGER,
 	},
+
 }, {
 	timestamps: false,
 });
  Classification.hasMany(Activity)
  Activity.belongsTo(Classification)
- //Classification.belongsTo(Activity, {foreignKey: 'id'})
+

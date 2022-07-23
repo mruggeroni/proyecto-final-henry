@@ -32,6 +32,15 @@ export const Package = sequelize.define('package', {
 	},
 	on_sale: {
 		type: DataTypes.INTEGER,
+	},
+	seasson: {
+		type: DataTypes.STRING,
+	},
+	type: {
+		type: DataTypes.STRING,
+	},
+	region: {
+		type: DataTypes.STRING,
 	}
 }, {
 	timestamps: false

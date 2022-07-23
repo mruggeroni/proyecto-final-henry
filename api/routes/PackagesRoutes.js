@@ -9,7 +9,7 @@ router.get('/packages', getPackages);
 router.get('/packages/featured', getFeaturedPackages);
 router.post('/packages', createPackage);
 // RUTAS EXCLUSIVAS PARA CARGAR LOS DATOS A LA DATABASE, SI NECESITA CARGAR LOS DATOS A SU DB LOCAL USE ESTAS RUTAS
-router.get('/dbpackages', getPackageData)
+//router.get('/dbpackages', getPackageData)
 //
 
 

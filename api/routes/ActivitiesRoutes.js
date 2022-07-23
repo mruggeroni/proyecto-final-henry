@@ -8,8 +8,8 @@ const router = Router();
 router.get('/activities', getActivities);
 router.post('/activities', createActivity);
 // RUTAS EXCLUSIVAS PARA CARGAR LOS DATOS A LA DATABASE, SI NECESITA CARGAR LOS DATOS A SU DB LOCAL USE ESTAS RUTAS
-router.get('/dbactivities', getActivitiesData);
-router.get('/dbdestinations', getDestinationData)
+//router.get('/dbactivities', getActivitiesData);
+//router.get('/dbdestinations', getDestinationData)
 
 
 export default router;
