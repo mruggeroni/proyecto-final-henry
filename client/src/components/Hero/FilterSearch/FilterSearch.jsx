@@ -8,8 +8,6 @@ export default function FilterSearch({ destinations }) {
     const [fromDate, setFromDate] = useState(dataNow)
     const [untilDate, setUntilDate] = useState(dataNow)
 
-    console.log()
-
     const handleChange = (e) => {
         e.preventDefault();
         if(e.target.id === 'from') {
