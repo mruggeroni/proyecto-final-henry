@@ -19,12 +19,13 @@ export const getPackageData = async () =>{
                         region: paquete.region,
                         seasson: paquete.seasson,
                         type: paquete.type,
+                        start_date: paquete.start_date,
+                        end_date: paquete.end_date,
                     },
                        default: { 
                         main_image: paquete.main_image,
                         destinations: paquete.destinations,
-                        featured: paquete.featured, start_date: paquete.start_date,
-                        end_date: paquete.end_date,
+                        featured: paquete.featured, 
                         available: paquete.available,
                         
                        }

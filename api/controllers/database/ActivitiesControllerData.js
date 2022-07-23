@@ -14,7 +14,7 @@ export const getActivitiesData = async () =>{
                 let clasificacion = await Classification.findOne({where: {name: actividad.classification}})
                 //console.log(clasificacion)
                 clasificacion && await Activity.findOrCreate({
-                    where: {name: actividad.name, description: actividad.description, 
+                    where: {name: actividad.name, description: 'Hola soy una actividad', 
                         image: actividad.image, price: actividad.price}
                 }) 
                 let actividades = await Activity.findOne({where: {name: actividad.name}})

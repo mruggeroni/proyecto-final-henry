@@ -9,7 +9,7 @@ import { sequelize } from './db.js';
 async function main() {
 	try {
 		// await sequelize.sync({ force: false })
-		await sequelize.sync({ alter: true })
+		await sequelize.sync({ force: true })
 		console.log('Connection has been established successfully.');
 		app.listen(3001, () => {
 			console.log('Server listening on http://localhost:3001');
