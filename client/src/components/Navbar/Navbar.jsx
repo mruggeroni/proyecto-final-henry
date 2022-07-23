@@ -52,7 +52,7 @@ export default function Navbar() {
             <div className={style.nav_container}>
                 <nav className={style.nav_items}>
                     <button onClick={() => handleOpen('nav_menu_items')}><BsJustify /></button>
-                    <div onClick={loginWithPopup} className={style.nav_item}>Login</div>
+                    <div onClick={isAuthenticated ? logout : loginWithPopup} className={style.nav_item}>{isAuthenticated ? "Logaut" : "Login"}</div>
                     {/* <NavLink to='' className={style.nav_item} >Logout</NavLink> */}
                 </nav>
             </div>
