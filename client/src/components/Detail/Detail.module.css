@@ -316,4 +316,7 @@
   .styledcheckbox:checked + label:before {
     top: 10px;
   }
+  .descriptionActividad {
+    transition: 0s;
+  }
 }
