@@ -8,8 +8,7 @@ export default function Dashboard() {
         <div className={style.dashboard_container}>
             <h1>Dashboard</h1>
             <div className={style.links_container}>
-                <NavLink to='/dashboard/destinos' className={style.links_item}>Destinos</NavLink>
-                |<NavLink to='/dashboard/paquetes' className={style.links_item}>Paquetes</NavLink>
+                <NavLink to='/dashboard/paquetes' className={style.links_item}>Paquetes</NavLink>
                 |<NavLink to='/dashboard/actividades' className={style.links_item}>Actividades</NavLink>
             </div>
             <CreatePackage/>
