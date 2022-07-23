@@ -12,7 +12,7 @@ async function main() {
 		// await sequelize.sync({ force: false })
 		await sequelize.sync({ force: true })
 		console.log('Connection has been established successfully.');
-		app.listen(3001, () => {
+		app.listen(process.env.PORT, () => {
 			console.log('Server listening on http://localhost:3001');
 		});
 		getClassificationData()
@@ -20,8 +20,9 @@ async function main() {
 		getActivitiesData()
 		getPackageData()
 	  } catch (error) {
+
 		console.error('Unable to connect to the database:', error);
-	  }
+	}
 }
 
 main();
