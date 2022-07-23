@@ -1,16 +1,14 @@
 .body {
-  background-image: url(https://images.unsplash.com/photo-1658258338048-c7f6c9d9330d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=929&q=80);
-  background-size: 100% 100%;
-  min-height: 100vh;
   display: flex;
   justify-content: space-around;
   padding-top: 30px;
+  margin-top: 90px;
 }
 
 .contenedor {
   background-color: #414b36cc;
   width: 80%;
-  padding: 8%;
+  padding: 3%;
 }
 
 .contenedorBarraSuperior {
@@ -127,15 +125,21 @@
 }
 
 .descriptionActividad {
-  display: none;
-  font-size: 0.6em;
-}
-
-.actividad:hover .descriptionActividad {
+  /* display: none; */
   display: flex;
+  visibility: hidden;
+  opacity: 0;
+  height: 0;
   flex-direction: row;
   justify-content: space-evenly;
   align-items: center;
+  font-size: 0.6em;
+  transition: 1s;
+}
+.actividad:hover .descriptionActividad {
+  visibility: visible;
+  opacity: 1;
+  height: 200px;
 }
 
 .descriptionActividad img {
@@ -219,6 +223,23 @@
   padding: 3px;
 }
 
+/* PERSONALIZACION DE ESTILO DE LAS TARJETAS DE RECOMENDADOS PARA LA PAGINA DETALLES */
+.tituloDestacados {
+  color: white;
+  font-size: 2em;
+  align-items: flex-start;
+  padding-top: 1%;
+}
+
+.cards_container {
+  width: 100%;
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 24rem));
+  gap: 2rem;
+  justify-content: center;
+}
+
 /* SPINNER */
 .contenedorSpinner {
   display: flex;
@@ -269,12 +290,9 @@
     top: 14px;
   }
   .body {
-  background-image: url(https://images.unsplash.com/photo-1658258338048-c7f6c9d9330d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=929&q=80);
-  background-size: 100% 100%;
-  min-height: 100vh;
-  display: flex;
-  justify-content: space-around;
-}
+    display: flex;
+    justify-content: space-around;
+  }
 }
 
 @media (max-width: 760px) {

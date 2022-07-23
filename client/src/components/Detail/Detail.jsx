@@ -3,6 +3,7 @@ import s from "./Detail.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import ControlledCarousel from "./Carousel"
 import BotonFav from "./BotonFav"
+import Card from "../Cards/CardGeneric/CardGeneric"
 
 export default function Detail(props) {
 
@@ -76,74 +77,98 @@ export default function Detail(props) {
     }, [setPrecio, setChechboxEstado]);
 
     return (
-        <div className={s.body}>
-            {/* si loading esta activo mostramos el spinner */}
-            {loading ? (
-                <div className={s.contenedorSpinner}>
-                    <div className={s.spinner}></div>
-                </div>
-            ) : (
-                <div className={s.contenedor} >
-                    <div className={s.contenedorBarraSuperior}>
-                        <div onClick={() => handleBotonRegresar}>Return</div>
-                        <BotonFav />
-
+        <div style={{
+            backgroundImage: `url(${main_image})`,
+            backgroundSize: 'cover',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
+        }}>
+            <div className={s.body}>
+                {/* si loading esta activo mostramos el spinner */}
+                {loading ? (
+                    <div className={s.contenedorSpinner}>
+                        <div className={s.spinner}></div>
                     </div>
-                    <div className={s.contenedorDetalles}>
-                        <h1 >{name}</h1>
-                        <ControlledCarousel name={name} main_image={main_image} images={images} />
-                        <div className={s.resto} >
-                            <h3 >
-                                {start_date} / {end_date}
-                            </h3>
-                            <h3>
-                                U$S {price}
-                            </h3>
-                            <h3>Destinos:{" "}
-                                {destinations?.map((i) => {
-                                    return (
-                                        <span key={i}>
-                                            {i}{"  "}
-                                        </span>
-                                    );
-                                })}
-                            </h3>
+                ) : (
+                    <div className={s.contenedor} >
+                        <div className={s.contenedorBarraSuperior}>
+                            <div onClick={() => handleBotonRegresar}>Return</div>
+                            <BotonFav />
                         </div>
+                        <div className={s.contenedorDetalles}>
+                            <h1 >{name}</h1>
+                            <ControlledCarousel name={name} main_image={main_image} images={images} />
+                            <div className={s.resto} >
+                                <h3 >
+                                    {start_date} / {end_date}
+                                </h3>
+                                <h3>
+                                    U$S {price}
+                                </h3>
+                                <h3>Destinos:{" "}
+                                    {destinations?.map((i) => {
+                                        return (
+                                            <span key={i}>
+                                                {i}{"  "}
+                                            </span>
+                                        );
+                                    })}
+                                </h3>
+                            </div>
 
-                        <div className={s.resto}>
-                            <h3 className={s.description}>
-                                {description}
-                            </h3>
-                        </div >
+                            <div className={s.resto}>
+                                <h3 className={s.description}>
+                                    {description}
+                                </h3>
+                            </div >
 
-                    </div>
-                    <div className={s.contenedorActividades}>
-                        {activities?.map((i, index) => {
-                            return (
-                                <div className={s.actividad} key={i.name}>
-                                    <div className={s.nombreActividad}>
-                                        <div> {i.name} </div>
-                                        <div>
-                                            <input className={s.styledcheckbox} id={i.name} type="checkbox" value={i.name} onChange={() => handleCheckbox(index)} />
-                                            <label htmlFor={i.name}>U$S {i.price}{"       "}</label>
+                        </div>
+                        <div className={s.contenedorActividades}>
+                            {activities?.map((i, index) => {
+                                return (
+                                    <div className={s.actividad} key={i.name}>
+                                        <div className={s.nombreActividad}>
+                                            <div> {i.name} </div>
+                                            <div>
+                                                <input className={s.styledcheckbox} id={i.name} type="checkbox" value={i.name} onChange={() => handleCheckbox(index)} />
+                                                <label htmlFor={i.name}>U$S {i.price}{"       "}</label>
+                                            </div>
+                                        </div>
+                                        <div className={s.descriptionActividad}>
+                                            <img src={i.image} alt="" />
+                                            <div>{i.description}</div>
                                         </div>
                                     </div>
-                                    <div className={s.descriptionActividad}>
-                                        <img src={i.image} alt="" />
-                                        <div>{i.description}</div>
-                                    </div>
-                                </div>
-                            );
-                        })}
-                        <div className={s.total}>PRECIO TOTAL  U$S {" "}{precio}</div>
+                                );
+                            })}
+                            <div className={s.total}>   <span>TOTAL U$S </span>{precio}</div>
+                        </div>
+                        <div className={s.contenedorBotonComprar}>
+                            <button onClick={() => handleBotonComprar} className={s.botonComprar}>COMPRAR</button>
+                        </div>
+                        <div className={s.tituloDestacados}>Quizas tambien te interesen estos paquetes!!</div>
+                        <div className={s.cards_container}>
+                            {
+                                // Para probar como se ven las cartas de descatados/ofertas
+                                Array.from({ length: 3 }).map((_, idx) => (
+                                    <Card feature={{
+                                        id: 1,
+                                        img: main_image,
+                                        title: 'Package Title (10 days)',
+                                        description: 'Starting from $$$ per person'
+                                    }} />
+                                ))
+                            }
+                        </div>
                     </div>
-                    <div className={s.contenedorBotonComprar}>
-                        <button onClick={() => handleBotonComprar} className={s.botonComprar}>COMPRAR</button>
-                    </div>
-                </div>
-            )}
+                )}
 
-        </div >
+
+
+
+
+            </div >
+        </div>
     )
 }
 

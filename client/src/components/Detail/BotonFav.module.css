@@ -4,7 +4,7 @@
   --stroke-active: #f51d1d;
   --fill: #fff;
   --fill-active: #f51d1d;
-  --shadow: rgba(0, 9, 61, 0.25);
+  --shadow: rgba(0, 9, 61, 0.45);
   cursor: pointer;
   position: relative;
   transform: scale(var(--s, 1)) translateZ(0);
