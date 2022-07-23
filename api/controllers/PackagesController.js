@@ -1,5 +1,5 @@
 import { Package } from '../models/Packages.js';
-import { Category } from '../models/Categories.js';
+//import { Classification } from '../models/Classification'
 
 export const getPackages = async (req, res) => {
 	try {
@@ -21,10 +21,10 @@ export const getFeaturedPackages = async (req, res) => {
 			where: {
 				featured: true,
 			},
-			include: {
-				model: Category,
-				attributes: ['name'],
-			}
+			//include: {
+			//	model: Classification,
+			//	attributes: ['name'],
+			//}
 		});
 		packages.length < 1
 		? res.status(200).json({ message: 'There are no featured packages.' })
