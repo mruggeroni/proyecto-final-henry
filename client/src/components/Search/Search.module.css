@@ -1,0 +1,25 @@
+.container{
+	margin-top: 9vw;
+	display: flex;
+	flex-direction: column;
+}
+
+.sortPrice{
+	display: inline-flex;
+}
+
+.view{
+	display: inline-flex;
+	justify-content: flex-end;
+	justify-content: space-between;
+	margin: auto;
+	width: 90%;
+}
+
+.cards{
+	margin-bottom: 8vw;
+}
+
+.eachcard > * {
+	text-decoration: none;
+}

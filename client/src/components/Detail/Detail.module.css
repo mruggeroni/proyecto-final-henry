@@ -130,6 +130,7 @@
   display: none;
   font-size: 0.6em;
 }
+
 .actividad:hover .descriptionActividad {
   display: flex;
   flex-direction: row;
