@@ -8,7 +8,6 @@ import Search from './components/Search/Search';
 import Favorites from './components/Favorites/Favorites';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-
 function App() {
   return (
     <BrowserRouter>
