@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { NavLink } from 'react-router-dom';
 import { BsJustify, BsFillCaretRightFill } from 'react-icons/bs';
 import style from './Navbar.module.css';
@@ -6,6 +6,10 @@ import NavDestinations from "./NavDestinations";
 import NavPromotions from "./NavPromotions";
 
 export default function Navbar() {
+
+    useEffect( () => {
+        return handleClose();
+    })
 
     function handleClose() {
         document.getElementById('nav_menu').classList.remove(`${style.is_active}`);
