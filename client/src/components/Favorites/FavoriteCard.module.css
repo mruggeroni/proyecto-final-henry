@@ -22,7 +22,7 @@
   padding-bottom: 0;
 }
 
-h3:hover{
+.cardText:hover h3{
   color: #4a9eab;
   transition: .2s;
 }
