@@ -1,7 +1,7 @@
 .card{
   position: relative;
   margin: auto;
-  margin-top: 5vw;
+  margin-top: 4vw;
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
@@ -62,20 +62,37 @@ img{
 }
 
 .card:hover .hide {
-  display: initial;
+  display: block;
   color: #fafafa;
   z-index: 4;
   margin-top: 2vw;
   margin-right: 2vw;
+  animation: fade_in_show 2s;
 }
 
 .card:hover .price{
   color: #fafafa;
   display: initial;
   margin-top: 2vw;
+  animation: fade_in_show 2s;
 }
 
 .textDeco:link { text-decoration: none; color: black;}
 .textDeco:visited { text-decoration: none; color: black;}
 .textDeco:hover { text-decoration: none;}
 .textDeco:active { text-decoration: none; color: black;}
+
+
+@keyframes fade_in_show {
+     0% {
+          opacity: 0;
+          transform: scale(1)
+     }
+
+     100% {
+          opacity: 1;
+          transform: scale(1)
+     }
+}
+
+

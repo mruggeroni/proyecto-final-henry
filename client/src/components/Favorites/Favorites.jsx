@@ -110,7 +110,7 @@ export default function Favorites() {
 						return(
 							<div className={s.eachCard}key= {p.id}>
 								<Link to={'/detail/' + p.id} key= {p.id}>
-										<FavoriteCard name={p.name} image={p.main_image} price={p.price} key= {p.id}/>
+										<FavoriteCard name={p.name} image={p.main_image} price={p.price} id= {p.id} key= {p.id}/>
 								</Link>
 							</div>
 						);
