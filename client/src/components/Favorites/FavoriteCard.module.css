@@ -1,0 +1,38 @@
+.container{
+  margin: auto;
+  margin-top: 5vw;
+  display: flex;
+  flex-direction: row;
+  color: black;
+  width: 80%;
+  border: none;
+  background-color: #fafafa;
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}
+
+.cardInfo{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+  margin-top: 2vw;
+  margin-bottom: 1vw;
+  padding: 1.2vw;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+h3:hover{
+  color: #4a9eab;
+  transition: .2s;
+}
+
+.buttons > * {
+  text-decoration: none;
+}
+
+.buttons{
+  display: inline-flex;
+  justify-content: flex-end;
+  justify-content: space-evenly;
+}

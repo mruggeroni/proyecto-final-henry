@@ -21,3 +21,7 @@
 .select::-ms-expand {
   display: none;
 }
+
+label{
+	margin-right: 1vw;
+}
