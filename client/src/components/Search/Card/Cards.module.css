@@ -24,8 +24,7 @@ img{
 }
 
 .cardBody h5{
-  font-size: 1vw;
- 
+  font-size: 1.2vw;
 }
 
 .hide{
@@ -37,6 +36,7 @@ img{
   display: none;
   margin-right: 2vw;
   z-index: 1;
+  font-size: 2vw;
 }
 
 .price h5{
@@ -50,6 +50,15 @@ img{
   color: #fafafa;
   border: none;
   z-index: 0;
+  transform: translate(0, 0);
+  transition: all 1s ease-in-out 250ms;
+  text-align: right;
+}
+
+.rightGroup{
+  display: flex;
+  flex-direction: row;
+  z-index: 1;
 }
 
 .card:hover .rectangle{
@@ -62,7 +71,7 @@ img{
 }
 
 .card:hover .hide {
-  display: block;
+  display: inline-block;
   color: #fafafa;
   z-index: 4;
   margin-top: 2vw;
@@ -86,13 +95,80 @@ img{
 @keyframes fade_in_show {
      0% {
           opacity: 0;
-          transform: scale(1)
      }
 
      100% {
           opacity: 1;
-          transform: scale(1)
      }
 }
 
+@media (max-width: 1100px) {
+  .card h3 {
+    font-size: 3vw;
+    margin: 0;
+  }
+  .card h5 {
+    font-size: 0.8em;
+    align-items: flex-start;
+    margin: 0;
+  }
 
+  img{
+    margin: auto;
+    margin-left: 0;
+    margin-right: 0;
+    width: 30vw;
+    height: 25vw;
+  }
+
+  .cardBody{
+    width: 40%;
+  }
+
+  .card:hover .rectangle{
+  width: 18vw;
+  position: absolute;
+  top: 0;
+  right: 0;
+  text-align: right;
+  }
+
+  .price{
+   size: 1vw;
+   text-align: center;
+  }
+
+  .rightGroup{
+    flex-direction: column-reverse;
+    justify-content: space-around;
+    text-align: center;
+
+  }
+
+  .card:hover .hide{
+    margin-top: 0;
+    margin-right: 0;
+  }
+
+}
+
+@media (max-width: 865px) {
+  .card h3 {
+    font-size: 3vw;
+  }
+  .cardBody h5 {
+    display: none;
+  }
+
+  .rectangle{
+    width: 3vw;
+  }
+  
+}
+
+@media (max-width: 690px) {
+  .rectangle{
+    width: 5vw;
+  }
+  
+}
