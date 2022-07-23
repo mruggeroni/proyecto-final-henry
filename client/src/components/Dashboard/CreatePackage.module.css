@@ -1,0 +1,18 @@
+.create_container {
+    width: 80%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.create_input_container {
+}
+
+.create_line {
+    width: 30%;
+}
+
+.create_label {
+
+}
