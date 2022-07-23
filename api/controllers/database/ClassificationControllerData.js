@@ -1,7 +1,7 @@
 import { Classification } from '../../models/Classification.js';
 import * as fs from 'fs';
 
-export const getCategoriesData = async () => {
+export const getClassificationData = async () => {
     try {
        //CAMBIAR A PATH RELATIVO
         let dataJson = fs.readFile('/home/sadnena/pf/proyecto-final-henry/api/data/classification.json', "utf8", (error, data) => {

@@ -12,7 +12,8 @@ export const getPackageData = async () =>{
                 dataPackage.map(async (paquete) => {
                     let newPaquete = await Package.findOrCreate({
                         
-                       where:{name: paquete.name, price: paquete.price, 
+                       where:{name: paquete.name, 
+                        price: paquete.price, 
                         description: paquete.description, 
                         images: paquete.images,
                         on_sale: paquete.on_sale,
@@ -30,8 +31,7 @@ export const getPackageData = async () =>{
                         
                        }
                     })
-                    // console.log("paquete")
-                    // console.log(paquete.price)
+
                     const destinationfind = await Destination.findOne({ where: { name: paquete.destinations[0]}})
                     const actividadesfind = await Activity.findOne({where: {name: "Tour de Highlights" }})
                     const actividadesfind2 = await Activity.findOne({where: {name: "Tour de Museos" }})
