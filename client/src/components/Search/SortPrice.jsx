@@ -1,12 +1,11 @@
 import React from 'react';
 import { useState } from 'react';
 import s from './Select.module.css';
-import style from './SortPrice.module.css'
 
 export default function SortPrice() {
 
     return (
-        <div className={style.sortContainer}>
+        <div>
             <label>Sort by: </label>
             <select className={s.select}>
                 <option selected={true} disabled="disabled">Price</option>
