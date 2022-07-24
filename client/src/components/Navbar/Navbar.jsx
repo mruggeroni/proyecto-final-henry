@@ -9,10 +9,10 @@ import {
 import style from "./Navbar.module.css";
 import NavDestinations from "./NavDestinations";
 import NavPromotions from "./NavPromotions";
-import { useAuth0 } from "@auth0/auth0-react"
+import { useAuth0 } from "@auth0/auth0-react";
+import UserPopOut from './UserPopOut.jsx';
 
 export default function Navbar() {
-  const { user } = useAuth0();
 
   useEffect(() => {
     return handleClose();
@@ -36,15 +36,7 @@ export default function Navbar() {
     document.getElementById(idMenu).classList.add(`${style.is_active}`);
   }
 
-  function handleClick(e) {
-    e.preventDefault();
-    document
-      .getElementById("profile_container")
-      .classList.toggle(`${style.open_profile}`);
-  }
-
   //autenticacion
-  const { loginWithPopup, logout, isAuthenticated } = useAuth0();
 
   return (
     <div className={style.container}>
@@ -99,40 +91,11 @@ export default function Navbar() {
 
       <div className={style.nav_container}>
         <nav className={style.nav_items}>
-          <button onClick={() => handleOpen("nav_menu_items")}>
+          <button className={style.navButton} onClick={() => handleOpen("nav_menu_items")}>
             <BsJustify />
           </button>
-
-          {!isAuthenticated ? (
-            <div onClick={loginWithPopup} className={style.nav_item}>
-              <BsPersonPlusFill />
-            </div>
-          ) : (
-            <div className={style.profile_container}>
-              <button onClick={(e) => handleClick(e)}>
-                <img
-                  src={user.picture}
-                  alt="user picture not found"
-                  className={style.nav_item_profile}
-                />
-              </button>
-              <div
-                id="profile_container"
-                className={style.user_profile_container}
-              >
-                <img src={user.picture} alt="" />
-                <p>{user.name}</p>
-                <hr />
-                <div className={style.user_profile_menu}>
-                  <h2>HEllo</h2>
-                </div>
-                <hr />
-                <button onClick={logout} className={style.user_profile_btn}>
-                  Logout
-                </button>
-              </div>
-            </div>
-          )}
+          <UserPopOut />
+          
         </nav>
       </div>
     </div>

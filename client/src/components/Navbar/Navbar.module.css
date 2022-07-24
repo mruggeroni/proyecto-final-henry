@@ -24,19 +24,12 @@
   cursor: pointer;
 }
 
-.nav_items button {
+.navButton{
   background-color: transparent;
   border: none;
   color: #fff;
   font-size: 30px;
   cursor: pointer;
-}
-
-.nav_item_profile {
-  width: 40px;
-  height: 40px;
-  box-shadow: 0 1px 2px #161616;
-  border-radius: 20px;
 }
 
 .nav_menu_container {
@@ -133,61 +126,6 @@
 }
 .nav_menu::-webkit-scrollbar-thumb {
   background-color: #4a9eaae6;
-}
-
-.style_profile_container {
-  position: relative;
-}
-
-.user_profile_container {
-  position: absolute;
-  top: 90px;
-  right: 20px;
-  box-shadow: 0 2px 2px #161616;
-  width: 40vh;
-  height: 50vh;
-  display: none;
-  padding: 15px 0;
-  visibility: hidden;
-  background-color: #fff;
-}
-
-.user_profile_container img {
-  width: 80px;
-  height: 80px;
-  border-radius: 40px;
-  margin-bottom: 10px;
-}
-
-.user_profile_container p {
-  color: #000;
-  font-size: 18px;
-}
-
-.user_profile_container hr {
-  width: 95%;
-  border: none;
-  height: 2px;
-  margin: 0;
-  opacity: 100%;
-  background-color: #4A9EAA;
-}
-
-.user_profile_menu {
-  width: 100%;
-  height: 50%;
-}
-
-.user_profile_btn {
-  z-index: 988;
-  background-color: red;
-}
-
-.open_profile {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  visibility: visible;
 }
 
 @media (max-width: 760px) {
