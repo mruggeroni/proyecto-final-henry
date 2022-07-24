@@ -1,10 +1,27 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BsPlusLg, BsDashLg, BsDash } from "react-icons/bs";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getAllActivities,
+  getAllDestinations,
+  getTypes,
+} from "../../redux/actions";
 import style from "./CreatePackage.module.css";
 import Dashboard from "./Dashboard";
 import validationPackage from "./validationPackage.js";
 
 export default function CreatePackage() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getAllDestinations());
+    dispatch(getAllActivities());
+    dispatch(getTypes());
+  }, [dispatch]);
+
+  const allDestinations = useSelector((state) => state.destinations);
+  const types = useSelector((state) => state.types);
+
   const dataNow = new Date().toISOString().split("T")[0];
   const [fromDate, setFromDate] = useState(dataNow);
   const [untilDate, setUntilDate] = useState(dataNow);
@@ -238,9 +255,15 @@ export default function CreatePackage() {
                 <option selected={true} disabled="disabled">
                   Selecciona un destino..
                 </option>
-                <option value="Argentina">Argentina</option>
-                <option value="Canada">Canada</option>
-                <option value="Suiza">Suiza</option>
+                {allDestinations?.map((el) => (
+                  <option key={el.name} value={el.name}>
+                    {el.name}
+                  </option>
+                ))}
+
+                {/* TENEMOS QUE CREAR UNA SITUACION EN EL "handleSelectDestinations" 
+                PARA MANEJAR EL CASO DE CREAR UN DESTINO NUEVO*/}
+                <option value="crear">"Crear un destino nuevo.."</option>
               </select>
             </div>
 
@@ -258,8 +281,9 @@ export default function CreatePackage() {
                 <div
                   key={"destinations" + o}
                   className={style.create_destinations_items}
-                  onClick={(e) => handleBorrarDestinations(e)} >
-                    {i}
+                  onClick={(e) => handleBorrarDestinations(e)}
+                >
+                  {i}
                 </div>
               ))}
 
@@ -303,10 +327,11 @@ export default function CreatePackage() {
                 <option selected={true} disabled="disabled">
                   Selecciona un tipo de paquete..
                 </option>
-                <option value="x">Crucero</option>
-                <option value="x">Pack Short</option>
-                <option value="x">Pack Large</option>
-                <option value="x">Multidestino</option>
+                {types?.map((el) => (
+                  <option key={el} value={el}>
+                    {el}
+                  </option>
+                ))}
               </select>
             </div>
             <div

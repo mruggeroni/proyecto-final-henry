@@ -1,5 +1,7 @@
 .cardG_container {
     min-width: 250px;
+    width: 400px;
+    height: 800px;
     overflow: hidden;
     box-shadow: 0 2px 10px #161616;
     border-radius: 0.2rem;
@@ -35,6 +37,7 @@
 
 .cardG_description_container p {
     font-size: 16px;
+    overflow-wrap: break-word;
 }
 
 .cardG_btn_container {
