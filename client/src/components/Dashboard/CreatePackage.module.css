@@ -115,6 +115,7 @@ select {
     padding: 10px 0;
     margin-top: 5vh;
     transition: 1s;
+    color: #fafafa;
 }
 
 .create_btn:hover {
