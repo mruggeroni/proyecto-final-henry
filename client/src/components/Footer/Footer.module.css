@@ -1,0 +1,41 @@
+.Footer_Container {
+  background-color: #202020;
+  height: 355px;
+  /* position: absolute; */
+  bottom: 0px;
+  width: 100%;
+
+  display: grid;
+  grid-gap: 20px;
+  grid-template-columns: auto auto auto;
+  padding: 25px 5px;
+}
+
+.Footer_Container div {
+  margin-left: 20%;
+}
+
+.a img {
+  width: 45px;
+  height: 45px;
+  margin: 10px;
+}
+
+.div h2 {
+  color: #f5f0f0;
+  font-size: 30px;
+}
+
+.div h3 {
+  color: #f5f0f0;
+  text-decoration: none;
+}
+
+.div a {
+  text-decoration: none;
+}
+
+.Footer_cel {
+  color: #f5ecec;
+  font-size: 25px;
+}

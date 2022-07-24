@@ -7,7 +7,7 @@ export default function CardGeneric({ feature }) {
     return (
             <div className={style.cardG_container}>
                 <div className={style.cardG_img_container}>
-                    <img src={feature.img} alt={feature.title + 'not found'} />
+                    <img src={feature.img} alt={feature.title + ' not found'} />
                 </div>
                 <div className={style.cardG_title_container}>
                     <h2>{feature.title}</h2>

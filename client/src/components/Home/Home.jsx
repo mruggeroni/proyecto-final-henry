@@ -2,7 +2,8 @@ import React, { Fragment, useEffect, useState } from "react";
 import Hero from "../Hero/Hero";
 import style from "./Home.module.css";
 import imgTest from "./../../assets/img/background-image2 2.jpg";
-import CardGeneric from "../CardGeneric/CardGeneric";
+import CardGeneric from "../Cards/CardGeneric";
+import Footer from "../Footer/Footer";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getAllDestinations,
@@ -88,6 +89,7 @@ export default function Home() {
           </div>
         </Fragment>
       )}
+      <Footer />
     </div>
   );
 }
