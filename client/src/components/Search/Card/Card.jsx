@@ -11,8 +11,7 @@ export default function Card({ name, image, description, price }){
 	function handleFavorite(e){
         e.preventDefault();
         console.log(e.target);
-        // setClick(click ? false : true);
-        setChecked(!checked); 
+        setChecked(!checked);
     }
 
 	return(
