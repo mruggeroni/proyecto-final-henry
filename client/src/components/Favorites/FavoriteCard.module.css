@@ -13,13 +13,21 @@
 .cardInfo{
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-evenly;
   text-align: center;
   margin-top: 2vw;
   margin-bottom: 1vw;
   padding: 1.2vw;
   padding-top: 0;
   padding-bottom: 0;
+}
+
+.cardInfo h3{
+  font-size: 1.8vw;
+}
+
+.cardInfo h5{
+  font-size: 1.3vw;
 }
 
 .cardText:hover h3{
@@ -36,3 +44,38 @@
   justify-content: flex-end;
   justify-content: space-evenly;
 }
+
+@media (max-width: 1130px) {
+  img{
+    margin: auto;
+    margin-left: 0;
+    margin-right: 0;
+    width: 20vw;
+    height: 17.5vw;
+  }
+
+  .cardInfo h3{
+    font-weight: bold;
+  }
+}
+
+@media (max-width: 850px) {
+  img{
+    margin: auto;
+    margin-left: 0;
+    margin-right: 0;
+    width: 30vw;
+    height: 25vw;
+  }
+
+  .cardInfo h3{
+    font-size: 3vw;
+    padding: 3%;
+  }
+
+  .cardInfo h5{
+    font-size: 2vw;
+  }
+
+}
+
