@@ -3,7 +3,7 @@ import s from "./Detail.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import ControlledCarousel from "./Carousel"
 import BotonFav from "./BotonFav"
-import Card from "../Cards/CardGeneric/CardGeneric"
+import Card from "../CardGeneric/CardGeneric"
 
 export default function Detail(props) {
 

@@ -2,6 +2,7 @@ import React from 'react';
 import { BsPersonPlusFill } from "react-icons/bs";
 import style from "./User.module.css";
 import { useAuth0 } from "@auth0/auth0-react";
+import { NavLink } from 'react-router-dom';
 
 export default function UserPopOut(){
    const { user,isAuthenticated, loginWithPopup, logout } = useAuth0();
@@ -26,7 +27,7 @@ export default function UserPopOut(){
           <p>{user.name}</p>
           <hr />
           <div className={style.user_profile_menu}>
-            <h2>Hello</h2>
+            <NavLink to='/dashboard' className={style.user_profile_link} >Profile</NavLink>
           </div>
           <hr />
           <button className={style.user_profile_btn} onClick={logout}>Logout</button>

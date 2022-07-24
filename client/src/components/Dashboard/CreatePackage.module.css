@@ -4,6 +4,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+    margin: auto;
     margin-top: 40px;
 }
 
@@ -47,8 +49,10 @@
 
 select {
     color: #504f4f;
+    cursor: pointer;
 }
 
+.create_destinations,
 .create_input_images {
     position: relative;
     width: 50vh;
@@ -133,6 +137,46 @@ select {
     margin-left: 10px;
 }
 
+.create_destinations_items {
+    background-color: #E4EAEA99;
+    cursor: pointer;
+    /* margin-left: 10px; */
+    padding: 0px 10px 0px 12px;
+    position: relative;
+    width: 50vh;
+    height: 5vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0px 0px 10px 0px;
+}
+
+.create_destinations_items .span {
+    font-weight: bold;width: 0px;
+    height: 100%;
+    visibility: hidden;
+    background-color: red;
+    color: white;
+    text-align: center;
+}
+
+.create_destinations_items:hover .span{
+    visibility: visible;
+    width: fit-content;
+    position: absolute;
+    top: 0;
+    right: 0;
+    text-align: right;
+    transition: all 2s ease-in-out;
+ }
+
+ 
+.create_destinations_items:hover {
+    background-color: red;
+    color: white;
+    transition: all 2s ease-in-out;
+ }
+
 @media (max-width: 760px) {
     .create_form_container {
         width: 100%;
@@ -174,3 +218,4 @@ select {
         padding-bottom: 10px;
     }
 }
+
