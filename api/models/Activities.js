@@ -17,7 +17,7 @@ export const Activity = sequelize.define('activity', {
 	},
 	image: {
 		type: DataTypes.STRING,
-		allowNull: false,
+		allowNull: true,
 	},
 	price: {
 		type: DataTypes.INTEGER,

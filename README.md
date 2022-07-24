@@ -8,6 +8,8 @@ Variables de entorno:
 
 
 RUTAS DISPONIBLES:
+  get "/packages/featured" = array con paquetes destacados, 3 por defecto, la ruta se puede modificar con un query: "/packages/featured?limit=Numero"
+
   get "/types" = array con los tipos de Packages
   
   get "/on_sale" => array de 3 paquetes aleatorios con la propiedad 'on_sale' > 0 (paquetes con descuentos) 
@@ -21,6 +23,110 @@ RUTAS DISPONIBLES:
   get "/activities" = array con actividades
 
   get "/packages/:id" = array con el detalle de un paquete y paquetes recomendados (ver abajo)
+
+  post "/packages" = Este post crea simultaneamente nuevos, paquetes, destinos, clasificaciones y actividades. Es decir, recibe un paquete con todos sus atributos y los crea respectivamente.
+  IMPORTANTE: La estructura en la que deben enviar el paquete por body, la cual se expresa acontinuación.
+
+Post Paquete/actividad/clasificación/destino:
+La estructura en la que deben enviar los datos es un objeto con todas las propiedades del paquete (name, type, etc), teniendo en cuenta que la propiedad destino es un array de objetos, cada objeto del array con las propiedades (name, image). La propiedad activities que es un array de objetos, cada objeto con las propiedades de la actividad (name, description, price, etc), teniendo en cuenta que la propiedad classification es un objeto con las propiedades (name, image).
+
+{
+    "name": "Japón, Corea del Sur y China, un viaje al antiguo oriente",
+    "price": 3000,
+    "description": "¿Alguna vez has soñado vivir en la epoca de los samurai?, ¿Conocer la dinastía Qing? ¿Visitar los palacios cerrados de la antigua Corea? Este paquete de viajes es para los amantes de la antigua Asia, y quieren recorrer sus lugares emblematicos.",
+    "main_image": "https://dam.ngenespanol.com/wp-content/uploads/2019/09/seul.png",
+    "images": [
+      "https://viajes.nationalgeographic.com.es/medio/2021/12/23/hanok_ebee1373_1254x837.jpg",
+      "https://seri.tucuman.gob.ar/wp-content/uploads/2022/05/corea-del-sur.jpg",
+      "https://demos.maperez.es/pfhenry/Ghibli_museum_sign.jpg"
+    ],
+    "featured": false,
+    "destinations": [{"name":"China",
+        "image": "https://www.collinsdictionary.com/images/full/tajikistan_433199395_1000.jpg"
+    }, {"name":"Corea del Sur","image": "https://demos.maperez.es/pfhenry/main.jpg"},
+    {"name":"Japón",
+        "image": "https://www.collinsdictionary.com/images/full/tajikistan_433199395_1000.jpg"
+    }],
+    "start_date": "2022-10-09",
+    "end_date": "2022-10-12",
+    "available": true,
+    "on_sale": 0,
+    "region": "Asia Oriental",
+    "seasson": "Otoño",
+    "type": "Pack Short",
+    "activities": [{"name": "Tour de Highlights",
+        "description": "Hola soy una actividad",
+        "price": "100",
+        "image": "https://demos.maperez.es/pfhenry/Tour%20de%20Highlights.jpg",
+        "classification": {"name":"Familiar",
+            "image": "https://demos.maperez.es/pfhenry/Familiar.png"}
+    },{"name": "Visitar Estrellas",
+        "description": "Tour con estrellas de cine",
+        "price": "300",
+        "image": "https://demos.maperez.es/pfhenry/Tour%20de%20Highlights.jpg",
+"classification": {"name":"Nichos",
+    "image": "https://www.pngitem.com/pimgs/m/411-4110616_spirited-away-hd-png-download.png"
+}}]
+
+Get featured: Se ejecuta en la ruta /, se obtiene un array de objetos, estos objetos son paquetes cuya propiedad 'featured' es true.
+[
+  {
+    "id": 2,
+    "name": "Grecia imprescindible 6 días desde Atenas",
+    "description": "Viaje a Grecia para conocer de la mano de expertos guías en español lo mejor de la mítica Hellas, cuna de la civilización occidental. Visitamos Atenas, la capital de Grecia, emblema universal del mundo clásico, con sus monumentos, grandes templos y majestuosas edificaciones: el Estadio Panatenaico o la Roca Sagrada del Acrópolis. Conocemos también el Teatro de Epidauro, la acrópolis de Micenas, la legendaria Olimpia o Delfos, considerado el centro del mundo por los antiguos griegos.",
+    "main_image": "https://demos.maperez.es/pfhenry/Grecia%20imprescindible%206%20días%20desde%20Atenas%20-%20main.jpg",
+    "images": [
+      "https://demos.maperez.es/pfhenry/Grecia%20imprescindible%206%20días%20desde%20Atenas%20-%201.jpg",
+      "https://demos.maperez.es/pfhenry/Grecia%20imprescindible%206%20días%20desde%20Atenas%20-%202.jpg",
+      "https://demos.maperez.es/pfhenry/Grecia%20imprescindible%206%20días%20desde%20Atenas%20-%203.jpg"
+    ],
+    "price": 1000,
+    "start_date": "2022-08-15",
+    "end_date": "2022-08-21",
+    "region": "Europa Central",
+    "seasson": "Verano",
+    "type": "Pack Short",
+    "featured": true,
+    "available": true,
+    "on_sale": 15,
+    "activities": [
+      {
+        "name": "Tour de Highlights",
+        "classification": {
+          "name": "Familiar"
+        },
+        "Package_Activity": {
+          "createdAt": "2022-07-24T13:50:24.391Z",
+          "updatedAt": "2022-07-24T13:50:24.391Z",
+          "packageId": 2,
+          "activityId": 1
+        }
+      },
+      {
+        "name": "Tour de Museos",
+        "classification": {
+          "name": "Familiar"
+        },
+        "Package_Activity": {
+          "createdAt": "2022-07-24T13:50:25.233Z",
+          "updatedAt": "2022-07-24T13:50:25.233Z",
+          "packageId": 2,
+          "activityId": 2
+        }
+      }
+    ],
+    "destinations": [
+      {
+        "name": "Grecia",
+        "Package_Destination": {
+          "createdAt": "2022-07-24T13:50:23.443Z",
+          "updatedAt": "2022-07-24T13:50:23.443Z",
+          "packageId": 2,
+          "destinationId": 9
+        }
+      }
+    ]
+  },
 
 Get activities: Se ejecuta en la ruta '/activities', se obtiene un objeto con la siguiente estructura:, un array de objetos, en el que cada objeto cuenta con las propiedades: id, name, image, description, price, classificationId, y classification, que a su vez tendra un objeto con el "name" de la clasificación.
 [

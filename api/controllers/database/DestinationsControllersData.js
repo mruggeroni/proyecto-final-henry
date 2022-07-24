@@ -4,7 +4,7 @@ import * as fs from 'fs';
 export const getDestinationData = async () =>{
     try {
        //CAMBIAR A PATH RELATIVO
-        let dataJson = fs.readFile('D:/FinalProject-Henry/proyecto-final-henry/api/data/destinations.json', "utf8", (error, data) =>{
+        let dataJson = fs.readFile('/home/sadnena/pf/proyecto-final-henry/api/data/destinations.json', "utf8", (error, data) =>{
             let dataDestinations = JSON.parse(data)
             //console.log(error)
             dataDestinations.map((destino) => {
