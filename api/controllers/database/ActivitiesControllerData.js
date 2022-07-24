@@ -8,7 +8,7 @@ export const getActivitiesData = async () =>{
         //CAMBIAR A PATH RELATIVO
         
        
-        let dataJson = await Promise.all (fs.readFile('/home/sadnena/pf/proyecto-final-henry/api/data/activities.json', "utf8", (error, data) =>{
+        let dataJson = await Promise.all (fs.readFile('D:/FinalProject-Henry/proyecto-final-henry/api/data/activities.json', "utf8", (error, data) =>{
             let dataActivity = JSON.parse(data)
             dataActivity.forEach(async (actividad) => {
                 let clasificacion = await Classification.findOne({where: {name: actividad.classification}})
@@ -18,7 +18,7 @@ export const getActivitiesData = async () =>{
                         image: actividad.image, price: actividad.price}
                 }) 
                 let actividades = await Activity.findOne({where: {name: actividad.name}})
-                //console.log(actividades)
+                // console.log(actividades)
                 clasificacion.addActivities(actividades)
             })
         }))
