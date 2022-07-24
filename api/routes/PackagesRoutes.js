@@ -1,9 +1,10 @@
 import { Router } from 'express';
 
-import { createPackage, getPackages, getFeaturedPackages } from '../controllers/PackagesController.js';
+import { createPackage, getPackages, getFeaturedPackages, getTypes } from '../controllers/PackagesController.js';
 
 const router = Router();
 
+router.get('/types', getTypes);
 router.get('/packages', getPackages);
 router.get('/packages/featured', getFeaturedPackages);
 router.post('/packages', createPackage);
