@@ -5,7 +5,6 @@ import style from './CardGeneric.module.css';
 export default function CardGeneric({ feature }) {
 
     return (
-        <div className="container">
             <div className={style.cardG_container}>
                 <div className={style.cardG_img_container}>
                     <img src={feature.img} alt={feature.title + 'not found'} />
@@ -20,6 +19,5 @@ export default function CardGeneric({ feature }) {
                     <NavLink to={`/detail/${feature.id}`}>+ info</NavLink>
                 </div>
             </div>
-        </div>
     )
 }

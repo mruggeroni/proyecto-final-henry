@@ -9,14 +9,15 @@ import {
 import style from "./Navbar.module.css";
 import NavDestinations from "./NavDestinations";
 import NavPromotions from "./NavPromotions";
-import { useAuth0 } from "@auth0/auth0-react";
 import UserPopOut from './UserPopOut.jsx';
 
 export default function Navbar() {
 
   useEffect(() => {
-    return handleClose();
-  });
+    return () => {
+     handleClose();
+    };  
+  }, [handleClose]);
 
   function handleClose() {
     document.getElementById("nav_menu").classList.remove(`${style.is_active}`);
