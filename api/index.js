@@ -1,7 +1,7 @@
 import app from './app.js';
 import { getActivitiesData } from './controllers/database/ActivitiesControllerData.js';
 //CAMBIAR A PATH RELATIVO O ABSOLUTO LOCAL
-import { getClassificationData } from '/home/sadnena/pf/proyecto-final-henry/api/controllers/database/ClassificationControllerData.js';
+import { getClassificationData } from './controllers/database/ClassificationControllerData.js';
 import { getDestinationData } from './controllers/database/DestinationsControllersData.js';
 import { getPackageData } from './controllers/database/PackagesControllersData.js';
 import { sequelize } from './db.js';

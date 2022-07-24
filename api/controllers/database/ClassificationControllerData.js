@@ -4,7 +4,7 @@ import * as fs from 'fs';
 export const getClassificationData = async () => {
     try {
        //CAMBIAR A PATH RELATIVO
-        let dataJson = fs.readFile('/home/sadnena/pf/proyecto-final-henry/api/data/classification.json', "utf8", (error, data) => {
+        let dataJson = fs.readFile('D:/FinalProject-Henry/proyecto-final-henry/api/data/classification.json', "utf8", (error, data) => {
         let dataClassification = JSON.parse(data)
         dataClassification.map((categoria) => {
             Classification.findOrCreate({
