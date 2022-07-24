@@ -18,12 +18,11 @@ export const getPackagesDetail = async (req, res) => {
 		});
         let packageRegion = packageDetail.region
         let packageName = packageDetail.name
-        //console.log(packageName)
+        console.log(packageName)
         const limit = parseInt(req.query.limit) || 3
-        const recomendados = await Package.findAll({where: {region: packageRegion},
-        limit: limit,
-        [Op.not] : {name: packageName}},
-         )
+        const recomendados = await Package.findAll({where: {region: packageRegion,
+        name: {[Op.not]: packageName} },
+        limit: limit})
             const respuesta = [packageDetail, recomendados]
 		res.status(200).json(respuesta);
 	} catch (error) {
