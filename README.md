@@ -1,3 +1,27 @@
+Variables de entorno:
+  DB= "Nombre de la DB"
+  DB_USER= "Usuario de Postgres"
+  DB_PASSWORD= "Pass de Postgres"
+  DB_HOST= "(por defecto es 'localhost')"
+  DB_DIALECT= "(por defecto es 'postgres')"
+  PORT= "(por defecto es '3001')"
+
+
+RUTAS DISPONIBLES:
+  get "/types" = array con los tipos de Packages
+  
+  get "/on_sale" => array de 3 paquetes aleatorios con la propiedad 'on_sale' > 0 (paquetes con descuentos) 
+
+  get "/destinations" = array con los destinos
+
+  get "/activities" = array con los tipos de actividades
+
+  get "/packages" = array con paquetes
+
+  get "/activities" = array con actividades
+
+  get "/packages/:id" = array con el detalle de un paquete y paquetes recomendados (ver abajo)
+
 Get activities: Se ejecuta en la ruta '/activities', se obtiene un objeto con la siguiente estructura:, un array de objetos, en el que cada objeto cuenta con las propiedades: id, name, image, description, price, classificationId, y classification, que a su vez tendra un objeto con el "name" de la clasificación.
 [
     {"id":1,
@@ -206,3 +230,6 @@ GET packages (ordenamiento por precio, default los muestra por precio descendien
       }
     ]
   },
+
+
+
