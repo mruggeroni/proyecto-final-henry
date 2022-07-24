@@ -16,7 +16,6 @@ export const Package = sequelize.define('package', {
 	},
 	main_image: {
 		type: DataTypes.STRING,
-		defaultValue: 'https://demos.maperez.es/default-main-image.jpg',
 	},
 	images: {
 		type: DataTypes.ARRAY(DataTypes.STRING),
@@ -69,11 +68,11 @@ export const Package = sequelize.define('package', {
 	},
 	featured: {
 		type: DataTypes.BOOLEAN,
-		defaultValue: false,
+
 	},
 	available: {
 		type: DataTypes.BOOLEAN,
-		defaultValue: true,
+
 	},
 	on_sale: {
 		type: DataTypes.INTEGER,

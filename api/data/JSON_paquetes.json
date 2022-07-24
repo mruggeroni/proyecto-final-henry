@@ -9,7 +9,7 @@
       "https://demos.maperez.es/pfhenry/Grecia%20imprescindible%206%20días%20desde%20Atenas%20-%202.jpg",
       "https://demos.maperez.es/pfhenry/Grecia%20imprescindible%206%20días%20desde%20Atenas%20-%203.jpg"
     ],
-    "featured": false,
+    "featured": true,
     "destinations": ["Grecia"],
     "start_date": "2022-08-15",
     "end_date": "2022-08-21",
@@ -1130,7 +1130,7 @@
       "https://demos.maperez.es/pfhenry/disney-tokyo-e1518027758238.jpg",
       "https://demos.maperez.es/pfhenry/Ghibli_museum_sign.jpg"
     ],
-    "featured": false,
+    "featured": true,
     "destinations": ["Japón"],
     "start_date": "2022-09-09",
     "end_date": "2022-09-12",
@@ -1210,7 +1210,7 @@
       "https://demos.maperez.es/pfhenry/guatemala2.jpg",
       "https://demos.maperez.es/pfhenry/guatemala3.jpg"
     ],
-    "featured": false,
+    "featured": true,
     "destinations": ["Guatemala"],
     "start_date": "2022-08-20",
     "end_date": "2022-08-27",

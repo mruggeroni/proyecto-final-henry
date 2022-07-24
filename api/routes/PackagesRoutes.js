@@ -2,11 +2,13 @@ import { Router } from 'express';
 
 import { createPackage, getPackages, getFeaturedPackages } from '../controllers/PackagesController.js';
 import { getPackageData } from '../controllers/database/PackagesControllersData.js';
+import { getPackagesDetail } from '../controllers/PackagesDetailController.js';
 
 const router = Router();
 
 router.get('/packages', getPackages);
 router.get('/packages/featured', getFeaturedPackages);
+router.get('/packages/:id', getPackagesDetail)
 router.post('/packages', createPackage);
 // RUTAS EXCLUSIVAS PARA CARGAR LOS DATOS A LA DATABASE, SI NECESITA CARGAR LOS DATOS A SU DB LOCAL USE ESTAS RUTAS
 //router.get('/dbpackages', getPackageData)
