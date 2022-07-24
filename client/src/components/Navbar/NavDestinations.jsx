@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { NavLink } from 'react-router-dom';
 import { BsFillCaretLeftFill } from 'react-icons/bs';
 import style from './Navbar.module.css';
 
 export default function NavDestinations({ handleClose }) {
+
+    useEffect( () => {
+
+    }, [])
 
     function handleBackMenu() { 
         document.getElementById('nav_menu_destinations').classList.remove(`${style.is_active}`);
