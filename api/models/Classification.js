@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // En esta tabla se definen las categorías de los paquetes vacacionales.
 // Estos pueden ser: Crucero, Tour, Estancia?
 import { DataTypes } from 'sequelize';
@@ -22,3 +23,29 @@ export const Classification = sequelize.define('classification', {
 //console.log(sequelize.models)
 
 
+=======
+// En esta tabla se definen las categorías de los paquetes vacacionales.
+// Estos pueden ser: Crucero, Tour, Estancia?
+import { DataTypes } from 'sequelize';
+import { sequelize } from '../db.js';
+//import { Activity } from '../models/Activities.js';
+
+
+export const Classification = sequelize.define('classification', {
+	name: {
+		type: DataTypes.STRING,
+		allowNull: false,
+		unique: true,
+	},
+	image: {
+		type: DataTypes.STRING,
+		allowNull: false,
+	}
+}, {
+	timestamps: false,
+});
+//console.log('POTATO')
+//console.log(sequelize.models)
+
+
+>>>>>>> origin/develop

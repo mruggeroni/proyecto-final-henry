@@ -6,7 +6,11 @@ export const getPackageData = async () =>{
     try {
         
         let dataJson = await Promise.all(
+<<<<<<< HEAD
             fs.readFile('f:/Users/Admin/Desktop/Soy Henry/PF/proyecto-final-henry/api/data/JSON_paquetes.json', "utf8", (error, data) =>{
+=======
+            fs.readFile('D:/FinalProject-Henry/proyecto-final-henry/api/data/JSON_paquetes.json', "utf8", (error, data) =>{
+>>>>>>> origin/develop
                 let dataPackage = JSON.parse(data)
                 //console.log(dataPackage)
                 dataPackage.map(async (paquete) => {
@@ -23,6 +27,7 @@ export const getPackageData = async () =>{
                         type: paquete.type,
                         start_date: paquete.start_date,
                         end_date: paquete.end_date,
+<<<<<<< HEAD
                     },
                        default: { 
                         main_image: paquete.main_image,
@@ -31,6 +36,12 @@ export const getPackageData = async () =>{
                         available: paquete.available,
                         
                        }
+=======
+                        featured: paquete.featured,
+                        main_image: paquete.main_image,
+                        available: paquete.available,  
+                    },
+>>>>>>> origin/develop
                     })
 
                     const destinationfind = await Destination.findOne({ where: { name: paquete.destinations[0]}})
