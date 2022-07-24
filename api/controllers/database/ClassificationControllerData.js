@@ -4,6 +4,7 @@ import * as fs from 'fs';
 export const getClassificationData = async () => {
     try {
        //CAMBIAR A PATH RELATIVO
+
         let dataJson = fs.readFile('"f:/Users/Admin/Desktop/Soy Henry/PF/proyecto-final-henry/api/data/classification.json', "utf8", (error, data) => {
         let dataClassification = JSON.parse(data)
         dataClassification.map((categoria) => {

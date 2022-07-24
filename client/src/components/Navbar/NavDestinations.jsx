@@ -1,32 +1,52 @@
-import React from "react";
-import { NavLink } from 'react-router-dom';
-import { BsFillCaretLeftFill } from 'react-icons/bs';
-import style from './Navbar.module.css';
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { NavLink } from "react-router-dom";
+import { BsFillCaretLeftFill } from "react-icons/bs";
+import {
+  getAllDestinations,
+} from "../../redux/actions/index";
+import style from "./Navbar.module.css";
 
 export default function NavDestinations({ handleClose }) {
+  const dispatch = useDispatch();
 
-    function handleBackMenu() { 
-        document.getElementById('nav_menu_destinations').classList.remove(`${style.is_active}`);
-    }
+  const allDestinations = useSelector((state) => state.destinations);
 
-    return (
-        <nav id='nav_menu_destinations' className={`${style.nav_menu}`}>
-            <div className={style.nav_menu_container_close}>
-                <button onClick={ () => handleClose() } className={style.nav_menu_close}>
-                    X
-                </button>
-            </div>
-            <button onClick={ () => handleBackMenu() } className={style.nav_menu_container_back}>
-                <BsFillCaretLeftFill/> Volver al menu
-            </button>    
-            {
-                [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15].map( (i) => (
-                    <NavLink to='/' key={i} onClick={ () => handleClose() } className={style.nav_menu_item}>
-                        Test {i}
-                    </NavLink>
-                )
-            )
-            }      
-        </nav>        
-    )
+  useEffect(() => {
+    dispatch(getAllDestinations());
+  }, [dispatch]);
+
+
+  function handleBackMenu() {
+    document
+      .getElementById("nav_menu_destinations")
+      .classList.remove(`${style.is_active}`);
+  }
+
+  return (
+    <nav id="nav_menu_destinations" className={`${style.nav_menu}`}>
+      <div className={style.nav_menu_container_close}>
+        <button onClick={() => handleClose()} className={style.nav_menu_close}>
+          X
+        </button>
+      </div>
+      <button
+        onClick={() => handleBackMenu()}
+        className={style.nav_menu_container_back}
+      >
+        <BsFillCaretLeftFill /> Volver
+      </button>
+      {
+        allDestinations.map((el, i) => (
+            <NavLink
+            to="/"
+            key={el.name + i}
+            onClick={() => handleClose()}
+            className={style.nav_menu_item}
+            >
+            {el.name}
+            </NavLink>
+      ))}
+    </nav>
+  );
 }

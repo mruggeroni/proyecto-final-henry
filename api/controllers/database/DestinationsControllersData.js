@@ -4,10 +4,12 @@ import * as fs from "fs";
 export const getDestinationData = async () => {
   try {
     //CAMBIAR A PATH RELATIVO
+
     let dataJson = fs.readFile(
       '"f:/Users/Admin/Desktop/Soy Henry/PF/proyecto-final-henry/api/data/destinations.json',
       "utf8",
       (error, data) => {
+
         let dataDestinations = JSON.parse(data);
         //console.log(error)
         dataDestinations.map((destino) => {
