@@ -15,7 +15,9 @@
 }
 
 .cardG_container h2 {
+  width: 95%;
   font-size: 22px;
+  margin: auto;
 }
 
 .cardG_img_container {
@@ -31,8 +33,10 @@
 }
 
 .cardG_description_container p {
+  width: 90%;
   font-size: 16px;
   overflow-wrap: break-word;
+  margin: auto;
 }
 
 .cardG_btn_container {

@@ -59,7 +59,7 @@ export default function Home() {
                     key={idx}
                     feature={{
                       id: i.id,
-                      img: imgTest,
+                      img: i.images[0],
                       title: i.name,
                       description: i.description.slice(0, 200) + "...",
                     }}
@@ -78,7 +78,7 @@ export default function Home() {
                     key={idx}
                     feature={{
                       id: i.id,
-                      img: i.main_image,
+                      img: i.images[0],
                       title: i.name,
                       description: i.description.slice(0, 200) + "...",
                     }}

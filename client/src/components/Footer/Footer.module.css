@@ -1,6 +1,7 @@
 .Footer_Container {
-  background-color: #202020;
-  height: 355px;
+  background-color: #353b3b;
+  color: #fafafa;
+  height: 200px;
   /* position: absolute; */
   bottom: 0px;
   width: 100%;
@@ -18,24 +19,42 @@
 .a img {
   width: 45px;
   height: 45px;
-  margin: 10px;
+  margin-top: 30px;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
-.div h2 {
-  color: #f5f0f0;
-  font-size: 30px;
+.div .h2 {
+  /* color: #323333; */
+  font-size: 28px;
 }
 
-.div h3 {
-  color: #f5f0f0;
+.div .h3 {
+  /* color: #353b3b; */
   text-decoration: none;
+  font-size: 15px;
 }
 
-.div a {
+.div .a {
   text-decoration: none;
 }
 
 .Footer_cel {
-  color: #f5ecec;
+  /* color: #f5ecec; */
+  /* color: #323333; */
   font-size: 25px;
+}
+
+.Footer_h2 {
+  /*   color: #f5f0f0; */
+  /* color: #323333; */
+  text-decoration: none;
+  font-size: 29px;
+}
+
+.hh3 {
+  /* color: #f5f0f0; */
+  /* color: #353b3b; */
+  text-decoration: none;
+  font-size: 20px;
 }
