@@ -6,10 +6,12 @@ import {
   BsPersonPlusFill,
   BsPersonDashFill,
 } from "react-icons/bs";
+import {   AiOutlineHeart } from 'react-icons/ai';
 import style from "./Navbar.module.css";
 import NavDestinations from "./NavDestinations";
 import NavPromotions from "./NavPromotions";
 import UserPopOut from './UserPopOut.jsx';
+import FavoritePopOut from './FavoritePopOut.jsx';
 
 export default function Navbar() {
 
@@ -95,7 +97,11 @@ export default function Navbar() {
           <button className={style.navButton} onClick={() => handleOpen("nav_menu_items")}>
             <BsJustify />
           </button>
-          <UserPopOut />
+          
+
+          <div className={style.icons}>
+            <UserPopOut />
+          </div>
           
         </nav>
       </div>
