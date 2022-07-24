@@ -2,6 +2,7 @@ import { Package } from "../models/Packages.js";
 import { Classification } from "../models/Classification.js";
 import { Activity } from "../models/Activities.js";
 import { Destination } from "../models/Destinations.js";
+import { sequelize } from "../db.js";
 import { Op } from "sequelize";
 
 export const getPackages = async (req, res) => {
@@ -164,8 +165,10 @@ export const getOn_sale = async (req, res) => {
       order: sequelize.random(),
       limit: 3,
     });
+
     res.status(200).send(filteredPackages);
   } catch (error) {
+    console.log(error);
     res.status(400).send({ data: error.message });
   }
 };
