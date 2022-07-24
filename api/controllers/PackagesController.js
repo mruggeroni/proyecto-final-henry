@@ -2,6 +2,7 @@ import { Package } from "../models/Packages.js";
 import { Classification } from "../models/Classification.js";
 import { Activity } from "../models/Activities.js";
 import { Destination } from "../models/Destinations.js";
+import { Op } from "sequelize";
 
 export const getPackages = async (req, res) => {
   try {
