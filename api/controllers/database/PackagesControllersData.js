@@ -6,7 +6,7 @@ export const getPackageData = async () =>{
     try {
         
         let dataJson = await Promise.all(
-            fs.readFile('D:/FinalProject-Henry/proyecto-final-henry/api/data/JSON_paquetes.json', "utf8", (error, data) =>{
+            fs.readFile('/home/sadnena/pf/proyecto-final-henry/api/data/JSON_paquetes.json', "utf8", (error, data) =>{
                 let dataPackage = JSON.parse(data)
                 //console.log(dataPackage)
                 dataPackage.map(async (paquete) => {
