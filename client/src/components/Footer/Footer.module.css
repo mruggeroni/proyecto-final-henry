@@ -1,60 +1,45 @@
 .Footer_Container {
-  background-color: #353b3b;
+  background-color: #4a9eab;
   color: #fafafa;
-  height: 200px;
-  /* position: absolute; */
+  height: 15vw;
   bottom: 0px;
   width: 100%;
+  display: block;
 
-  display: grid;
-  grid-gap: 20px;
-  grid-template-columns: auto auto auto;
-  padding: 25px 5px;
+  padding: 3vw;
+  padding-left: 8vw;
+  padding-right: 8vw;
 }
 
-.Footer_Container div {
-  margin-left: 20%;
+.Info_Container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
-.a img {
-  width: 45px;
-  height: 45px;
-  margin-top: 30px;
-  margin-left: 10px;
-  margin-right: 10px;
+div h2 {
+  font-size: 1.5vw;
+  margin-bottom: 1vw;
 }
 
-.div .h2 {
-  /* color: #323333; */
-  font-size: 28px;
-}
-
-.div .h3 {
-  /* color: #353b3b; */
+div h3 {
+  font-size: 1vw;
   text-decoration: none;
-  font-size: 15px;
+  color: #f5f0f0;
 }
 
-.div .a {
-  text-decoration: none;
+.divSeguinos {
+  width: 20%;
+  margin-right: 2vw;
 }
 
-.Footer_cel {
-  /* color: #f5ecec; */
-  /* color: #323333; */
-  font-size: 25px;
+.icons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
-.Footer_h2 {
-  /*   color: #f5f0f0; */
-  /* color: #323333; */
-  text-decoration: none;
-  font-size: 29px;
-}
-
-.hh3 {
-  /* color: #f5f0f0; */
-  /* color: #353b3b; */
-  text-decoration: none;
-  font-size: 20px;
+p {
+  margin: auto;
+  margin-left: 35vw;
 }

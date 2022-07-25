@@ -1,44 +1,50 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Hero from "../Hero/Hero";
 import style from "./Home.module.css";
 import imgTest from "./../../assets/img/background-image2 2.jpg";
-import CardGeneric from "../Cards/CardGeneric";
+import CardGenericContainer from "../Cards/CardGenericContainer.jsx";
 import Footer from "../Footer/Footer";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getAllDestinations,
   getOnSale,
   getAllActivities,
+  getAllPackage,
+  getDestinationsWithPackages,
 } from "../../redux/actions/index";
 
 export default function Home() {
   const dispatch = useDispatch();
 
   const [loading, setLoading] = useState(true);
-  const allDestinations = useSelector((state) => state.destinations);
+  const allDestinations = useSelector(
+    (state) => state.destinationsWithPackages
+  );
   const onSale = useSelector((state) => state.onsale);
 
   useEffect(async () => {
     setLoading(true);
+    await dispatch(getAllPackage());
     await dispatch(getAllDestinations());
+    await dispatch(getDestinationsWithPackages());
     await dispatch(getOnSale());
     await dispatch(getAllActivities());
     setLoading(false);
-  }, []);
-
-  useEffect(() => {
-    dispatch(getAllDestinations());
-    dispatch(getOnSale());
-    dispatch(getAllActivities());
   }, [dispatch]);
 
-  useEffect(() => {
-    return async () => {
-      await dispatch(getAllDestinations());
-      await dispatch(getOnSale());
-      await dispatch(getAllActivities());
-    };
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(getAllDestinations());
+  //   dispatch(getOnSale());
+  //   dispatch(getAllActivities());
+  // }, [dispatch]);
+
+  // useEffect(() => {
+  //   return async () => {
+  //     await dispatch(getAllDestinations());
+  //     await dispatch(getOnSale());
+  //     await dispatch(getAllActivities());
+  //   };
+  // }, [dispatch]);
 
   return (
     <div className={style.home_container}>
@@ -47,49 +53,19 @@ export default function Home() {
           <div className={style.spinner}></div>
         </div>
       ) : (
-        <Fragment>
-          <Hero />
+        <React.Fragment>
+          <Hero destinations={allDestinations} />
           <div className={style.feature_container}>
-            <h2>Destacados</h2>
-            <div className={style.cards_container}>
-              {
-                // Para probar como se ven las cartas de descatados/ofertas
-                onSale.map((i, idx) => (
-                  <CardGeneric
-                    key={idx}
-                    feature={{
-                      id: i.id,
-                      img: i.images[0],
-                      title: i.name,
-                      description: i.description.slice(0, 200) + "...",
-                    }}
-                  />
-                ))
-              }
-            </div>
+            <h2 className={style.h2}>Destacados</h2>
+            <CardGenericContainer listCards={onSale} />
           </div>
           <div className={style.promotions_container}>
-            <h2>Promociones</h2>
-            <div className={style.cards_container}>
-              {
-                // Para probar como se ven las cartas de descatados/ofertas
-                onSale.map((i, idx) => (
-                  <CardGeneric
-                    key={idx}
-                    feature={{
-                      id: i.id,
-                      img: i.images[0],
-                      title: i.name,
-                      description: i.description.slice(0, 200) + "...",
-                    }}
-                  />
-                ))
-              }
-            </div>
+            <h2 className={style.h2}>Promociones</h2>
+            <CardGenericContainer listCards={onSale} />
           </div>
-        </Fragment>
+        </React.Fragment>
       )}
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }

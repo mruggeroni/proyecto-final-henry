@@ -32,7 +32,7 @@ export default function UserPopOut() {
         <p>{user.name}</p>
         <hr />
         <div className={style.user_profile_menu}>
-          <NavLink to="/dashboard/packages" className={style.user_profile_link}>
+          <NavLink to="/dashboard" className={style.user_profile_link}>
             Profile
           </NavLink>
         </div>

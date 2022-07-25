@@ -4,11 +4,7 @@ import * as fs from 'fs';
 export const getClassificationData = async () => {
     try {
        //CAMBIAR A PATH RELATIVO
-// <<<<<<< HEAD
-        let dataJson = fs.readFile('f:/Users/Admin/Desktop/Soy Henry/PF/proyecto-final-henry/api/data/classification.json', "utf8", (error, data) => {
-// =======
-//         let dataJson = fs.readFile('D:/FinalProject-Henry/proyecto-final-henry/api/data/classification.json', "utf8", (error, data) => {
-// >>>>>>> origin/develop
+        let dataJson = fs.readFile('F:/Users/Admin/Desktop/Soy Henry/PF/proyecto-final-henry/api/data/classification.json', "utf8", (error, data) => {
         let dataClassification = JSON.parse(data)
         dataClassification.map((categoria) => {
             Classification.findOrCreate({
@@ -24,5 +20,4 @@ export const getClassificationData = async () => {
         console.log(error.message)
     }
 }
-
 
