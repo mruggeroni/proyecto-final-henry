@@ -14,6 +14,7 @@ import {
   POST_PACKAGE,
   ORDER_BY_PRICE,
   FILTER_BY_DESTINATION,
+  GET_DESTINATIONS_WITH_PACKAGES
 } from "./../actions/index.js";
 
 const initialState = {
@@ -21,6 +22,7 @@ const initialState = {
   filteredPackages: [],
   activities: [],
   destinations: [],
+  destinationsWithPackages: [],
   regions: [],
   types: [],
   seasons: [],
@@ -38,40 +40,61 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         allPackages: action.payload,
       };
+
     case GET_ALL_DESTINATIONS:
       return {
         ...state,
         destinations: action.payload,
       };
+   
+    case GET_DESTINATIONS_WITH_PACKAGES:
+      const allPackages = state.allPackages;
+      let arr = [];
+      state.destinations.filter((d) => 
+            allPackages.destinations.forEach((el) => {
+              el.name === d && arr.push(d);
+            })
+          );
+      return {
+        ...state,
+        destinationsWithPackages: arr,
+      };
+
     case GET_ON_SALE:
       return {
         ...state,
         onsale: action.payload,
       };
+
     case GET_ACTIVITIES:
       return {
         ...state,
         activities: action.payload,
       };
+
     case GET_TYPES:
       return {
         ...state,
         types: action.payload,
       };
+
     case GET_PACKAGE_BY_ID:
       return {
         ...state,
         detailPackage: action.payload,
       };
+
     case GET_RELATIONATED:
       return {
         ...state,
         relationated: action.payload,
       };
+
     case POST_PACKAGE: //el case del POST por mas que no haga nada (devuelve el mismo objeto) tiene que estar SI O SI
       return {
         ...state,
       };
+
     case ORDER_BY_PRICE:
       let sortPrice =
         action.payload === "minPrice"
@@ -89,8 +112,9 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         filteredPackages: sortPrice,
       };
+
     case FILTER_BY_DESTINATION:
-      const allPackages = state.allPackages;
+      // const allPackages = state.allPackages;
       /* 
         action.payload === name destination (allPackages.destinations.name)
         destinations = [{name: ''}] 
@@ -109,6 +133,7 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         filteredPackages: aux,
       };
+
     default:
       return { ...state };
   }
