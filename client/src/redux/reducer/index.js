@@ -56,6 +56,16 @@ const rootReducer = (state = initialState, action) => {
         });
       });
       console.log(arr);
+
+      // case GET_DESTINATIONS_WITH_PACKAGES:
+      //   const allPackages = state.allPackages;
+      //   let arr = [];
+      //   state.destinations.filter((d) =>
+      //         allPackages.destinations.forEach((el) => {
+      //           el.name === d && arr.push(d);
+      //         })
+      //       );
+
       return {
         ...state,
         destinationsWithPackages: arr,
@@ -114,26 +124,28 @@ const rootReducer = (state = initialState, action) => {
         filteredPackages: sortPrice,
       };
 
-    case FILTER_BY_DESTINATION:
-      const allPackages = state.allPackages;
-      /* 
+    // case FILTER_BY_DESTINATION:
+    // const allPackages = state.allPackages;
+    /* 
         action.payload === name destination (allPackages.destinations.name)
         destinations = [{name: ''}] 
         
       */
-      let aux = [];
-      action.payload === "all"
-        ? allPackages.forEach((e) => aux.push(e))
-        : allPackages.filter((p) =>
-            p.destinations.forEach((el) => {
-              el.name === action.payload && aux.push(p);
-            })
-          );
 
-      return {
-        ...state,
-        filteredPackages: aux,
-      };
+    //COMENTO LO DE ABAJO PORQUE allPackages ES UNDEFINED Y ROMPE
+    // let aux = [];
+    // action.payload === "all"
+    //   ? allPackages.forEach((e) => aux.push(e))
+    //   : allPackages.filter((p) =>
+    //       p.destinations.forEach((el) => {
+    //         el.name === action.payload && aux.push(p);
+    //       })
+    //     );
+
+    // return {
+    //   ...state,
+    //   filteredPackages: aux,
+    // };
 
     default:
       return { ...state };
