@@ -18,7 +18,7 @@ export const getActivitiesData = async () =>{
                         image: actividad.image, price: actividad.price}
                 }) 
                 let actividades = await Activity.findOne({where: {name: actividad.name}})
-                //console.log(actividades)
+                // console.log(actividades)
                 clasificacion.addActivities(actividades)
             })
         }))

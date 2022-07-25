@@ -12,7 +12,8 @@ export const getPackageData = async () =>{
                 dataPackage.map(async (paquete) => {
                     let newPaquete = await Package.findOrCreate({
                         
-                       where:{name: paquete.name, 
+                       where:{
+                        name: paquete.name, 
                         price: paquete.price, 
                         description: paquete.description, 
                         images: paquete.images,
@@ -22,14 +23,10 @@ export const getPackageData = async () =>{
                         type: paquete.type,
                         start_date: paquete.start_date,
                         end_date: paquete.end_date,
-                    },
-                       default: { 
+                        featured: paquete.featured,
                         main_image: paquete.main_image,
-                        destinations: paquete.destinations,
-                        featured: paquete.featured, 
-                        available: paquete.available,
-                        
-                       }
+                        available: paquete.available,  
+                    },
                     })
 
                     const destinationfind = await Destination.findOne({ where: { name: paquete.destinations[0]}})
