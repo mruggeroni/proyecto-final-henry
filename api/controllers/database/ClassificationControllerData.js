@@ -1,5 +1,6 @@
 import { Classification } from '../../models/Classification.js';
-import * as data from '../../data/classification.json' assert {type: "json"};
+// import * as data from '../../data/classification.json' assert {type: "json"};
+import * as data from '../../data/classification.js';
 
 
 export const getClassificationData = async () => {

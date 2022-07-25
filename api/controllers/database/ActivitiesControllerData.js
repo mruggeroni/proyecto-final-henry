@@ -1,6 +1,8 @@
 import { Activity } from "../../models/Activities.js";
 import { Classification } from "../../models/Classification.js";
-import * as data from '../../data/activities.json' assert {type: "json"};
+// import * as data from '../../data/activities.json' assert {type: "json"};
+import * as data from '../../data/activities.js';
+
 
 export const getActivitiesData = async () =>{
     try {

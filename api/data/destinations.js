@@ -1,4 +1,4 @@
-[
+export default[
     {
         "name": "España",
         "image": "https://demos.maperez.es/pfhenry/Madrid,%20París%20y%20Lourdes%208%20días%20desde%20Madrid%20-%20main.jpg"

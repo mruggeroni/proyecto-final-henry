@@ -2,7 +2,8 @@ import { Package } from '../../models/Packages.js';
 import { Destination } from '../../models/Destinations.js';
 import * as fs from 'fs';
 import { Activity } from '../../models/Activities.js';
-import * as data from '../../data/JSON_paquetes.json' assert {type: "json"};
+// import * as data from '../../data/JSON_paquetes.json' assert {type: "json"};
+import * as data from '../../data/JSON_paquetes.js';
 
 export const getPackageData = async () =>{
     try {
