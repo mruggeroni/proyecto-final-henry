@@ -11,9 +11,9 @@ export const getPackages = async (req, res) => {
 		const packages = await Package.findAll({
 			include: [{
                 model: Activity,
-                attributes: ['name'],
-                include: {model: Classification, attributes: ['name']}
-			}, {model: Destination, attributes:['name']}],
+                attributes: ['name', 'price', 'description', 'image'],
+                include: {model: Classification, attributes: ['name', 'image']}
+			}, {model: Destination, attributes:['name', 'image']}],
 			order: [['price', price]]
 		});
 		res.status(200).json(packages);
@@ -31,9 +31,9 @@ export const getFeaturedPackages = async (req, res) => {
 			},
 			include: [{
                 model: Activity,
-                attributes: ['name'],
-                include: {model: Classification, attributes: ['name']}
-			}, {model: Destination, attributes:['name']}],
+                attributes: ['name', 'price', 'description', 'image'],
+                include: {model: Classification, attributes: ['name', 'image']}
+			}, {model: Destination, attributes:['name', 'image']}],
 			limit: limit,
 			order: [
 				['id', 'ASC']

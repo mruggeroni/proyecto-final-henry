@@ -12,9 +12,9 @@ export const getPackagesDetail = async (req, res) => {
             where: {id : idFind},
 			include: [{
                 model: Activity,
-                attributes: ['name'],
-                include: {model: Classification, attributes: ['name']}
-			}, {model: Destination, attributes:['name']},],
+                attributes: ['name', 'price', 'description', 'image'],
+                include: {model: Classification, attributes: ['name', 'image']}
+			}, {model: Destination, attributes:['name', 'image']}],
 		});
         let packageRegion = packageDetail.region
         let packageName = packageDetail.name
