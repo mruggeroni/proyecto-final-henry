@@ -1,8 +1,11 @@
-
 import { Package } from '../models/Packages.js';
 import { Classification } from '../models/Classification.js'
 import { Activity } from '../models/Activities.js';
 import { Destination } from '../models/Destinations.js';
+
+import { sequelize } from '../db.js';
+import { Op } from 'sequelize';
+import * as fs from 'fs';
 
 export const getPackages = async (req, res) => {
 	try {
@@ -11,9 +14,9 @@ export const getPackages = async (req, res) => {
 		const packages = await Package.findAll({
 			include: [{
                 model: Activity,
-                attributes: ['name', 'price', 'description', 'image'],
-                include: {model: Classification, attributes: ['name', 'image']}
-			}, {model: Destination, attributes:['name', 'image']}],
+                attributes: ['name'],
+                include: {model: Classification, attributes: ['name']}
+			}, {model: Destination, attributes:['name']}],
 			order: [['price', price]]
 		});
 		res.status(200).json(packages);
