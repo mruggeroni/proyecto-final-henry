@@ -1,15 +1,14 @@
 .Footer_Container {
-  background-color: #353b3b;
+  background-color: #4a9eab;
   color: #fafafa;
   height: 200px;
   /* position: absolute; */
-  bottom: 0px;
+  /* bottom: 0px; */
   width: 100%;
-
-  display: grid;
+  /* display: grid;
   grid-gap: 20px;
   grid-template-columns: auto auto auto;
-  padding: 25px 5px;
+  padding: 25px 5px; */
 }
 
 .Footer_Container div {

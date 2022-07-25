@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { BsPlusLg, BsDashLg, BsDash } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import {
+  createPackage,
   getAllActivities,
   getAllDestinations,
   getTypes,
@@ -9,15 +11,18 @@ import {
 import style from "./CreatePackage.module.css";
 import Dashboard from "./Dashboard";
 import validationPackage from "./validationPackage.js";
+import Toast from "react-bootstrap/Toast";
 
 export default function CreatePackage() {
   const dispatch = useDispatch();
-
+  const [aux, setAux] = useState(false);
   useEffect(() => {
     dispatch(getAllDestinations());
     dispatch(getAllActivities());
     dispatch(getTypes());
   }, [dispatch]);
+
+  const navigate = useNavigate();
 
   const allDestinations = useSelector((state) => state.destinations);
   const types = useSelector((state) => state.types);
@@ -25,6 +30,12 @@ export default function CreatePackage() {
   const dataNow = new Date().toISOString().split("T")[0];
   const [fromDate, setFromDate] = useState(dataNow);
   const [untilDate, setUntilDate] = useState(dataNow);
+
+  const sortDestinations = allDestinations.sort(function (a, b) {
+    if (a.name > b.name) return 1;
+    if (b.name > a.name) return -1;
+    return 0;
+  });
 
   const [input, setInput] = useState({
     name: "",
@@ -35,15 +46,15 @@ export default function CreatePackage() {
     images1: "",
     images2: "",
     images: [],
-    featured: false,
     destinations: [],
     start_date: dataNow,
     end_date: dataNow,
-    available: true,
-    on_sale: false,
     region: "",
     seasson: "",
     type: "",
+    featured: false,
+    available: true,
+    on_sale: false,
   });
 
   const [error, setError] = useState({
@@ -54,12 +65,12 @@ export default function CreatePackage() {
     images0: "",
     images1: "",
     images2: "",
-    featured: false,
+    featured: "",
     destinations: [],
     start_date: "",
     end_date: "",
-    available: false,
-    on_sale: 0,
+    available: "",
+    on_sale: "",
     region: "",
     seasson: "",
     type: "",
@@ -85,6 +96,13 @@ export default function CreatePackage() {
       ...input,
       [e.target.name]: e.target.value,
     });
+    // setError(
+    //   validationPackage({
+    //     ...input,
+    //     [e.target.name]: e.target.value,
+    //   })
+    // );
+    console.log(e.target.value);
   };
 
   const handleSelectDestinations = (e) => {
@@ -94,9 +112,19 @@ export default function CreatePackage() {
           ...input,
           destinations: [...input.destinations, e.target.value],
         });
+        e.target.value = "default";
+        console.log(e.target.value);
+        // setError(
+        //   validationPackage({
+        //     ...input,
+        //     destinations: [...input.destinations, e.target.value],
+        //   })
+        // );
+      } else {
+        e.target.value = "default";
+        return alert("Ese país ya fue seleccionado!");
       }
     }
-    console.log(input.destinations);
   };
 
   const handleChangeInputs = (e) => {
@@ -104,12 +132,13 @@ export default function CreatePackage() {
       ...input,
       [e.target.name]: e.target.value,
     });
-    setError(
-      validationPackage({
-        ...input,
-        [e.target.name]: e.target.value,
-      })
-    );
+    // setError(
+    //   validationPackage({
+    //     ...input,
+    //     [e.target.name]: e.target.value,
+    //   })
+    // );
+    console.log(e.target.value);
   };
 
   const handleChangeDate = (e) => {
@@ -126,23 +155,78 @@ export default function CreatePackage() {
     }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(input);
-  };
-
   function handleBorrarDestinations(e) {
     setInput({
       ...input,
       destinations: input.destinations.filter((i) => i !== e.target.innerText),
     });
+    // setError(
+    //   validationPackage({
+    //     ...input,
+    //     [e.target.name]: e.target.value,
+    //   })
+    // );
+    console.log(e.target.value);
   }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    input.images = [input.images0, input.images1, input.images2];
+    input.price = parseInt(input.price);
+    input.on_sale = parseInt(input.on_sale);
+    input.available = input.available === "true" ? true : false;
+    input.featured = input.featured === "true" ? true : false;
+
+    const valida = validationPackage({ ...input });
+    setError(valida);
+    if (
+      valida.name ||
+      valida.price ||
+      valida.description ||
+      valida.main_image ||
+      valida.images ||
+      valida.featured ||
+      valida.available ||
+      valida.on_sale ||
+      valida.region ||
+      valida.type ||
+      valida.seasson ||
+      valida.destinations
+    ) {
+      console.log(valida);
+      alert(
+        "Presta mas atencion al completar el formulario y volve a intentar ;)"
+      );
+    } else {
+      dispatch(createPackage(input));
+      alert("Nuevo paquete creado..");
+      setInput({
+        name: "",
+        price: "",
+        description: "",
+        main_image: "",
+        images0: "",
+        images1: "",
+        images2: "",
+        featured: "",
+        destinations: [],
+        start_date: "",
+        end_date: "",
+        available: "",
+        on_sale: "",
+        region: "",
+        seasson: "",
+        type: "",
+      });
+      navigate("/dashboard");
+    }
+  };
 
   return (
     <div>
       <Dashboard />
       <div className={style.create_container}>
-        <h2>Create a Package</h2>
+        <h2>Crear un Paquete</h2>
         <hr className={style.create_line} />
         <form
           onSubmit={(e) => handleSubmit(e)}
@@ -151,35 +235,42 @@ export default function CreatePackage() {
           <div className={style.create_form_container}>
             <div className={style.create_input_container}>
               {error.name && <span>{error.name}</span>}
-              <label className={style.create_label}>Name</label>
+              <label className={style.create_label}>Nombre</label>
               <input
                 type="text"
                 className={style.create_input}
                 name="name"
-                // value={input.name}
+                value={input.name}
                 onChange={(e) => handleChangeInputs(e)}
               />
             </div>
             <div className={style.create_input_container}>
-              <label className={style.create_label}>Price</label>
+              {error.price && <span>{error.price}</span>}
+              <label className={style.create_label}>Precio</label>
               <input
+                value={input.price}
                 name="price"
+                min="1"
+                step="1"
                 type="number"
                 className={style.create_input}
+                onChange={(e) => handleChangeInputs(e)}
               />
             </div>
             <div className={style.create_textarea_container}>
-              <label className={style.create_label}>Description</label>
+              {error.description && <span>{error.description}</span>}
+              <label className={style.create_label}>Descripción</label>
               <textarea
                 name="description"
                 cols="30"
                 rows="10"
                 className={style.create_input_textarea}
+                onChange={(e) => handleChangeInputs(e)}
               ></textarea>
             </div>
             <div className={style.create_input_date_container}>
               <div className={style.create_input_date}>
-                <label className={style.create_label}>Start Date</label>
+                <label className={style.create_label}>Fecha de Inicio</label>
                 <input
                   name="start_date"
                   type="date"
@@ -191,7 +282,7 @@ export default function CreatePackage() {
                 />
               </div>
               <div className={style.create_input_date}>
-                <label className={style.create_label}>End Date</label>
+                <label className={style.create_label}>Fecha de Fin</label>
                 <input
                   name="end_date"
                   type="date"
@@ -204,58 +295,69 @@ export default function CreatePackage() {
               </div>
             </div>
             <div className={style.create_input_container}>
-              <label className={style.create_label}>On sale</label>
-              <select
+              {error.on_sale && <span>{error.on_sale}</span>}
+              <label className={style.create_label}>Promoción</label>
+              <input
+                value={input.on_sale}
                 name="on_sale"
                 className={style.create_input}
-                onChange={(e) => handleSelect(e)}
-              >
-                <option selected={true} disabled="disabled">
-                  Selecciona si el paquete esta en oferta..
-                </option>
-                <option value="false">False</option>
-                <option value="true">True</option>
-              </select>
+                type="number"
+                min="0"
+                max="100"
+                step="1"
+                id="on_sale"
+                onChange={(e) => handleChangeInputs(e)}
+              />
             </div>
             <div className={style.create_input_container}>
-              <label className={style.create_label}>Featured</label>
+              {error.featured && <span>{error.featured}</span>}
+              <label className={style.create_label}>Destacado</label>
               <select
                 name="featured"
                 onChange={(e) => handleSelect(e)}
                 className={style.create_input}
               >
                 <option selected={true} disabled="disabled">
-                  Selecciona si el paquete es destacado..
+                  Seleccionar si tu Paquete esta destacado...
                 </option>
-                <option value="false">False</option>
-                <option value="true">True</option>
+                <option value="true">Si</option>
+                <option value="false">No</option>
               </select>
             </div>
             <div className={style.create_input_container}>
+              {error.available && <span>{error.available}</span>}
               <label className={style.create_label}>Stock</label>
               <select
                 name="available"
                 onChange={(e) => handleSelect(e)}
                 className={style.create_input}
               >
-                <option value="false">False</option>
-                <option selected={true} value="true">
-                  True
+                <option selected={true} disable="disabled" value="true">
+                  Selecciona el stook
                 </option>
+                <option value="true">Verdadero</option>
+                <option value="false">Falso</option>
               </select>
             </div>
             <div className={style.create_input_container}>
-              <label className={style.create_label}>Destination</label>
+              {error.destinations && <span>{error.destinations}</span>}
+              <label className={style.create_label}>Destinos</label>
               <select
                 id="destinationsSelect"
                 name="destinations"
                 onChange={(e) => handleSelectDestinations(e)}
                 className={style.create_input}
               >
-                <option selected={true} disabled="disabled">
-                  Selecciona un destino..
+                <option
+                  value="default"
+                  placeholder="Seleccionar Destinos..."
+                  selected
+                  disabled
+                  hidden
+                >
+                  Seleccionar Destinos...
                 </option>
-                {allDestinations?.map((el) => (
+                {sortDestinations?.map((el) => (
                   <option key={el.name} value={el.name}>
                     {el.name}
                   </option>
@@ -263,7 +365,7 @@ export default function CreatePackage() {
 
                 {/* TENEMOS QUE CREAR UNA SITUACION EN EL "handleSelectDestinations" 
                 PARA MANEJAR EL CASO DE CREAR UN DESTINO NUEVO*/}
-                <option value="crear">"Crear un destino nuevo.."</option>
+                {/* <option value="crear">"Crear un destino nuevo.."</option> */}
               </select>
             </div>
 
@@ -280,8 +382,10 @@ export default function CreatePackage() {
               .map((i, o) => (
                 <div
                   key={"destinations" + o}
+                  id="input_destinations"
                   className={style.create_destinations_items}
                   onClick={(e) => handleBorrarDestinations(e)}
+                  value={i.name}
                 >
                   {i}
                 </div>
@@ -289,43 +393,57 @@ export default function CreatePackage() {
 
             {/* Final destinos */}
             <div className={style.create_input_container}>
-              <label className={style.create_label}>Region</label>
+              {error.region && <span>{error.region}</span>}
+              <label className={style.create_label}>Región</label>
               <select
                 name="region"
                 onChange={(e) => handleSelect(e)}
                 className={style.create_input}
               >
                 <option selected={true} disabled="disabled">
-                  Selecciona una region..
+                  Seleccionar una Región...
                 </option>
-                <option value="x">Sudamérica</option>
-                <option value="x">Norte América</option>
-                <option value="x">Europa Central</option>
+                <option value="Europa Occidental">Europa Occidental</option>
+                <option value="Europa Central">Europa Central</option>
+                <option value="Europa Oriental">Europa Oriental</option>
+                <option value="Asia Oriental">Asia Oriental</option>
+                <option value="Asia del Sur">Asia del Sur</option>
+                <option value="Asia Sudoriental Continental">
+                  Asia Sudoriental Continental
+                </option>
+                <option value="Norte América">Norte América</option>
+                <option value="Sudamérica">Sudamérica</option>
+                <option value="América Central">América Central</option>
               </select>
             </div>
             <div className={style.create_input_container}>
-              <label className={style.create_label}>Season</label>
+              {error.seasson && <span>{error.seasson}</span>}
+              <label className={style.create_label}>Estación</label>
               <select
+                name="seasson"
                 onChange={(e) => handleSelect(e)}
                 className={style.create_input}
               >
                 <option selected={true} disabled="disabled">
-                  Selecciona una temporada..
+                  Seleccionar una Estación...
                 </option>
-                <option value="x">Verano</option>
-                <option value="x">Invierno</option>
-                <option value="x">Primavera</option>
+                <option value="Verano">Verano</option>
+                <option value="Otoño">Otoño</option>
+                <option value="Invierno">Invierno</option>
+                <option value="Primavera">Primavera</option>
+                <option value="Especial">Especial</option>
               </select>
             </div>
             <div className={style.create_input_container}>
-              <label className={style.create_label}>Types</label>
+              {error.type && <span>{error.type}</span>}
+              <label className={style.create_label}>Tipo</label>
               <select
                 name="type"
                 onChange={(e) => handleSelect(e)}
                 className={style.create_input}
               >
                 <option selected={true} disabled="disabled">
-                  Selecciona un tipo de paquete..
+                  Seleccionar un tipo para tu Paquete...
                 </option>
                 {types?.map((el) => (
                   <option key={el} value={el}>
@@ -339,11 +457,14 @@ export default function CreatePackage() {
               className={style.create_input_images_container}
             >
               <div className={style.create_input_images}>
-                <label className={style.create_label}>Main image</label>
+                {error.main_image && <span>{error.main_image}</span>}
+                <label className={style.create_label}>Imágen Principal</label>
                 <input
+                  onChange={(e) => handleChangeInputs(e)}
                   name="main_image"
                   type="text"
                   className={style.create_input}
+                  value={input.main_image}
                 />
                 <button
                   onClick={(e) => handleAddImage(e)}
@@ -362,7 +483,7 @@ export default function CreatePackage() {
                 return (
                   <div key={i + index} className={style.create_input_images}>
                     <label className={style.create_label}>
-                      Image {index + 1}
+                      Imágen {index + 1}
                     </label>
                     <input
                       id={index}
@@ -380,14 +501,28 @@ export default function CreatePackage() {
 
           <div className={style.create_input_container}>
             <button
-              onClick={(e) => handleSubmit(e)}
+              type="submit"
+              disabled={
+                !input.name.length &&
+                !input.price.length &&
+                !input.description.length &&
+                !input.main_image.length &&
+                !input.images0.length &&
+                !input.images1.length &&
+                !input.images2.length &&
+                !input.destinations.length
+                  ? true
+                  : false
+              }
               className={style.create_btn}
+              id="create"
             >
               Crear Paquete
             </button>
+
             <span className={style.create_term}>
-              By clicking 'Create Package' you agree to the BLABLA Terms &
-              Privacy Policy
+              Al presionar 'Crear Paquete' usted acepta los Términos de BLABLA y
+              la Política de Privacidad
             </span>
           </div>
         </form>

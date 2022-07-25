@@ -1,17 +1,28 @@
-import React from 'react';
-import { useState } from 'react';
-import s from './Select.module.css';
+import React from "react";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { orderByPrice } from "../../redux/actions/index";
+import s from "./Select.module.css";
 
-export default function SortPrice() {
+export default function SortPrice({ setOrder }) {
+  const dispatch = useDispatch();
 
-    return (
-        <div>
-            <label>Sort by: </label>
-            <select className={s.select}>
-                <option selected={true} disabled="disabled">Price</option>
-                <option value="min">Cheapest to More Expensive</option>
-                <option value="max">More Expensive to Cheapest</option>
-            </select>
-        </div>
-    )
+  function handlePriceSort(e) {
+    e.preventDefault();
+    dispatch(orderByPrice(e.target.value));
+    setOrder(`Ordenado ${e.target.value}`);
+  }
+
+  return (
+    <div>
+      <label>Sort by: </label>
+      <select className={s.select} onChange={(e) => handlePriceSort(e)}>
+        <option selected={true} disabled="disabled">
+          Precio
+        </option>
+        <option value="minPrice">Más barato a más caro</option>
+        <option value="maxPrice">Más caro a más barato</option>
+      </select>
+    </div>
+  );
 }

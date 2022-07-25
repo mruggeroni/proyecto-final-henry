@@ -6,7 +6,7 @@
 }
 
 .contenedor {
-  background-color: #414b36cc;
+  background-color: #fafafaa2;
   width: 80%;
   padding: 3%;
 }
@@ -19,7 +19,7 @@
 }
 
 .contenedorBarraSuperior div {
-  color: white;
+  color: black;
   font-size: 1.2em;
   font-weight: bold;
   cursor: pointer;
@@ -36,7 +36,7 @@
 }
 
 .contenedorDetalles h1 {
-  color: white;
+  color: black;
   font-size: 3em;
   font-weight: bold;
 }
@@ -78,7 +78,7 @@
 }
 
 .contenedorDetalles h3 {
-  color: white;
+  color: black;
   font-size: 1.5em;
   align-items: flex-start;
   padding-top: 1%;
@@ -104,7 +104,8 @@
 }
 
 .contenedorActividades .actividad:nth-of-type(2n + 1) {
-  background-color: #414b36;
+  background-color: #e4eaea;
+  color: black;
 }
 .contenedorActividades .actividad:nth-of-type(2n) {
   background-color: #a2a6a5;
@@ -202,7 +203,7 @@
   align-self: flex-end;
   margin-right: 30px;
   min-height: 50px;
-  color: white;
+  color: black;
   font-size: 1.8em;
   padding: 1%;
 }
@@ -226,7 +227,7 @@
 
 /* PERSONALIZACION DE ESTILO DE LAS TARJETAS DE RECOMENDADOS PARA LA PAGINA DETALLES */
 .tituloDestacados {
-  color: white;
+  color: black;
   font-size: 2em;
   align-items: flex-start;
   padding-top: 1%;
@@ -234,11 +235,15 @@
 
 .cards_container {
   width: 100%;
-  margin-top: 40px;
+  margin: 1vw;
+  margin-top: 2vw;
+  /* 
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(16rem, 24rem));
-  gap: 2rem;
-  justify-content: center;
+  gap: 1vw; */
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
 }
 
 /* SPINNER */

@@ -20,10 +20,11 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/search" element={<Search />} />
-        <Route path="/dashboard" element={isAuthenticated ? <Dashboard /> : <Navigate to="/" />}
-        />
-        <Route path="/dashboard/packages" element={isAuthenticated ? <CreatePackage /> : <Navigate to="/" />} />
-        <Route path="/dashboard/activities" element={isAuthenticated ? <CreateActivity /> : <Navigate to="/" />} />
+        <Route path="/dashboard" element={<CreatePackage />} />
+        {/* <Route path="/dashboard/activities" element={<CreateActivity />} /> */}
+        {/* <Route path="/dashboard" element={isAuthenticated ? <Dashboard /> : <Navigate to="/" />} /> */}
+        {/* <Route path="/dashboard/packages" element={isAuthenticated ? <CreatePackage /> : <Navigate to="/" />} /> */}
+        {/* <Route path="/dashboard/activities" element={isAuthenticated ? <CreateActivity /> : <Navigate to="/" />} /> */}
         <Route path="/profile" element={<Home />} />
         <Route path="/detail/:id" element={<Detail />} />
         <Route path="/favorites" element={<Favorites />} />

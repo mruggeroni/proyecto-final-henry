@@ -1,4 +1,4 @@
-.card{
+.card {
   position: relative;
   margin: auto;
   margin-top: 4vw;
@@ -9,44 +9,46 @@
   width: 90%;
   border: none;
   background-color: #fafafa;
-  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+  box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24),
+    0 17px 50px 0 rgba(0, 0, 0, 0.19);
 }
 
-img{
+img {
   margin-left: 0;
 }
 
-.cardBody{
+.cardBody {
   margin: auto;
   margin-left: 3vw;
   width: 50%;
   z-index: 1;
+  word-wrap: break-word;
 }
 
-.cardBody h5{
+.cardBody h5 {
   font-size: 1.2vw;
 }
 
-.hide{
+.hide {
   display: none;
   z-index: 1000;
 }
 
-.price{
+.price {
   display: none;
   margin-right: 2vw;
   z-index: 1;
   font-size: 2vw;
 }
 
-.price h5{
+.price h5 {
   font-size: 1.2vw;
 }
 
-.rectangle{
+.rectangle {
   width: 2vw;
   height: 100%;
-  background-color: #4A9EAA;
+  background-color: #4a9eaa;
   color: #fafafa;
   border: none;
   z-index: 0;
@@ -55,13 +57,13 @@ img{
   text-align: right;
 }
 
-.rightGroup{
+.rightGroup {
   display: flex;
   flex-direction: row;
   z-index: 1;
 }
 
-.card:hover .rectangle{
+.card:hover .rectangle {
   width: 16vw;
   position: absolute;
   top: 0;
@@ -79,27 +81,37 @@ img{
   animation: fade_in_show 2s;
 }
 
-.card:hover .price{
+.card:hover .price {
   color: #fafafa;
   display: initial;
   margin-top: 2vw;
   animation: fade_in_show 2s;
 }
 
-.textDeco:link { text-decoration: none; color: black;}
-.textDeco:visited { text-decoration: none; color: black;}
-.textDeco:hover { text-decoration: none;}
-.textDeco:active { text-decoration: none; color: black;}
-
+.textDeco:link {
+  text-decoration: none;
+  color: black;
+}
+.textDeco:visited {
+  text-decoration: none;
+  color: black;
+}
+.textDeco:hover {
+  text-decoration: none;
+}
+.textDeco:active {
+  text-decoration: none;
+  color: black;
+}
 
 @keyframes fade_in_show {
-     0% {
-          opacity: 0;
-     }
+  0% {
+    opacity: 0;
+  }
 
-     100% {
-          opacity: 1;
-     }
+  100% {
+    opacity: 1;
+  }
 }
 
 @media (max-width: 1100px) {
@@ -113,7 +125,7 @@ img{
     margin: 0;
   }
 
-  img{
+  img {
     margin: auto;
     margin-left: 0;
     margin-right: 0;
@@ -121,35 +133,33 @@ img{
     height: 25vw;
   }
 
-  .cardBody{
+  .cardBody {
     width: 40%;
   }
 
-  .card:hover .rectangle{
-  width: 18vw;
-  position: absolute;
-  top: 0;
-  right: 0;
-  text-align: right;
+  .card:hover .rectangle {
+    width: 18vw;
+    position: absolute;
+    top: 0;
+    right: 0;
+    text-align: right;
   }
 
-  .price{
-   size: 1vw;
-   text-align: center;
+  .price {
+    size: 1vw;
+    text-align: center;
   }
 
-  .rightGroup{
+  .rightGroup {
     flex-direction: column-reverse;
     justify-content: space-around;
     text-align: center;
-
   }
 
-  .card:hover .hide{
+  .card:hover .hide {
     margin-top: 0;
     margin-right: 0;
   }
-
 }
 
 @media (max-width: 865px) {
@@ -160,15 +170,13 @@ img{
     display: none;
   }
 
-  .rectangle{
+  .rectangle {
     width: 3vw;
   }
-  
 }
 
 @media (max-width: 690px) {
-  .rectangle{
+  .rectangle {
     width: 5vw;
   }
-  
 }

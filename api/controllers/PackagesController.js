@@ -26,6 +26,40 @@ export const getPackages = async (req, res) => {
   }
 };
 
+// export const getPackages = async (req, res) => {
+//   const { page, limitRender, priceSort } = req.query;
+//   try {
+//       const limitRend = parseInt(limitRender) || 12,
+//           pag = parseInt(page) || 1,
+//           priceS = priceSort?.toLowerCase();
+//       const packages = await Package.findAll({
+//           include: [{
+//               model: Activity,
+//               attributes: ['name', 'price', 'description', 'image'],
+//               include: {
+//                   model: Classification,
+//                   attributes: ['name', 'image']
+//               }
+//           }, {
+//               model: Destination,
+//               attributes:['name', 'image']
+//           }],
+//           [(priceSort) && 'order']: [
+//               priceS === 'asc'?
+//                   ['price', 'ASC'] :
+//                   priceS === 'desc'?
+//                       ['price', 'DESC'] :
+//                       ['id', 'ASC'],
+//           ],
+//           offset: limitRend * (pag - 1),
+//           limit: limitRend,
+//       });
+//       res.status(200).json(packages);
+//   } catch (error) {
+//       return res.status(404).json({ message: error.message });
+//   };
+// };
+
 export const getFeaturedPackages = async (req, res) => {
   const limit = parseInt(req.query.limit) || 3;
   try {
@@ -72,38 +106,35 @@ export const createPackage = async (req, res) => {
   } = req.body;
 
   try {
-    const newClassification = [];
-    for (let i = 0; i < activities.length; i++) {
-      let nameC = activities[i].classification.name;
-      let imageC = activities[i].classification.image;
-      let clasificacionCreada = await Classification.findOrCreate({
-        where: { name: nameC, image: imageC },
-      });
-      newClassification.push(clasificacionCreada[0]);
-    }
+    // const newClassification = [];
+    // for (let i = 0; i < activities.length; i++) {
+    //   let nameC = activities[i].classification.name;
+    //   let imageC = activities[i].classification.image;
+    //   let clasificacionCreada = await Classification.findOrCreate({
+    //     where: { name: nameC, image: imageC },
+    //   });
+    //   newClassification.push(clasificacionCreada[0]);
+    // }
     const newDestination = [];
     for (let i = 0; i < destinations.length; i++) {
-      const destinosCreados = await Destination.findOrCreate({
-        where: { name: destinations[i].name, image: destinations[i].image },
+      const destinosCreados = await Destination.findOne({
+        where: { name: destinations[i] },
       });
       newDestination.push(destinosCreados[0]);
     }
-    const newActivities = [];
-    for (let i = 0; i < activities.length; i++) {
-      const actividadesCreadas = await Activity.findOrCreate({
-        where: {
-          name: activities[i].name,
-          description: activities[i].description,
-          image: activities[i].image,
-          price: activities[i].price,
-        },
-      });
-      const clasificacionEncontrada = await Classification.findOne({
-        where: { name: activities[i].classification.name },
-      });
-      await clasificacionEncontrada.addActivities(actividadesCreadas[0]);
-      newActivities.push(actividadesCreadas[0]);
-    }
+
+    // const newActivities = [];
+    // for (let i = 0; i < activities.length; i++) {
+    //   const actividadesCreadas = await Activity.findOrCreate({
+    //     where: { name: activities[i] },
+    //   });
+    //   const clasificacionEncontrada = await Classification.findOne({
+    //     where: { name: activities[i].classification.name },
+    //   });
+    //   await clasificacionEncontrada.addActivities(actividadesCreadas[0]);
+    //   newActivities.push(actividadesCreadas[0]);
+    // }
+
     const newPackage = await Package.findOrCreate({
       where: {
         name: name,
@@ -121,17 +152,102 @@ export const createPackage = async (req, res) => {
         type: type,
       },
     });
-    for (let i = 0; i < newActivities.length; i++) {
-      await newPackage[0].addActivities(newActivities[i]);
-    }
+
+    // for (let i = 0; i < newActivities.length; i++) {
+    //   await newPackage[0].addActivities(newActivities[i]);
+    // }
     for (let i = 0; i < newDestination.length; i++) {
       await newPackage[0].addDestinations(newDestination[i]);
     }
-    res.json({ message: "Package created successfully" });
+
+    // let newPackage = await Package.create({
+    //   name,
+    //   description,
+    //   main_image,
+    //   price,
+    //   featured,
+    //   available,
+    //   on_sale,
+    //   start_date,
+    //   end_date,
+    //   region,
+    //   seasson,
+    //   type,
+    //   images,
+    // });
+
+    // const newPackage = await Package.findOrCreate({
+    //   where: {
+    //     name: name,
+    //     description: description,
+    //     main_image: main_image,
+    //     images: images,
+    //     price: price,
+    //     featured: featured,
+    //     available: available,
+    //     on_sale: on_sale,
+    //     start_date: start_date,
+    //     end_date: end_date,
+    //     region: region,
+    //     seasson: seasson,
+    //     type: type,
+    //   },
+    // });
+
+    // const destinos = [];
+    // for (let i = 0; i < destinations; i++) {
+    //   const destinoEncontrado = await Destination.findAll({
+    //     where: { name: destinations[i] },
+    //   });
+    //   destinos.push(destinoEncontrado);
+    // }
+
+    // // for (let i = 0; i < newDestination.length; i++) {
+    // //   await newPackage[0].addDestinations(newDestination[i]);
+    // // }
+
+    // let actividades = await Activity.findAll({
+    //   where: { name: activities },
+    // });
+
+    // newPackage.addDestination(destinos);
+
+    // newPackage.addActivity(actividades);
+    // newPackage[0].addActivities(newActivities[i]);
+
+    res.json({ message: "Paquete creado exitosamente!" });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
 };
+
+// export const createPackage = async (req, res) => {
+//   const { name, description, main_image, images, price, start_date, end_date, region, seasson, type, featured, available, on_sale, activities, destinations } = req.body;
+//   try {
+//       let packageCreated = await Package.create({
+//           name,
+//           description,
+//           main_image,
+//           images,
+//           price,
+//           start_date,
+//           end_date,
+//           region,
+//           seasson,
+//           type,
+//           featured,
+//           available,
+//           on_sale,
+//       });
+//       let activitiesDb = await Activity.findAll({ where: { name: activities }});
+//       let destinationsDb = await Destination.findAll({ where: { name: destinations }});
+//       packageCreated.setGenres(activitiesDb);
+//       packageCreated.setPlatforms(destinationsDb);
+//       return res.json({ message: 'Package created successfully' });
+//   } catch (error) {
+//       return res.status(400).json({ message: error.message });
+//   };
+// };
 
 export const getTypes = async (req, res) => {
   try {

@@ -1,18 +1,30 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import {
+  filterPackagesByDestination,
+  getAllPackage,
+} from "./../../../redux/actions/index";
 import style from "./../Hero.module.css";
 
 export default function FilterSearch({ destinations }) {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const dataNow = new Date().toISOString().split("T")[0];
   const [fromDate, setFromDate] = useState(dataNow);
   const [untilDate, setUntilDate] = useState(dataNow);
 
   const handleChange = (e) => {
     e.preventDefault();
+    dispatch(filterPackagesByDestination(e.target.value));
+
     if (e.target.id === "from") {
-      setFromDate(e.target.value);
-      setUntilDate(e.target.value);
+      if (new Date(e.target.value) > new Date(untilDate)) {
+        setFromDate(e.target.value);
+        setUntilDate(e.target.value);
+      } else {
+        setFromDate(e.target.value);
+      }
     } else {
       setUntilDate(e.target.value);
     }
@@ -20,16 +32,20 @@ export default function FilterSearch({ destinations }) {
 
   const handleClick = (e) => {
     e.preventDefault();
-
+    let value = document.getElementById("searchDestinations").value;
+    // dispatch(filterPackagesByDestination(value));
+    // navigate("/search");
+    console.log(value);
     console.log(fromDate);
     console.log(untilDate);
+    // dispatch(filterPackagesByDestination(value));
     navigate("/search");
   };
 
   return (
     <form className={style.form_container}>
       <select
-        id="destinations"
+        id="searchDestinations"
         onChange={(e) => handleChange(e)}
         className={style.form_select}
       >
@@ -41,6 +57,7 @@ export default function FilterSearch({ destinations }) {
         ))}
       </select>
       <input
+        disab
         type="date"
         id="from"
         value={fromDate}

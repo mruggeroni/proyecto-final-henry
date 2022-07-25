@@ -9,7 +9,6 @@ export default function Card({ name, image, description, price }) {
 
   function handleFavorite(e) {
     e.preventDefault();
-    console.log(e.target);
     setChecked(!checked);
   }
 
@@ -17,7 +16,6 @@ export default function Card({ name, image, description, price }) {
 
   function handleCard(e) {
     e.preventDefault();
-    console.log(e.target);
     navigate("/detail/1");
   }
 

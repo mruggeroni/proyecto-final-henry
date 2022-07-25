@@ -2,9 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { BsFillCaretLeftFill } from "react-icons/bs";
-import {
-  getAllDestinations,
-} from "../../redux/actions/index";
+import { getAllDestinations } from "../../redux/actions/index";
 import style from "./Navbar.module.css";
 
 export default function NavDestinations({ handleClose }) {
@@ -15,7 +13,6 @@ export default function NavDestinations({ handleClose }) {
   useEffect(() => {
     dispatch(getAllDestinations());
   }, [dispatch]);
-
 
   function handleBackMenu() {
     document
@@ -36,16 +33,16 @@ export default function NavDestinations({ handleClose }) {
       >
         <BsFillCaretLeftFill /> Volver
       </button>
-      {
-        allDestinations.map((el, i) => (
-            <NavLink
-            to="/"
-            key={el.name + i}
-            onClick={() => handleClose()}
-            className={style.nav_menu_item}
-            >
-            {el.name}
-            </NavLink>
+      {allDestinations.map((el) => (
+        // Click en el name, filtra y te lleva a search
+        <NavLink
+          to={`/`}
+          key={el.name + "destinations"}
+          onClick={() => handleClose()}
+          className={style.nav_menu_item}
+        >
+          {el.name}
+        </NavLink>
       ))}
     </nav>
   );

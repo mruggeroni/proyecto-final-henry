@@ -9,6 +9,7 @@ import {
   getAllDestinations,
   getOnSale,
   getAllActivities,
+  getAllPackage,
 } from "../../redux/actions/index";
 
 export default function Home() {
@@ -17,6 +18,8 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const allDestinations = useSelector((state) => state.destinations);
   const onSale = useSelector((state) => state.onsale);
+
+  dispatch(getAllPackage());
 
   useEffect(async () => {
     setLoading(true);
@@ -59,7 +62,7 @@ export default function Home() {
                     key={idx}
                     feature={{
                       id: i.id,
-                      img: i.images[0],
+                      img: i.main_image,
                       title: i.name,
                       description: i.description.slice(0, 200) + "...",
                     }}
