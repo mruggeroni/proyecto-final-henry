@@ -11,11 +11,17 @@ import s from "./Search.module.css";
 import style from "./Select.module.css";
 
 export default function FilteredSearch() {
+  /* 
+    cuando estas parado en /search y refrescas, no se carga el estado de allPackages
+  */
+
   const dispatch = useDispatch();
   const allPackages = useSelector((state) =>
     state.filteredPackages.length ? state.filteredPackages : state.allPackages
   );
-  const allDestinations = useSelector((state) => state.destinations);
+  const allDestinations = useSelector(
+    (state) => state.destinationsWithPackages
+  );
   const [order, setOrder] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [packagesPerPage, setPackagesPerPage] = useState(10);
@@ -35,14 +41,10 @@ export default function FilteredSearch() {
     dispatch(filterPackagesByDestination(e.target.value));
   };
 
-  // useEffect(() => {
-  //   dispatch(filterPackagesByDestination());
-  // }, [dispatch]);
-
   return (
     <div className={s.container}>
       <div className={s.view}>
-        <SortPrice setOrder={setOrder} />
+        <SortPrice setOrder={setOrder} setCurrentPage={setCurrentPage} />
         <div>
           <label>Search Package from: </label>
           <select
@@ -50,10 +52,14 @@ export default function FilteredSearch() {
             className={style.select}
             onChange={(e) => handleChange(e)}
           >
-            <option value="all">All destinations</option>
+            {" "}
+            <option selected={true} disabled="disabled">
+              Seleccionar un Destino
+            </option>
+            <option value="all">Todos los destinos</option>
             {allDestinations?.map((el) => (
-              <option key={el.name} value={el.name}>
-                {el.name}
+              <option key={el} value={el}>
+                {el}
               </option>
             ))}
           </select>

@@ -6,37 +6,36 @@ import {
   BsPersonPlusFill,
   BsPersonDashFill,
 } from "react-icons/bs";
-import {   AiOutlineHeart } from 'react-icons/ai';
+import { AiOutlineHeart } from "react-icons/ai";
 import style from "./Navbar.module.css";
 import NavDestinations from "./NavDestinations";
 import NavPromotions from "./NavPromotions";
-import UserPopOut from './UserPopOut.jsx';
-import FavoritePopOut from './FavoritePopOut.jsx';
+import UserPopOut from "./UserPopOut.jsx";
+import FavoritePopOut from "./FavoritePopOut.jsx";
 
 export default function Navbar() {
-
   useEffect(() => {
     return () => {
-     handleClose();
-    };  
+      handleClose();
+    };
   }, [handleClose]);
 
   function handleClose() {
-    document.getElementById("nav_menu").classList.remove(`${style.is_active}`);
+    document.getElementById("nav_menu").classList?.remove(`${style.is_active}`);
     document
       .getElementById("nav_menu_items")
-      .classList.remove(`${style.is_active}`);
+      .classList?.remove(`${style.is_active}`);
     document
       .getElementById("nav_menu_destinations")
-      .classList.remove(`${style.is_active}`);
+      .classList?.remove(`${style.is_active}`);
     document
       .getElementById("nav_menu_promotions")
-      .classList.remove(`${style.is_active}`);
+      .classList?.remove(`${style.is_active}`);
   }
 
   function handleOpen(idMenu) {
-    document.getElementById("nav_menu").classList.add(`${style.is_active}`);
-    document.getElementById(idMenu).classList.add(`${style.is_active}`);
+    document.getElementById("nav_menu").classList?.add(`${style.is_active}`);
+    document.getElementById(idMenu).classList?.add(`${style.is_active}`);
   }
 
   //autenticacion
@@ -94,15 +93,16 @@ export default function Navbar() {
 
       <div className={style.nav_container}>
         <nav className={style.nav_items}>
-          <button className={style.navButton} onClick={() => handleOpen("nav_menu_items")}>
+          <button
+            className={style.navButton}
+            onClick={() => handleOpen("nav_menu_items")}
+          >
             <BsJustify />
           </button>
-          
 
           <div className={style.icons}>
             <UserPopOut />
           </div>
-          
         </nav>
       </div>
     </div>

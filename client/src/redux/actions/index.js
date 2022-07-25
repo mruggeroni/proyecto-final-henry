@@ -10,6 +10,7 @@ export const GET_TYPES = "GET_TYPES";
 export const POST_PACKAGE = "POST_PACKAGE";
 export const ORDER_BY_PRICE = "ORDER_BY_PRICE";
 export const FILTER_BY_DESTINATION = "FILTER_BY_DESTINATION";
+export const GET_DESTINATIONS_WITH_PACKAGES = "GET_DESTINATIONS_WITH_PACKAGES";
 
 export const getAllPackage = () => {
   return async function (dispatch) {
@@ -39,6 +40,13 @@ export const getAllDestinations = () => {
     return dispatch({ type: GET_ALL_DESTINATIONS, payload: res.data });
   };
 };
+
+export function getDestinationsWithPackages(payload) {
+  return {
+    type: GET_DESTINATIONS_WITH_PACKAGES,
+    payload,
+  };
+}
 
 export const getOnSale = () => {
   return async function (dispatch) {

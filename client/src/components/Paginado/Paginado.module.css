@@ -11,8 +11,9 @@
 .container {
   background-color: #e4eaea;
   backdrop-filter: blur(10px);
-  height: 6vh;
+  height: 3.5vw;
   padding: 0;
+  margin-bottom: 5vw;
 }
 
 .number {

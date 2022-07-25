@@ -23,6 +23,12 @@ img {
   width: 50%;
   z-index: 1;
   word-wrap: break-word;
+  color: black;
+}
+
+.cardBody h3 {
+  font-size: 2vw;
+  color: black;
 }
 
 .cardBody h5 {
@@ -38,6 +44,10 @@ img {
   display: none;
   margin-right: 2vw;
   z-index: 1;
+  /* color: black; */
+}
+
+.price h3 {
   font-size: 2vw;
 }
 

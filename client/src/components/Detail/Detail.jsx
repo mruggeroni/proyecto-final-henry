@@ -3,7 +3,7 @@ import s from "./Detail.module.css";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import ControlledCarousel from "./Carousel";
 import BotonFav from "./BotonFav";
-import CardGeneric from "../Cards/CardGeneric";
+import CardGenericContainer from "../Cards/CardGenericContainer";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getAllActivities,
@@ -16,35 +16,18 @@ export default function Detail() {
   const { id } = useParams();
 
   const packageDetail = useSelector((state) => state.detailPackage);
-  // console.log(packageDetail.activities.length);
   const relationatedPackage = useSelector((state) => state.relationated);
   const allActivities = useSelector((state) => state.activities);
-  useEffect(() => {
-    dispatch(getPackageById(id));
-    dispatch(getRelationated(id));
-    dispatch(getAllActivities());
-    console.log(activities);
+
+  useEffect(async () => {
+    setLoading(true);
+    await dispatch(getPackageById(id));
+    await dispatch(getRelationated(id));
+    await dispatch(getAllActivities());
+    setLoading(false);
   }, [dispatch]);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    (async () => {
-      setLoading(true);
-      await dispatch(getPackageById(id));
-      await dispatch(getRelationated(id));
-      await dispatch(getAllActivities());
-      const paquete = await dispatch(getPackageById(id));
-      console.log(price);
-      setPrecio(price);
-      setChechboxEstado(
-        new Array(packageDetail.activities?.length).fill(false)
-      );
-      setLoading(false);
-      // console.log(packageDetail);
-    })();
-  }, []);
-
-  const [precio, setPrecio] = useState(0);
   const [checkboxEstado, setChechboxEstado] = useState([]);
 
   const {
@@ -64,22 +47,42 @@ export default function Detail() {
     activities,
     destinations,
   } = packageDetail;
+  const [precio, setPrecio] = useState(price);
 
+  useEffect(() => {
+    // const paquete = await dispatch(getPackageById(id));
+    // const precioPaquete = paquete.price
+    // dispatch(getPackageById(id));
+    // dispatch(getRelationated(id));
+    // dispatch(getAllActivities());
+    setPrecio(price);
+    setChechboxEstado(new Array(10).fill(false));
+  }, []);
+
+  // const temperamentosEstado = useSelector((state) => state.temperamentsFilter);
+
+  // const handleFiltroTemp = (posicion) => {
+  //   const temperamentosTrueFalse = temperamentosEstado.map((item, index) =>
+  //     index === posicion ? !item : item
+  //   );
+  //   dispatch(filtros(temperamentosTrueFalse));
+  //   setCurentPage(1);
+  // };
+
+  // console.log(new Array(packageDetail.activities?.length).fill(false));
   function handleCheckbox(posicion) {
-    console.log(packageDetail.activities);
+    // console.log(packageDetail.activities);
     const checkboxSeleccionados = checkboxEstado.map((item, index) =>
       index === posicion ? !item : item
     );
+    // console.log(checkboxSeleccionados);
     let totalPaquete = price;
     checkboxSeleccionados.forEach((i, index) => {
-      console.log(i);
       if (i === true)
         totalPaquete += parseInt(packageDetail.activities[index].price);
     });
     setChechboxEstado(checkboxSeleccionados);
     setPrecio(totalPaquete);
-
-    // console.log(precio);
   }
 
   const navigate = useNavigate();
@@ -90,12 +93,12 @@ export default function Detail() {
   const handleBotonComprar = () => {};
 
   //para el desmonte del componente
-  useEffect(() => {
-    return () => {
-      setPrecio(0);
-      // setChechboxEstado(new Array(activities.length).fill(false));
-    };
-  }, [setPrecio, setChechboxEstado]);
+  // useEffect(() => {
+  //   return () => {
+  //     setPrecio(0);
+  //     // setChechboxEstado(new Array(activities.length).fill(false));
+  //   };
+  // }, [setPrecio, setChechboxEstado]);
 
   return (
     <div
@@ -156,10 +159,9 @@ export default function Detail() {
                       <div>
                         <input
                           className={s.styledcheckbox}
-                          key={`act${i.name}`}
+                          key={`actasdsad${i.name}`}
                           id={i.name}
                           type="checkbox"
-                          value={i.name}
                           onChange={() => handleCheckbox(index)}
                         />
 
@@ -196,7 +198,7 @@ export default function Detail() {
               <div className={s.total}>
                 {" "}
                 <span>TOTAL U$S </span>
-                {precio}
+                {precio ? precio : price}
               </div>
             </div>
             <div className={s.contenedorBotonComprar}>
@@ -210,22 +212,7 @@ export default function Detail() {
             <div className={s.tituloDestacados}>
               Quizas tambien te interesen estos paquetes!!
             </div>
-            <div className={s.cards_container}>
-              {
-                // Para probar como se ven las cartas de descatados/ofertas
-                relationatedPackage.map((i, idx) => (
-                  <CardGeneric
-                    key={idx}
-                    feature={{
-                      id: i.id,
-                      img: i.main_image,
-                      title: i.name,
-                      description: i.description.slice(0, 200) + "...",
-                    }}
-                  />
-                ))
-              }
-            </div>
+            <CardGenericContainer listCards={relationatedPackage} />
           </div>
         )}
       </div>

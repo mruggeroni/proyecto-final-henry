@@ -17,7 +17,6 @@ export default function FilterSearch({ destinations }) {
   const handleChange = (e) => {
     e.preventDefault();
     dispatch(filterPackagesByDestination(e.target.value));
-
     if (e.target.id === "from") {
       if (new Date(e.target.value) > new Date(untilDate)) {
         setFromDate(e.target.value);
@@ -25,19 +24,18 @@ export default function FilterSearch({ destinations }) {
       } else {
         setFromDate(e.target.value);
       }
-    } else {
+    } else if (e.target.id === "until") {
       setUntilDate(e.target.value);
     }
   };
 
   const handleClick = (e) => {
     e.preventDefault();
-    let value = document.getElementById("searchDestinations").value;
+    // let value = document.getElementById("searchDestinations").value;
     // dispatch(filterPackagesByDestination(value));
-    // navigate("/search");
-    console.log(value);
-    console.log(fromDate);
-    console.log(untilDate);
+    // console.log(value);
+    // console.log(fromDate);
+    // console.log(untilDate);
     // dispatch(filterPackagesByDestination(value));
     navigate("/search");
   };
@@ -49,10 +47,13 @@ export default function FilterSearch({ destinations }) {
         onChange={(e) => handleChange(e)}
         className={style.form_select}
       >
-        <option value="all">All destinations</option>
+        <option selected={true} value={"x"} disabled="disabled">
+          Seleccionar un Destino
+        </option>
+        <option value="all">Todos los destinos</option>
         {destinations?.map((el) => (
-          <option key={el.name} value={el.name}>
-            {el.name}
+          <option key={el} value={el}>
+            {el}
           </option>
         ))}
       </select>
