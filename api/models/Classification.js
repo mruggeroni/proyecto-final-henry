@@ -13,7 +13,7 @@ export const Classification = sequelize.define('classification', {
 	},
 	image: {
 		type: DataTypes.STRING,
-		allowNull: false,
+		allowNull: true,
 	}
 }, {
 	timestamps: false,

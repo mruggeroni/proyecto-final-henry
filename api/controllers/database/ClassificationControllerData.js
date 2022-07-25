@@ -13,7 +13,6 @@ export const getClassificationData = async () => {
                 
             })
         })
-                    
     }catch (error){
         console.log(error.message)
     }

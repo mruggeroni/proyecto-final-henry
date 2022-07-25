@@ -35,7 +35,6 @@ export const getPackageData = async () =>{
             await newPaquete[0].addActivities(actividadesfind)
             await newPaquete[0].addActivities(actividadesfind2)
         })
-
     }catch (error){
         console.log(error.message)
     }
