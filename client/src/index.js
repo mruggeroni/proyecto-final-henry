@@ -5,7 +5,12 @@ import App from './App';
 import store from './redux/store/index.js';
 import { Provider } from 'react-redux';
 import { Auth0Provider } from "@auth0/auth0-react";
-import claves from "./privado"
+import claves from "./privado";
+import dotenv from "dotenv";
+import axios from "axios";
+dotenv.config();
+
+axios.defaults.baseURL = process.env.REACT_APP_API || "http://localhost:3001"
 
 ReactDOM.render(
   <Provider store={store}>
