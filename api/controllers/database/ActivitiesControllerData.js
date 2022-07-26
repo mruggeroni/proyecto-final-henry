@@ -8,7 +8,7 @@ export const getActivitiesData = async () => {
 
     let dataJson = await Promise.all(
       fs.readFile(
-        "F:/Users/Admin/Desktop/Soy Henry/PF/proyecto-final-henry/api/data/activities.json",
+        "/home/bamioezequiel/Desktop/proyecto-final-henryapi/data/activities.json",
         "utf8",
         (error, data) => {
           let dataActivity = JSON.parse(data);
