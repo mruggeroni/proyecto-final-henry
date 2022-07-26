@@ -9,7 +9,7 @@
   text-align: center;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: space-between;
   word-wrap: break-word;
   background-color: #fff;
   margin-bottom: 2vw;
@@ -43,9 +43,11 @@
 }
 
 .cardG_btn_container {
-  width: 100%;
+  width: 90%;
   display: flex;
-  margin-left: 15px;
+  justify-content: flex-end;
+  cursor: pointer;
+  margin-bottom: 10px;
 }
 
 .cardG_btn_container * {

@@ -1,11 +1,6 @@
 import React, { useEffect } from "react";
 import { NavLink } from "react-router-dom";
-import {
-  BsJustify,
-  BsFillCaretRightFill,
-  BsPersonPlusFill,
-  BsPersonDashFill,
-} from "react-icons/bs";
+import { BsJustify, BsFillCaretRightFill } from "react-icons/bs";
 import { AiOutlineHeart } from "react-icons/ai";
 import style from "./Navbar.module.css";
 import NavDestinations from "./NavDestinations";
@@ -41,7 +36,7 @@ export default function Navbar() {
   //autenticacion
 
   return (
-    <div className={style.container}>
+    <div id="nav" className={style.container}>
       <div id="nav_menu" className={`${style.nav_menu_container}`}>
         <nav id="nav_menu_items" className={`${style.nav_menu}`}>
           <div className={style.nav_menu_container_close}>
