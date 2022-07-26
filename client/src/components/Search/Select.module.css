@@ -1,0 +1,51 @@
+.select{
+	height: 2.5vw;
+	box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+  	appearance: none;
+  	background-color: transparent;
+  	border: 1px solid transparent;
+  	border-radius: 0.25em;
+  	padding: 0.25em 0.5em;
+  	cursor: pointer;
+  	line-height: 1.1;
+  	background-color: #fff;
+  	background-image: linear-gradient(to top, #f9f9f9, #fff 33%);
+}
+
+.select,
+.select::before,
+.select::after {
+  box-sizing: border-box;
+}
+
+.select::-ms-expand {
+  display: none;
+}
+
+label{
+	margin-right: 1vw;
+}
+
+@media (max-width: 1000px) {
+
+  .select{
+		height: 3vw;
+	}
+}
+
+@media (max-width: 825px) {
+   .select{
+		height: 4vw;
+	}
+}
+
+@media (max-width: 575px) {
+   .select{
+		height: 4vw;
+		font-size: 2vw;
+	}
+
+	label{
+		font-size: 3vw;
+	}
+}

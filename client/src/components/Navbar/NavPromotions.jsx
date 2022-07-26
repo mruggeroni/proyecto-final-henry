@@ -17,11 +17,14 @@ export default function NavPromotions({ handleClose }) {
                 </button>
             </div>
             <button onClick={ () => handleBackMenu() } className={style.nav_menu_container_back}>
-                <BsFillCaretLeftFill/> Volver al menu
-            </button> 
-            <NavLink to='/' onClick={ () => handleClose() } className={style.nav_menu_item}>
-                Test
-            </NavLink>               
+                <BsFillCaretLeftFill/> Volver
+            </button>  
+            <span className={style.nav_menu_item}>
+                No hay promociones
+            </span>   
+            {/* <NavLink to='/' onClick={ () => handleClose() } className={style.nav_menu_item}>
+                No hay promociones
+            </NavLink>                */}
         </nav>       
     )
 }
