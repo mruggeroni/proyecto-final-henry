@@ -5,9 +5,11 @@ import * as data from '../../data/classification.js';
 
 export const getClassificationData = async () => {
     try {
+
         const infoDelJson = data.default;
 
         infoDelJson.map((categoria) => {
+
             Classification.findOrCreate({
                 where: {name: categoria.name, image: categoria.image }
                 

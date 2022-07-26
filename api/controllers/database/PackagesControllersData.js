@@ -7,6 +7,7 @@ import * as data from '../../data/JSON_paquetes.js';
 
 export const getPackageData = async () =>{
     try {
+
         const infoDelJson = data.default;
 
         infoDelJson.map(async (paquete) => {
@@ -28,10 +29,12 @@ export const getPackageData = async () =>{
                 }
             })
 
-            const destinationfind = await Destination.findOne({ where: { name: paquete.destinations[0]}})
+            for (let i=0; i< paquete.destinations.length; i++){
+                        const destinationfind = await Destination.findOne({ where: { name: paquete.destinations[i]}})
+                        await newPaquete[0].addDestinations(destinationfind)
+                    }
             const actividadesfind = await Activity.findOne({where: {name: "Tour de Highlights" }})
             const actividadesfind2 = await Activity.findOne({where: {name: "Tour de Museos" }})
-            await newPaquete[0].addDestinations(destinationfind)
             await newPaquete[0].addActivities(actividadesfind)
             await newPaquete[0].addActivities(actividadesfind2)
         })
