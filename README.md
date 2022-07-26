@@ -130,7 +130,225 @@ Get featured: Se ejecuta en la ruta /, se obtiene un array de objetos, estos obj
 Get activities: Se ejecuta en la ruta '/activities', se obtiene un objeto con la siguiente estructura:, un array de objetos, en el que cada objeto cuenta con las propiedades: id, name, image, description, price, classificationId, y classification, que a su vez tendra un objeto con el "name" de la clasificación.
 
 [
-{ "id": 1, "name": "Grecia Peninsular 7 días desde Atenas", "description": "Viaje de 7 días por la región continental de Grecia con guías en español. Salimos hacia la región de Tesalia en el norte de Grecia, para visitar los Monasterios de Meteora. El siguiente destino es Delfos, sede del oráculo más importante de la antigüedad. Continuamos con la visita de la mítica Atenas, emblema universal del mundo clásico. Continuamos dirección sur por el Peloponeso para conocer Corinto, Micenas, luego Olimpia, cuna de los Juegos Olímpicos y el espléndido Teatro de Epidauro.", "main_image": "https://demos.maperez.es/pfhenry/Grecia%20Peninsular%207%20días%20desde%20Atenas%20-%20main.jpg", "images": [ "https://demos.maperez.es/pfhenry/Grecia%20Peninsular%207%20días%20desde%20Atenas%20-%201.jpg", "https://demos.maperez.es/pfhenry/Grecia%20Peninsular%207%20días%20desde%20Atenas%20-%202.jpg", "https://demos.maperez.es/pfhenry/Grecia%20Peninsular%207%20días%20desde%20Atenas%20-%203.jpg" ], "price": 1000, "start_date": "2022-08-15", "end_date": "2022-08-22", "region": "Europa Central", "seasson": "Verano", "type": "Pack Large", "featured": false, "available": true, "on_sale": 10, "activities": [ { "name": "Tour de Highlights", "classification": { "name": "Familiar" }, "Package_Activity": { "createdAt": "2022-07-24T13:00:50.887Z", "updatedAt": "2022-07-24T13:00:50.887Z", "packageId": 1, "activityId": 1 } }, { "name": "Tour de Museos", "classification": { "name": "Familiar" }, "Package_Activity": { "createdAt": "2022-07-24T13:00:52.342Z", "updatedAt": "2022-07-24T13:00:52.342Z", "packageId": 1, "activityId": 3 } } ], "destinations": [ { "name": "Grecia", "Package_Destination": { "createdAt": "2022-07-24T13:00:50.008Z", "updatedAt": "2022-07-24T13:00:50.008Z", "packageId": 1, "destinationId": 8 } } ] }, [ { "id": 1, "name": "Grecia Peninsular 7 días desde Atenas", "description": "Viaje de 7 días por la región continental de Grecia con guías en español. Salimos hacia la región de Tesalia en el norte de Grecia, para visitar los Monasterios de Meteora. El siguiente destino es Delfos, sede del oráculo más importante de la antigüedad. Continuamos con la visita de la mítica Atenas, emblema universal del mundo clásico. Continuamos dirección sur por el Peloponeso para conocer Corinto, Micenas, luego Olimpia, cuna de los Juegos Olímpicos y el espléndido Teatro de Epidauro.", "main_image": "https://demos.maperez.es/pfhenry/Grecia%20Peninsular%207%20días%20desde%20Atenas%20-%20main.jpg", "images": [ "https://demos.maperez.es/pfhenry/Grecia%20Peninsular%207%20días%20desde%20Atenas%20-%201.jpg", "https://demos.maperez.es/pfhenry/Grecia%20Peninsular%207%20días%20desde%20Atenas%20-%202.jpg", "https://demos.maperez.es/pfhenry/Grecia%20Peninsular%207%20días%20desde%20Atenas%20-%203.jpg" ], "price": 1000, "start_date": "2022-08-15", "end_date": "2022-08-22", "region": "Europa Central", "seasson": "Verano", "type": "Pack Large", "featured": false, "available": true, "on_sale": 10 }, { "id": 3, "name": "Grecia imprescindible 6 días desde Atenas", "description": "Viaje a Grecia para conocer de la mano de expertos guías en español lo mejor de la mítica Hellas, cuna de la civilización occidental. Visitamos Atenas, la capital de Grecia, emblema universal del mundo clásico, con sus monumentos, grandes templos y majestuosas edificaciones: el Estadio Panatenaico o la Roca Sagrada del Acrópolis. Conocemos también el Teatro de Epidauro, la acrópolis de Micenas, la legendaria Olimpia o Delfos, considerado el centro del mundo por los antiguos griegos.", "main_image": "https://demos.maperez.es/pfhenry/Grecia%20imprescindible%206%20días%20desde%20Atenas%20-%20main.jpg", "images": [ "https://demos.maperez.es/pfhenry/Grecia%20imprescindible%206%20días%20desde%20Atenas%20-%201.jpg", "https://demos.maperez.es/pfhenry/Grecia%20imprescindible%206%20días%20desde%20Atenas%20-%202.jpg", "https://demos.maperez.es/pfhenry/Grecia%20imprescindible%206%20días%20desde%20Atenas%20-%203.jpg" ], "price": 1000, "start_date": "2022-08-15", "end_date": "2022-08-21", "region": "Europa Central", "seasson": "Verano", "type": "Pack Short", "featured": true, "available": true, "on_sale": 15 }, { "id": 6, "name": "Joyas del Mediterráneo – Grecia e Italia 8 días desde Atenas", "description": "Viaje desde Atenas a Roma con guías en español. Comenzamos el paquete con la visita de Atenas y el Sur de Grecia, la región de Peloponeso, donde en la antigüedad se erigieron míticas ciudades como Micenas u Olimpia. Cruzando el Mar Jónico y Adriático, desembarcamos en la milenaria Italia. Nuestro itinerario sigue hasta Roma, para visitar la Ciudad Eterna, capital de Italia y cuna de la civilización occidental y la cultura cristiana.", "main_image": "https://demos.maperez.es/pfhenry/Joyas%20del%20Mediterráneo%20–%20Grecia%20e%20Italia%208%20días%20desde%20Atenas%20-%20main.jpg", "images": [ "https://demos.maperez.es/pfhenry/Joyas%20del%20Mediterráneo%20–%20Grecia%20e%20Italia%208%20días%20desde%20Atenas%20-%201.jpeg", "https://demos.maperez.es/pfhenry/Joyas%20del%20Mediterráneo%20–%20Grecia%20e%20Italia%208%20días%20desde%20Atenas%20-%202.jpg", "https://demos.maperez.es/pfhenry/Joyas%20del%20Mediterráneo%20–%20Grecia%20e%20Italia%208%20días%20desde%20Atenas%20-%203.jpeg" ], "price": 1015, "start_date": "2022-09-20", "end_date": "2022-09-28", "region": "Europa Central", "seasson": "Otoño", "type": "Multidestino", "featured": true, "available": true, "on_sale": 10 } ] ]
+
+    {"id":1,
+    "name":"Tour de Monumentos",
+    "description":"Hola soy una actividad",
+    "image":"https://demos.maperez.es/pfhenry/Tour%20de%20Monumentos.jpg",
+    "price":100,
+    "classificationId":1,
+    "classification":{"name":"Familiar"}
+    },
+    {"id":3,
+    "name":"Tour de Highlights",
+    "description":"Hola soy una actividad",
+    "image":"https://demos.maperez.es/pfhenry/Tour%20de%20Highlights.jpg",
+    "price":100,
+    "classificationId":1,
+    "classification":{"name":"Familiar"}
+    },
+    {"id":5,
+    "name":"Tour Gastronomía Nacional",
+    "description":"Hola soy una actividad",
+    "image":"https://demos.maperez.es/pfhenry/Tour%20Gastronomía%20Nacional.jpg",
+    "price":150,
+    "classificationId":1,
+    "classification":{"name":"Familiar"}
+    }]
+
+    GET Detalle y Get Recomendados, se ejecuetan ambos en la ruta '/packages/:id', se obtiene un array con DOS (2) elementos, en los cuales el primer elemento es el paquete requerido por ID (DETALLE), y el segundo elemento es un array con TRES (3) objetos, en el que cada objeto es un paquete recomendado con relación al paquete mostrado en detalle.
+
+```json
+[
+  {
+    "id": 2,
+    "name": "Joyas de Transilvania 8 días desde Bucarest",
+    "description": "Viaje a Europa del Este para visitar Rumanía, un país mágico, que combina su pasado histórico con leyendas míticas y un paisaje abrumador. Salimos desde Bucarest, una de las ciudades más grandes de Europa para cruzar los Cárpatos y adentrarnos en la mágica Transilvania, tierra de castillos medievales y palacios reales, en busca del Conde Drácula, el habitante más famoso de Transilvania.",
+    "main_image": "https://demos.maperez.es/pfhenry/Joyas%20de%20Transilvania%208%20días%20desde%20Bucarest%20-%20main.jpg",
+    "images": [
+      "https://demos.maperez.es/pfhenry/Joyas%20de%20Transilvania%208%20días%20desde%20Bucarest%20-%201.jpg",
+      "https://demos.maperez.es/pfhenry/Joyas%20de%20Transilvania%208%20días%20desde%20Bucarest%20-%202.jpg",
+      "https://demos.maperez.es/pfhenry/Joyas%20de%20Transilvania%208%20días%20desde%20Bucarest%20-%203.jpg"
+    ],
+    "price": 1000,
+    "start_date": "2022-08-15",
+    "end_date": "2022-08-23",
+    "region": "Europa Oriental",
+    "seasson": "Verano",
+    "type": "Pack Large",
+    "featured": false,
+    "available": true,
+    "on_sale": 10,
+    "activities": [
+      {
+        "name": "Tour de Highlights",
+        "price": 100,
+        "description": "Hola soy una actividad",
+        "image": "https://demos.maperez.es/pfhenry/Tour%20de%20Highlights.jpg",
+        "classification": {
+          "name": "Familiar",
+          "image": "https://demos.maperez.es/pfhenry/Familiar.png"
+        },
+        "Package_Activity": {
+          "createdAt": "2022-07-25T00:17:50.487Z",
+          "updatedAt": "2022-07-25T00:17:50.487Z",
+          "packageId": 2,
+          "activityId": 2
+        }
+      },
+      {
+        "name": "Tour de Museos",
+        "price": 150,
+        "description": "Hola soy una actividad",
+        "image": "https://demos.maperez.es/pfhenry/Tour%20de%20Museos.jpg",
+        "classification": {
+          "name": "Familiar",
+          "image": "https://demos.maperez.es/pfhenry/Familiar.png"
+        },
+        "Package_Activity": {
+          "createdAt": "2022-07-25T00:17:51.942Z",
+          "updatedAt": "2022-07-25T00:17:51.942Z",
+          "packageId": 2,
+          "activityId": 1
+        }
+      }
+    ],
+    "destinations": [
+      {
+        "name": "Rumania",
+        "image": "https://demos.maperez.es/pfhenry/Joyas%20de%20Transilvania%208%20días%20desde%20Bucarest%20-%20main.jpg",
+        "Package_Destination": {
+          "createdAt": "2022-07-25T00:17:48.807Z",
+          "updatedAt": "2022-07-25T00:17:48.807Z",
+          "packageId": 2,
+          "destinationId": 10
+        }
+      }
+    ]
+  },
+  [
+    {
+      "id": 4,
+      "name": "Joyas de Rusia Imperial en tren 8 días de Moscú a San Petersburgo",
+      "description": "Viaje a Europa del Este para visitar lo mejor de Rusia Imperial: Moscú, la capital de Rusia, para conocer, entre otros, la famosa Plaza Roja, el Kremlin o la hermosa Catedral de San Basilio, conocida por sus coloridas cúpulas con forma de cebolla y San Petersburgo, considerada una de las ciudades más bellas del mundo, con el Museo del Hermitage, la Avenida Nevsky o la Fortaleza de Pedro y Pablo.",
+      "main_image": "https://demos.maperez.es/pfhenry/Joyas%20de%20Rusia%20Imperial%20en%20tren%208%20días%20de%20Moscú%20a%20San%20Petersburgo%20-%20main.jpg",
+      "images": [
+        "https://demos.maperez.es/pfhenry/Joyas%20de%20Rusia%20Imperial%20en%20tren%208%20días%20de%20Moscú%20a%20San%20Petersburgo%20-%201.jpg",
+        "https://demos.maperez.es/pfhenry/Joyas%20de%20Rusia%20Imperial%20en%20tren%208%20días%20de%20Moscú%20a%20San%20Petersburgo%20-%202.jpg",
+        "https://demos.maperez.es/pfhenry/Joyas%20de%20Rusia%20Imperial%20en%20tren%208%20días%20de%20Moscú%20a%20San%20Petersburgo%20-%203.jpg"
+      ],
+      "price": 1010,
+      "start_date": "2022-08-15",
+      "end_date": "2022-08-23",
+      "region": "Europa Oriental",
+      "seasson": "Verano",
+      "type": "Pack Large",
+      "featured": false,
+      "available": true,
+      "on_sale": 10
+    },
+    {
+      "id": 5,
+      "name": "Joyas de Rusia Imperial en tren 8 días de San Petersburgo a Moscú",
+      "description": "Viaje a Europa del Este para visitar lo mejor de Rusia Imperial: San Petersburgo, considerada una de las ciudades más bellas del mundo, con el Museo del Hermitage, la Avenida Nevsky o la Fortaleza de Pedro y Pablo, y Moscú, la capital de Rusia, para conocer, entre otros, la famosa Plaza Roja, el Kremlin o la hermosa Catedral de San Basilio, conocida por sus coloridas cúpulas con forma de cebolla.",
+      "main_image": "https://demos.maperez.es/pfhenry/Joyas%20de%20Rusia%20Imperial%20en%20tren%208%20días%20de%20San%20Petersburgo%20a%20Moscú%20-%20main.jpg",
+      "images": [
+        "https://demos.maperez.es/pfhenry/Joyas%20de%20Rusia%20Imperial%20en%20tren%208%20días%20de%20San%20Petersburgo%20a%20Moscú%20-%201.jpg",
+        "https://demos.maperez.es/pfhenry/Joyas%20de%20Rusia%20Imperial%20en%20tren%208%20días%20de%20San%20Petersburgo%20a%20Moscú%20-%202.jpg",
+        "https://demos.maperez.es/pfhenry/Joyas%20de%20Rusia%20Imperial%20en%20tren%208%20días%20de%20San%20Petersburgo%20a%20Moscú%20-%203.jpg"
+      ],
+      "price": 1010,
+      "start_date": "2022-09-20",
+      "end_date": "2022-09-28",
+      "region": "Europa Oriental",
+      "seasson": "Otoño",
+      "type": "Pack Large",
+      "featured": false,
+      "available": true,
+      "on_sale": 10
+    },
+    {
+      "id": 16,
+      "name": "Europa del Este 10 días desde Berlín",
+      "description": "Viajamos desde la capital de Alemania hasta Europa del Este para descubrir una región cargada de historia y salpicada de ciudades monumentales y paisajes abrumadores. Visitamos Berlín, una ciudad con personalidad, inmersa en historia y también Dresde, con su excepcional patrimonio arquitectónico y artístico. Seguimos hacia la vecina República Checa para visitar Praga. Continuamos hasta Budapest la perla del Danubio y regresamos vía Polonia hasta Alemania.",
+      "main_image": "https://demos.maperez.es/pfhenry/Europa%20del%20Este%2010%20días%20desde%20Berlín%20-%20main.jpg",
+      "images": [
+        "https://demos.maperez.es/pfhenry/Europa%20del%20Este%2010%20días%20desde%20Berlín%20-%201.jpg",
+        "https://demos.maperez.es/pfhenry/Europa%20del%20Este%2010%20días%20desde%20Berlín%20-%202.jpg",
+        "https://demos.maperez.es/pfhenry/Europa%20del%20Este%2010%20días%20desde%20Berlín%20-%203.jpg"
+      ],
+      "price": 1075,
+      "start_date": "2022-10-15",
+      "end_date": "2022-10-25",
+      "region": "Europa Oriental",
+      "seasson": "Otoño",
+      "type": "Multidestino",
+      "featured": false,
+      "available": true,
+      "on_sale": 0
+    }
+  ]
+]
+```
+
+GET packages (ordenamiento por precio, default los muestra por precio descendiente), se encuentra en la ruta '/packages', para ordenar ascendente el precio '/packages?price=ASC', para ordenar descendente el precio '/packages?price=DESC'. Devuelve un array con todos los paquetes, cada paquete posee la estructura siguiente:
+{
+"id": 1,
+"name": "Grecia Peninsular 7 días desde Atenas",
+"description": "Viaje de 7 días por la región continental de Grecia con guías en español. Salimos hacia la región de Tesalia en el norte de Grecia, para visitar los Monasterios de Meteora. El siguiente destino es Delfos, sede del oráculo más importante de la antigüedad. Continuamos con la visita de la mítica Atenas, emblema universal del mundo clásico. Continuamos dirección sur por el Peloponeso para conocer Corinto, Micenas, luego Olimpia, cuna de los Juegos Olímpicos y el espléndido Teatro de Epidauro.",
+"main_image": "https://demos.maperez.es/pfhenry/Grecia%20Peninsular%207%20días%20desde%20Atenas%20-%20main.jpg",
+"images": [
+"https://demos.maperez.es/pfhenry/Grecia%20Peninsular%207%20días%20desde%20Atenas%20-%201.jpg",
+"https://demos.maperez.es/pfhenry/Grecia%20Peninsular%207%20días%20desde%20Atenas%20-%202.jpg",
+"https://demos.maperez.es/pfhenry/Grecia%20Peninsular%207%20días%20desde%20Atenas%20-%203.jpg"
+],
+"price": 1000,
+"start_date": "2022-08-15",
+"end_date": "2022-08-22",
+"region": "Europa Central",
+"seasson": "Verano",
+"type": "Pack Large",
+"featured": false,
+"available": true,
+"on_sale": 10,
+"activities": [
+{
+"name": "Tour de Highlights",
+"classification": {
+"name": "Familiar"
+},
+"Package_Activity": {
+"createdAt": "2022-07-24T13:00:50.887Z",
+"updatedAt": "2022-07-24T13:00:50.887Z",
+"packageId": 1,
+"activityId": 1
+}
+},
+{
+"name": "Tour de Museos",
+"classification": {
+"name": "Familiar"
+},
+"Package_Activity": {
+"createdAt": "2022-07-24T13:00:52.342Z",
+"updatedAt": "2022-07-24T13:00:52.342Z",
+"packageId": 1,
+"activityId": 3
+}
+}
+],
+"destinations": [
+{
+"name": "Grecia",
+"Package_Destination": {
+"createdAt": "2022-07-24T13:00:50.008Z",
+"updatedAt": "2022-07-24T13:00:50.008Z",
+"packageId": 1,
+"destinationId": 8
+}
+}
+]
+},
 
 GET packages (ordenamiento por precio, default los muestra por precio descendiente), se encuentra en la ruta '/packages', para ordenar ascendente el precio '/packages?price=ASC', para ordenar descendente el precio '/packages?price=DESC'.
 
