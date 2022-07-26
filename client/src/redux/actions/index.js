@@ -14,21 +14,21 @@ export const GET_DESTINATIONS_WITH_PACKAGES = "GET_DESTINATIONS_WITH_PACKAGES";
 
 export const getAllPackage = () => {
   return async function (dispatch) {
-    let res = await axios.get("http://localhost:3001/packages");
+    let res = await axios.get("/packages");
     return dispatch({ type: GET_ALL_PACKAGES, payload: res.data });
   };
 };
 
 export const getPackageById = (id) => {
   return async function (dispatch) {
-    let res = await axios.get("http://localhost:3001/packages/" + id);
+    let res = await axios.get("/packages/" + id);
     return dispatch({ type: GET_PACKAGE_BY_ID, payload: res.data[0] });
   };
 };
 
 export const getRelationated = (id) => {
   return async function (dispatch) {
-    let res = await axios.get("http://localhost:3001/packages/" + id);
+    let res = await axios.get("/packages/" + id);
     return dispatch({ type: GET_RELATIONATED, payload: res.data[1] });
   };
 };
@@ -36,7 +36,7 @@ export const getRelationated = (id) => {
 // YA LISTAS
 export const getAllDestinations = () => {
   return async function (dispatch) {
-    let res = await axios.get("http://localhost:3001/destinations");
+    let res = await axios.get("/destinations");
     return dispatch({ type: GET_ALL_DESTINATIONS, payload: res.data });
   };
 };
@@ -50,21 +50,21 @@ export function getDestinationsWithPackages(payload) {
 
 export const getOnSale = () => {
   return async function (dispatch) {
-    let res = await axios.get("http://localhost:3001/on_sale");
+    let res = await axios.get("/on_sale");
     return dispatch({ type: GET_ON_SALE, payload: res.data });
   };
 };
 
 export const getAllActivities = () => {
   return async function (dispatch) {
-    let res = await axios.get("http://localhost:3001/activities");
+    let res = await axios.get("/activities");
     return dispatch({ type: GET_ACTIVITIES, payload: res.data });
   };
 };
 
 export const getTypes = () => {
   return async function (dispatch) {
-    let res = await axios.get("http://localhost:3001/types");
+    let res = await axios.get("/types");
     return dispatch({ type: GET_TYPES, payload: res.data });
   };
 };
@@ -73,7 +73,7 @@ export const createPackage = (payload) => {
   return async function (dispatch) {
     try {
       const respuesta = await axios.post(
-        "http://localhost:3001/packages",
+        "/packages",
         payload
       );
       return respuesta;
