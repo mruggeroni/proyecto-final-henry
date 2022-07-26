@@ -9,14 +9,13 @@ import claves from "./privado";
 import dotenv from "dotenv";
 import axios from "axios";
 dotenv.config();
-
 axios.defaults.baseURL = process.env.REACT_APP_API || "http://localhost:3001"
 
 ReactDOM.render(
   <Provider store={store}>
     <Auth0Provider
-      domain={claves.DOMAIN}
-      clientId={claves.CLIENTID}
+      domain={process.env.DOMAIN || claves.DOMAIN}
+      clientId={process.env.CLIENTID ||claves.CLIENTID}
       // redirectUri={window.location.origin}
       redirectUri={"http://localhost:3000"}
       audiencie="identificador unico" //deberia de ser privado -> lo usamos en las rutas tmb
