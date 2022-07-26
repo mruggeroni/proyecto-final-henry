@@ -27,9 +27,7 @@ export default function Detail() {
     setLoading(false);
   }, [dispatch]);
   const [loading, setLoading] = useState(false);
-
-  const [checkboxEstado, setChechboxEstado] = useState([]);
-
+  const [checkboxEstado, setCheckboxEstado] = useState([]);
   const {
     name,
     description,
@@ -47,42 +45,47 @@ export default function Detail() {
     activities,
     destinations,
   } = packageDetail;
-  const [precio, setPrecio] = useState(price);
+
+  const [input, setInput] = useState({
+    cantidad: 1,
+    total: 0,
+    actividades: [],
+  });
 
   useEffect(() => {
-    // const paquete = await dispatch(getPackageById(id));
-    // const precioPaquete = paquete.price
-    // dispatch(getPackageById(id));
-    // dispatch(getRelationated(id));
-    // dispatch(getAllActivities());
-    setPrecio(price);
-    setChechboxEstado(new Array(10).fill(false));
+    (async () => {
+      await dispatch(getPackageById(id));
+      await dispatch(getRelationated(id));
+      await dispatch(getAllActivities());
+
+      setInput({
+        cantidad: 1,
+        total: 0,
+        actividades: [],
+      });
+      setCheckboxEstado(new Array(10).fill(false));
+    })();
   }, []);
 
-  // const temperamentosEstado = useSelector((state) => state.temperamentsFilter);
-
-  // const handleFiltroTemp = (posicion) => {
-  //   const temperamentosTrueFalse = temperamentosEstado.map((item, index) =>
-  //     index === posicion ? !item : item
-  //   );
-  //   dispatch(filtros(temperamentosTrueFalse));
-  //   setCurentPage(1);
-  // };
-
-  // console.log(new Array(packageDetail.activities?.length).fill(false));
   function handleCheckbox(posicion) {
-    // console.log(packageDetail.activities);
     const checkboxSeleccionados = checkboxEstado.map((item, index) =>
       index === posicion ? !item : item
     );
-    // console.log(checkboxSeleccionados);
     let totalPaquete = price;
+    let actividadesSeleccionadas = [];
     checkboxSeleccionados.forEach((i, index) => {
-      if (i === true)
+      if (i === true) {
         totalPaquete += parseInt(packageDetail.activities[index].price);
+        actividadesSeleccionadas.push(activities[index]);
+      }
     });
-    setChechboxEstado(checkboxSeleccionados);
-    setPrecio(totalPaquete);
+    setCheckboxEstado(checkboxSeleccionados);
+
+    setInput({
+      ...input,
+      actividades: actividadesSeleccionadas,
+      total: totalPaquete,
+    });
   }
 
   const navigate = useNavigate();
@@ -90,15 +93,32 @@ export default function Detail() {
     navigate(-1);
   };
 
-  const handleBotonComprar = () => {};
+  const handleSelectCantidad = (e) => {
+    setInput({
+      ...input,
+      cantidad: e.target.value,
+    });
+  };
 
-  //para el desmonte del componente
-  // useEffect(() => {
-  //   return () => {
-  //     setPrecio(0);
-  //     // setChechboxEstado(new Array(activities.length).fill(false));
-  //   };
-  // }, [setPrecio, setChechboxEstado]);
+  const handleBotonComprar = (e) => {
+    e.preventDefault();
+  };
+
+  // para el desmonte del componente
+  useEffect(() => {
+    (() => {
+      return async () => {
+        setLoading(true);
+        setInput({});
+        setCheckboxEstado(new Array(10).fill(false));
+        await dispatch(getPackageById(id));
+        await dispatch(getRelationated(id));
+        setTimeout(function () {
+          setLoading(false);
+        }, 10000);
+      };
+    })();
+  }, [dispatch, setCheckboxEstado, setInput]);
 
   return (
     <div
@@ -150,6 +170,29 @@ export default function Detail() {
                 <h3 className={s.description}>{description}</h3>
               </div>
             </div>
+            <div>
+              <label className={s.cantidad} htmlFor="selectCantidad">
+                Cantidad {"    "}
+                <select
+                  onClick={(e) => {
+                    handleSelectCantidad(e);
+                  }}
+                  name="selectCantidad"
+                  id="selectCantidad"
+                >
+                  <option selected={true} value="1">
+                    1
+                  </option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="1">8</option>
+                </select>
+              </label>
+            </div>
             <div className={s.contenedorActividades}>
               {activities?.map((i, index) => {
                 return (
@@ -198,12 +241,12 @@ export default function Detail() {
               <div className={s.total}>
                 {" "}
                 <span>TOTAL U$S </span>
-                {precio ? precio : price}
+                {input.total ? input.total : price}
               </div>
             </div>
             <div className={s.contenedorBotonComprar}>
               <button
-                onClick={() => handleBotonComprar}
+                onClick={(e) => handleBotonComprar(e)}
                 className={s.botonComprar}
               >
                 COMPRAR

@@ -89,6 +89,10 @@
 }
 /* DETALLE PAQUETE FIN */
 
+.cantidad {
+  font-weight: bold;
+}
+
 /* DETALLE ACTIVIDADES */
 .contenedorActividades {
   display: flex;

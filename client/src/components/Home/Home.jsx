@@ -32,19 +32,19 @@ export default function Home() {
     setLoading(false);
   }, [dispatch]);
 
-  // useEffect(() => {
-  //   dispatch(getAllDestinations());
-  //   dispatch(getOnSale());
-  //   dispatch(getAllActivities());
-  // }, [dispatch]);
+  useEffect(() => {
+    dispatch(getAllDestinations());
+    dispatch(getOnSale());
+    dispatch(getAllActivities());
+  }, [dispatch]);
 
-  // useEffect(() => {
-  //   return async () => {
-  //     await dispatch(getAllDestinations());
-  //     await dispatch(getOnSale());
-  //     await dispatch(getAllActivities());
-  //   };
-  // }, [dispatch]);
+  useEffect(() => {
+    return async () => {
+      await dispatch(getAllDestinations());
+      await dispatch(getOnSale());
+      await dispatch(getAllActivities());
+    };
+  }, [dispatch]);
 
   return (
     <div className={style.home_container}>

@@ -55,13 +55,24 @@ export default function FilteredSearch() {
   useEffect(async () => {
     setLoading(true);
     await dispatch(getAllPackage());
+    await dispatch(filterPackagesByDestination("all"));
     await dispatch(getAllDestinations());
     await dispatch(getOnSale());
     await dispatch(getAllActivities());
     await dispatch(getDestinationsWithPackages());
-
     setLoading(false);
   }, []);
+
+  useEffect(() => {
+    return async () => {
+      await dispatch(getAllPackage());
+      await dispatch(filterPackagesByDestination("all"));
+      await dispatch(getAllDestinations());
+      await dispatch(getOnSale());
+      await dispatch(getAllActivities());
+      await dispatch(getDestinationsWithPackages());
+    };
+  }, [dispatch]);
 
   return (
     <div className={s.container}>
@@ -101,6 +112,12 @@ export default function FilteredSearch() {
               currentPage={currentPage}
             />
           </div>
+          <Paginado
+            packagesPerPage={packagesPerPage}
+            allPackages={allPackages.length}
+            paginado={paginado}
+            currentPage={currentPage}
+          />
           <div className={s.cards}>
             {currentPackage &&
               currentPackage?.map((p) => {
@@ -119,12 +136,6 @@ export default function FilteredSearch() {
                 );
               })}
           </div>
-          <Paginado
-            packagesPerPage={packagesPerPage}
-            allPackages={allPackages.length}
-            paginado={paginado}
-            currentPage={currentPage}
-          />
         </div>
       )}
     </div>
