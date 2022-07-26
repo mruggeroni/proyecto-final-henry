@@ -67,15 +67,35 @@ export default function Detail() {
     })();
   }, []);
 
+  const handleSelectCantidad = (e) => {
+    console.log(e.target.value);
+    let totalPaquete = price * e.target.value;
+    let actividadesSeleccionadas = [];
+    checkboxEstado.forEach((i, index) => {
+      if (i === true) {
+        console.log(parseInt(packageDetail.activities[index].price));
+        totalPaquete +=
+          parseInt(packageDetail.activities[index].price) * e.target.value;
+      }
+    });
+
+    setInput({
+      ...input,
+      cantidad: e.target.value,
+      total: totalPaquete,
+    });
+  };
+
   function handleCheckbox(posicion) {
     const checkboxSeleccionados = checkboxEstado.map((item, index) =>
       index === posicion ? !item : item
     );
-    let totalPaquete = price;
+    let totalPaquete = price * input.cantidad;
     let actividadesSeleccionadas = [];
     checkboxSeleccionados.forEach((i, index) => {
       if (i === true) {
-        totalPaquete += parseInt(packageDetail.activities[index].price);
+        totalPaquete +=
+          parseInt(packageDetail.activities[index].price) * input.cantidad;
         actividadesSeleccionadas.push(activities[index]);
       }
     });
@@ -94,15 +114,10 @@ export default function Detail() {
     navigate(-1);
   };
 
-  const handleSelectCantidad = (e) => {
-    setInput({
-      ...input,
-      cantidad: e.target.value,
-    });
-  };
-
   const handleBotonComprar = (e) => {
     e.preventDefault();
+    input.paquete = packageDetail;
+    console.log(input);
   };
 
   // para el desmonte del componente
@@ -208,7 +223,6 @@ export default function Detail() {
                           type="checkbox"
                           onChange={() => handleCheckbox(index)}
                         />
-
                         <label htmlFor={i.name}>
                           U$S{" "}
                           {allActivities?.map(
