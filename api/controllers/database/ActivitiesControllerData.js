@@ -13,7 +13,6 @@ export const getActivitiesData = async () => {
       let clasificacion = await Classification.findOne({
         where: { name: actividad.classification },
       });
-
       clasificacion &&
         (await Activity.findOrCreate({
           where: {
