@@ -1,0 +1,45 @@
+/* .Footer_Container {
+  background-color: #4a9eab;
+  color: #fafafa;
+  height: 15vw;
+  bottom: 0px;
+  width: 100%;
+  display: block;
+
+  padding: 3vw;
+  padding-left: 8vw;
+  padding-right: 8vw;
+}
+
+.Info_Container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+div h2 {
+  font-size: 1.5vw;
+  margin-bottom: 1vw;
+}
+
+div h3 {
+  font-size: 1vw;
+  text-decoration: none;
+  color: #f5f0f0;
+}
+
+.divSeguinos {
+  width: 20%;
+  margin-right: 2vw;
+}
+
+.icons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+/* p {
+  margin: auto;
+  margin-left: 35vw;
+} */
