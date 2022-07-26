@@ -17,6 +17,7 @@ export default function FilterSearch({ destinations }) {
   const handleChange = (e) => {
     e.preventDefault();
     dispatch(filterPackagesByDestination(e.target.value));
+    dispatch(getAllPackage());
     if (e.target.id === "from") {
       if (new Date(e.target.value) > new Date(untilDate)) {
         setFromDate(e.target.value);

@@ -89,7 +89,8 @@ export default function Detail() {
   }
 
   const navigate = useNavigate();
-  const handleBotonRegresar = () => {
+  const handleBotonRegresar = (e) => {
+    e.preventDefault();
     navigate(-1);
   };
 
@@ -138,7 +139,7 @@ export default function Detail() {
         ) : (
           <div className={s.contenedor}>
             <div className={s.contenedorBarraSuperior}>
-              <div onClick={() => handleBotonRegresar}>Return</div>
+              <div onClick={(e) => handleBotonRegresar(e)}>Regresar</div>
               <BotonFav />
             </div>
             <div className={s.contenedorDetalles}>
