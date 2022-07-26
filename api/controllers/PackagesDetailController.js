@@ -13,10 +13,10 @@ export const getPackagesDetail = async (req, res) => {
       include: [
         {
           model: Activity,
-          attributes: ["name", "price"],
-          include: { model: Classification, attributes: ["name"] },
+          attributes: ["name", "price", "description", "image"],
+          include: { model: Classification, attributes: ["name", "image"] },
         },
-        { model: Destination, attributes: ["name"] },
+        { model: Destination, attributes: ["name", "image"] },
       ],
     });
     let packageRegion = packageDetail.region;

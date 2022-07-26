@@ -1,7 +1,9 @@
-import { Classification } from '../../models/Classification.js';
-import * as fs from 'fs';
+import { Classification } from "../../models/Classification.js";
+// import * as data from '../../data/classification.json' assert {type: "json"};
+import * as data from "../../data/classification.js";
 
 export const getClassificationData = async () => {
+<<<<<<< HEAD
     try {
        //CAMBIAR A PATH RELATIVO
         let dataJson = fs.readFile('F/home/bamioezequiel/Desktop/proyecto-final-henry/api/data/classification.json', "utf8", (error, data) => {
@@ -21,3 +23,16 @@ export const getClassificationData = async () => {
     }
 }
 
+=======
+  try {
+    const infoDelJson = data.default;
+    infoDelJson.map((categoria) => {
+      Classification.findOrCreate({
+        where: { name: categoria.name, image: categoria.image },
+      });
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+>>>>>>> develop
