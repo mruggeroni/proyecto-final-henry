@@ -1,4 +1,4 @@
-[
+export default[
   {
     "name": "Grecia imprescindible 6 días desde Atenas",
     "price": 1000,
