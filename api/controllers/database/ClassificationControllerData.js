@@ -3,27 +3,6 @@ import { Classification } from "../../models/Classification.js";
 import * as data from "../../data/classification.js";
 
 export const getClassificationData = async () => {
-<<<<<<< HEAD
-    try {
-       //CAMBIAR A PATH RELATIVO
-        let dataJson = fs.readFile('F/home/bamioezequiel/Desktop/proyecto-final-henry/api/data/classification.json', "utf8", (error, data) => {
-        let dataClassification = JSON.parse(data)
-        dataClassification.map((categoria) => {
-            Classification.findOrCreate({
-                where: {name: categoria.name, image: categoria.image }
-                
-            })
-        })
-        })
-        //let dataClassificationResult = await Classification.findAll()
-        
-         
-    }catch (error){
-        console.log(error.message)
-    }
-}
-
-=======
   try {
     const infoDelJson = data.default;
     infoDelJson.map((categoria) => {
@@ -35,4 +14,3 @@ export const getClassificationData = async () => {
     console.log(error.message);
   }
 };
->>>>>>> develop

@@ -1,42 +1,9 @@
-<<<<<<< HEAD
-import { Package } from '../../models/Packages.js';
-import { Destination } from '../../models/Destinations.js';
-import * as fs from 'fs';
-import { Activity } from '../../models/Activities.js';
-export const getPackageData = async () =>{
-    try {
-        
-        let dataJson = await Promise.all(
-            fs.readFile('/home/bamioezequiel/Desktop/proyecto-final-henry/api/data/JSON_paquetes.json', "utf8", (error, data) =>{
-                let dataPackage = JSON.parse(data)
-                //console.log(dataPackage)
-                dataPackage.map(async (paquete) => {
-                    let newPaquete = await Package.findOrCreate({
-                        
-                       where:{
-                        name: paquete.name, 
-                        price: paquete.price, 
-                        description: paquete.description, 
-                        images: paquete.images,
-                        on_sale: paquete.on_sale,
-                        region: paquete.region,
-                        seasson: paquete.seasson,
-                        type: paquete.type,
-                        start_date: paquete.start_date,
-                        end_date: paquete.end_date,
-                        featured: paquete.featured,
-                        main_image: paquete.main_image,
-                        available: paquete.available,  
-                    },
-                    })
-=======
 import { Package } from "../../models/Packages.js";
 import { Destination } from "../../models/Destinations.js";
 import * as fs from "fs";
 import { Activity } from "../../models/Activities.js";
 // import * as data from '../../data/JSON_paquetes.json' assert {type: "json"};
 import * as data from "../../data/JSON_paquetes.js";
->>>>>>> develop
 
 export const getPackageData = async () => {
   try {
