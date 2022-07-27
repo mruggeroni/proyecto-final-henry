@@ -1,7 +1,5 @@
 import { DataTypes, STRING } from 'sequelize';
 import { sequelize } from '../db.js';
- import { Classification } from './Classification.js';
-//import { Package } from './Packages.js';
 
 export const User = sequelize.define('user', {
 	first_name: {

@@ -1,23 +1,25 @@
 import { Classification } from '../../models/Classification.js';
-// import * as data from '../../data/classification.json' assert {type: "json"};
 import * as data from '../../data/classification.js';
 
 
 export const getClassificationData = async () => {
     try {
+        if (!(await Classification.findAndCountAll())?.count) {
+            console.log("\n", "uploading database Classifications", "\n");
+            const infoDelJson = data.default;
 
-        const infoDelJson = data.default;
-
-        infoDelJson.map((categoria) => {
-
-            Classification.findOrCreate({
-                where: {name: categoria.name, image: categoria.image }
-                
-            })
-        })
+            infoDelJson.map(({ name, image }) => {
+                Classification.findOrCreate({
+                    where: {
+                        name, 
+                    },
+                    defaults: {
+                        image, 
+                    },
+                });
+            });
+        };
     }catch (error){
-        console.log(error.message)
-    }
-}
-
-
+        console.log(error.message);
+    };
+};
