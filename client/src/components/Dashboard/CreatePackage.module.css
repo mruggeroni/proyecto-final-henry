@@ -6,7 +6,7 @@
   align-items: center;
   justify-content: center;
   margin: auto;
-  margin-top: 40px;
+  margin-top: 30px;
 }
 
 .create_inputs_container {
@@ -40,6 +40,16 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+}
+
+.create_input_checks_container {
+  position: relative;
+  width: 50vh;
+  height: 10vh;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
   justify-content: center;
 }
 

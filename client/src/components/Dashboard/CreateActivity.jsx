@@ -139,7 +139,6 @@ export default function ActivityCreate() {
           onSubmit={(e) => handleSubmit(e)}
           className={style.create_form_container}
         >
-          <div className={style.create_form_container}>
             <div className={style.create_input_container}>
               <label className={style.create_label}>
                 <b>Nombre</b>
@@ -153,7 +152,6 @@ export default function ActivityCreate() {
               />
               {/* {error.name ? (<p>{error.name}</p>) : <br />} */}
             </div>
-          </div>
           <div className={style.create_textarea_container}>
             <label className={style.create_label}>
               <b>Descripción</b>
@@ -180,11 +178,11 @@ export default function ActivityCreate() {
             />
             {/* {error.price ? (<p>{error.price}</p>) : <br />} */}
           </div>
-          <div>
-            <label>
+          <div className={style.create_input_checks_container}>
+            <label className={style.create_label}>
               <b>Clasificación:</b>
             </label>
-            <label>
+            <br />
               <span>Familiar</span>
               <input
                 type="checkbox"
@@ -221,7 +219,6 @@ export default function ActivityCreate() {
                 onChange={(e) => handleCheck(e)}
               />
               <span></span>
-            </label>
             <br />
             {/* {error.season ? (<p >{error.season}</p>) : <br />} */}
           </div>

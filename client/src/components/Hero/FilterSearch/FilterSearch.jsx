@@ -32,7 +32,7 @@ export default function FilterSearch({ destinations }) {
 
   const handleClick = (e) => {
     e.preventDefault();
-    // let value = document.getElementById("searchDestinations").value;
+    let value = document.getElementById("searchDestinations").value;
     // dispatch(filterPackagesByDestination(value));
     // console.log(value);
     // console.log(fromDate);
