@@ -6,6 +6,8 @@ import { Destination } from '../models/Destinations.js';
 import { sequelize } from '../db.js';
 import { Op } from 'sequelize';
 import * as fs from 'fs';
+import { Console } from 'console';
+
 
 export const getPackages = async (req, res) => {
 	try {
@@ -100,7 +102,9 @@ export const createPackage = async (req, res) => {
 		res.json({message: 'Package created successfully'});
 	} catch (error) {
 		return res.status(500).json({ message: error.message });
-	}}
+	}
+}
+
 export	const putPackage = async (req, res)=>{
 	try {
 		const nuevopaquete =req.body
@@ -151,7 +155,42 @@ export	const putPackage = async (req, res)=>{
 		return res.status(500).json({ message: error.message })
 	}
 }
-	
+
+export const deletePackage = async (req, res) => {
+	try {
+		const { id } = req.query;
+		const deleted = await Package.findByPk(id)
+
+		deleted && await Package.destroy({
+			where: {
+				id
+			}
+		})
+		deleted? res.status(200).send('Package deleted successfully') 
+		: res.status(200).send('The package was already deleted'); 
+		
+	} catch (error) {
+		res.status(400).send({ data: error.message })
+	}
+}
+
+export const getDeletedPackages = async (req, res) => {
+	try {
+		const deleted = await Package.findAll({
+			where:{
+				destroyTime:{
+					[Op.ne]: null,
+				}
+			},
+			paranoid: false
+		})
+		deleted.length? res.status(200).send(deleted)
+		: res.status(200).send('No deleted packages found')
+	} catch (error) {
+		res.status(400).send({ data: error.message })
+	}
+}
+
 export const getTypes = async (req, res) => {
 		try {
 			const packageTypes = await Package.findAll()
@@ -172,7 +211,7 @@ export const getTypes = async (req, res) => {
 		} catch (error) {
 			res.status(400).send({ data: error.message })
 		}
-	}
+}
 	
 export const getOn_sale = async (req, res) => {
 		try {
@@ -189,7 +228,4 @@ export const getOn_sale = async (req, res) => {
 		} catch (error) {
 			res.status(400).send({ data: error.message })
 		}
-	}
-
 }
-
