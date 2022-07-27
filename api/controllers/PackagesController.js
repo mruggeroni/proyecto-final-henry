@@ -1,8 +1,11 @@
-
 import { Package } from '../models/Packages.js';
 import { Classification } from '../models/Classification.js'
 import { Activity } from '../models/Activities.js';
 import { Destination } from '../models/Destinations.js';
+
+import { sequelize } from '../db.js';
+import { Op } from 'sequelize';
+import * as fs from 'fs';
 
 export const getPackages = async (req, res) => {
 	try {
@@ -11,9 +14,9 @@ export const getPackages = async (req, res) => {
 		const packages = await Package.findAll({
 			include: [{
                 model: Activity,
-                attributes: ['name', 'price', 'description', 'image'],
-                include: {model: Classification, attributes: ['name', 'image']}
-			}, {model: Destination, attributes:['name', 'image']}],
+                attributes: ['name'],
+                include: {model: Classification, attributes: ['name']}
+			}, {model: Destination, attributes:['name']}],
 			order: [['price', price]]
 		});
 		res.status(200).json(packages);
@@ -33,7 +36,7 @@ export const getFeaturedPackages = async (req, res) => {
                 model: Activity,
                 attributes: ['name', 'price', 'description', 'image'],
                 include: {model: Classification, attributes: ['name', 'image']}
-			}, {model: Destination, attributes:['name', 'image']}],
+			}, {model: Destination, attributes:['name', 'image', 'region']}],
 			limit: limit,
 			order: [
 				['id', 'ASC']
@@ -58,7 +61,8 @@ export const createPackage = async (req, res) => {
 			for(let i=0; i< destinations.length; i++){
 				const destinosCreados = await Destination.findOrCreate({where:{name: destinations[i].name 
 					},	defaults: {
-						image: destinations[i].image
+						image: destinations[i].image,
+						region: destinations[i].region
 					  }}
 	)
 					newDestination.push(destinosCreados[0])
@@ -78,10 +82,10 @@ export const createPackage = async (req, res) => {
 			newActivities.push(actividadesCreadas[0])
 			}}}
 		const newPackage = await Package.findOrCreate({ where:{
-			name:name,description: description, main_image: main_image, images: images, 
+			name: name}, defaults: {description: description, main_image: main_image, images: images, 
 			price: price, featured: featured, available : available, on_sale: on_sale,
-			start_date: start_date, end_date: end_date, region: region, seasson: seasson, type: type}, 
-		});
+			start_date: start_date, end_date: end_date, seasson: seasson, type: type}}, 
+		)
 		for(let i=0; i< newActivities.length; i++){
 			await newPackage[0].addActivities(newActivities[i])
 		}
@@ -189,5 +193,6 @@ export const getOn_sale = async (req, res) => {
 			res.status(400).send({ data: error.message })
 		}
 	}
+
 
 
