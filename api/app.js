@@ -5,6 +5,8 @@ import PackageRoutes from './routes/PackagesRoutes.js';
 import CategoriesRoutes from './routes/CategoriesRoutes.js';
 import ActivitiesRoutes from './routes/ActivitiesRoutes.js';
 import DestinationsRoutes from './routes/DestinationsRoutes.js'
+import UsersRoutes from './routes/UsersRoutes.js';
+import OrderRoutes from './routes/OrdersRouter.js';
 
 const app = express();
 
@@ -17,6 +19,9 @@ app.use(PackageRoutes);
 app.use(CategoriesRoutes);
 app.use(ActivitiesRoutes);
 app.use(DestinationsRoutes);
+app.use(UsersRoutes);
+app.use(OrderRoutes);
+
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*'); // update to match the domain you will make the request from
   res.header('Access-Control-Allow-Credentials', 'true');

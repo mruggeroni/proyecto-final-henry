@@ -175,21 +175,18 @@ export const getTypes = async (req, res) => {
 	}
 	
 export const getOn_sale = async (req, res) => {
-		try {
-			const filteredPackages = await Package.findAll({
-				where:{
-					on_sale: {
-						[Op.gt]: 0
-					}
-				},
-				order: sequelize.random(),
-				limit: 3
-			})
-			res.status(200).send(filteredPackages)
-		} catch (error) {
-			res.status(400).send({ data: error.message })
-		}
+	try {
+		const filteredPackages = await Package.findAll({
+			where:{
+				on_sale: {
+					[Op.gt]: 0
+				}
+			},
+			order: sequelize.random(),
+			limit: 3
+		})
+		res.status(200).send(filteredPackages)
+	} catch (error) {
+		res.status(400).send({ data: error.message })
 	}
-
 }
-
