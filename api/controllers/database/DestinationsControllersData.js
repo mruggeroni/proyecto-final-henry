@@ -1,24 +1,24 @@
-//RUTA EXCLUSIVA PARA CARGAR DATOS A LA DATABASE
 import { Destination } from "../../models/Destinations.js"
-import * as fs from 'fs';
-// import * as data from '../../data/destinations.json' assert {type: "json"};
 import * as data from '../../data/destinations.js';
 
 export const getDestinationData = async () =>{
     try {
-        const infoDelJson = data.default;
+        if (!(await Destination.findAndCountAll())?.count) {
+            console.log("\n", "uploading database Destinations", "\n");
+            const infoDelJson = data.default;
 
-        infoDelJson.map(({ name, image }) => {
-            Destination.findOrCreate({
-                where: {
-                    name,
-                    image,
-                },
+            infoDelJson.map(({ name, image }) => {
+                Destination.findOrCreate({
+                    where: {
+                        name,
+                    },
+                    defaults: {
+                        image,
+                    },
+                });
             });
-        });
+        };
     }catch (error){
         console.log(error.message);
     };
 };
-
-
