@@ -1,4 +1,4 @@
-export default[
+export default [
     {
         "id": 1,
         "name": "Tour de Highlights",
