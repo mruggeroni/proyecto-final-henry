@@ -227,19 +227,6 @@ export const getOn_sale = async (req, res) => {
 		const filteredPackages = await Package.findAll({
 			where:{
 				on_sale: {
-<<<<<<< HEAD
-					[Op.gt]: 0
-				}
-			},
-			order: sequelize.random(),
-			limit: 3
-		})
-		res.status(200).send(filteredPackages)
-	} catch (error) {
-		res.status(400).send({ data: error.message })
-	}
-}
-=======
 					[Op.gt]: 0,
 				},
 			},
@@ -272,4 +259,3 @@ export const patchPackage = async (req, res) => {
 		res.status(400).json({ message: error.message });
 	};
 };
->>>>>>> develop
