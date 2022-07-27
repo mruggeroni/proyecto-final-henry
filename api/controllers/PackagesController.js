@@ -1,29 +1,28 @@
 import { Package } from '../models/Packages.js';
-import { Classification } from '../models/Classification.js'
-import { Activity } from '../models/Activities.js';
 import { Destination } from '../models/Destinations.js';
-
+import { Activity } from '../models/Activities.js';
+import { Classification } from '../models/Classification.js'
 import { sequelize } from '../db.js';
 import { Op } from 'sequelize';
-import * as fs from 'fs';
 
-export const getPackages = async (req, res) => {
-	try {
-		let price 
-		req.query.price? price = req.query.price: price = 'DESC'
-		const packages = await Package.findAll({
-			include: [{
-                model: Activity,
-                attributes: ['name'],
-                include: {model: Classification, attributes: ['name']}
-			}, {model: Destination, attributes:['name']}],
-			order: [['price', price]]
-		});
-		res.status(200).json(packages);
-	} catch (error) {
-		return res.status(500).json({ message: error.message });
-	}
-}
+
+// export const getPackages = async (req, res) => {
+// 	try {
+// 		let price 
+// 		req.query.price? price = req.query.price: price = 'DESC'
+// 		const packages = await Package.findAll({
+// 			include: [{
+//                 model: Activity,
+//                 attributes: ['name'],
+//                 include: {model: Classification, attributes: ['name']}
+// 			}, {model: Destination, attributes:['name']}],
+// 			order: [['price', price]]
+// 		});
+// 		res.status(200).json(packages);
+// 	} catch (error) {
+// 		return res.status(500).json({ message: error.message });
+// 	}
+// }
 
 export const getFeaturedPackages = async (req, res) => {
 	const limit = parseInt(req.query.limit) || 3;
@@ -101,20 +100,11 @@ export const getTypes = async (req, res) => {
 				!uniquePackageTypes.includes(p.type) && uniquePackageTypes.push(p.type)
 			});
 			res.status(200).send(uniquePackageTypes)
-	
-			// const data = fs.readFileSync('D:/FinalProject-Henry/proyecto-final-henry/api/data/JSON_paquetes.json', 'utf8');
-			// const uniquePackageTypes = []
-			// JSON.parse(data)?.forEach(p => {
-			// 	!uniquePackageTypes.includes(p.type) && uniquePackageTypes.push(p.type)
-			// });
-		
-		// res.status(200).json(uniquePackageTypes)
-	
 		} catch (error) {
 			res.status(400).send({ data: error.message })
 		}
 	}
-	
+
 export const getOn_sale = async (req, res) => {
 		try {
 			const filteredPackages = await Package.findAll({
@@ -131,3 +121,23 @@ export const getOn_sale = async (req, res) => {
 			res.status(400).send({ data: error.message })
 		}
 	}
+
+export const patchPackage = async (req, res) => {
+	const id = parseInt(req.params.id);
+	const { featured, available, on_sale } = req.body;
+
+	try {
+		await Package.update({
+			featured, 
+			available, 
+			on_sale, 
+		}, {
+			where: {
+				id,
+			},
+		});
+		res.status(200).json({message: 'Successfully Modified Package'});
+	} catch (error) {
+		return res.status(400).json({ message: error.message });
+	};
+};

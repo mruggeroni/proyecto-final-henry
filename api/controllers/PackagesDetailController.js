@@ -1,15 +1,14 @@
 import { Package } from '../models/Packages.js';
+import { Destination } from '../models/Destinations.js';
 import { Activity } from '../models/Activities.js';
 import { Classification } from '../models/Classification.js';
-import { Destination } from '../models/Destinations.js';
 import { sequelize } from '../db.js';
 import { Op } from "sequelize";
-//import { Classification } from '../models/Classification.js';
+
 export const getPackagesDetail = async (req, res) => {
 	try {
-        let idFind = req.params.id
-		const packageDetail = await Package.findOne({
-            where: {id : idFind},
+        let idFind = parseInt(req.params.id);
+		const packageDetail = await Package.findByPk(idFind, {
 			include: [{
                 model: Activity,
                 attributes: ['name', 'price', 'description', 'image'],
@@ -27,5 +26,5 @@ export const getPackagesDetail = async (req, res) => {
 		res.status(200).json(respuesta);
 	} catch (error) {
 		return res.status(500).json({ message: error.message });
-	}
-}
+	};
+};

@@ -5,6 +5,8 @@ import PackageRoutes from './routes/PackagesRoutes.js';
 import CategoriesRoutes from './routes/CategoriesRoutes.js';
 import ActivitiesRoutes from './routes/ActivitiesRoutes.js';
 import DestinationsRoutes from './routes/DestinationsRoutes.js';
+import getPackages from './routes/getPackagesAllFiltersAndSortRutes.js';
+import patchPackage from './routes/patchPackageRutes.js';
 
 const app = express();
 
@@ -13,6 +15,8 @@ app.use(cors());
 app.use(express.json());
 app.use(morgan('dev'));
 
+app.use(patchPackage);
+app.use(getPackages);
 app.use(PackageRoutes);
 app.use(CategoriesRoutes);
 app.use(ActivitiesRoutes);
