@@ -200,7 +200,7 @@ export default function ModalActividades({ show, setShow, setInput, input }) {
                   Cerrar
                 </Button>
                 <Button variant="primary" type="submit">
-                  Crear destino
+                  Crear actividad
                 </Button>
               </Form>
             )}

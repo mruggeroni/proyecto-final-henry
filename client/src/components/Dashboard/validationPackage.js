@@ -6,9 +6,6 @@ export default function validation(input) {
 
   if (!input.name) {
     error.name = "Nombre es requerido";
-  } else if (input.name[0] === " ") {
-    error.name =
-      "El nombre debe comenzar con una letra y no puede comenzar con un espacio";
   } else if (input.name.length > 60) {
     error.name = "El nombre debe tener menos de 60 caracteres";
   }

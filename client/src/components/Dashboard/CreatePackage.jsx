@@ -11,7 +11,6 @@ import {
 import style from "./CreatePackage.module.css";
 import Dashboard from "./Dashboard";
 import validationPackage from "./validationPackage.js";
-import Toast from "react-bootstrap/Toast";
 import ModalActividades from "./ModalActividades";
 import ModalDestinos from "./ModalDestinos";
 

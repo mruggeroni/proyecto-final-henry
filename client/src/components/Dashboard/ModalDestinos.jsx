@@ -11,8 +11,6 @@ import {
   getAllDestinations,
 } from "../../redux/actions";
 
-// const formik = Formik;
-
 const schema = yup.object().shape({
   name: yup
     .string()
@@ -22,20 +20,6 @@ const schema = yup.object().shape({
   image: yup.string().required("Requerido"),
 });
 
-function validacion(input) {
-  let error = {};
-
-  if (!input.name) {
-    error.name = "Nombre es requerido";
-  } else if (input.name.length > 20) {
-    error.name = "Nombre debe ser menor a 20 caracteres";
-  }
-  if (!input.image) {
-    error.description = "Descripcion es requerida";
-  }
-  return error;
-}
-
 export default function ModalDestinos({
   showDestinos,
   setShowDestinos,
@@ -43,56 +27,9 @@ export default function ModalDestinos({
   input,
 }) {
   const dispatch = useDispatch();
-  const [inputModal, setInputModal] = useState({
-    name: "",
-    description: "",
-    image: "",
-    price: 0,
-  });
-
-  // const [error, setError] = useState({
-  //   name: "",
-  //   description: "",
-  //   price: 0,
-  // });
-
-  // const handleCrearDestino = (e) => {
-  //   e.preventDefault();
-  //   const valida = validacion({ ...inputModal });
-  //   setError(valida);
-  //   console.log(error);
-  //   if (valida.name || valida.image) {
-  //     console.log(valida);
-  //     alert(
-  //       "Presta mas atencion al completar el formulario y volve a intentar ;)"
-  //     );
-  //   } else {
-  //     //   dispatch();
-  //     alert("Nuevo destino creada..");
-  //     setInputModal({
-  //       name: "",
-  //       image: "",
-  //     });
-  //     //   setShowDestinos(false); //Para cerrar el modal
-  //   }
-  // };
-
-  // const handleChange = (e) => {
-  //   e.preventDefault();
-  //   console.log(e.target);
-  //   setInputModal({
-  //     ...inputModal,
-  //     [e.target.id]: e.target.value,
-  //   });
-  //   console.log(inputModal);
-  // };
 
   const handleClose = () => {
     setShowDestinos(false);
-    // setInputModal({
-    //   name: "",
-    //   image: "",
-    // });
   };
 
   const handleCrearDestino = async (e) => {

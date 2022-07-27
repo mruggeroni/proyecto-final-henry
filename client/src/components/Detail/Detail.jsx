@@ -126,6 +126,8 @@ export default function Detail() {
     e.preventDefault();
     input.paquete = packageDetail;
     console.log(input);
+    console.log(input.actividades);
+    console.log(input.paquete);
   };
 
   // para el desmonte del componente
