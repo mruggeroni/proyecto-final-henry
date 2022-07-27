@@ -10,6 +10,8 @@ import CreatePackage from "./components/Dashboard/CreatePackage";
 import CreateActivity from "./components/Dashboard/CreateActivity";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
+import Checkout from "./components/Checkout/Checkout.jsx";
+import Historial from "./components/Historial/Historial.jsx";
 
 function App() {
   const { isAuthenticated } = useAuth0();
@@ -29,7 +31,8 @@ function App() {
         <Route path="/profile" element={<Home />} />
         <Route path="/detail/:id" element={<Detail />} />
         <Route path="/favorites" element={<Favorites />} />
-        <Route path="/checkout" element={<Home />} />
+        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/historial" element={<Historial />} />
         <Route path="/faq" element={<Home />} />
         <Route path="/contact" element={<Home />} />
         <Route path="*" element={<Home />} />

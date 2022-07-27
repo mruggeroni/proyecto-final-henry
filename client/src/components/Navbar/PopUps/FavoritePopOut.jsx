@@ -54,8 +54,8 @@ export default function FavoritesPopOut(){
       ]
 
    return(
-    <div onClick={(e) => handleFavClick(e)} className={style.nav_item}>
-      <div className={s.favIcon}>
+    <div onClick={(e) => handleFavClick(e)} className={s.favIcon}>
+      <div>
       <AiOutlineHeart />
       </div>
       <div id="favorite_container" className={isActive ? s.open_favorite : s.user_profile_container}>
