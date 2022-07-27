@@ -3,8 +3,7 @@ export default [
     id: 1,
     name: "Tour de Highlights",
     description: "",
-    image:
-      "https://demos.maperez.es/pfhenry/1%20-%20Tour%20de%20Highlights.jpg",
+    image: "https://demos.maperez.es/pfhenry/1%20-%20Tour%20de%20Highlights.jpg",
     price: 100,
     classification: "Familiar",
   },
@@ -20,8 +19,7 @@ export default [
     id: 3,
     name: "Tour de Monumentos",
     description: "",
-    image:
-      "https://demos.maperez.es/pfhenry/3%20-%20Tour%20de%20Monumentos.jpg",
+    image: "https://demos.maperez.es/pfhenry/3%20-%20Tour%20de%20Monumentos.jpg",
     price: 100,
     classification: "Familiar",
   },
@@ -29,8 +27,7 @@ export default [
     id: 4,
     name: "Tour Gastronomía Nacional",
     description: "",
-    image:
-      "https://demos.maperez.es/pfhenry/4%20-%20Tour%20Gastronomía%20Nacional.jpg",
+    image: "https://demos.maperez.es/pfhenry/4%20-%20Tour%20Gastronomía%20Nacional.jpg",
     price: 150,
     classification: "Familiar",
   },
@@ -62,8 +59,7 @@ export default [
     id: 8,
     name: "Camping en Parques Naturales",
     description: "",
-    image:
-      "https://demos.maperez.es/pfhenry/8%20-%20Camping%20en%20Parques%20Naturales.jpg",
+    image: "https://demos.maperez.es/pfhenry/8%20-%20Camping%20en%20Parques%20Naturales.jpg",
     price: 100,
     classification: "Familiar",
   },
@@ -79,8 +75,7 @@ export default [
     id: 10,
     name: "Tour de Arte Callejero",
     description: "",
-    image:
-      "https://demos.maperez.es/pfhenry/10%20-%20Tour%20de%20Arte%20Callejero.jpg",
+    image: "https://demos.maperez.es/pfhenry/10%20-%20Tour%20de%20Arte%20Callejero.jpg",
     price: 75,
     classification: "Familiar",
   },
@@ -144,8 +139,7 @@ export default [
     id: 18,
     name: "Ciclismo de Montaña",
     description: "",
-    image:
-      "https://demos.maperez.es/pfhenry/18%20-%20Ciclismo%20de%20Montaña.jpg",
+    image: "https://demos.maperez.es/pfhenry/18%20-%20Ciclismo%20de%20Montaña.jpg",
     price: 75,
     classification: "Extremo",
   },
@@ -153,8 +147,7 @@ export default [
     id: 19,
     name: "Circuito en Catamaran",
     description: "",
-    image:
-      "https://demos.maperez.es/pfhenry/19%20-%20Circuito%20en%20Catamaran.jpg",
+    image: "https://demos.maperez.es/pfhenry/19%20-%20Circuito%20en%20Catamaran.jpg",
     price: 100,
     classification: "Familiar",
   },
@@ -250,8 +243,7 @@ export default [
     id: 31,
     name: "Tour en Helicóptero",
     description: "",
-    image:
-      "https://demos.maperez.es/pfhenry/31%20-%20Tour%20en%20Helicóptero.jpg",
+    image: "https://demos.maperez.es/pfhenry/31%20-%20Tour%20en%20Helicóptero.jpg",
     price: 300,
     classification: "Familiar",
   },
