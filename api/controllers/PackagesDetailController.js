@@ -14,15 +14,18 @@ export const getPackagesDetail = async (req, res) => {
                 model: Activity,
                 attributes: ['name', 'price', 'description', 'image'],
                 include: {model: Classification, attributes: ['name', 'image']}
-			}, {model: Destination, attributes:['name', 'image']}],
+			}, {model: Destination, attributes:['name', 'image', 'region']}],
 		});
-        let packageRegion = packageDetail.region
+        let packageRegion = []
+        for(let i=0; i< packageDetail.destinations.length; i++){
+            packageRegion.push(packageDetail.destinations[i].region)
+        }
         let packageName = packageDetail.name
-        console.log(packageName)
         const limit = parseInt(req.query.limit) || 3
-        const recomendados = await Package.findAll({where: {region: packageRegion,
-        name: {[Op.not]: packageName} },
-        limit: limit})
+        const recomendados = await Package.findAll({where: { name: {[Op.not]: packageName},
+            },limit: limit, include:{model:
+        Destination,where: {region: {[Op.in]:packageRegion} }},
+        })
             const respuesta = [packageDetail, recomendados]
 		res.status(200).json(respuesta);
 	} catch (error) {

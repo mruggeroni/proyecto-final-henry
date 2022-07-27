@@ -11,8 +11,11 @@ export const getDestinationData = async () =>{
         infoDelJson.map((destino) => {
             Destination.findOrCreate({
                 where:
-                {name: destino.name,
-                image: destino.image}
+                {name: destino.name},
+                defaults: {
+                    image: destino.image,
+                    region: destino.region
+                }
 
             })
         })

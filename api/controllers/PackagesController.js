@@ -2,11 +2,9 @@ import { Package } from '../models/Packages.js';
 import { Classification } from '../models/Classification.js'
 import { Activity } from '../models/Activities.js';
 import { Destination } from '../models/Destinations.js';
-
 import { sequelize } from '../db.js';
 import { Op } from 'sequelize';
 import * as fs from 'fs';
-
 export const getPackages = async (req, res) => {
 	try {
 		let price 
@@ -16,7 +14,7 @@ export const getPackages = async (req, res) => {
                 model: Activity,
                 attributes: ['name'],
                 include: {model: Classification, attributes: ['name']}
-			}, {model: Destination, attributes:['name']}],
+			}, {model: Destination, attributes:['name', 'region']}],
 			order: [['price', price]]
 		});
 		res.status(200).json(packages);
@@ -52,7 +50,7 @@ export const getFeaturedPackages = async (req, res) => {
 
 export const createPackage = async (req, res) => {
 	const { name, description, main_image, images, price, featured, available, on_sale,
-	activities, destinations, start_date, end_date, region, seasson, type } = req.body;
+	activities, destinations, start_date, end_date, seasson, type } = req.body;
 		console.log('PROBANDO')
 	try {
 
@@ -116,7 +114,8 @@ export	const putPackage = async (req, res)=>{
 		for(let i=0; i< destinations.length; i++){
 			const destino = await Destination.findOrCreate({where: {name: destinations[i].name},
 				defaults: {
-					image: destinations[i].image
+					image: destinations[i].image,
+					region: destinations[i].region
 			  	}})
 			destinationUpdate.push(destino[0])
 			console.log(destino)
