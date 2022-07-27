@@ -54,6 +54,94 @@ export const getFeaturedPackages = async (req, res) => {
   }
 };
 
+// export const createPackage = async (req, res) => {
+//   const {
+//     name,
+//     description,
+//     main_image,
+//     images,
+//     price,
+//     featured,
+//     available,
+//     on_sale,
+//     activities,
+//     destinations,
+//     start_date,
+//     end_date,
+//     region,
+//     seasson,
+//     type,
+//   } = req.body;
+//   console.log("PROBANDO");
+//   try {
+//     const newClassification = [];
+//     for (let i = 0; i < activities.length; i++) {
+//       let nameC = activities[i].classification.name;
+//       let imageC = activities[i].classification.image;
+//       let clasificacionCreada = await Classification.findOrCreate({
+//         where: { name: nameC },
+//         defaults: {
+//           image: imageC,
+//         },
+//       });
+//       newClassification.push(clasificacionCreada[0]);
+//     }
+//     const newDestination = [];
+//     for (let i = 0; i < destinations.length; i++) {
+//       const destinosCreados = await Destination.findOrCreate({
+//         where: { name: destinations[i].name },
+//         defaults: {
+//           image: destinations[i].image,
+//         },
+//       });
+//       newDestination.push(destinosCreados[0]);
+//     }
+//     const newActivities = [];
+//     for (let i = 0; i < activities.length; i++) {
+//       const actividadesCreadas = await Activity.findOrCreate({
+//         where: { name: activities[i].name },
+//         defaults: {
+//           description: activities[i].description,
+//           image: activities[i].image,
+//           price: activities[i].price,
+//         },
+//       });
+//       const clasificacionEncontrada = await Classification.findOne({
+//         where: { name: activities[i].classification.name },
+//       });
+//       await clasificacionEncontrada.addActivities(actividadesCreadas[0]);
+//       newActivities.push(actividadesCreadas[0]);
+//     }
+//     const newPackage = await Package.findOrCreate({
+//       where: {
+//         name: name,
+//         description: description,
+//         main_image: main_image,
+//         images: images,
+//         price: price,
+//         featured: featured,
+//         available: available,
+//         on_sale: on_sale,
+//         start_date: start_date,
+//         end_date: end_date,
+//         region: region,
+//         seasson: seasson,
+//         type: type,
+//       },
+//     });
+//     for (let i = 0; i < newActivities.length; i++) {
+//       await newPackage[0].addActivities(newActivities[i]);
+//     }
+//     for (let i = 0; i < newDestination.length; i++) {
+//       await newPackage[0].addDestinations(newDestination[i]);
+//     }
+//     console.log(newPackage);
+//     res.json({ message: "Package created successfully" });
+//   } catch (error) {
+//     return res.status(500).json({ message: error.message });
+//   }
+// };
+
 export const createPackage = async (req, res) => {
   const {
     name,
@@ -74,43 +162,38 @@ export const createPackage = async (req, res) => {
   } = req.body;
   console.log("PROBANDO");
   try {
-    const newClassification = [];
-    for (let i = 0; i < activities.length; i++) {
-      let nameC = activities[i].classification.name;
-      let imageC = activities[i].classification.image;
-      let clasificacionCreada = await Classification.findOrCreate({
-        where: { name: nameC },
-        defaults: {
-          image: imageC,
-        },
-      });
-      newClassification.push(clasificacionCreada[0]);
-    }
     const newDestination = [];
-    for (let i = 0; i < destinations.length; i++) {
-      const destinosCreados = await Destination.findOrCreate({
-        where: { name: destinations[i].name },
-        defaults: {
-          image: destinations[i].image,
-        },
-      });
-      newDestination.push(destinosCreados[0]);
+    if (destinations) {
+      for (let i = 0; i < destinations.length; i++) {
+        const destinosCreados = await Destination.findOrCreate({
+          where: { name: destinations[i].name },
+          defaults: {
+            image: destinations[i].image,
+          },
+        });
+        newDestination.push(destinosCreados[0]);
+      }
     }
     const newActivities = [];
-    for (let i = 0; i < activities.length; i++) {
-      const actividadesCreadas = await Activity.findOrCreate({
-        where: { name: activities[i].name },
-        defaults: {
-          description: activities[i].description,
-          image: activities[i].image,
-          price: activities[i].price,
-        },
-      });
-      const clasificacionEncontrada = await Classification.findOne({
-        where: { name: activities[i].classification.name },
-      });
-      await clasificacionEncontrada.addActivities(actividadesCreadas[0]);
-      newActivities.push(actividadesCreadas[0]);
+    if (activities) {
+      for (let i = 0; i < activities.length; i++) {
+        const actividadesCreadas = await Activity.findOrCreate({
+          where: { name: activities[i].name },
+          defaults: {
+            description: activities[i].description,
+            image: activities[i].image,
+            price: activities[i].price,
+          },
+        });
+        if (activities.classification) {
+          const clasificacionEncontrada = await Classification.findOrCreate({
+            where: { name: activities[i].classification.name },
+            defaults: { image: activities[i].classification.image },
+          });
+          await clasificacionEncontrada[0].addActivities(actividadesCreadas[0]);
+          newActivities.push(actividadesCreadas[0]);
+        }
+      }
     }
     const newPackage = await Package.findOrCreate({
       where: {
@@ -136,11 +219,16 @@ export const createPackage = async (req, res) => {
       await newPackage[0].addDestinations(newDestination[i]);
     }
     console.log(newPackage);
-    res.json({ message: "Package created successfully" });
+    if (newPackage[1] === false) {
+      res.status(500).json({ message: "This Package alredy exists" });
+    } else {
+      res.json({ message: "Package created successfully" });
+    }
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
 };
+
 export const putPackage = async (req, res) => {
   try {
     const nuevopaquete = req.body;
