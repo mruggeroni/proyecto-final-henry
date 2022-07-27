@@ -16,7 +16,7 @@ export default function PopUps() {
       {/* <Nav.Item >
         <AiOutlineHeart />
       </Nav.Item> */}
-      <Nav.Item className={s.tabNav}>  
+      <Nav.Item >  
       <FavoritesPopOut />
       </Nav.Item>
       {/* <Nav.Item >
@@ -28,7 +28,7 @@ export default function PopUps() {
       {/* <Nav.Item >
       <AiOutlineShoppingCart />
       </Nav.Item> */}
-      <Nav.Item className={s.tabNav}>  
+      <Nav.Item>  
         <CartPopOut/>
       </Nav.Item>
     </Nav>
