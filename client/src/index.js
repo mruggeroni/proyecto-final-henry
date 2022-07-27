@@ -6,17 +6,17 @@ import store from './redux/store/index.js';
 import { Provider } from 'react-redux';
 import { Auth0Provider } from "@auth0/auth0-react";
 import claves from "./privado";
-import dotenv from "dotenv";
 import axios from "axios";
-dotenv.config();
-
 axios.defaults.baseURL = process.env.REACT_APP_API || "http://localhost:3001"
 
+const DOMAIN = process.env.REACT_APP_DOMAIN || 'dev-v3irw8ok.us.auth0.com';
+const CLIENT_ID = process.env.REACT_APP_CLIENT_ID || 'tDpnPwy2B90ppG0LR2pNEk0WbKOPVAwM';
+
 ReactDOM.render(
-  <Provider store={store}>
+  <Provider store={store}> 
     <Auth0Provider
-      domain={claves.DOMAIN}
-      clientId={claves.CLIENTID}
+      domain={DOMAIN}
+      clientId={CLIENT_ID}
       // redirectUri={window.location.origin}
       redirectUri={"http://localhost:3000"}
       audiencie="identificador unico" //deberia de ser privado -> lo usamos en las rutas tmb
