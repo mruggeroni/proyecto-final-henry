@@ -1,21 +1,94 @@
-Variables de entorno: DB= "Nombre de la DB" DB_USER= "Usuario de Postgres" DB_PASSWORD= "Pass de Postgres" DB_HOST= "(por defecto es 'localhost')" DB_DIALECT= "(por defecto es 'postgres')" PORT= "(por defecto es '3001')"
+Variables de entorno: 
+DB= "Nombre de la DB" 
+DB_USER= "Usuario de Postgres" 
+DB_PASSWORD= "Pass de Postgres" 
+DB_HOST= "(por defecto es 'localhost')" 
+DB_DIALECT= "(por defecto es 'postgres')" 
+PORT= "(por defecto es '3001')"
 
-RUTAS DISPONIBLES: get "/types" = array con los tipos de Packages
+
 
 RUTAS DISPONIBLES:
-get "/packages/featured" = array con paquetes destacados, 3 por defecto, la ruta se puede modificar con un query: "/packages/featured?limit=Numero"
 
-get "/types" = array con los tipos de Packages
+- *GET **"/fsp/packages/:limitRender"** => array de paquetes*
 
-get "/on_sale" => array de 3 paquetes aleatorios con la propiedad 'on_sale' > 0 (paquetes con descuentos)
+Varibles que puede recibir (a excepcion de params, son todas opcioneles).
+IMPORTANTE: aun no existe la propiedad "duration" en el modelo de paquete.
 
-get "/destinations" = array con los destinos
+```js
+// Incluye paginado, renderizado personalisable y opciones de filtros y odenamientos solapables.
 
-get "/packages" = array con paquetes
+const { limitRender } = req.params;
+// controla cuantos paquetes trae por pagina.
+// en caso de no ser número, por defecto se setea en 12.
+const { page, priceSort, durationSort, type, region, destination } = req.query; 
+// "priceSort" y "durationSort" esperan (asc: para orden ascendente y desc: para orden descendente).
+// "type", "region" y"destination" son sensibles a mayúscula o minúscula (ademas de las tildes). La busqueda debe ser LITERAL.
+const { priceFilterMin, priceFilterMax, dateMin, dateMax, durationFilterMin, durationFilterMax } = req.body;
+// son pares que forman un rango de busqueda (en los tres casos son números).
+```
 
-get "/activities" = array con actividades
+```json
+[
+  {
+    "id": 1,
+    "name": "Nombre",
+    "description": "Descripción.",
+    "main_image": "https://demos.maperez.es/pfhenry/rutaAustralMain.jpg",
+    "images": [
+      "https://demos.maperez.es/pfhenry/rutaAustral1.jpg",
+      "https://demos.maperez.es/pfhenry/rutaAustral2.jpg",
+      "https://demos.maperez.es/pfhenry/rutaAustral3.jpg"
+    ],
+    "price": 4000,
+    "start_date": "2022-08-27",
+    "end_date": "2022-09-17",
+    "seasson": "Invierno",
+    "type": "Pack Large",
+    "featured": true,
+    "available": true,
+    "on_sale": 0,
+    "destinations": [
+      {
+        "name": "Argentina",
+        "region": "Sudamérica"
+      }
+    ],
+    "activities": [
+      {
+        "name": "Tour de Museos",
+        "price": 150
+      }
+    ]
+  }
+]
+```
 
-get "/packages/:id" = array con el detalle de un paquete y paquetes recomendados (ver abajo)
+- *PATCH **"/packages/:id"** => para modificar "available", "featured" y "on_sale"*
+
+Los input por body son opcionales (para mayor flexibilidad al cambiar uno o varios).
+
+```js
+const id = req.params.id;
+const { featured, available, on_sale } = req.body;
+// "featured" y "available" son BOOLEAN. "on_sale" es INTEGER.
+```
+
+- *GET **"/packages/featured"** = array con paquetes destacados, 3 por defecto, la ruta se puede modificar con un query: "/packages/featured?limit=Numero"*
+
+- *GET **"/types"** = array con los tipos de Packages*
+
+- *GET **"/on_sale"** => array de 3 paquetes aleatorios con la propiedad 'on_sale' > 0 (paquetes con descuentos)*
+
+- *GET **"/destinations"** = array con los destinos*
+
+- *GET **"/activities"** = array con actividades*
+
+
+- *GET **"/classifications"** = array con clasificaciones*
+
+
+- *GET **"/packages/:id"** = array con el detalle de un paquete y paquetes recomendados (ver abajo)*
 
 post "/packages" = crea paquetes, actividades, destinos y clasificaciones. Tambien acepta todos estos datos preexistentes.
 
@@ -48,9 +121,16 @@ post "/destinations" = crea destinos.
 ```
 put "/packages/id" = puede modificar todas las propiedades de un paquete, con caracteristicas preexistentes o nuevas, si no cambia un atributo, dejar el valor previo. Si se modifica un destino/clasificacion o actividad creando una nueva, esa se guardara para poder ser asignada posteriormente.
 
-put
+put "/destinations/id"
+
+put "/activities/id"
+
+put "/classifications/id"
 
 Get activities: Se ejecuta en la ruta '/activities', se obtiene un objeto con la siguiente estructura:, un array de objetos, en el que cada objeto cuenta con las propiedades: id, name, image, description, price, classificationId, y classification, que a su vez tendra un objeto con el "name" de la clasificación. [ {"id":1, "name":"Tour de Monumentos", "description":"Hola soy una actividad", "image":"https://demos.maperez.es/pfhenry/Tour%20de%20Monumentos.jpg", "price":100, "classificationId":1, "classification":{"name":"Familiar"} }, {"id":3, "name":"Tour de Highlights", "description":"Hola soy una actividad", "image":"https://demos.maperez.es/pfhenry/Tour%20de%20Highlights.jpg", "price":100, "classificationId":1, "classification":{"name":"Familiar"} }, {"id":5, "name":"Tour Gastronomía Nacional", "description":"Hola soy una actividad", "image":"https://demos.maperez.es/pfhenry/Tour%20Gastronomía%20Nacional.jpg", "price":150, "classificationId":1, "classification":{"name":"Familiar"} }]
+
+GET activities: Se ejecuta en la ruta '/activities', se obtiene un objeto con la siguiente estructura:, un array de objetos, en el que cada objeto cuenta con las propiedades: id, name, image, description, price, classificationId, y classification, que a su vez tendra un objeto con el "name" de la clasificación. [ {"id":1, "name":"Tour de Monumentos", "description":"Hola soy una actividad", "image":"https://demos.maperez.es/pfhenry/Tour%20de%20Monumentos.jpg", "price":100, "classificationId":1, "classification":{"name":"Familiar"} }, {"id":3, "name":"Tour de Highlights", "description":"Hola soy una actividad", "image":"https://demos.maperez.es/pfhenry/Tour%20de%20Highlights.jpg", "price":100, "classificationId":1, "classification":{"name":"Familiar"} }, {"id":5, "name":"Tour Gastronomía Nacional", "description":"Hola soy una actividad", "image":"https://demos.maperez.es/pfhenry/Tour%20Gastronomía%20Nacional.jpg", "price":150, "classificationId":1, "classification":{"name":"Familiar"} }]
+>>>>>>> develop
 
 GET Detalle y Get Recomendados, se ejecuetan ambos en la ruta '/packages/:id', se obtiene un array con DOS (2) elementos, en los cuales el primer elemento es el paquete requerido por ID (DETALLE), y el segundo elemento es un array con TRES (3) objetos, en el que cada objeto es un paquete recomendado con relación al paquete mostrado en detalle.
 

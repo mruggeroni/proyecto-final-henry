@@ -1,20 +1,19 @@
 import { Destination } from '../models/Destinations.js';
-// import * as fs from 'fs';
 
 export const getDestination = async (req, res) => {
   try {
     const destinations = await Destination.findAll();
-    res.status(200).send(destinations)
+    res.status(200).send(destinations);
   } catch (error) {
-    res.status(400).send({ data: error.message })
-  }
-} 
+    res.status(404).send({ data: error.message })
+  };
+};
+
 export const createDestination = async (req, res) => {
 	console.log(req.body);
 	const { name, image, region } = req.body;
 
 	try {
-
 		const nuevoDestino = await Destination.findOrCreate({
 			where: {name: name},
 			defaults:{image: image,
@@ -46,3 +45,4 @@ export const putDestinations = async (req, res) => {
 
 	
 }
+

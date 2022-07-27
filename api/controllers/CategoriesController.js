@@ -1,5 +1,5 @@
 
-import { Classification } from "/home/sadnena/pf/proyecto-final-henry/api/models/Classification.js";
+import { Classification } from "../models/Classification.js";
 export const getClassification = async (req, res) => {
 	try {
 		const classification = await Classification.findAll();
@@ -44,3 +44,4 @@ export const putClassification = async (req, res) => {
 	}
 
 }
+

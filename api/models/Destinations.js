@@ -22,7 +22,7 @@ export const Destination = sequelize.define('destination', {
 			"Asia Sudoriental Continental",
 			"Norte América",
 			"Sudamérica",
-			"América Central"
+			"América Central",
 		),
 		allowNull: false,
 	},
