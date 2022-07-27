@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { BsPlusLg, BsDashLg, BsDash } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -12,6 +12,7 @@ import style from "./CreatePackage.module.css";
 import Dashboard from "./Dashboard";
 import validationPackage from "./validationPackage.js";
 import Toast from "react-bootstrap/Toast";
+import ModalActividades from "./ModalActividades";
 
 export default function CreatePackage() {
   const dispatch = useDispatch();
@@ -24,7 +25,10 @@ export default function CreatePackage() {
 
   const navigate = useNavigate();
 
+  const refActividades = useRef("");
+
   const allDestinations = useSelector((state) => state.destinations);
+  const allActivities = useSelector((state) => state.activities);
   const types = useSelector((state) => state.types);
 
   const dataNow = new Date().toISOString().split("T")[0];
@@ -32,6 +36,12 @@ export default function CreatePackage() {
   const [untilDate, setUntilDate] = useState(dataNow);
 
   const sortDestinations = allDestinations.sort(function (a, b) {
+    if (a.name > b.name) return 1;
+    if (b.name > a.name) return -1;
+    return 0;
+  });
+
+  const sortActivities = allDestinations.sort(function (a, b) {
     if (a.name > b.name) return 1;
     if (b.name > a.name) return -1;
     return 0;
@@ -67,6 +77,7 @@ export default function CreatePackage() {
     images2: "",
     featured: "",
     destinations: [],
+    activities: [],
     start_date: "",
     end_date: "",
     available: "",
@@ -96,13 +107,6 @@ export default function CreatePackage() {
       ...input,
       [e.target.name]: e.target.value,
     });
-    // setError(
-    //   validationPackage({
-    //     ...input,
-    //     [e.target.name]: e.target.value,
-    //   })
-    // );
-    console.log(e.target.value);
   };
 
   const handleSelectDestinations = (e) => {
@@ -114,15 +118,29 @@ export default function CreatePackage() {
         });
         e.target.value = "default";
         console.log(e.target.value);
-        // setError(
-        //   validationPackage({
-        //     ...input,
-        //     destinations: [...input.destinations, e.target.value],
-        //   })
-        // );
       } else {
         e.target.value = "default";
         return alert("Ese país ya fue seleccionado!");
+      }
+    }
+  };
+  const handleSelectActividades = (e) => {
+    if (e.target.value === "otro") {
+      console.log("soy otro");
+      refActividades.current.value = "default";
+      handleShow();
+    } else {
+      if (input.activities.length <= 10) {
+        if (!input.destinations.includes(e.target.value)) {
+          setInput({
+            ...input,
+            activities: [...input.activities, e.target.value],
+          });
+          e.target.value = "default";
+        } else {
+          e.target.value = "default";
+          return alert("Ese país ya fue seleccionado!");
+        }
       }
     }
   };
@@ -132,13 +150,6 @@ export default function CreatePackage() {
       ...input,
       [e.target.name]: e.target.value,
     });
-    // setError(
-    //   validationPackage({
-    //     ...input,
-    //     [e.target.name]: e.target.value,
-    //   })
-    // );
-    console.log(e.target.value);
   };
 
   const handleChangeDate = (e) => {
@@ -160,13 +171,6 @@ export default function CreatePackage() {
       ...input,
       destinations: input.destinations.filter((i) => i !== e.target.innerText),
     });
-    // setError(
-    //   validationPackage({
-    //     ...input,
-    //     [e.target.name]: e.target.value,
-    //   })
-    // );
-    console.log(e.target.value);
   }
 
   const handleSubmit = (e) => {
@@ -221,6 +225,9 @@ export default function CreatePackage() {
       navigate("/dashboard");
     }
   };
+
+  const [show, setShow] = useState(false);
+  const handleShow = () => setShow(true);
 
   return (
     <div>
@@ -339,6 +346,32 @@ export default function CreatePackage() {
                 <option value="false">Falso</option>
               </select>
             </div>
+
+            <div className={style.create_input_container}>
+              {error.region && <span>{error.region}</span>}
+              <label className={style.create_label}>Región</label>
+              <select
+                name="region"
+                onChange={(e) => handleSelect(e)}
+                className={style.create_input}
+              >
+                <option selected={true} disabled="disabled" hidden>
+                  Seleccionar una Región...
+                </option>
+                <option value="Europa Occidental">Europa Occidental</option>
+                <option value="Europa Central">Europa Central</option>
+                <option value="Europa Oriental">Europa Oriental</option>
+                <option value="Asia Oriental">Asia Oriental</option>
+                <option value="Asia del Sur">Asia del Sur</option>
+                <option value="Asia Sudoriental Continental">
+                  Asia Sudoriental Continental
+                </option>
+                <option value="Norte América">Norte América</option>
+                <option value="Sudamérica">Sudamérica</option>
+                <option value="América Central">América Central</option>
+              </select>
+            </div>
+
             <div className={style.create_input_container}>
               {error.destinations && <span>{error.destinations}</span>}
               <label className={style.create_label}>Destinos</label>
@@ -392,30 +425,65 @@ export default function CreatePackage() {
               ))}
 
             {/* Final destinos */}
+
             <div className={style.create_input_container}>
-              {error.region && <span>{error.region}</span>}
-              <label className={style.create_label}>Región</label>
+              {error.destinations && <span>{error.destinations}</span>}
+              <label className={style.create_label}>Actividades</label>
               <select
-                name="region"
-                onChange={(e) => handleSelect(e)}
+                id="actividadesSelect"
+                name="actividadesSelect"
+                onChange={(e) => handleSelectActividades(e)}
                 className={style.create_input}
+                ref={refActividades}
               >
-                <option selected={true} disabled="disabled">
-                  Seleccionar una Región...
+                <option
+                  value="default"
+                  placeholder="Seleccionar Actividades..."
+                  selected
+                  disabled
+                  hidden
+                >
+                  Seleccionar Actividades...
                 </option>
-                <option value="Europa Occidental">Europa Occidental</option>
-                <option value="Europa Central">Europa Central</option>
-                <option value="Europa Oriental">Europa Oriental</option>
-                <option value="Asia Oriental">Asia Oriental</option>
-                <option value="Asia del Sur">Asia del Sur</option>
-                <option value="Asia Sudoriental Continental">
-                  Asia Sudoriental Continental
+                {sortDestinations?.map((el) => (
+                  <option key={el.name} value={el.name}>
+                    {el.name}
+                  </option>
+                ))}
+                <option value="otro" placeholder="Nueva actividad">
+                  Nueva actividad
                 </option>
-                <option value="Norte América">Norte América</option>
-                <option value="Sudamérica">Sudamérica</option>
-                <option value="América Central">América Central</option>
+                {/* TENEMOS QUE CREAR UNA SITUACION EN EL "handleSelectDestinations" 
+                PARA MANEJAR EL CASO DE CREAR UN DESTINO NUEVO*/}
+                {/* <option value="crear">"Crear un destino nuevo.."</option> */}
               </select>
             </div>
+            <ModalActividades show={show} setShow={setShow} />
+
+            {input.destinations
+              .sort(function (a, b) {
+                if (a > b) {
+                  return 1;
+                }
+                if (b > a) {
+                  return -1;
+                }
+                return 0;
+              })
+              .map((i, o) => (
+                <div
+                  key={"destinations" + o}
+                  id="input_destinations"
+                  className={style.create_destinations_items}
+                  onClick={(e) => handleBorrarDestinations(e)}
+                  value={i.name}
+                >
+                  {i}
+                </div>
+              ))}
+
+            {/* Final actividades */}
+
             <div className={style.create_input_container}>
               {error.seasson && <span>{error.seasson}</span>}
               <label className={style.create_label}>Estación</label>

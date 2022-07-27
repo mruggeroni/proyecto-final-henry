@@ -46,6 +46,13 @@ export default function Detail() {
     destinations,
   } = packageDetail;
 
+  function scrollToTop() {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
+
   const [input, setInput] = useState({
     cantidad: 1,
     total: 0,
@@ -111,6 +118,7 @@ export default function Detail() {
   const navigate = useNavigate();
   const handleBotonRegresar = (e) => {
     e.preventDefault();
+    scrollToTop();
     navigate(-1);
   };
 
@@ -190,7 +198,7 @@ export default function Detail() {
               <label className={s.cantidad} htmlFor="selectCantidad">
                 Cantidad {"    "}
                 <select
-                  onClick={(e) => {
+                  onChange={(e) => {
                     handleSelectCantidad(e);
                   }}
                   name="selectCantidad"
