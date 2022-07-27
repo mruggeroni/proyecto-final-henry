@@ -24,6 +24,10 @@ RUTAS DISPONIBLES:
 
   get "/packages/:id" = array con el detalle de un paquete y paquetes recomendados (ver abajo)
 
+  get "/deletedPackages" = retorna un arreglo con los paquetes "Borrados" o en caso de no existir ningun paquete borrado retorna 'No deleted packages found'
+
+  delete "/packages" = Borra un paquete y retorna un mensaje 'Package deleted successfully' o en caso de que el paquete que se intente borrar ya haya sido borrado retorna un mensaje 'The package was already deleted'
+
   post "/packages" = Este post crea simultaneamente nuevos, paquetes, destinos, clasificaciones y actividades. Es decir, recibe un paquete con todos sus atributos y los crea respectivamente.
   IMPORTANTE: La estructura en la que deben enviar el paquete por body, la cual se expresa acontinuación.
 
