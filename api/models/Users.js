@@ -39,5 +39,9 @@ export const User = sequelize.define('user', {
         allowNull: true,
 	},
 }, {
-	timestamps: false
+	timestamps: true,
+  createdAt: false,
+  updatedAt: false,
+	paranoid:true,
+	deletedAt: 'destroyTime'
 });
