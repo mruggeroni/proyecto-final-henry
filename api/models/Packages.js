@@ -1,5 +1,3 @@
-//RUTA EXCLUSIVA PARA CARGAR DATOS A LA DATABASE
-
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../db.js';
 import { Destination } from './Destinations.js';

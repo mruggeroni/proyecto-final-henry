@@ -1,11 +1,12 @@
-import { Package } from '../models/Packages.js';
-import { Activity } from '../models/Activities.js';
-import { Classification } from '../models/Classification.js';
-import { Destination } from '../models/Destinations.js';
-import { sequelize } from '../db.js';
+import { Package } from "../models/Packages.js";
+import { Activity } from "../models/Activities.js";
+import { Classification } from "../models/Classification.js";
+import { Destination } from "../models/Destinations.js";
+import { sequelize } from "../db.js";
 import { Op } from "sequelize";
-//import { Classification } from '../models/Classification.js';
+
 export const getPackagesDetail = async (req, res) => {
+
 	try {
         let idFind = req.params.id
 		const packageDetail = await Package.findOne({
