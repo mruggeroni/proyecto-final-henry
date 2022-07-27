@@ -244,10 +244,11 @@ export const patchPackage = async (req, res) => {
 	const { featured, available, on_sale } = req.body;
 
 	try {
+		const packageToModify = await Package.findByPk(id);
 		await Package.update({
-			featured, 
-			available, 
-			on_sale, 
+			featured: featured? featured : packageToModify.featured, 
+			available: available? available : packageToModify.available, 
+			on_sale: on_sale? on_sale : packageToModify.on_sale, 
 		}, {
 			where: {
 				id,

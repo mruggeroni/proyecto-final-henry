@@ -1,4 +1,4 @@
-import { Classification } from '../models/Classification';
+import { Classification } from '../models/Classification.js';
 
 export const getCategories = async (req, res) => {
 	try {
