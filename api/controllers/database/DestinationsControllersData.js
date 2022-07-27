@@ -7,13 +7,20 @@ import * as data from "../../data/destinations.js";
 export const getDestinationData = async () => {
   try {
     const infoDelJson = data.default;
+        infoDelJson.map((destino) => {
+            Destination.findOrCreate({
+                where:
+                {name: destino.name},
+                defaults: {
+                    image: destino.image,
+                    region: destino.region
+                }
 
-    infoDelJson.map((destino) => {
-      Destination.findOrCreate({
-        where: { name: destino.name, image: destino.image },
-      });
-    });
-  } catch (error) {
-    console.log(error.message);
-  }
+            })
+        })
+
+    }catch (error){
+        console.log(error.message)
+    }
+
 };

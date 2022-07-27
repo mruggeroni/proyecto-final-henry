@@ -11,7 +11,21 @@ export const Destination = sequelize.define('destination', {
 	image: {
 		type: DataTypes.STRING,
 		allowNull: false,
-	}
+	},
+	region: {
+		type: DataTypes.ENUM(
+			"Europa Occidental",
+			"Europa Central",
+			"Europa Oriental",
+			"Asia Oriental",
+			"Asia del Sur",
+			"Asia Sudoriental Continental",
+			"Norte América",
+			"Sudamérica",
+			"América Central"
+		),
+		allowNull: false,
+	},
 }, {
 	timestamps: false,
 });
