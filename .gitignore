@@ -106,5 +106,3 @@ dist
 # package-lock.json
 package-lock.json
 
-#ARCHIVO PARA CLAVES PRIVADAS
-privado.js
