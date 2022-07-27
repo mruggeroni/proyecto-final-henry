@@ -5,7 +5,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    visibility: hidden;
+    /* visibility: hidden; */
     /* background-color: #e4eaea; */
     padding: 1%;
     color: black;
@@ -75,6 +75,7 @@
 }
 
 .user_profile_container {
+  z-index: 990;
   position: absolute;
   top: 90px;
   right: 20px;

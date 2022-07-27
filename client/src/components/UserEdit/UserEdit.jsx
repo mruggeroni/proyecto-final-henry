@@ -1,46 +1,57 @@
+import { useAuth0 } from '@auth0/auth0-react';
 import React, { useState } from 'react';
+import MyProfile from './Menus/MyProfile/MyProfile';
+import Settings from './Menus/Settings/Settings';
 import s from './UserEdit.module.css';
 
 export default function UserEdit() {
+  const { user, logout } = useAuth0();
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const [showProfile, setShowProfile] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
+  const handleShowProfile = () => {
+    setShowProfile(true);
+    setShowSettings(false);
+  }
+  const handleShowSettings = () => {
+    setShowSettings(true);
+    setShowProfile(false);
+  }
 
   return (
     <div>
-      <button onClick={handleShow}>
-        Perfil
+      <button onClick={handleShow} className={s.user_btn}>
+        Mi Perfil
       </button>
-
       <div className={ show ? s.open_profile : s.close_profile }>
+        <div onClick={(handleClose)} className={s.profile_back}>
+        
+        </div>
         <div className={s.profile_container}>
             <div className={s.profile_menu}>
                 <div className={s.profile_menu_title}>
                     <span>Hola,</span>
-                    <h3>Chochi</h3>
+                    <h3>{user.name}</h3>
                 </div>
-                <hr />
-                <button>Mi Perfil</button>
-                <button>Bla bla bla</button>
-                <button>Datos de pago</button>
-                <button>Configuraciones</button>
-                <button>Finalizar Sesión</button>
+                <hr className={s.create_line} />
+                <div className={s.profile_btn}>
+                  <div>
+                    <button onClick={(handleShowProfile)} >Perfil</button>
+                    <button onClick={(handleShowSettings)}>Configuraciones</button>
+                  </div>
+                  <div>
+                    <button onClick={(logout)}>Finalizar Sesión</button>
+                    <button onClick={(handleClose)}>Cerrar</button>
+                  </div>
+                </div>
             </div>
             <div className={s.profile_menu_item}>
-                <p>Title</p>
-                <img src='https://www.avesdeuruguay.com/cres.jpg' 
-                className={s.profile_menu_item_img} 
-                alt="chochi not found" />    
+                <MyProfile showProfile={showProfile} setShowProfile={setShowProfile} />
+                <Settings showSettings={showSettings} setShowSettings={setShowSettings} />
             </div>
-        {/* <footer>
-          <button onClick={handleClose}>
-            Close
-          </button>
-          <button onClick={handleClose}>
-            Save Changes
-          </button>
-        </footer> */}
         </div>
       </div>
     </div>
