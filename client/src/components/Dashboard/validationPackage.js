@@ -6,9 +6,6 @@ export default function validation(input) {
 
   if (!input.name) {
     error.name = "Nombre es requerido";
-  } else if (input.name[0] === " ") {
-    error.name =
-      "El nombre debe comenzar con una letra y no puede comenzar con un espacio";
   } else if (input.name.length > 60) {
     error.name = "El nombre debe tener menos de 60 caracteres";
   }
@@ -19,9 +16,6 @@ export default function validation(input) {
   }
   if (!input.description) {
     error.description = "Descripción es requerido";
-  } else if (input.description[0] === " ") {
-    error.description =
-      "La descripción debe comenzar con una letra y no puede comenzar con un espacio";
   } else if (input.description.length > 1000) {
     error.description = "La descripción debe tener menos de 1000 caracteres.";
   }
@@ -29,25 +23,22 @@ export default function validation(input) {
   if (input.main_image.length < 0) {
     error.main_image = "Se requiere una imagen principal";
   }
-  // else if (!regUrl.test(input.main_image)) {
-  //   error.main_image = "Ingrese una URL valida.";
-  // }
 
-  if (input.images.length < 0) {
+  if (input.images.length > 0) {
     input.images.map((i) => {
-      // if (input.images[i].length < 0 || !regUrl.test(input.images[i])) {
-      //   error.description = "Se requiere una imagen secundaria n° " + i + 1;
-      // }
+      if (input.images[i].length <= 0) {
+        error.images = "Se requiere una imagen secundaria n° " + i + 1;
+      }
     });
   }
 
-  // if (input.featured) {
-  //   error.featured = "Seleccionar una opcion";
-  // }
+  if (input.featured !== true || input.featured !== false) {
+    error.featured = "Seleccionar si el paquetes es destacado o no";
+  }
 
-  // if (!input.available) {
-  //   error.available = "Seleccionar una opcion";
-  // }
+  if (input.available !== true || input.available !== false) {
+    error.available = "Seleccionar si el paquete esta disponible o no";
+  }
 
   if (input.on_sale < 0) {
     error.on_sale = "La oferna no puede ser menor a 0%";
@@ -66,35 +57,6 @@ export default function validation(input) {
   if (input.destinations.length === 0) {
     error.destinations = "Se requiere al menos un país";
   }
-  // if (input.destinations.length === 4) {
-  //   error.destinations = "Alcanzaste la cantidad máxima de destinos";
-  //   document
-  //     .getElementById("destinationsSelect")
-  //     .setAttribute("disabled", true);
-  // } else {
-  //   let createBtn = document.getElementById("create");
-  //   createBtn.removeAttribute("disabled");
-  // }
 
   return error;
 }
-
-/* const [input, setInput] = useState({
-  name: "",
-  price: 0,
-  description: "",
-  main_image: "",
-  images0: "",
-  images1: "",
-  images2: "",
-
-  featured: false,
-  destinations: [],
-  start_date: "",
-  end_date: "",
-  available: false,
-  on_sale: 0,
-  region: "",
-  seasson: "",
-  type: "",
-}); */
