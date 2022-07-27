@@ -12,12 +12,6 @@ export default function Card({ name, image, description, price }) {
     setChecked(!checked);
   }
 
-  const navigate = useNavigate();
-
-  function handleCard(e) {
-    e.preventDefault();
-    navigate("/detail/1");
-  }
 
   return (
     <div className={s.card}>

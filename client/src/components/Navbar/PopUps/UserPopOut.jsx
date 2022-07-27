@@ -39,9 +39,9 @@ export default function UserPopOut() {
             Profile
           </NavLink>
             <div>
-              <p>Bla</p>
-              <p>Bla</p>
-              <p>Bla</p>
+              <p>Mi Perfil</p>
+              <p>Historial de Compras</p>
+              <p>Servicio al Cliente</p>
             </div>
         </div>
         <hr />

@@ -12,6 +12,7 @@ export default function BotonFav({checked}) {
         // setClick(click ? false : true);
     }
 
+
     return (
         <div>
 
