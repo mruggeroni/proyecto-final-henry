@@ -223,7 +223,7 @@ export default function CreatePackage() {
   };
 
   return (
-    <div>
+    <div>      
       <Dashboard />
       <div className={style.create_container}>
         <h2>Crear un Paquete</h2>
@@ -232,7 +232,6 @@ export default function CreatePackage() {
           onSubmit={(e) => handleSubmit(e)}
           className={style.create_form_container}
         >
-          <div className={style.create_form_container}>
             <div className={style.create_input_container}>
               {error.name && <span>{error.name}</span>}
               <label className={style.create_label}>Nombre</label>
@@ -497,7 +496,6 @@ export default function CreatePackage() {
                 );
               })}
             </div>
-          </div>
 
           <div className={style.create_input_container}>
             <button
