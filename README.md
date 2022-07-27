@@ -88,6 +88,10 @@ const { featured, available, on_sale } = req.body;
 
 - *GET **"/packages/:id"** = array con el detalle de un paquete y paquetes recomendados (ver abajo)*
 
+- *GET **"/deletedPackages"** = retorna un arreglo con los paquetes "Borrados" o en caso de no existir ningun paquete borrado retorna 'No deleted packages found'*
+
+- *DELETE **"/packages"** = ¡¡RECIBE UN 'id' por query (/packages?id=n)!! Borra un paquete y retorna un mensaje 'Package deleted successfully' o en caso de que el paquete que se intente borrar ya haya sido borrado retorna un mensaje 'The package was already deleted'*
+
 GET activities: Se ejecuta en la ruta '/activities', se obtiene un objeto con la siguiente estructura:, un array de objetos, en el que cada objeto cuenta con las propiedades: id, name, image, description, price, classificationId, y classification, que a su vez tendra un objeto con el "name" de la clasificación. [ {"id":1, "name":"Tour de Monumentos", "description":"Hola soy una actividad", "image":"https://demos.maperez.es/pfhenry/Tour%20de%20Monumentos.jpg", "price":100, "classificationId":1, "classification":{"name":"Familiar"} }, {"id":3, "name":"Tour de Highlights", "description":"Hola soy una actividad", "image":"https://demos.maperez.es/pfhenry/Tour%20de%20Highlights.jpg", "price":100, "classificationId":1, "classification":{"name":"Familiar"} }, {"id":5, "name":"Tour Gastronomía Nacional", "description":"Hola soy una actividad", "image":"https://demos.maperez.es/pfhenry/Tour%20Gastronomía%20Nacional.jpg", "price":150, "classificationId":1, "classification":{"name":"Familiar"} }]
 
 GET Detalle y Get Recomendados, se ejecuetan ambos en la ruta '/packages/:id', se obtiene un array con DOS (2) elementos, en los cuales el primer elemento es el paquete requerido por ID (DETALLE), y el segundo elemento es un array con TRES (3) objetos, en el que cada objeto es un paquete recomendado con relación al paquete mostrado en detalle.

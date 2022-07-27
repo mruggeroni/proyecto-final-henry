@@ -64,7 +64,11 @@ export const Package = sequelize.define('package', {
 		defaultValue: 0,
 	},
 }, {
-	timestamps: false
+	timestamps: true,
+  createdAt: false,
+  updatedAt: false,
+	paranoid:true,
+	deletedAt: 'destroyTime'
 });
 Package.belongsToMany(Destination, {through: 'Package_Destination'})
 Destination.belongsToMany(Package, {through: 'Package_Destination'})
