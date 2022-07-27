@@ -114,9 +114,13 @@ export const getPackages = async (req, res) => {
             //     'on_sale',
             // ],
 		});
-        const packagesResult = packages && (destination && region) ? 
-            packages.filter(p => p.destinations.some(d => (d.region === region) || (d.name === destination))) :
-            packages;
+        const packagesResult = (destination && region) ? 
+            packages.filter(p => p.destinations.some(d => (d.region === region) && (d.name === destination))) :
+                destination ? 
+                packages.filter(p => p.destinations.some(d => d.name === destination)) :
+                    region ? 
+                    packages.filter(p => p.destinations.some(d => d.region === region)) :
+                    packages;
 		res.status(200).json(packagesResult);
 	} catch (error) {
 		return res.status(404).json({ message: error.message });

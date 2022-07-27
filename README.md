@@ -10,9 +10,10 @@ PORT= "(por defecto es '3001')"
 
 RUTAS DISPONIBLES:
 
-- *GET **"/fsp/packages/:limitRender"** = array con paquetes*
+- *GET **"/fsp/packages/:limitRender"** => array de paquetes*
 
 Varibles que puede recibir (a excepcion de params, son todas opcioneles).
+IMPORTANTE: aun no existe la propiedad "duration" en el modelo de paquete.
 
 ```js
 // Incluye paginado, renderizado personalisable y opciones de filtros y odenamientos solapables.
@@ -25,6 +26,52 @@ const { page, priceSort, durationSort, type, region, destination } = req.query;
 // "type", "region" y"destination" son sensibles a mayúscula o minúscula (ademas de las tildes). La busqueda debe ser LITERAL.
 const { priceFilterMin, priceFilterMax, dateMin, dateMax, durationFilterMin, durationFilterMax } = req.body;
 // son pares que forman un rango de busqueda (en los tres casos son números).
+```
+
+```json
+[
+  {
+    "id": 1,
+    "name": "Nombre",
+    "description": "Descripción.",
+    "main_image": "https://demos.maperez.es/pfhenry/rutaAustralMain.jpg",
+    "images": [
+      "https://demos.maperez.es/pfhenry/rutaAustral1.jpg",
+      "https://demos.maperez.es/pfhenry/rutaAustral2.jpg",
+      "https://demos.maperez.es/pfhenry/rutaAustral3.jpg"
+    ],
+    "price": 4000,
+    "start_date": "2022-08-27",
+    "end_date": "2022-09-17",
+    "seasson": "Invierno",
+    "type": "Pack Large",
+    "featured": true,
+    "available": true,
+    "on_sale": 0,
+    "destinations": [
+      {
+        "name": "Argentina",
+        "region": "Sudamérica"
+      }
+    ],
+    "activities": [
+      {
+        "name": "Tour de Museos",
+        "price": 150
+      }
+    ]
+  }
+]
+```
+
+- *PATCH **"/packages/:id"** => para modificar "available", "featured" y "on_sale"*
+
+Los input por body son opcionales (para mayor flexibilidad al cambiar uno o varios).
+
+```js
+const id = req.params.id;
+const { featured, available, on_sale } = req.body;
+// "featured" y "available" son BOOLEAN. "on_sale" es INTEGER.
 ```
 
 - *GET **"/packages/featured"** = array con paquetes destacados, 3 por defecto, la ruta se puede modificar con un query: "/packages/featured?limit=Numero"*
