@@ -1,29 +1,28 @@
 import { Router } from 'express';
 import { 
   createPackage, 
-  getPackages, 
   getFeaturedPackages, 
-  getTypes, 
-  getOn_sale, 
+  getTypes, getOn_sale, 
   putPackage, 
+  patchPackage,
+  getDeletedPackages,
   deletePackage,
-  getDeletedPackages
 } from '../controllers/PackagesController.js';
 import { getPackagesDetail } from '../controllers/PackagesDetailController.js';
-// import {getPackagesLimit} from '/home/sadnena/pf/proyecto-final-henry/api/controllers/prueba.js'
+import { getPackages } from '../controllers/getPackagesAllFiltersAndSortsController.js';
 
 const router = Router();
 
-// router.get('/fsppackages/:limitRender', getPackagesLimit);
+//RUTAS 
+router.get('/fsp/packages/:limitRender', getPackages);
 router.get('/packages/featured', getFeaturedPackages);
+router.get('/packages/:id', getPackagesDetail);
+router.get('/on_sale', getOn_sale);
+router.get('/types', getTypes);
+router.get('/deletedPackages', getDeletedPackages)
 router.post('/packages', createPackage);
 router.put('/packages/:id', putPackage);
-router.get('/packages', getPackages);
-router.get('/packages/:id', getPackagesDetail);
-router.get('/types', getTypes);
-router.get('/on_sale', getOn_sale);
-router.get('/deletedPackages', getDeletedPackages)
+router.patch('/packages/:id', patchPackage);
 router.delete('/packages', deletePackage);
-
 
 export default router;

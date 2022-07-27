@@ -1,0 +1,27 @@
+.addRem{
+	color: #788080;
+	font-size: 1.2vw;
+}
+
+.addRem:hover{
+	color: #4a9eab;
+}
+
+@media (max-width: 1000px) {
+  .addRem{
+  	font-size: 1.5vw;
+  }
+}
+
+@media (max-width: 850px) {
+	.addRem{
+  	font-size: 2vw;
+  }
+}
+
+@media (max-width: 500px) {
+
+  .addRem{
+	font-size: 2vw;
+	}
+}

@@ -1,5 +1,3 @@
-//RUTA EXCLUSIVA PARA CARGAR DATOS A LA DATABASE
-
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../db.js';
 import { Destination } from './Destinations.js';
@@ -33,20 +31,7 @@ export const Package = sequelize.define('package', {
 		type: DataTypes.DATEONLY,
 		allowNull: false,
 	},
-    region: {
-		type: DataTypes.ENUM(
-			"Europa Occidental",
-			"Europa Central",
-			"Europa Oriental",
-			"Asia Oriental",
-			"Asia del Sur",
-			"Asia Sudoriental Continental",
-			"Norte América",
-			"Sudamérica",
-			"América Central"
-		),
-		allowNull: false,
-	},
+    
     seasson: {
 		type: DataTypes.ENUM(
 			"Verano",

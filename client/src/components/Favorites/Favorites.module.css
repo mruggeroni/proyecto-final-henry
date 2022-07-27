@@ -1,0 +1,54 @@
+.fullContainer{
+  flex-wrap: wrap;
+  margin-top: 10vw;
+}
+
+.sort{
+  margin-left: 6vw;
+}
+
+.eachCard > * {
+  text-decoration: none;
+}
+
+.eachCard{
+  width: 50%;
+}
+
+.cardContainer{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  text-align: center;
+  margin-bottom: 5vw;
+}
+
+@media (max-width: 1000px) {
+  .fullContainer{
+    margin-top: 12vw;
+  }
+}
+
+@media (max-width: 850px) {
+  .cardContainer{
+    display: flex;
+    flex-direction: column;
+  }
+
+  .eachCard{
+    width: 100%;
+  }
+
+  .fullContainer{
+    margin-top: 20vw;
+  }
+
+}
+
+@media (max-width: 500px) {
+
+  .fullContainer{
+    margin-top: 28vw;
+  }
+
+}
