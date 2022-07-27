@@ -2,6 +2,7 @@ import { Activity } from "../../models/Activities.js";
 import { Classification } from "../../models/Classification.js";
 import * as data from '../../data/activities.js';
 
+
 export const getActivitiesData = async () =>{
     try {
         if (!(await Activity.findAndCountAll())?.count) {
@@ -19,7 +20,7 @@ export const getActivitiesData = async () =>{
                         name, 
                     },
                     defaults: {
-                        description: 'Hola soy una actividad', 
+                        description: 'Disfruta de las mejores actividades para nuestros paquetes de viajes.', 
                         image, 
                         price,
                     },

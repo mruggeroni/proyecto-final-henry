@@ -1,6 +1,7 @@
 import { Classification } from '../../models/Classification.js';
 import * as data from '../../data/classification.js';
 
+
 export const getClassificationData = async () => {
     try {
         if (!(await Classification.findAndCountAll())?.count) {
