@@ -1,3 +1,4 @@
+
 import { Classification } from "/home/sadnena/pf/proyecto-final-henry/api/models/Classification.js";
 export const getCategories = async (req, res) => {
 	try {

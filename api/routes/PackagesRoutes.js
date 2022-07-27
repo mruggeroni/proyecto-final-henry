@@ -1,3 +1,4 @@
+
 import { Router } from 'express';
 import { createPackage, getPackages, getFeaturedPackages, getTypes, getOn_sale, putPackage } from '../controllers/PackagesController.js';
 import { getPackagesDetail } from '../controllers/PackagesDetailController.js';
