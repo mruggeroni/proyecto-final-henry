@@ -12,6 +12,7 @@ import {
   getAllPackage,
   getDestinationsWithPackages,
 } from "../../redux/actions/index";
+import BacktoTop from "../BacktoTop/BacktoTop";
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -65,6 +66,7 @@ export default function Home() {
           </div>
         </React.Fragment>
       )}
+      {/* <BacktoTop/> */}
       {/* <Footer /> */}
     </div>
   );

@@ -1,0 +1,83 @@
+.tabNav {
+    position: absolute;
+    top: 6.3vw;
+    width: 28.4vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    visibility: visible;
+    background-color: #e4eaea;
+    padding: 1%;
+    color: black;
+    /* margin-right: 1.06vw; */
+  }
+
+.popUpContainer{
+    width: 100%;
+    border-bottom: solid #4a9eaae6;
+    display: flex;
+    flex-direction: row; 
+}
+  .open_favorite {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    visibility: visible;
+    margin-right: 1.06vw;
+    color: black;
+    font-size: 1.5vw;
+  }
+
+  .allFavorite_btn{
+    z-index: 988;
+    border: none;
+    width: 90%;
+    background-color: #e4eaea;
+    font-size: 1.3vw;
+    padding: 2%;
+    text-decoration: none;
+    justify-items: center;
+  }
+
+  .allFavorite_btn:hover{
+    background-color: #4a9eaae6;
+    color: #fafafa;
+  }
+
+  /* .user_profile_container {
+  position: absolute;
+  top: 90px;
+  right: 20px;
+  box-shadow: 0 2px 2px #161616;
+  width: 28.4vw;
+  /* height: 50vh; */
+  /* display: none;
+  padding: 15px 0;
+  visibility: hidden;
+  background-color: #fafafa;
+  margin-right: 9vw;
+
+} */ 
+
+.profile_container {
+  position: relative;
+}
+
+.user_profile_container {
+  position: absolute;
+  top: 90px;
+  right: 20px;
+  box-shadow: 0 2px 2px #161616;
+  width: 28.4vw;
+  display: none;
+  padding: 15px 0;
+  visibility: hidden;
+  background-color: #fafafa;
+  margin-right: 9vw;
+}
+
+.favTitle{
+    font-size: 1.5vw;
+    color: black;
+}
+

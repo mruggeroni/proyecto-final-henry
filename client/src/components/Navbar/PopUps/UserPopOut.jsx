@@ -12,6 +12,9 @@ export default function UserPopOut() {
     document
       .getElementById("profile_container")
       .classList.toggle(`${style.open_profile}`);
+      console.log( document
+        .getElementById("profile_container")
+        .classList)
   }
 
   return !isAuthenticated ? (
@@ -35,6 +38,11 @@ export default function UserPopOut() {
           <NavLink to="/dashboard" className={style.user_profile_link}>
             Profile
           </NavLink>
+            <div>
+              <p>Bla</p>
+              <p>Bla</p>
+              <p>Bla</p>
+            </div>
         </div>
         <hr />
         <button className={style.user_profile_btn} onClick={logout}>

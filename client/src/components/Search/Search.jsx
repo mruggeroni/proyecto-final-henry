@@ -55,7 +55,6 @@ export default function FilteredSearch() {
   useEffect(async () => {
     setLoading(true);
     await dispatch(getAllPackage());
-    await dispatch(filterPackagesByDestination("all"));
     await dispatch(getAllDestinations());
     await dispatch(getOnSale());
     await dispatch(getAllActivities());
@@ -66,7 +65,6 @@ export default function FilteredSearch() {
   useEffect(() => {
     return async () => {
       await dispatch(getAllPackage());
-      await dispatch(filterPackagesByDestination("all"));
       await dispatch(getAllDestinations());
       await dispatch(getOnSale());
       await dispatch(getAllActivities());

@@ -5,8 +5,9 @@ import { AiOutlineHeart } from "react-icons/ai";
 import style from "./Navbar.module.css";
 import NavDestinations from "./NavDestinations";
 import NavPromotions from "./NavPromotions";
-import UserPopOut from "./UserPopOut.jsx";
-import FavoritePopOut from "./FavoritePopOut.jsx";
+import UserPopOut from "./PopUps/UserPopOut.jsx";
+import FavoritePopOut from "./PopUps/FavoritePopOut.jsx";
+import PopUps from "./PopUps/PopUps";
 
 export default function Navbar() {
   useEffect(() => {
@@ -96,7 +97,7 @@ export default function Navbar() {
           </button>
 
           <div className={style.icons}>
-            <UserPopOut />
+            <PopUps />
           </div>
         </nav>
       </div>
