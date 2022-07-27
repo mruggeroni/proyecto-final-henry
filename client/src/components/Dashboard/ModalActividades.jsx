@@ -24,6 +24,7 @@ export default function ModalActividades({ show, setShow }) {
     e.preventDefault();
     console.log(inputModal);
     const valida = validateActivity({ ...inputModal });
+    // dispatch(crearActividad());
     setError(valida);
     if (valida.name || valida.description || valida.price) {
       console.log(valida);
@@ -39,7 +40,7 @@ export default function ModalActividades({ show, setShow }) {
         image: "",
         price: 0,
       });
-      //   setShow(false); //Para cerrar el modal
+      //   setShowActividades(false); //Para cerrar el modal
     }
   };
 
@@ -94,7 +95,6 @@ export default function ModalActividades({ show, setShow }) {
                 onChange={(e) => handleChange(e)}
                 type="text"
                 placeholder="Imagen actividad"
-                autoFocus
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="price">
