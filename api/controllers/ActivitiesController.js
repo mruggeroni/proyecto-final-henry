@@ -36,3 +36,18 @@ export const createActivity = async (req, res) => {
 		return res.status(500).json({ message: error.message });
 	}
 }
+export const putActivity = async (req, res) => {
+	try {
+	  let nuevactividad = req.body
+	  let FindId = req.params.id
+	  const updateado = await Activity.update(nuevactividad, {
+		where: {
+		  id: FindId
+		}})
+		res.status(200).json({message:'Activity updated'})
+	} catch (error) {
+	  return res.status(500).json({ message: error.message });
+	}
+  
+	  
+  }

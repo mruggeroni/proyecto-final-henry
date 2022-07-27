@@ -1,5 +1,5 @@
+import { sequelize } from '/home/sadnena/pf/proyecto-final-henry/api/db';
 import { DataTypes } from 'sequelize';
-import { sequelize } from '../db.js';
 
 export const User = sequelize.define('user', {
 	first_name: {
@@ -15,16 +15,20 @@ export const User = sequelize.define('user', {
         allowNull: false,
 		unique: true,
 	},
-	country: {
-		type: DataTypes.STRING,
-		allowNull: true,
-	},
-	city: {
-		type: DataTypes.STRING,
+	// country: {
+	// 	type: DataTypes.STRING,
+	// 	allowNull: true,
+	// },
+	// city: {
+	// 	type: DataTypes.STRING,
+	// 	allowNull: true,
+	// },
+    adress: {
+		type: DataTypes.TEXT,
 		allowNull: true,
 	},
     phone: {
-		type: DataTypes.INTEGER,
+		type: DataTypes.STRING,
 		allowNull: true,
 	},
 
@@ -38,6 +42,7 @@ export const User = sequelize.define('user', {
 		type: DataTypes.STRING,
         allowNull: true,
 	},
-}, {
+}, 
+{
 	timestamps: false
 });

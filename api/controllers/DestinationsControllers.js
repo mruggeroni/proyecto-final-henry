@@ -5,10 +5,6 @@ export const getDestination = async (req, res) => {
   try {
     const destinations = await Destination.findAll();
     res.status(200).send(destinations)
-    // const data = fs.readFileSync('D:/FinalProject-Henry/proyecto-final-henry/api/data/destinations.json', 'utf8');
-    // console.log(JSON.parse(data))
-    // res.status(200).json(JSON.parse(data))
-
   } catch (error) {
     res.status(400).send({ data: error.message })
   }
@@ -34,4 +30,19 @@ export const createDestination = async (req, res) => {
 	} catch (error) {
 		return res.status(500).json({ message: error.message });
 	}
+}
+export const putDestinations = async (req, res) => {
+  try {
+    let nuevoDestino = req.body
+    let FindId = req.params.id
+    const updateado = await Destination.update(nuevoDestino, {
+      where: {
+        id: FindId
+      }})
+      res.status(200).json({message:'Destination updated'})
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+
+	
 }

@@ -11,13 +11,44 @@ get "/on_sale" => array de 3 paquetes aleatorios con la propiedad 'on_sale' > 0 
 
 get "/destinations" = array con los destinos
 
-get "/activities" = array con los tipos de actividades
-
 get "/packages" = array con paquetes
 
 get "/activities" = array con actividades
 
 get "/packages/:id" = array con el detalle de un paquete y paquetes recomendados (ver abajo)
+
+post "/packages" = crea paquetes, actividades, destinos y clasificaciones. Tambien acepta todos estos datos preexistentes.
+
+post "/activities" = crea actividades.
+IMPORTANTE: Al crear por separado elegir clasifación preexistente
+```json
+{
+        "name": "jsalkdija",
+        "description": "hjjbkhbjhbj",
+        "image": "https://demos.maperez.es/pfhenry/Tour%20de%20Highlights.jpg",
+        "price": 100,
+        "classification": "Familiar"
+}
+```
+
+post "/classification" = crea clasificaciones.
+```json
+{
+  "name": "jsalkdija",
+  "image": "https://demos.maperez.es/pfhenry/Tour%20de%20Highlights.jpg"
+}
+```
+post "/destinations" = crea destinos.
+```json
+{
+  "name": "jsalkdija",
+  "image": "https://demos.maperez.es/pfhenry/Tour%20de%20Highlights.jpg",
+  "region": "Europa Occidental"
+}
+```
+put "/packages/id" = puede modificar todas las propiedades de un paquete, con caracteristicas preexistentes o nuevas, si no cambia un atributo, dejar el valor previo. Si se modifica un destino/clasificacion o actividad creando una nueva, esa se guardara para poder ser asignada posteriormente.
+
+put
 
 Get activities: Se ejecuta en la ruta '/activities', se obtiene un objeto con la siguiente estructura:, un array de objetos, en el que cada objeto cuenta con las propiedades: id, name, image, description, price, classificationId, y classification, que a su vez tendra un objeto con el "name" de la clasificación. [ {"id":1, "name":"Tour de Monumentos", "description":"Hola soy una actividad", "image":"https://demos.maperez.es/pfhenry/Tour%20de%20Monumentos.jpg", "price":100, "classificationId":1, "classification":{"name":"Familiar"} }, {"id":3, "name":"Tour de Highlights", "description":"Hola soy una actividad", "image":"https://demos.maperez.es/pfhenry/Tour%20de%20Highlights.jpg", "price":100, "classificationId":1, "classification":{"name":"Familiar"} }, {"id":5, "name":"Tour Gastronomía Nacional", "description":"Hola soy una actividad", "image":"https://demos.maperez.es/pfhenry/Tour%20Gastronomía%20Nacional.jpg", "price":150, "classificationId":1, "classification":{"name":"Familiar"} }]
 

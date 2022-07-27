@@ -1,9 +1,9 @@
 
 import { Classification } from "/home/sadnena/pf/proyecto-final-henry/api/models/Classification.js";
-export const getCategories = async (req, res) => {
+export const getClassification = async (req, res) => {
 	try {
-		const categories = await Classification.findAll();
-		res.status(200).json(categories);
+		const classification = await Classification.findAll();
+		res.status(200).json(classification);
 	} catch (error) {
 		return res.status(500).json({ message: error.message });
 	}
@@ -29,4 +29,18 @@ export const createClassification = async (req, res) => {
 	} catch (error) {
 		return res.status(500).json({ message: error.message });
 	}
+}
+export const putClassification = async (req, res) => {
+	try {
+		let nuevaClassification = req.body
+		let FindId = req.params.id
+		const updateado = await Classification.update(nuevaClassification, {
+			where: {
+				id: FindId
+			}})
+		res.status(200).json({message:'Classification updated'})
+	} catch (error) {
+		return res.status(500).json({ message: error.message });
+	}
+
 }
