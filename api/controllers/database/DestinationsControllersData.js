@@ -11,7 +11,8 @@ export const getDestinationData = async () =>{
                 Destination.findOrCreate({
                     where:
                     {name: destino.name,
-                    image: destino.image}
+                    image: destino.image,
+                region: paquete.region,}
                 })
             })
         })

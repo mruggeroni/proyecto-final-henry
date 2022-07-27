@@ -33,20 +33,7 @@ export const Package = sequelize.define('package', {
 		type: DataTypes.DATEONLY,
 		allowNull: false,
 	},
-    region: {
-		type: DataTypes.ENUM(
-			"Europa Occidental",
-			"Europa Central",
-			"Europa Oriental",
-			"Asia Oriental",
-			"Asia del Sur",
-			"Asia Sudoriental Continental",
-			"Norte América",
-			"Sudamérica",
-			"América Central"
-		),
-		allowNull: false,
-	},
+    
     seasson: {
 		type: DataTypes.ENUM(
 			"Verano",

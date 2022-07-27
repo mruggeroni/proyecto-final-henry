@@ -52,40 +52,35 @@ export const createPackage = async (req, res) => {
 	activities, destinations, start_date, end_date, region, seasson, type } = req.body;
 		console.log('PROBANDO')
 	try {
-		const newClassification = []
-		for(let i =0; i< activities.length; i++){
-			let nameC = activities[i].classification.name
-			let imageC = activities[i].classification.image
-			let clasificacionCreada = await Classification.findOrCreate({where: { name: nameC},
-				defaults: {
-					image: imageC 
-				  }}
-)
-			newClassification.push(clasificacionCreada[0])
-		}
+
 		const newDestination = []
-		for(let i=0; i< destinations.length; i++){
-			const destinosCreados = await Destination.findOrCreate({where:{name: destinations[i].name 
-				},	defaults: {
-					image: destinations[i].image
-				  }}
-)
-				newDestination.push(destinosCreados[0])
-		}
-		const newActivities = []
-		for(let i=0; i< activities.length; i++){
+		if (destinations){
+			for(let i=0; i< destinations.length; i++){
+				const destinosCreados = await Destination.findOrCreate({where:{name: destinations[i].name 
+					},	defaults: {
+						image: destinations[i].image
+					  }}
+	)
+					newDestination.push(destinosCreados[0])
+			}}
+			const newActivities = []
+			if (activities){
+				
+			for(let i=0; i< activities.length; i++){
 			const actividadesCreadas = await Activity.findOrCreate({where: {name: activities[i].name}, defaults: {
 				description: activities[i].description, 
 				image: activities[i].image, price: activities[i].price
 				  }})
-				const clasificacionEncontrada = await Classification.findOne({where: {name: activities[i].classification.name}})
-				await clasificacionEncontrada.addActivities(actividadesCreadas[0])
+				if(activities.classification){
+					const clasificacionEncontrada = await Classification.findOrCreate({where: {name: activities[i].classification.name}, 
+						defaults: {image: activities[i].classification.image}})
+				await clasificacionEncontrada[0].addActivities(actividadesCreadas[0])
 			newActivities.push(actividadesCreadas[0])
-		}
+			}}}
 		const newPackage = await Package.findOrCreate({ where:{
-			name:name, description: description, main_image: main_image, images: images, 
+			name:name,description: description, main_image: main_image, images: images, 
 			price: price, featured: featured, available : available, on_sale: on_sale,
-			start_date: start_date, end_date: end_date, region: region, seasson: seasson, type: type }
+			start_date: start_date, end_date: end_date, region: region, seasson: seasson, type: type}, 
 		});
 		for(let i=0; i< newActivities.length; i++){
 			await newPackage[0].addActivities(newActivities[i])
@@ -94,7 +89,10 @@ export const createPackage = async (req, res) => {
 			await newPackage[0].addDestinations(newDestination[i])
 		}
 		console.log(newPackage)
-		res.json({message: 'Package created successfully'});
+		if(newPackage[1] === false){
+			res.status(500).json({message: 'This Package alredy exists'})
+		}else{res.json({message: 'Package created successfully'});}
+		
 	} catch (error) {
 		return res.status(500).json({ message: error.message });
 	}}
@@ -107,7 +105,8 @@ export	const putPackage = async (req, res)=>{
 			where: {
 				id,
 			}})
-		const encontrado = await  Package.findOne({where: {id}})
+			const encontrado = await  Package.findOne({where: {id}})
+		if (destinations){
 		console.log(encontrado)
 		let destinationUpdate = []
 		for(let i=0; i< destinations.length; i++){
@@ -119,7 +118,9 @@ export	const putPackage = async (req, res)=>{
 			console.log(destino)
 		}
 		await encontrado.setDestinations(destinationUpdate)
-		let actividadUpdate = []
+		}	
+		if (activities){
+			let actividadUpdate = []
 		for(let i=0; i< activities.length; i++){
 			const actividad = await Activity.findOrCreate({where: {name: activities[i].name},
 				defaults: {
@@ -129,17 +130,18 @@ export	const putPackage = async (req, res)=>{
 			  	}})
 			actividadUpdate.push(actividad[0])
 			console.log(actividad)
+			if(activities[i].classification){
+				const clasificacion = await Classification.findOrCreate({where: {name: activities[i].classification.name},
+					defaults: {
+						image: activities[i].classification.image,
+					  }})
+				const actividadEncontrada = await Activity.findOne({where: {name: activities[i].name}})
+				await clasificacion[0].setActivities(actividadEncontrada)
+				console.log('HERE')
+				console.log(clasificacion)
+			}
 		}
 		await encontrado.setActivities(actividadUpdate)
-		for(let i=0; i< activities.length; i++){
-			const clasificacion = await Classification.findOrCreate({where: {name: activities[i].classification.name},
-				defaults: {
-					image: activities[i].classification.image,
-			  	}})
-			const actividadEncontrada = await Activity.findOne({where: {name: activities[i].name}})
-			await clasificacion[0].setActivities(actividadEncontrada)
-			console.log('HERE')
-			console.log(clasificacion)
 		}
 		console.log(updateado)
 		res.json({message: 'Package updated successfully'})

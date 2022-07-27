@@ -18,7 +18,7 @@ export const getPackageData = async () =>{
                         description: paquete.description, 
                         images: paquete.images,
                         on_sale: paquete.on_sale,
-                        region: paquete.region,
+                        
                         seasson: paquete.seasson,
                         type: paquete.type,
                         start_date: paquete.start_date,
