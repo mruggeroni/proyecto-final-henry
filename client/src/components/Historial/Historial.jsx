@@ -2,9 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import Card from "./Card/Card.jsx";
-import View from "./View.jsx";
-import SortPrice from "./SortPrice.jsx";
+
 import {
   filterPackagesByDestination,
   getAllActivities,
@@ -13,16 +11,14 @@ import {
   getDestinationsWithPackages,
   getOnSale,
 } from "./../../redux/actions/index";
+import s from '../Search/Search.module.css'
+import style from "../Search/Select.module.css";
+import Card from "../Search/Card/Card";
+import SortPrice from "../Search/SortPrice.jsx";
+import View from "../Search/View";
 import Paginado from "../Paginado/paginado";
-import s from "./Search.module.css";
-import style from "./Select.module.css";
 
-export default function FilteredSearch() {
-  /* 
-    cuando estas parado en /search y refrescas, no se carga el estado de allPackages
-    YA ESTA SOLICIONADO.. LOS DESTINOS QUE SE DEBEN CARGAR EN EL FILTRO TAMBIEN... 
-    se soliciono con el useEffect
-  */
+export default function Historial() {
 
   const dispatch = useDispatch();
   const allPackages = useSelector((state) =>

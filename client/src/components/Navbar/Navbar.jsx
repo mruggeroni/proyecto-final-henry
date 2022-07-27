@@ -1,12 +1,9 @@
 import React, { useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { BsJustify, BsFillCaretRightFill } from "react-icons/bs";
-import { AiOutlineHeart } from "react-icons/ai";
 import style from "./Navbar.module.css";
 import NavDestinations from "./NavDestinations";
 import NavPromotions from "./NavPromotions";
-import UserPopOut from "./PopUps/UserPopOut.jsx";
-import FavoritePopOut from "./PopUps/FavoritePopOut.jsx";
 import PopUps from "./PopUps/PopUps";
 
 export default function Navbar() {
