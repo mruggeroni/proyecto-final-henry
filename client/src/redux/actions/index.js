@@ -72,10 +72,7 @@ export const getTypes = () => {
 export const createPackage = (payload) => {
   return async function (dispatch) {
     try {
-      const respuesta = await axios.post(
-        "/packages",
-        payload
-      );
+      const respuesta = await axios.post("/packages", payload);
       return respuesta;
     } catch (e) {
       alert(e.message);
@@ -96,3 +93,25 @@ export function filterPackagesByDestination(payload) {
     payload,
   };
 }
+
+export const crearDestino = (payload) => {
+  return async function (dispatch) {
+    try {
+      const respuesta = await axios.post("/destinations", payload);
+      return respuesta;
+    } catch (e) {
+      alert(e.message);
+    }
+  };
+};
+
+export const crearActividad = (payload) => {
+  return async function (dispatch) {
+    try {
+      const respuesta = await axios.post("/activities", payload);
+      return respuesta;
+    } catch (e) {
+      alert(e.message);
+    }
+  };
+};
