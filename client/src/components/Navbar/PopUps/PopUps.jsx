@@ -14,20 +14,20 @@ export default function PopUps() {
       {/* <Nav.Item >
         <AiOutlineHeart />
       </Nav.Item> */}
-      <Nav.Item className={s.tabNav}>
-        <FavoritesPopOut />
+
+      <Nav.Item >  
+      <FavoritesPopOut />
+
       </Nav.Item>
       {/* <Nav.Item >
         <BsPersonPlusFill />
         </Nav.Item> */}
       {/* <Nav.Item >
       <AiOutlineShoppingCart />
-    </Nav.Item> */}
-      <Nav.Item className={s.tabNav}>
-        <CartPopOut />
-      </Nav.Item>
-      <Nav.Item className={s.tabNav}>
-        <UserPopOut />
+
+      </Nav.Item> */}
+      <Nav.Item>  
+        <CartPopOut/>
       </Nav.Item>
     </Nav>
   );

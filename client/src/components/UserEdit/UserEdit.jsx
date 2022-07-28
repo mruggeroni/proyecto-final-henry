@@ -1,115 +1,59 @@
-import React, { useState } from "react";
-import Modal from "react-bootstrap/Modal";
-import { useDispatch } from "react-redux";
+import { useAuth0 } from '@auth0/auth0-react';
+import React, { useState } from 'react';
+import MyProfile from './Menus/MyProfile/MyProfile';
+import Settings from './Menus/Settings/Settings';
+import s from './UserEdit.module.css';
 
-import { Formik } from "formik";
-import * as yup from "yup";
-import { Button, Col, Form, InputGroup, Row } from "react-bootstrap";
-import {
-  crearDestino,
-  getAllActivities,
-  getAllDestinations,
-} from "../../redux/actions";
+export default function UserEdit() {
+  const { user, logout } = useAuth0();
+  const [show, setShow] = useState(false);
 
-const schema = yup.object().shape({
-  name: yup
-    .string()
-    .min(2, "Muy corto")
-    .max(20, "Maximo 20")
-    .required("Requerido"),
-  image: yup.string().required("Requerido"),
-});
-
-export default function UserEdit({ showProfile, setShowProfile }) {
-  const dispatch = useDispatch();
-
-  const handleClose = () => {
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  const [showProfile, setShowProfile] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
+  const handleShowProfile = () => {
+    setShowProfile(true);
+    setShowSettings(false);
+  }
+  const handleShowSettings = () => {
+    setShowSettings(true);
     setShowProfile(false);
-  };
-
-  const handleCrearDestino = async (e) => {
-    const respuesta = await dispatch(crearDestino(e));
-    await dispatch(getAllDestinations());
-    await dispatch(getAllActivities());
-    setShowProfile(false);
-    /* setInput({
-      ...input,
-      destinations: [...input.destinations, e.name],
-    }); */
-    alert(respuesta.data.message);
-  };
+  }
 
   return (
-    <>
-      <Modal show={showProfile} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Crear destino</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Formik
-            validationSchema={schema}
-            onSubmit={(values) => {
-              // same shape as initial values
-              handleCrearDestino(values);
-            }}
-            initialValues={{
-              name: "",
-              image: "",
-            }}
-          >
-            {({
-              handleSubmit,
-              handleChange,
-              handleBlur,
-              values,
-              touched,
-              isValid,
-              errors,
-            }) => (
-              <Form noValidate onSubmit={handleSubmit}>
-                <Row className="mb-3">
-                  <Form.Group as={Col} md="12">
-                    <Form.Label>Nombre</Form.Label>
-                    <Form.Control
-                      type="text"
-                      name="name"
-                      value={values.name}
-                      onChange={handleChange}
-                      isInvalid={!!errors.name}
-                    />
-                    <Form.Control.Feedback type="invalid">
-                      {errors.name}
-                    </Form.Control.Feedback>
-                  </Form.Group>
-                </Row>
-                <Row className="mb-3">
-                  <Form.Group as={Col} md="12">
-                    <Form.Label>Imagen</Form.Label>
-                    <Form.Control
-                      type="text"
-                      name="image"
-                      value={values.image}
-                      onChange={handleChange}
-                      isInvalid={!!errors.image}
-                    />
-                    <Form.Control.Feedback type="invalid">
-                      {errors.image}
-                    </Form.Control.Feedback>
-                  </Form.Group>
-                </Row>
-
-                <Button variant="secondary" onClick={handleClose}>
-                  Cerrar
-                </Button>
-                <Button variant="primary" type="submit">
-                  Crear destino
-                </Button>
-              </Form>
-            )}
-          </Formik>
-        </Modal.Body>
-        <Modal.Footer></Modal.Footer>
-      </Modal>
-    </>
+    <div>
+      <button onClick={handleShow} className={s.user_btn}>
+        Mi Perfil
+      </button>
+      <div className={ show ? s.open_profile : s.close_profile }>
+        <div onClick={(handleClose)} className={s.profile_back}>
+        
+        </div>
+        <div className={s.profile_container}>
+            <div className={s.profile_menu}>
+                <div className={s.profile_menu_title}>
+                    <span>Hola,</span>
+                    <h3>{user.name}</h3>
+                </div>
+                <hr className={s.create_line} />
+                <div className={s.profile_btn}>
+                  <div>
+                    <button onClick={(handleShowProfile)} >Perfil</button>
+                    <button onClick={(handleShowSettings)}>Configuraciones</button>
+                  </div>
+                  <div>
+                    <button onClick={(logout)}>Finalizar Sesión</button>
+                    <button onClick={(handleClose)}>Cerrar</button>
+                  </div>
+                </div>
+            </div>
+            <div className={s.profile_menu_item}>
+                <MyProfile showProfile={showProfile} setShowProfile={setShowProfile} />
+                <Settings showSettings={showSettings} setShowSettings={setShowSettings} />
+            </div>
+        </div>
+      </div>
+    </div>
   );
 }
