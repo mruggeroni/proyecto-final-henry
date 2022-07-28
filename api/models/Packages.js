@@ -66,7 +66,11 @@ export const Package = sequelize.define('package', {
 		defaultValue: 0,
 	},
 }, {
-	timestamps: false
+	timestamps: true,
+  createdAt: false,
+  updatedAt: false,
+	paranoid:true,
+	deletedAt: 'destroyTime'
 });
 
 export const OrderItem = sequelize.define('order_item', {
