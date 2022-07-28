@@ -63,5 +63,3 @@ export const User = sequelize.define('user', {
 	paranoid:true,
 	deletedAt: 'destroyTime',
 });
-User.hasMany(Order)
-Order.belongsTo(User)
