@@ -3,7 +3,6 @@ import { sequelize } from '../db.js';
 import { Destination } from './Destinations.js';
 import { Activity } from './Activities.js';
 import { Order } from './Orders.js';
-
 export const Package = sequelize.define('package', {
 	name: {
 		type: DataTypes.STRING,

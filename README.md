@@ -63,7 +63,8 @@ const { priceFilterMin, priceFilterMax, dateMin, dateMax, durationFilterMin, dur
   }
 ]
 ```
-
+- *POST **"/user"** => Verifica si el usuario ingresado por el pop(Auth0) es nuevo (se esta registrando) o si ya existe (se esta logeando), en base a eso lo guarda en la Database local con el rol default de client (si es nuevo) o identifica su rol si se esta logeando. Esta ruta responde con un array de dos posiciones ['accion', 'rol'], el primer elemento es un string que indica register o login, si es nuevo usuario saldra 'register' indicando que si bien ya esta registrado, debería brindar información adicional (ver modelo user), de lo contrario saldra 'login', indicando que esto no es necesario. El segundo campo muestra el rol, Admin o Client, que es siempre Client si el primer elemento es register.
+IMPORTANTE: No probar esta ruta en postman, solo con el login del front ¿Por qué? porque para crear el usuario se esta requiriendo info de Auth0, por lo que se necesita primero que Auth0 verifique al usuario. Esto ya esta conectado (ver component UserPopOut, la función handleLogin, ver actions createUser)
 - *PATCH **"/packages/:id"** => para modificar "available", "featured" y "on_sale"*
 
 Los input por body son opcionales (para mayor flexibilidad al cambiar uno o varios).
@@ -82,17 +83,58 @@ const { featured, available, on_sale } = req.body;
 
 - *GET **"/destinations"** = array con los destinos*
 
-- *GET **"/activities"** = array con los tipos de actividades*
-
 - *GET **"/activities"** = array con actividades*
+
+
+- *GET **"/classifications"** = array con clasificaciones*
+
 
 - *GET **"/packages/:id"** = array con el detalle de un paquete y paquetes recomendados (ver abajo)*
 
+post "/packages" = crea paquetes, actividades, destinos y clasificaciones. Tambien acepta todos estos datos preexistentes.
+
+post "/activities" = crea actividades.
+IMPORTANTE: Al crear por separado elegir clasifación preexistente
+```json
+{
+        "name": "jsalkdija",
+        "description": "hjjbkhbjhbj",
+        "image": "https://demos.maperez.es/pfhenry/Tour%20de%20Highlights.jpg",
+        "price": 100,
+        "classification": "Familiar"
+}
+```
+
+post "/classification" = crea clasificaciones.
+```json
+{
+  "name": "jsalkdija",
+  "image": "https://demos.maperez.es/pfhenry/Tour%20de%20Highlights.jpg"
+}
+```
+post "/destinations" = crea destinos.
+```json
+{
+  "name": "jsalkdija",
+  "image": "https://demos.maperez.es/pfhenry/Tour%20de%20Highlights.jpg",
+  "region": "Europa Occidental"
+}
+```
+put "/packages/id" = puede modificar todas las propiedades de un paquete, con caracteristicas preexistentes o nuevas, si no cambia un atributo, dejar el valor previo. Si se modifica un destino/clasificacion o actividad creando una nueva, esa se guardara para poder ser asignada posteriormente.
+
+put "/destinations/id"
+
+put "/activities/id"
+
+put "/classifications/id"
+
+Get activities: Se ejecuta en la ruta '/activities', se obtiene un objeto con la siguiente estructura:, un array de objetos, en el que cada objeto cuenta con las propiedades: id, name, image, description, price, classificationId, y classification, que a su vez tendra un objeto con el "name" de la clasificación. [ {"id":1, "name":"Tour de Monumentos", "description":"Hola soy una actividad", "image":"https://demos.maperez.es/pfhenry/Tour%20de%20Monumentos.jpg", "price":100, "classificationId":1, "classification":{"name":"Familiar"} }, {"id":3, "name":"Tour de Highlights", "description":"Hola soy una actividad", "image":"https://demos.maperez.es/pfhenry/Tour%20de%20Highlights.jpg", "price":100, "classificationId":1, "classification":{"name":"Familiar"} }, {"id":5, "name":"Tour Gastronomía Nacional", "description":"Hola soy una actividad", "image":"https://demos.maperez.es/pfhenry/Tour%20Gastronomía%20Nacional.jpg", "price":150, "classificationId":1, "classification":{"name":"Familiar"} }]
 - *GET **"/deletedPackages"** = retorna un arreglo con los paquetes "Borrados" o en caso de no existir ningun paquete borrado retorna 'No deleted packages found'*
 
 - *DELETE **"/packages"** = ¡¡RECIBE UN 'id' por query (/packages?id=n)!! Borra un paquete y retorna un mensaje 'Package deleted successfully' o en caso de que el paquete que se intente borrar ya haya sido borrado retorna un mensaje 'The package was already deleted'*
 
 GET activities: Se ejecuta en la ruta '/activities', se obtiene un objeto con la siguiente estructura:, un array de objetos, en el que cada objeto cuenta con las propiedades: id, name, image, description, price, classificationId, y classification, que a su vez tendra un objeto con el "name" de la clasificación. [ {"id":1, "name":"Tour de Monumentos", "description":"Hola soy una actividad", "image":"https://demos.maperez.es/pfhenry/Tour%20de%20Monumentos.jpg", "price":100, "classificationId":1, "classification":{"name":"Familiar"} }, {"id":3, "name":"Tour de Highlights", "description":"Hola soy una actividad", "image":"https://demos.maperez.es/pfhenry/Tour%20de%20Highlights.jpg", "price":100, "classificationId":1, "classification":{"name":"Familiar"} }, {"id":5, "name":"Tour Gastronomía Nacional", "description":"Hola soy una actividad", "image":"https://demos.maperez.es/pfhenry/Tour%20Gastronomía%20Nacional.jpg", "price":150, "classificationId":1, "classification":{"name":"Familiar"} }]
+>>>>>>> develop
 
 GET Detalle y Get Recomendados, se ejecuetan ambos en la ruta '/packages/:id', se obtiene un array con DOS (2) elementos, en los cuales el primer elemento es el paquete requerido por ID (DETALLE), y el segundo elemento es un array con TRES (3) objetos, en el que cada objeto es un paquete recomendado con relación al paquete mostrado en detalle.
 

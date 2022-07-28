@@ -1,5 +1,6 @@
 import { DataTypes, STRING } from 'sequelize';
 import { sequelize } from '../db.js';
+import { Order } from './Orders.js';
 
 export const User = sequelize.define('user', {
 	first_name: {
@@ -9,6 +10,10 @@ export const User = sequelize.define('user', {
 	last_name: {
 		type: DataTypes.STRING,
 		allowNull: false,
+	},
+	nickname: {
+		type: DataTypes.STRING,
+		allowNull: true,
 	},
 	full_name: {
 		type: DataTypes.VIRTUAL,
@@ -21,31 +26,24 @@ export const User = sequelize.define('user', {
 		allowNull: false,
 		unique: true,
 	},
+	password: {
+		type: DataTypes.STRING,
+		allowNull: true,
+		unique: false,
+	},
 	phone: {
-		type: DataTypes.STRING,
-		allowNull: false,
-	},
-	address_line1: {
-		type: DataTypes.STRING,
-		allowNull: false,
-	},
-	address_line2: {
 		type: DataTypes.STRING,
 		allowNull: true,
 	},
 	city: {
 		type: DataTypes.STRING,
-		allowNull: false,
+		allowNull: true,
 	},
 	state: {
 		type: DataTypes.STRING,
-		allowNull: false,
+		allowNull: true,
 	},
 	postal_code: {
-		type: DataTypes.STRING,
-		allowNull: false,
-	},
-	country: {
 		type: DataTypes.STRING,
 		allowNull: true,
 	},
