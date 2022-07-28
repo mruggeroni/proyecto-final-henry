@@ -15,7 +15,7 @@ import validationPackage from "./validationPackage.js";
 import ModalActividades from "./ModalActividades";
 import ModalDestinos from "./ModalDestinos";
 
-export default function CreatePackage() {
+export default function CreatePackage({ showCreatePackage, setShowCreatePackage }) {
   const dispatch = useDispatch();
   const [aux, setAux] = useState(false);
   useEffect(() => {
@@ -245,8 +245,9 @@ export default function CreatePackage() {
   const handleShowDestinos = () => setShowDestinos(true);
 
   return (
+    !showCreatePackage ? null
+    :
     <div>
-      <Dashboard />
       <div className={style.create_container}>
         <h2>Crear un Paquete</h2>
         <hr className={style.create_line} />

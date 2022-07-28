@@ -55,6 +55,10 @@
   width: 25%;
   height: 100vh;
   z-index: 995;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
   overflow-y: visible;
   overflow-x: hidden;
   background-color: #fff;

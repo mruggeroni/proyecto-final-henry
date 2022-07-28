@@ -11,9 +11,11 @@ import {
   GET_ALL_DESTINATIONS,
   GET_ON_SALE,
   GET_RELATIONATED,
+  GET_DESTINATIONS_WITH_PACKAGES,
   POST_PACKAGE,
   ORDER_BY_PRICE,
   FILTER_BY_DESTINATION,
+  FILTER_PACKAGES_BY_DATE
   GET_DESTINATIONS_WITH_PACKAGES,
   GET_ALL_CATEGORIES,
 } from "./../actions/index.js";
@@ -38,7 +40,6 @@ const initialState = {
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_ALL_PACKAGES:
-      console.log(action.payload);
       return {
         ...state,
         allPackages: action.payload,
@@ -63,7 +64,6 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         destinationsWithPackages: arr,
       };
-
     case GET_ON_SALE:
       return {
         ...state,
@@ -119,13 +119,6 @@ const rootReducer = (state = initialState, action) => {
 
     case FILTER_BY_DESTINATION:
       const allPackages = state.allPackages;
-      /* 
-        action.payload === name destination (allPackages.destinations.name)
-        destinations = [{name: ''}] 
-        
-      */
-
-      //COMENTO LO DE ABAJO PORQUE allPackages ES UNDEFINED Y ROMPE
       let aux = [];
       action.payload === "all"
         ? allPackages.forEach((e) => aux.push(e))
@@ -139,7 +132,14 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         filteredPackages: aux,
       };
-
+    case FILTER_PACKAGES_BY_DATE:
+      let filteredPackagesDate = [];
+      state.filteredPackages.forEach( (p) => action.payload.forEach( (f) => p.id === f.id && filteredPackagesDate.push(f) ) )
+      console.log(filteredPackagesDate)
+      return {
+        ...state,
+        filteredPackages: filteredPackagesDate
+      };
     case GET_ALL_CATEGORIES:
       let sortCategories = action.payload.sort(function (a, b) {
         if (a.name > b.name) return 1;

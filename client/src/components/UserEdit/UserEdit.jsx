@@ -10,7 +10,7 @@ export default function UserEdit() {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  const [showProfile, setShowProfile] = useState(false);
+  const [showProfile, setShowProfile] = useState(true);
   const [showSettings, setShowSettings] = useState(false);
   const handleShowProfile = () => {
     setShowProfile(true);

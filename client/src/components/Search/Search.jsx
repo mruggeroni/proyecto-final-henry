@@ -22,6 +22,8 @@ export default function FilteredSearch() {
     cuando estas parado en /search y refrescas, no se carga el estado de allPackages
     YA ESTA SOLICIONADO.. LOS DESTINOS QUE SE DEBEN CARGAR EN EL FILTRO TAMBIEN... 
     se soliciono con el useEffect
+
+    Arreglar que cuando se filtra en el home y manda un array vacio, poner un mensaje [no hay paquetes para mostrar]
   */
 
   const dispatch = useDispatch();

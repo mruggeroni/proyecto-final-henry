@@ -62,6 +62,10 @@
   height: 60%;
 }
 
+input[type="date"]::-webkit-clear-button {
+  display: none;
+}
+
 /* Responsive */
 
 @media (max-width: 760px) {

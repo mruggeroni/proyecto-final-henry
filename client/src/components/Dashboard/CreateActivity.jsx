@@ -48,7 +48,7 @@ function firstCap(name) {
   return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
 }
 
-export default function ActivityCreate() {
+export default function ActivityCreate({ showCreateActivity, setShowCreateActivity }) {
   const dispatch = useDispatch();
   // const activities = useSelector((state) => state.activities);
   // const countries = useSelector((state) => state.allCountries);
@@ -129,9 +129,9 @@ export default function ActivityCreate() {
   // }, []);
 
   return (
+    !showCreateActivity ? null
+    :
     <div>
-      <Dashboard />
-      {/* <Link to= '/'><button>Return...</button></Link> */}
       <div className={style.create_container}>
         <h2>Crear una Actividad</h2>
         <hr className={style.create_line} />

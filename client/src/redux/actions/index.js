@@ -1,5 +1,6 @@
 import axios from "axios";
 
+export const GET_DESTINATIONS_WITH_PACKAGES = "GET_DESTINATIONS_WITH_PACKAGES";
 export const GET_PACKAGE_BY_ID = "GET_PACKAGE_BY_ID";
 export const GET_RELATIONATED = "GET_RELATIONATED";
 export const GET_ALL_PACKAGES = "GET_ALL_PACKAGES";
@@ -10,6 +11,7 @@ export const GET_TYPES = "GET_TYPES";
 export const POST_PACKAGE = "POST_PACKAGE";
 export const ORDER_BY_PRICE = "ORDER_BY_PRICE";
 export const FILTER_BY_DESTINATION = "FILTER_BY_DESTINATION";
+export const FILTER_PACKAGES_BY_DATE = "FILTER_PACKAGES_BY_DATE";
 export const GET_DESTINATIONS_WITH_PACKAGES = "GET_DESTINATIONS_WITH_PACKAGES";
 export const GET_ALL_CATEGORIES = "GET_ALL_CATEGORIES";
 
@@ -92,6 +94,17 @@ export function filterPackagesByDestination(payload) {
   return {
     type: FILTER_BY_DESTINATION,
     payload,
+  };
+}
+
+export function filterPackagesByDate(value) {
+  return async function (dispatch) {
+    try {
+      let res = await axios.get(`/fsp/packages/1000?dateMin=${value[0]}&dateMax=${value[1]}`);
+      return dispatch({ type: FILTER_PACKAGES_BY_DATE, payload: res.data });
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 }
 
