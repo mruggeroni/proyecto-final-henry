@@ -1,0 +1,266 @@
+.create_container {
+  width: 90%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+  margin-top: 30px;
+}
+
+.create_inputs_container {
+  margin-right: 20px;
+}
+
+.create_input_images_container {
+  margin-top: 0;
+}
+
+.create_input_container {
+  position: relative;
+  width: 50vh;
+  height: 10vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.create_input_date_container {
+  width: 50vh;
+  display: flex;
+  justify-content: space-between;
+}
+
+.create_input_date {
+  position: relative;
+  width: 50vh;
+  height: 10vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.create_input_checks_container {
+  position: relative;
+  width: 50vh;
+  height: 10vh;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.create_input_date > input[type="date"] {
+  width: 95%;
+}
+
+select {
+  color: #504f4f;
+  cursor: pointer;
+}
+
+.create_destinations,
+.create_input_images {
+  position: relative;
+  width: 50vh;
+  height: 10vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.create_line {
+  width: 20%;
+  border: none;
+  height: 5px;
+  opacity: 100%;
+  background-color: #4a9eaa;
+}
+
+.create_label {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.create_input {
+  width: 100%;
+  height: 5vh;
+  background-color: #e4eaea99;
+  color: #383838;
+  outline: none;
+  border: none;
+  padding-left: 12px;
+  padding-right: 10px;
+}
+
+.create_textarea_container {
+  position: relative;
+  width: 50vh;
+  height: 25vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 25px;
+}
+
+.create_input_textarea {
+  width: 100%;
+  outline: none;
+  border: none;
+  margin-top: 20px;
+  padding-left: 15px;
+  padding-top: 10px;
+  background-color: #e4eaea99;
+  color: #383838;
+  resize: none;
+}
+
+.create_btn {
+  width: 100%;
+  background-color: #4a9eaab2;
+  border: none;
+  padding: 10px 0;
+  margin-top: 5vh;
+  transition: 1s;
+  color: #fafafa;
+}
+
+.create_btn:disabled {
+  cursor: not-allowed;
+  border: 1px solid #999999;
+  background-color: #cccccc;
+  color: #666666;
+}
+
+/* .create_btn:hover {
+    background-color: #4a9eaa;
+  } */
+
+.create_term {
+  font-size: 12px;
+  margin: 10px;
+}
+
+.create_input_btn {
+  background-color: transparent;
+  border: none;
+  margin-left: 10px;
+}
+
+.create_destinations_items {
+  background-color: #e4eaea99;
+  cursor: pointer;
+  /* margin-left: 10px; */
+  padding: 0px 10px 0px 12px;
+  position: relative;
+  width: 50vh;
+  height: 5vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0px 0px 10px 0px;
+}
+
+.create_destinations_items .span {
+  font-weight: bold;
+  width: 0px;
+  height: 100%;
+  visibility: hidden;
+  background-color: red;
+  color: white;
+  text-align: center;
+}
+
+.create_destinations_items:hover .span {
+  visibility: visible;
+  width: fit-content;
+  position: absolute;
+  top: 0;
+  right: 0;
+  text-align: right;
+  transition: all 2s ease-in-out;
+}
+
+.create_destinations_items:hover {
+  background-color: red;
+  color: white;
+  transition: all 2s ease-in-out;
+}
+
+/* SPINNER */
+.contenedorSpinner {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-width: 100%;
+  min-height: 100vh;
+}
+
+.spinner {
+  border: 4px solid rgba(0, 0, 0, 0.9);
+  border-left-color: transparent;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+/* SPINNER FIN*/
+
+@media (max-width: 760px) {
+  .create_form_container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .create_input_container {
+    width: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    margin-bottom: 20px;
+  }
+  .create_textarea_container {
+    width: 100%;
+  }
+  .create_input_date_container {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  .create_input_images_container {
+    width: 100%;
+  }
+  .create_input_images {
+    width: 100%;
+    height: 100%;
+    margin-bottom: 20px;
+  }
+  .create_input {
+    height: 100%;
+    margin-top: 20px;
+    padding-left: 15px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+}

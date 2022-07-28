@@ -1,0 +1,24 @@
+.form_container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  background-color: red;
+}
+
+.form_col1 {
+  width: 45%;
+  margin-right: 10px;
+}
+
+.form_col2 {
+  width: 50%;
+}
+
+.form_col3 {
+  width: 100%;
+}
+
+.form_input {
+  width: 100%;
+}
