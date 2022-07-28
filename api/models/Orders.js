@@ -14,7 +14,7 @@ export const Order = sequelize.define('order', {
 		allowNull: false,
 	},
 	status: {
-		type: DataTypes.ENUM('pending', 'paid'),
+		type: DataTypes.ENUM('pending', 'paid', 'saved'),
 		defaultValue: 'pending',
 	},
 }, {
