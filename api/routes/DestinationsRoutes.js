@@ -6,6 +6,6 @@ const router = Router();
 
 router.get('/destinations', getDestination);
 router.post('/destinations', createDestination);
-router.put('/destinations', putClassification);
+router.put('/destinations/:id', putClassification);
 
 export default router;

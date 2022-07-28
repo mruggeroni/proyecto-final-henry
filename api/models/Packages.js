@@ -2,6 +2,7 @@ import { DataTypes } from 'sequelize';
 import { sequelize } from '../db.js';
 import { Destination } from './Destinations.js';
 import { Activity } from './Activities.js';
+import { Order } from './Orders.js';
 export const Package = sequelize.define('package', {
 	name: {
 		type: DataTypes.STRING,
@@ -63,19 +64,31 @@ export const Package = sequelize.define('package', {
 		type: DataTypes.INTEGER,
 		defaultValue: 0,
 	},
-<<<<<<< HEAD
-},
- {
-	timestamps: false
-=======
 }, {
 	timestamps: true,
   createdAt: false,
   updatedAt: false,
 	paranoid:true,
 	deletedAt: 'destroyTime'
->>>>>>> b49a6bf60c3dd01cae7b33fa75563d8567da88dc
 });
+export const OrderItem = sequelize.define('order_item', {
+	// price: {
+	// 	type: DataTypes.DECIMAL(10,2),
+	// 	allowNull: true,
+	// },
+	quantity: {
+		type: DataTypes.INTEGER(10),
+		allowNull: false,
+		defaultValue: 1,
+	}
+}, {
+	timestamps: false,
+	// tableName: 'Order_Items',
+}
+
+);
+Package.belongsToMany(Order, {through: OrderItem})
+Order.belongsToMany(Package, {through: OrderItem})
 Package.belongsToMany(Destination, {through: 'Package_Destination'})
 Destination.belongsToMany(Package, {through: 'Package_Destination'})
 Package.belongsToMany(Activity, {through: 'Package_Activity'})

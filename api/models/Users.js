@@ -1,10 +1,5 @@
-<<<<<<< HEAD
-import { sequelize } from '/home/sadnena/pf/proyecto-final-henry/api/db';
-import { DataTypes } from 'sequelize';
-=======
 import { DataTypes, STRING } from 'sequelize';
 import { sequelize } from '../db.js';
->>>>>>> b49a6bf60c3dd01cae7b33fa75563d8567da88dc
 
 export const User = sequelize.define('user', {
 	first_name: {
@@ -14,6 +9,10 @@ export const User = sequelize.define('user', {
 	last_name: {
 		type: DataTypes.STRING,
 		allowNull: false,
+	},
+	nickname: {
+		type: DataTypes.STRING,
+		allowNull: true,
 	},
 	full_name: {
 		type: DataTypes.VIRTUAL,
@@ -26,47 +25,24 @@ export const User = sequelize.define('user', {
 		allowNull: false,
 		unique: true,
 	},
-<<<<<<< HEAD
-	// country: {
-	// 	type: DataTypes.STRING,
-	// 	allowNull: true,
-	// },
-	// city: {
-	// 	type: DataTypes.STRING,
-	// 	allowNull: true,
-	// },
-    adress: {
-		type: DataTypes.TEXT,
+	password: {
+		type: DataTypes.STRING,
 		allowNull: true,
+		unique: false,
 	},
-    phone: {
-=======
 	phone: {
-		type: DataTypes.STRING,
-		allowNull: false,
-	},
-	address_line1: {
-		type: DataTypes.STRING,
-		allowNull: false,
-	},
-	address_line2: {
 		type: DataTypes.STRING,
 		allowNull: true,
 	},
 	city: {
 		type: DataTypes.STRING,
-		allowNull: false,
+		allowNull: true,
 	},
 	state: {
 		type: DataTypes.STRING,
-		allowNull: false,
+		allowNull: true,
 	},
 	postal_code: {
-		type: DataTypes.STRING,
-		allowNull: false,
-	},
-	country: {
->>>>>>> b49a6bf60c3dd01cae7b33fa75563d8567da88dc
 		type: DataTypes.STRING,
 		allowNull: true,
 	},
@@ -79,16 +55,10 @@ export const User = sequelize.define('user', {
 		type: DataTypes.STRING,
         allowNull: true,
 	},
-<<<<<<< HEAD
-}, 
-{
-	timestamps: false
-=======
 }, {
 	timestamps: true,
   createdAt: "created_date",
   updatedAt: "update_date",
 	paranoid:true,
 	deletedAt: 'destroyTime',
->>>>>>> b49a6bf60c3dd01cae7b33fa75563d8567da88dc
 });

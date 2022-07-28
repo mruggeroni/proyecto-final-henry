@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 3001;
 async function main() {
 	try {
 		// await sequelize.sync({ force: false })
-		await sequelize.sync({ force: true });
+		await sequelize.sync({ force: false});
 		console.log('Connection has been established successfully.');
 		app.listen(PORT, () => {
 			console.log('Server listening on http://localhost:3001');
