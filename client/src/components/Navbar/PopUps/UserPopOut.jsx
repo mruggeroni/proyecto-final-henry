@@ -2,16 +2,22 @@ import React, { useState } from "react";
 import { BsPersonPlusFill } from "react-icons/bs";
 import style from "./User.module.css";
 import { useAuth0 } from "@auth0/auth0-react";
+
+
 import UserEdit from "../../UserEdit/UserEdit";
 
 export default function UserPopOut() {
   const { user, isAuthenticated, loginWithPopup, logout } = useAuth0();
+
     
+
   function handleClick(e) {
     e.preventDefault();
+    // if (e.target.id === "menuProfile") {
     document
       .getElementById("profile_container")
       .classList.toggle(`${style.open_profile}`);
+
   }
 
   return !isAuthenticated ? (
@@ -20,7 +26,11 @@ export default function UserPopOut() {
     </div>
   ) : (
     <div className={style.profile_container}>
-      <button onClick={(e) => handleClick(e)} className={style.userIcon}>
+      <button
+        id="menuProfile"
+        onClick={(e) => handleClick(e)}
+        className={style.userIcon}
+      >
         <img
           id='user_popout'
           src={user.picture}
@@ -33,6 +43,7 @@ export default function UserPopOut() {
         <p>{user.name}</p>
         <hr className={style.create_line} />
         <div className={style.user_profile_menu}>
+
             <div>
               <UserEdit />
               <p>Historial de Compras</p>
