@@ -26,7 +26,7 @@ export default function Home() {
 
   useEffect(async () => {
     setLoading(true);
-    await dispatch(getAllPackage(10));
+    await dispatch(getAllPackage(1000));
     await dispatch(getAllDestinations());
     await dispatch(getDestinationsWithPackages());
     await dispatch(getOnSale());

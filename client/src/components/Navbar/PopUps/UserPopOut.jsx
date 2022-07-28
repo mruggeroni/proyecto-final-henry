@@ -2,9 +2,8 @@ import React, { useState } from "react";
 import { BsPersonPlusFill } from "react-icons/bs";
 import style from "./User.module.css";
 import { useAuth0 } from "@auth0/auth0-react";
-
-
 import UserEdit from "../../UserEdit/UserEdit";
+import { NavLink } from "react-router-dom";
 
 export default function UserPopOut() {
   const { user, isAuthenticated, loginWithPopup, logout } = useAuth0();
@@ -46,7 +45,7 @@ export default function UserPopOut() {
 
             <div>
               <UserEdit />
-              <p>Historial de Compras</p>
+              <NavLink to='/dashboard' className={style.user_btn}>Dashboard</NavLink>
               <p>Servicio al Cliente</p>
             </div>
         </div>
