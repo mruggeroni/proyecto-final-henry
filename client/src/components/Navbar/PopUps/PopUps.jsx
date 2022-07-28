@@ -19,9 +19,9 @@ export default function PopUps() {
       <FavoritesPopOut />
 
       </Nav.Item>
-      {/* <Nav.Item >
-        <BsPersonPlusFill />
-        </Nav.Item> */}
+      <Nav.Item >
+        <UserPopOut />
+        </Nav.Item>
       {/* <Nav.Item >
       <AiOutlineShoppingCart />
 
