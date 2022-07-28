@@ -1,5 +1,6 @@
 
 import { Classification } from "../models/Classification.js";
+
 export const getClassification = async (req, res) => {
 	try {
 		const classification = await Classification.findAll();

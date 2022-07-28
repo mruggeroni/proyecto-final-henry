@@ -31,8 +31,7 @@ export const getActivitiesData = async () =>{
                         name,
                     },
                 });
-                console.log(actividades)
-                clasificacion.addActivities(actividades);
+                clasificacion?.addActivities(actividades);
             });
         };
         }catch (error){

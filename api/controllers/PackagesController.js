@@ -317,11 +317,19 @@ export const patchPackage = async (req, res) => {
 	const { featured, available, on_sale } = req.body;
 
 	try {
+		if (!featured && !(typeof featured === 'boolean')) throw new Error("featured is not boolean");
+		if (!available && !(typeof available === 'boolean')) throw new Error("available is not boolean");
+		if (!on_sale && !(typeof on_sale === 'number')) throw new Error("on_sale is not boolean");
 		const packageToModify = await Package.findByPk(id);
+		if (!packageToModify) throw new Error('package don\'t exist');
+		
+		const newFeatured = !(featured === undefined) ? featured : packageToModify.featured,
+			newAvailable = (typeof available === 'boolean') ? available : packageToModify.available,
+			newOn_sale = (typeof on_sale === 'number') ? Math.round(on_sale) : packageToModify.on_sale;
 		await Package.update({
-			featured: featured? featured : packageToModify.featured, 
-			available: available? available : packageToModify.available, 
-			on_sale: on_sale? on_sale : packageToModify.on_sale, 
+			featured: newFeatured, 
+			available: newAvailable, 
+			on_sale: newOn_sale, 
 		}, {
 			where: {
 				id,

@@ -4,6 +4,7 @@ import { Activity } from '../../models/Activities.js';
 import * as data from '../../data/JSON_paquetes.js';
 import moment from 'moment';
 
+
 export const getPackageData = async () =>{
     try {
         if (!(await Package.findAndCountAll())?.count) {

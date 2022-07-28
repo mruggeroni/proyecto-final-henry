@@ -2,6 +2,7 @@ import { DataTypes, STRING } from 'sequelize';
 import { sequelize } from '../db.js';
 import { Order } from './Orders.js';
 
+
 export const User = sequelize.define('user', {
 	first_name: {
 		type: DataTypes.STRING,
@@ -58,8 +59,8 @@ export const User = sequelize.define('user', {
 	},
 }, {
 	timestamps: true,
-  createdAt: "created_date",
-  updatedAt: "update_date",
+	createdAt: "created_date",
+	updatedAt: "update_date",
 	paranoid:true,
 	deletedAt: 'destroyTime',
 });

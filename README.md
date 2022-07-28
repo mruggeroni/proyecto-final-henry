@@ -10,10 +10,10 @@ PORT= "(por defecto es '3001')"
 
 RUTAS DISPONIBLES:
 
-- *GET **"/fsp/packages/:limitRender"** => array de paquetes*
+- *GET **"/packages/:limitRender"** => array de paquetes*
 
 Varibles que puede recibir (a excepcion de params, son todas opcioneles).
-IMPORTANTE: aun no existe la propiedad "duration" en el modelo de paquete.
+propiedad duration habilitada.
 
 ```js
 // Incluye paginado, renderizado personalisable y opciones de filtros y odenamientos solapables.
@@ -21,11 +21,12 @@ IMPORTANTE: aun no existe la propiedad "duration" en el modelo de paquete.
 const { limitRender } = req.params;
 // controla cuantos paquetes trae por pagina.
 // en caso de no ser número, por defecto se setea en 12.
-const { page, priceSort, durationSort, type, region, destination } = req.query; 
+const { page, priceSort, durationSort, type, region, destination, dateMin, dateMax } = req.query; 
 // "priceSort" y "durationSort" esperan (asc: para orden ascendente y desc: para orden descendente).
-// "type", "region" y"destination" son sensibles a mayúscula o minúscula (ademas de las tildes). La busqueda debe ser LITERAL.
-const { priceFilterMin, priceFilterMax, dateMin, dateMax, durationFilterMin, durationFilterMax } = req.body;
-// son pares que forman un rango de busqueda (en los tres casos son números).
+// "type", "region" y"destination" son sensibles a mayúscula o minúscula (además de las tildes). La busqueda debe ser LITERAL.
+// "dateMin" y "dateMax" forman el rango de busqueda para "start_date" (son string en formato fecha americana: "yyyy-mm-dd").
+const { priceFilterMin, priceFilterMax, durationFilterMin, durationFilterMax } = req.body;
+// son pares que forman un rango de busqueda (en los dos casos son números enteros).
 ```
 
 ```json
@@ -65,6 +66,7 @@ const { priceFilterMin, priceFilterMax, dateMin, dateMax, durationFilterMin, dur
 ```
 - *POST **"/user"** => Verifica si el usuario ingresado por el pop(Auth0) es nuevo (se esta registrando) o si ya existe (se esta logeando), en base a eso lo guarda en la Database local con el rol default de client (si es nuevo) o identifica su rol si se esta logeando. Esta ruta responde con un array de dos posiciones ['accion', 'rol'], el primer elemento es un string que indica register o login, si es nuevo usuario saldra 'register' indicando que si bien ya esta registrado, debería brindar información adicional (ver modelo user), de lo contrario saldra 'login', indicando que esto no es necesario. El segundo campo muestra el rol, Admin o Client, que es siempre Client si el primer elemento es register.
 IMPORTANTE: No probar esta ruta en postman, solo con el login del front ¿Por qué? porque para crear el usuario se esta requiriendo info de Auth0, por lo que se necesita primero que Auth0 verifique al usuario. Esto ya esta conectado (ver component UserPopOut, la función handleLogin, ver actions createUser)
+
 - *PATCH **"/packages/:id"** => para modificar "available", "featured" y "on_sale"*
 
 Los input por body son opcionales (para mayor flexibilidad al cambiar uno o varios).
@@ -72,7 +74,8 @@ Los input por body son opcionales (para mayor flexibilidad al cambiar uno o vari
 ```js
 const id = req.params.id;
 const { featured, available, on_sale } = req.body;
-// "featured" y "available" son BOOLEAN. "on_sale" es INTEGER.
+// "featured" y "available" son BOOLEAN. 
+// "on_sale" es INTEGER.
 ```
 
 - *GET **"/packages/featured"** = array con paquetes destacados, 3 por defecto, la ruta se puede modificar con un query: "/packages/featured?limit=Numero"*

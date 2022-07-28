@@ -3,7 +3,8 @@ import { Router } from 'express';
 import { createUser, getUsers } from '../controllers/UsersController.js';
 import express from 'express'
 import { verifyJwt } from '../Auth/mw.js';
-    const router = Router();
+
+const router = Router();
 
 router.get('/user', getUsers);
 router.post('/user', createUser)

@@ -10,18 +10,19 @@ export const getUsers = async (req, res) => {
 		return res.status(500).json({ message: error.message });
 	}
 };
+
 export const createUser = async (req, res) =>{
 	try {
 		//console.log(req.body)
 		const accessToken = req.body.headers.authorization.split(" ")[1];
 		console.log("token: ", accessToken);
 		const respuesta = await axios.get(
-		  "https://dev-33fzkaw8.us.auth0.com/userinfo",
-		  {
-			headers: {
-			  authorization: `Bearer ${accessToken}`,
-			},
-		  }
+			"https://dev-33fzkaw8.us.auth0.com/userinfo",
+			{
+				headers: {
+					authorization: `Bearer ${accessToken}`,
+				},
+			}
 		);
 		console.log(respuesta)
 		const userInfo = respuesta.data;
