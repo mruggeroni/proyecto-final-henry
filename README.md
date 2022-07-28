@@ -21,11 +21,12 @@ IMPORTANTE: aun no existe la propiedad "duration" en el modelo de paquete.
 const { limitRender } = req.params;
 // controla cuantos paquetes trae por pagina.
 // en caso de no ser número, por defecto se setea en 12.
-const { page, priceSort, durationSort, type, region, destination } = req.query; 
+const { page, priceSort, durationSort, type, region, destination, dateMin, dateMax } = req.query; 
 // "priceSort" y "durationSort" esperan (asc: para orden ascendente y desc: para orden descendente).
-// "type", "region" y"destination" son sensibles a mayúscula o minúscula (ademas de las tildes). La busqueda debe ser LITERAL.
-const { priceFilterMin, priceFilterMax, dateMin, dateMax, durationFilterMin, durationFilterMax } = req.body;
-// son pares que forman un rango de busqueda (en los tres casos son números).
+// "type", "region" y"destination" son sensibles a mayúscula o minúscula (además de las tildes). La busqueda debe ser LITERAL.
+// "dateMin" y "dateMax" forman el rango de busqueda para "start_date" (son string en formato fecha americana: "yyyy-mm-dd").
+const { priceFilterMin, priceFilterMax, durationFilterMin, durationFilterMax } = req.body;
+// son pares que forman un rango de busqueda (en los dos casos son números enteros).
 ```
 
 ```json
@@ -71,7 +72,8 @@ Los input por body son opcionales (para mayor flexibilidad al cambiar uno o vari
 ```js
 const id = req.params.id;
 const { featured, available, on_sale } = req.body;
-// "featured" y "available" son BOOLEAN. "on_sale" es INTEGER.
+// "featured" y "available" son BOOLEAN. 
+// "on_sale" es INTEGER.
 ```
 
 - *GET **"/packages/featured"** = array con paquetes destacados, 3 por defecto, la ruta se puede modificar con un query: "/packages/featured?limit=Numero"*

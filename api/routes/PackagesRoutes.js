@@ -6,6 +6,7 @@ import { getPackages } from '../controllers/getPackagesAllFiltersAndSortsControl
 const router = Router();
 
 //RUTAS 
+
 router.get('/fsp/packages/:limitRender', getPackages);
 router.get('/packages/featured', getFeaturedPackages);
 router.get('/packages/:id', getPackagesDetail);
@@ -14,5 +15,6 @@ router.get('/types', getTypes);
 router.post('/packages', createPackage);
 router.put('/packages/:id', putPackage);
 router.patch('/packages/:id', patchPackage);
+
 
 export default router;
