@@ -3,15 +3,15 @@ import { BsPlusLg, BsDashLg, BsDash } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import {
-  createPackage,
   getAllActivities,
   getAllDestinations,
   getPackageById,
   getTypes,
+  modificarPaquete,
 } from "../../redux/actions";
 import style from "./ModifyPackage.module.css";
 import Dashboard from "./Dashboard";
-import validationPackage from "./validationPackage.js";
+import validationModifyPackage from "./validationModifyPackage.js";
 import ModalActividades from "./ModalActividades";
 import ModalDestinos from "./ModalDestinos";
 
@@ -27,20 +27,6 @@ export default function ModifyPackages() {
   const types = useSelector((state) => state.types);
   const paquete = useSelector((state) => state.detailPackage);
   const dataNow = new Date().toISOString().split("T")[0];
-  const [fromDate, setFromDate] = useState(
-    new Date(paquete.start_date).toISOString().split("T")[0]
-  );
-  console.log("fromDate : ", fromDate);
-  const [untilDate, setUntilDate] = useState(paquete.end_date);
-
-  console.log(dataNow);
-  //   console.log(paquete.start_date);
-  //   const fechaInicio = new Date(paquete.start_date);
-  //   console.log(fechaInicio);
-  //   const fechaFin = new Date(paquete.end_date).toISOString().split("T")[0];
-  //   console.log(fechaFin);
-  //   const [fromDate, setFromDate] = useState(fechaInicio);
-  //   const [untilDate, setUntilDate] = useState(fechaFin);
 
   const [input, setInput] = useState({
     name: "",
@@ -89,10 +75,6 @@ export default function ModifyPackages() {
   }, [paquete]);
 
   useEffect(async () => {
-    // const paqueteDispach = await dispatch(getPackageById(id));
-    // console.log(paqueteDispach.payload);
-    //const actividadesDispatch = paqueteDispatch.
-    //setInput({...input, })
     if (!allActivities.length) {
       dispatch(getAllActivities());
     }
@@ -174,6 +156,9 @@ export default function ModifyPackages() {
           e.target.value = "default";
           return alert("Ese país ya fue seleccionado!");
         }
+      } else {
+        e.target.value = "default";
+        return alert("Maximo 5 destinos!");
       }
     }
   };
@@ -183,7 +168,7 @@ export default function ModifyPackages() {
       e.target.value = "default";
       handleShow();
     } else {
-      if (input.activities.length <= 10) {
+      if (input.activities.length <= 9) {
         if (!input.activities.includes(e.target.value)) {
           setInput({
             ...input,
@@ -194,6 +179,9 @@ export default function ModifyPackages() {
           e.target.value = "default";
           return alert("Esa actividad ya fue seleccionada!");
         }
+      } else {
+        e.target.value = "default";
+        return alert("Maximo 10 actividades!");
       }
     }
   };
@@ -208,14 +196,24 @@ export default function ModifyPackages() {
   const handleChangeDate = (e) => {
     e.preventDefault();
     if (e.target.id === "from") {
-      if (new Date(e.target.value) > new Date(untilDate)) {
-        setFromDate(e.target.value);
-        setUntilDate(e.target.value);
+      if (new Date(e.target.value) > new Date(input.end_date)) {
+        setInput({
+          ...input,
+          start_date: e.target.value,
+          end_date: e.target.value,
+        });
+        console.log(input);
       } else {
-        setFromDate(e.target.value);
+        setInput({
+          ...input,
+          start_date: e.target.value,
+        });
       }
     } else {
-      setUntilDate(e.target.value);
+      setInput({
+        ...input,
+        end_date: e.target.value,
+      });
     }
   };
 
@@ -234,59 +232,76 @@ export default function ModifyPackages() {
   }
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-
     console.log(input);
+    e.preventDefault();
+    input.images = [input.images0, input.images1, input.images2];
+    input.price = parseInt(input.price);
+    input.on_sale = parseInt(input.on_sale);
+    input.available = input.available === "true" ? true : false;
+    input.featured = input.featured === "true" ? true : false;
 
-    // input.images = [input.images0, input.images1, input.images2];
-    // input.price = parseInt(input.price);
-    // input.on_sale = parseInt(input.on_sale);
-    // input.available = input.available === "true" ? true : false;
-    // input.featured = input.featured === "true" ? true : false;
+    const valida = validationModifyPackage({ ...input });
+    setError(valida);
+    if (
+      valida.name ||
+      valida.price ||
+      valida.description ||
+      valida.main_image ||
+      valida.images ||
+      valida.featured ||
+      valida.available ||
+      valida.on_sale ||
+      valida.region ||
+      valida.type ||
+      valida.seasson ||
+      valida.destinations
+    ) {
+      console.log(valida);
+      alert(
+        "Presta mas atencion al completar el formulario y volve a intentar ;)"
+      );
+    } else {
+      const patch = {};
+      patch.featured = input.featured;
+      patch.available = input.available;
+      patch.available = input.available;
+      const put = {};
+      put.name = input.name;
+      put.description = input.description;
+      put.main_image = input.main_image;
+      put.images = input.images;
+      put.price = input.price;
+      put.start_date = input.start_date;
+      put.end_date = input.end_date;
+      put.seasson = input.seasson;
+      put.type = input.type;
+      put.activities = input.activities;
+      put.destinations = input.destinations;
+      const modificar = [put, patch];
 
-    // const valida = validationPackage({ ...input });
-    // setError(valida);
-    // if (
-    //   valida.name ||
-    //   valida.price ||
-    //   valida.description ||
-    //   valida.main_image ||
-    //   valida.images ||
-    //   valida.featured ||
-    //   valida.available ||
-    //   valida.on_sale ||
-    //   valida.region ||
-    //   valida.type ||
-    //   valida.seasson ||
-    //   valida.destinations
-    // ) {
-    //   console.log(valida);
-    //   alert(
-    //     "Presta mas atencion al completar el formulario y volve a intentar ;)"
-    //   );
-    // } else {
-    //   dispatch(createPackage(input));
-    //   alert("Nuevo paquete creado..");
-    //   setInput({
-    //     name: "",
-    //     price: "",
-    //     description: "",
-    //     main_image: "",
-    //     images0: "",
-    //     images1: "",
-    //     images2: "",
-    //     featured: "",
-    //     destinations: [],
-    //     start_date: "",
-    //     end_date: "",
-    //     available: "",
-    //     on_sale: "",
-    //     region: "",
-    //     seasson: "",
-    //     type: "",
-    //   });
-    //   navigate("/dashboard");
-    // }
+      dispatch(modificarPaquete(modificar, id));
+      alert("Nuevo paquete creado..");
+      setInput({
+        name: "",
+        price: "",
+        description: "",
+        main_image: "",
+        images: "",
+        images0: "",
+        images1: "",
+        images2: "",
+        featured: "",
+        destinations: [],
+        start_date: "",
+        end_date: "",
+        available: "",
+        on_sale: "",
+        region: "",
+        seasson: "",
+        type: "",
+      });
+      // navigate("/dashboard");
+    }
   };
 
   const [show, setShow] = useState(false);
@@ -351,7 +366,7 @@ export default function ModifyPackages() {
                 name="start_date"
                 type="date"
                 id="from"
-                value={fromDate}
+                value={input.start_date}
                 min={dataNow}
                 onChange={(e) => handleChangeDate(e)}
                 className={style.create_input}
@@ -363,8 +378,8 @@ export default function ModifyPackages() {
                 name="end_date"
                 type="date"
                 id="until"
-                value={untilDate}
-                min={fromDate}
+                value={input.end_date}
+                min={input.start_date}
                 onChange={(e) => handleChangeDate(e)}
                 className={style.create_input}
               />
@@ -752,12 +767,12 @@ export default function ModifyPackages() {
               className={style.create_btn}
               id="create"
             >
-              Crear Paquete
+              Modificar Paquete
             </button>
 
             <span className={style.create_term}>
-              Al presionar 'Crear Paquete' usted acepta los Términos de BLABLA y
-              la Política de Privacidad
+              Al presionar 'Modificar Paquete' usted acepta los Términos de
+              BLABLA y la Política de Privacidad
             </span>
           </div>
         </form>

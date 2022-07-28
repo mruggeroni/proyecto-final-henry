@@ -1,8 +1,5 @@
-export default function validation(input) {
+export default function validationModifyPackage(input) {
   let error = {};
-  let regInteger = /^\d+$/;
-  let regUrl = /https?:\/\/.*\.(?:png|jpg)/;
-  let checkboxes = document.getElementsByName("check");
 
   if (!input.name) {
     error.name = "Nombre es requerido";
@@ -24,38 +21,33 @@ export default function validation(input) {
     error.main_image = "Se requiere una imagen principal";
   }
 
-  if (input.images.length > 0) {
-    input.images.map((i) => {
-      if (input.images[i]?.length <= 0) {
-        error.images = "Se requiere una imagen secundaria n° " + i + 1;
-      }
-    });
+  if (input.images0.length < 0) {
+    error.images0 = "Se requiere una imagen secundaria 1";
   }
 
-  if (input.featured !== true || input.featured !== false) {
-    error.featured = "Seleccionar si el paquetes es destacado o no";
+  if (input.images1.length < 0) {
+    error.images1 = "Se requiere una imagen secundaria 2";
   }
 
-  if (input.available !== "true" || input.available !== "false") {
-    error.available = "Seleccionar si el paquete esta disponible o no";
+  if (input.images2.length < 0) {
+    error.images2 = "Se requiere una imagen secundaria 3";
   }
+
+  //   if (input.images.length > 0) {
+  //     input.images.map((i) => {
+  //       if (input.images[i]?.length <= 0) {
+  //         error.images = "Se requiere una imagen secundaria n° " + i + 1;
+  //       }
+  //     });
+  //   }
 
   if (input.on_sale < 0) {
     error.on_sale = "La oferna no puede ser menor a 0%";
   } else if (input.on_sale > 100) {
     error.on_sale = "La oferna no puede ser mayor a 100%";
   }
-  if (!input.region) {
-    error.featured = "Seleccionar una opcion";
-  }
-  if (!input.type) {
-    error.type = "Seleccionar una opcion";
-  }
-  if (!input.seasson) {
-    error.seasson = "La temporada es requerida";
-  }
   if (input.destinations.length === 0) {
-    error.destinations = "Se requiere al menos un país";
+    error.destinations = "Se requiere al menos un destino";
   }
 
   return error;

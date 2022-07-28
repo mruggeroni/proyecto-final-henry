@@ -12,9 +12,9 @@ export const ORDER_BY_PRICE = "ORDER_BY_PRICE";
 export const FILTER_BY_DESTINATION = "FILTER_BY_DESTINATION";
 export const GET_DESTINATIONS_WITH_PACKAGES = "GET_DESTINATIONS_WITH_PACKAGES";
 
-export const getAllPackage = () => {
+export const getAllPackage = (limitRender) => {
   return async function (dispatch) {
-    let res = await axios.get("/packages");
+    let res = await axios.get("/fsp/packages/" + limitRender);
     return dispatch({ type: GET_ALL_PACKAGES, payload: res.data });
   };
 };
@@ -115,3 +115,18 @@ export const crearActividad = (payload) => {
     }
   };
 };
+
+export function modificarPaquete(payload, id) {
+  return async function (dispatch) {
+    try {
+      console.log("payload 0: ", payload[0]);
+      const respuesta = await axios.put("/packages/" + id, payload[0]);
+      console.log("respuesta : ", respuesta);
+      const respuesta2 = await axios.patch("/packages/" + id, payload[1]);
+      console.log("respuesta2 : ", respuesta2);
+      return respuesta2; // como no necesitamos hacer nada podemos no dispachar nada
+    } catch (e) {
+      alert(e.message);
+    }
+  };
+}

@@ -36,6 +36,7 @@ const initialState = {
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_ALL_PACKAGES:
+      console.log(action.payload);
       return {
         ...state,
         allPackages: action.payload,
