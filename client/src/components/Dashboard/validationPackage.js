@@ -20,23 +20,27 @@ export default function validation(input) {
     error.description = "La descripción debe tener menos de 1000 caracteres.";
   }
   //----- preguntamos por las imagenes o que?
-  if (input.main_image.length < 0) {
+  if (input.main_image.length <= 0) {
     error.main_image = "Se requiere una imagen principal";
+  }
+
+  if (input.images0.length <= 0) {
+    error.images0 = "Se requiere una imagen principal";
   }
 
   if (input.images.length > 0) {
     input.images.map((i) => {
-      if (input.images[i]?.length <= 0) {
+      if (input["images" + i]?.length <= 0) {
         error.images = "Se requiere una imagen secundaria n° " + i + 1;
       }
     });
   }
 
-  if (input.featured !== true || input.featured !== false) {
+  if (input.featured !== true && input.featured !== false) {
     error.featured = "Seleccionar si el paquetes es destacado o no";
   }
 
-  if (input.available !== "true" || input.available !== "false") {
+  if (input.available !== true && input.available !== false) {
     error.available = "Seleccionar si el paquete esta disponible o no";
   }
 
@@ -45,11 +49,11 @@ export default function validation(input) {
   } else if (input.on_sale > 100) {
     error.on_sale = "La oferna no puede ser mayor a 100%";
   }
-  if (!input.region) {
-    error.featured = "Seleccionar una opcion";
-  }
+  // if (!input.region) {
+  //   error.featured = "Seleccionar una opcion";
+  // }
   if (!input.type) {
-    error.type = "Seleccionar una opcion";
+    error.type = "Seleccionar tipo de paquete ";
   }
   if (!input.seasson) {
     error.seasson = "La temporada es requerida";

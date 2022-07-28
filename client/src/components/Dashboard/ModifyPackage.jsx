@@ -27,6 +27,8 @@ export default function ModifyPackages() {
   const types = useSelector((state) => state.types);
   const paquete = useSelector((state) => state.detailPackage);
   const dataNow = new Date().toISOString().split("T")[0];
+  const categorias = useSelector((state) => state.categories);
+  console.log(categorias);
 
   const [input, setInput] = useState({
     name: "",
@@ -321,7 +323,6 @@ export default function ModifyPackages() {
           className={style.create_form_container}
         >
           <div className={style.create_input_container}>
-            {error.name && <span>{error.name}</span>}
             <label className={style.create_label}>Nombre</label>
             <input
               placeholder={paquete.name}
@@ -331,9 +332,9 @@ export default function ModifyPackages() {
               value={input.name}
               onChange={(e) => handleChangeInputs(e)}
             />
+            {error.name && <span className={style.error}>{error.name}</span>}
           </div>
           <div className={style.create_input_container}>
-            {error.price && <span>{error.price}</span>}
             <label className={style.create_label}>Precio</label>
             <input
               placeholder={paquete.price}
@@ -345,9 +346,9 @@ export default function ModifyPackages() {
               className={style.create_input}
               onChange={(e) => handleChangeInputs(e)}
             />
+            {error.price && <span className={style.error}>{error.price}</span>}
           </div>
           <div className={style.create_textarea_container}>
-            {error.description && <span>{error.description}</span>}
             <label className={style.create_label}>Descripción</label>
             <textarea
               placeholder={paquete.description}
@@ -358,6 +359,9 @@ export default function ModifyPackages() {
               className={style.create_input_textarea}
               onChange={(e) => handleChangeInputs(e)}
             ></textarea>
+            {error.description && (
+              <span className={style.error}>{error.description}</span>
+            )}
           </div>
           <div className={style.create_input_date_container}>
             <div className={style.create_input_date}>
@@ -386,7 +390,6 @@ export default function ModifyPackages() {
             </div>
           </div>
           <div className={style.create_input_container}>
-            {error.on_sale && <span>{error.on_sale}</span>}
             <label className={style.create_label}>% Descuento</label>
             <input
               placeholder={paquete.on_sale}
@@ -400,9 +403,11 @@ export default function ModifyPackages() {
               id="on_sale"
               onChange={(e) => handleChangeInputs(e)}
             />
+            {error.on_sale && (
+              <span className={style.error}>{error.on_sale}</span>
+            )}
           </div>
           <div className={style.create_input_container}>
-            {error.featured && <span>{error.featured}</span>}
             <label className={style.create_label}>Destacado</label>
             <select
               name="featured"
@@ -419,9 +424,11 @@ export default function ModifyPackages() {
                 No destacado
               </option>
             </select>
+            {error.featured && (
+              <span className={style.error}>{error.featured}</span>
+            )}
           </div>
           <div className={style.create_input_container}>
-            {error.available && <span>{error.available}</span>}
             <label className={style.create_label}>Disponibilidad</label>
             <select
               name="available"
@@ -441,10 +448,12 @@ export default function ModifyPackages() {
                 No disponible
               </option>
             </select>
+            {error.available && (
+              <span className={style.error}>{error.available}</span>
+            )}
           </div>
 
           <div className={style.create_input_container}>
-            {error.region && <span>{error.region}</span>}
             <label className={style.create_label}>Región</label>
             <select
               name="region"
@@ -513,10 +522,12 @@ export default function ModifyPackages() {
                 América Central
               </option>
             </select>
+            {error.region && (
+              <span className={style.error}>{error.region}</span>
+            )}
           </div>
 
           <div className={style.create_input_container}>
-            {error.destinations && <span>{error.destinations}</span>}
             <label className={style.create_label}>Destinos</label>
             <select
               id="destinationsSelect"
@@ -546,6 +557,9 @@ export default function ModifyPackages() {
                 PARA MANEJAR EL CASO DE CREAR UN DESTINO NUEVO*/}
               {/* <option value="crear">"Crear un destino nuevo.."</option> */}
             </select>
+            {error.destinations && (
+              <span className={style.error}>{error.destinations}</span>
+            )}
           </div>
           <ModalDestinos
             showDestinos={showDestinos}
@@ -614,6 +628,7 @@ export default function ModifyPackages() {
             setShow={setShow}
             setInput={setInput}
             input={input}
+            categorias={categorias}
           />
 
           {input.activities
@@ -708,7 +723,6 @@ export default function ModifyPackages() {
             className={style.create_input_images_container}
           >
             <div className={style.create_input_images}>
-              {error.main_image && <span>{error.main_image}</span>}
               <label className={style.create_label}>Imágen Principal</label>
               <input
                 onChange={(e) => handleChangeInputs(e)}
@@ -729,7 +743,11 @@ export default function ModifyPackages() {
               >
                 <BsDashLg />
               </button>
+              {error.main_image && (
+                <span className={style.error}>{error.main_image}</span>
+              )}
             </div>
+
             {input.images?.map((i, index) => {
               return (
                 <div key={i + index} className={style.create_input_images}>

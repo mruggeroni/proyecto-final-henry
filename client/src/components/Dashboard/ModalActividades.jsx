@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Modal from "react-bootstrap/Modal";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import validateActivity from "./validationActivity";
 import { Formik } from "formik";
 import * as yup from "yup";
@@ -9,6 +9,7 @@ import {
   crearActividad,
   getAllActivities,
   getAllDestinations,
+  getCategories,
 } from "../../redux/actions";
 
 const schema = yup.object().shape({
@@ -33,52 +34,6 @@ const schema = yup.object().shape({
 
 export default function ModalActividades({ show, setShow, setInput, input }) {
   const dispatch = useDispatch();
-  //   const [inputModal, setInputModal] = useState({
-  //     name: "",
-  //     description: "",
-  //     image: "",
-  //     price: 0,
-  //   });
-
-  //   const [error, setError] = useState({
-  //     name: "",
-  //     description: "",
-  //     price: 0,
-  //   });
-
-  //   const handleCrearActividad = (e) => {
-  //     e.preventDefault();
-  //     console.log(inputModal);
-  //     const valida = validateActivity({ ...inputModal });
-  //     // dispatch(crearActividad());
-  //     setError(valida);
-  //     if (valida.name || valida.description || valida.price) {
-  //       console.log(valida);
-  //       alert(
-  //         "Presta mas atencion al completar el formulario y volve a intentar ;)"
-  //       );
-  //     } else {
-  //       //   dispatch();
-  //       alert("Nueva actividad creada..");
-  //       setInputModal({
-  //         name: "",
-  //         description: "",
-  //         image: "",
-  //         price: 0,
-  //       });
-  //       //   setShowActividades(false); //Para cerrar el modal
-  //     }
-  //   };
-
-  //   const handleChange = (e) => {
-  //     e.preventDefault();
-  //     console.log(e.target);
-  //     setInputModal({
-  //       ...inputModal,
-  //       [e.target.id]: e.target.value,
-  //     });
-  //     console.log(inputModal);
-  //   };
 
   const handleClose = () => {
     setShow(false);
@@ -89,8 +44,15 @@ export default function ModalActividades({ show, setShow, setInput, input }) {
     //   price: 0,
     // });
   };
+  useEffect(async () => {
+    await dispatch(getCategories());
+  }, [dispatch]);
+
+  const categorias = useSelector((state) => state.categories);
+  console.log(categorias);
 
   const handleCrearActividad = async (e) => {
+    e.price = parseInt(e.price);
     const respuesta = await dispatch(crearActividad(e));
     await dispatch(getAllDestinations());
     await dispatch(getAllActivities());
@@ -192,6 +154,32 @@ export default function ModalActividades({ show, setShow, setInput, input }) {
                     />
                     <Form.Control.Feedback type="invalid">
                       {errors.price}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </Row>
+
+                <Row className="mb-3">
+                  <Form.Group as={Col} md="12">
+                    <Form.Label>Clasificación de la actividad</Form.Label>
+                    <Form.Control
+                      as="select"
+                      name="classification"
+                      value={values.classification}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      isInvalid={!!errors.classification}
+                    >
+                      <option selected={true} disabled="disabled" hidden>
+                        Seleccionar una clasificación...
+                      </option>
+                      {categorias?.map((el) => (
+                        <option key={el.name} value={el.name}>
+                          {el.name}
+                        </option>
+                      ))}
+                    </Form.Control>
+                    <Form.Control.Feedback type="invalid">
+                      {errors.classification}
                     </Form.Control.Feedback>
                   </Form.Group>
                 </Row>

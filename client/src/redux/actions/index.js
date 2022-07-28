@@ -11,6 +11,7 @@ export const POST_PACKAGE = "POST_PACKAGE";
 export const ORDER_BY_PRICE = "ORDER_BY_PRICE";
 export const FILTER_BY_DESTINATION = "FILTER_BY_DESTINATION";
 export const GET_DESTINATIONS_WITH_PACKAGES = "GET_DESTINATIONS_WITH_PACKAGES";
+export const GET_ALL_CATEGORIES = "GET_ALL_CATEGORIES";
 
 export const getAllPackage = (limitRender) => {
   return async function (dispatch) {
@@ -130,3 +131,11 @@ export function modificarPaquete(payload, id) {
     }
   };
 }
+
+// categories seria classification => se usa poara crea una actividad
+export const getCategories = () => {
+  return async function (dispatch) {
+    let res = await axios.get("/categories");
+    return dispatch({ type: GET_ALL_CATEGORIES, payload: res.data });
+  };
+};

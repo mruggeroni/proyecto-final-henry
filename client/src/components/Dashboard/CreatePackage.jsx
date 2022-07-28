@@ -6,6 +6,7 @@ import {
   createPackage,
   getAllActivities,
   getAllDestinations,
+  getCategories,
   getTypes,
 } from "../../redux/actions";
 import style from "./CreatePackage.module.css";
@@ -58,12 +59,12 @@ export default function CreatePackage() {
     activities: [],
     start_date: dataNow,
     end_date: dataNow,
-    region: "",
+    // region: "",
     seasson: "",
     type: "",
     featured: false,
     available: true,
-    on_sale: false,
+    on_sale: 0,
   });
 
   const [error, setError] = useState({
@@ -81,7 +82,7 @@ export default function CreatePackage() {
     end_date: "",
     available: "",
     on_sale: "",
-    region: "",
+    // region: "",
     seasson: "",
     type: "",
   });
@@ -121,7 +122,6 @@ export default function CreatePackage() {
             destinations: [...input.destinations, e.target.value],
           });
           e.target.value = "default";
-          console.log(e.target.value);
         } else {
           e.target.value = "default";
           return alert("Ese país ya fue seleccionado!");
@@ -136,7 +136,7 @@ export default function CreatePackage() {
       handleShow();
     } else {
       if (input.activities.length <= 10) {
-        if (!input.destinations.includes(e.target.value)) {
+        if (!input.activities.includes(e.target.value)) {
           setInput({
             ...input,
             activities: [...input.activities, e.target.value],
@@ -192,7 +192,6 @@ export default function CreatePackage() {
     input.on_sale = parseInt(input.on_sale);
     input.available = input.available === "true" ? true : false;
     input.featured = input.featured === "true" ? true : false;
-
     const valida = validationPackage({ ...input });
     setError(valida);
     if (
@@ -204,11 +203,12 @@ export default function CreatePackage() {
       valida.featured ||
       valida.available ||
       valida.on_sale ||
-      valida.region ||
+      // valida.region ||
       valida.type ||
       valida.seasson ||
       valida.destinations
     ) {
+      console.log(input);
       console.log(valida);
       alert(
         "Presta mas atencion al completar el formulario y volve a intentar ;)"
@@ -230,7 +230,7 @@ export default function CreatePackage() {
         end_date: "",
         available: "",
         on_sale: "",
-        region: "",
+        // region: "",
         seasson: "",
         type: "",
       });
@@ -255,7 +255,6 @@ export default function CreatePackage() {
           className={style.create_form_container}
         >
           <div className={style.create_input_container}>
-            {error.name && <span>{error.name}</span>}
             <label className={style.create_label}>Nombre</label>
             <input
               type="text"
@@ -264,22 +263,22 @@ export default function CreatePackage() {
               value={input.name}
               onChange={(e) => handleChangeInputs(e)}
             />
+            {error.name && <span className={style.error}>{error.name}</span>}
           </div>
           <div className={style.create_input_container}>
-            {error.price && <span>{error.price}</span>}
             <label className={style.create_label}>Precio</label>
             <input
               value={input.price}
               name="price"
-              min="1"
+              min="0"
               step="1"
               type="number"
               className={style.create_input}
               onChange={(e) => handleChangeInputs(e)}
             />
+            {error.price && <span className={style.error}>{error.price}</span>}
           </div>
           <div className={style.create_textarea_container}>
-            {error.description && <span>{error.description}</span>}
             <label className={style.create_label}>Descripción</label>
             <textarea
               name="description"
@@ -288,6 +287,9 @@ export default function CreatePackage() {
               className={style.create_input_textarea}
               onChange={(e) => handleChangeInputs(e)}
             ></textarea>
+            {error.description && (
+              <span className={style.error}>{error.description}</span>
+            )}
           </div>
           <div className={style.create_input_date_container}>
             <div className={style.create_input_date}>
@@ -316,7 +318,6 @@ export default function CreatePackage() {
             </div>
           </div>
           <div className={style.create_input_container}>
-            {error.on_sale && <span>{error.on_sale}</span>}
             <label className={style.create_label}>% Descuento</label>
             <input
               value={input.on_sale}
@@ -329,39 +330,47 @@ export default function CreatePackage() {
               id="on_sale"
               onChange={(e) => handleChangeInputs(e)}
             />
+            {error.on_sale && (
+              <span className={style.error}>{error.on_sale}</span>
+            )}
           </div>
+
           <div className={style.create_input_container}>
-            {error.featured && <span>{error.featured}</span>}
-            <label className={style.create_label}>Destacado</label>
+            <label className={style.create_label}>Paquete destacado</label>
             <select
               name="featured"
               onChange={(e) => handleSelect(e)}
               className={style.create_input}
             >
-              <option selected={true} disabled="disabled">
-                Seleccionar si tu Paquete esta destacado...
+              <option value={true}>Si</option>
+              <option selected={true} value={false}>
+                No
               </option>
-              <option value="true">Si</option>
-              <option value="false">No</option>
             </select>
+            {error.featured && (
+              <span className={style.error}>{error.featured}</span>
+            )}
           </div>
           <div className={style.create_input_container}>
-            {error.available && <span>{error.available}</span>}
-            <label className={style.create_label}>Stock</label>
+            <label className={style.create_label}>Paquete en stock</label>
             <select
               name="available"
               onChange={(e) => handleSelect(e)}
-              className={style.create_input}
+              className={
+                error.available ? style.error_create_input : style.create_input
+              }
             >
-              <option selected={true} disable="disabled" value="true">
-                Selecciona el stook
+              <option selected={true} value="true">
+                Si
               </option>
-              <option value="true">Verdadero</option>
-              <option value="false">Falso</option>
+              <option value="false">No</option>
             </select>
+            {error.available && (
+              <span className={style.error}>{error.available}</span>
+            )}
           </div>
 
-          <div className={style.create_input_container}>
+          {/* <div className={style.create_input_container}>
             {error.region && <span>{error.region}</span>}
             <label className={style.create_label}>Región</label>
             <select
@@ -384,10 +393,9 @@ export default function CreatePackage() {
               <option value="Sudamérica">Sudamérica</option>
               <option value="América Central">América Central</option>
             </select>
-          </div>
+          </div> */}
 
           <div className={style.create_input_container}>
-            {error.destinations && <span>{error.destinations}</span>}
             <label className={style.create_label}>Destinos</label>
             <select
               id="destinationsSelect"
@@ -412,11 +420,10 @@ export default function CreatePackage() {
               <option value="otro" placeholder="Nuevo destino">
                 Nuevo destino
               </option>
-              {/* TENEMOS Q
-              {/* TENEMOS QUE CREAR UNA SITUACION EN EL "handleSelectDestinations" 
-                PARA MANEJAR EL CASO DE CREAR UN DESTINO NUEVO*/}
-              {/* <option value="crear">"Crear un destino nuevo.."</option> */}
             </select>
+            {error.destinations && (
+              <span className={style.error}>{error.destinations}</span>
+            )}
           </div>
           <ModalDestinos
             showDestinos={showDestinos}
@@ -450,7 +457,6 @@ export default function CreatePackage() {
           {/* Final destinos */}
 
           <div className={style.create_input_container}>
-            {error.destinations && <span>{error.destinations}</span>}
             <label className={style.create_label}>Actividades</label>
             <select
               id="actividadesSelect"
@@ -475,10 +481,8 @@ export default function CreatePackage() {
               <option value="otro" placeholder="Nueva actividad">
                 Nueva actividad
               </option>
-              {/* TENEMOS QUE CREAR UNA SITUACION EN EL "handleSelectDestinations" 
-                PARA MANEJAR EL CASO DE CREAR UN DESTINO NUEVO*/}
-              {/* <option value="crear">"Crear un destino nuevo.."</option> */}
             </select>
+            {error.activities && <span>{error.activities}</span>}
           </div>
           <ModalActividades
             show={show}
@@ -512,7 +516,6 @@ export default function CreatePackage() {
           {/* Final actividades */}
 
           <div className={style.create_input_container}>
-            {error.seasson && <span>{error.seasson}</span>}
             <label className={style.create_label}>Estación</label>
             <select
               name="seasson"
@@ -528,9 +531,11 @@ export default function CreatePackage() {
               <option value="Primavera">Primavera</option>
               <option value="Especial">Especial</option>
             </select>
+            {error.seasson && (
+              <span className={style.error}>{error.seasson}</span>
+            )}
           </div>
           <div className={style.create_input_container}>
-            {error.type && <span>{error.type}</span>}
             <label className={style.create_label}>Tipo</label>
             <select
               name="type"
@@ -546,13 +551,13 @@ export default function CreatePackage() {
                 </option>
               ))}
             </select>
+            {error.type && <span className={style.error}>{error.type}</span>}
           </div>
           <div
             id="create_images"
             className={style.create_input_images_container}
           >
             <div className={style.create_input_images}>
-              {error.main_image && <span>{error.main_image}</span>}
               <label className={style.create_label}>Imágen Principal</label>
               <input
                 onChange={(e) => handleChangeInputs(e)}
@@ -574,6 +579,9 @@ export default function CreatePackage() {
                 <BsDashLg />
               </button>
             </div>
+            {error.main_image && (
+              <span className={style.error}>{error.main_image}</span>
+            )}
             {input.images?.map((i, index) => {
               return (
                 <div key={i + index} className={style.create_input_images}>
@@ -588,6 +596,11 @@ export default function CreatePackage() {
                     onChange={(e) => handleChangeInputs(e)}
                     className={style.create_input}
                   />
+                  {error["images" + index] && (
+                    <span className={style.error}>
+                      {error["images" + index]}
+                    </span>
+                  )}
                 </div>
               );
             })}
