@@ -618,9 +618,6 @@ export default function ModifyPackages() {
               <option value="otro" placeholder="Nueva actividad">
                 Nueva actividad
               </option>
-              {/* TENEMOS QUE CREAR UNA SITUACION EN EL "handleSelectDestinations" 
-                PARA MANEJAR EL CASO DE CREAR UN DESTINO NUEVO*/}
-              {/* <option value="crear">"Crear un destino nuevo.."</option> */}
             </select>
           </div>
           <ModalActividades
