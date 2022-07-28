@@ -10,6 +10,7 @@ import CreatePackage from "./components/Dashboard/CreatePackage";
 import CreateActivity from "./components/Dashboard/CreateActivity";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
+import ModifyPackages from "./components/Dashboard/ModifyPackage";
 import Checkout from "./components/Checkout/Checkout.jsx";
 import Historial from "./components/Historial/Historial.jsx";
 
@@ -24,6 +25,10 @@ function App() {
         <Route path="/search" element={<Search />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/dashboard/packages" element={<CreatePackage />} />
+        <Route
+          path="/dashboard/modifyPackage/:id"
+          element={<ModifyPackages />}
+        />
         <Route path="/dashboard/activities" element={<CreateActivity />} />
         {/* <Route path="/dashboard" element={isAuthenticated ? <Dashboard /> : <Navigate to="/" />} /> */}
         {/* <Route path="/dashboard/packages" element={isAuthenticated ? <CreatePackage /> : <Navigate to="/" />} /> */}

@@ -1,22 +1,26 @@
-//RUTA EXCLUSIVA PARA CARGAR DATOS A LA DATABASE
 import { Destination } from "../../models/Destinations.js"
-import * as fs from 'fs';
+import * as data from '../../data/destinations.js';
+
+
 export const getDestinationData = async () =>{
     try {
-       //CAMBIAR A PATH RELATIVO
-        let dataJson = fs.readFile('/Users/sofia/Documents/Programación/Henry/PF/proyecto-final-henry/api/data/destinations.json', "utf8", (error, data) =>{
-            let dataDestinations = JSON.parse(data)
-            //console.log(error)
-            dataDestinations.map((destino) => {
+        if (!(await Destination.findAndCountAll())?.count) {
+            console.log("\n", "uploading database Destinations", "\n");
+            const infoDelJson = data.default;
+
+            infoDelJson.map(({ name, image, region }) => {
                 Destination.findOrCreate({
-                    where:
-                    {name: destino.name,
-                    image: destino.image}
-                })
-            })
-        })
-      
+                    where: {
+                        name,
+                    },
+                    defaults: {
+                        image,
+                        region,
+                    },
+                });
+            });
+        };
     }catch (error){
-        console.log(error.message)
-    }
+        console.log(error.message);
+    };
 };

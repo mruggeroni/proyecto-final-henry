@@ -22,10 +22,11 @@ export default function Home() {
     (state) => state.destinationsWithPackages
   );
   const onSale = useSelector((state) => state.onsale);
+  const sortDestinations = allDestinations.sort();
 
   useEffect(async () => {
     setLoading(true);
-    await dispatch(getAllPackage());
+    await dispatch(getAllPackage(1000));
     await dispatch(getAllDestinations());
     await dispatch(getDestinationsWithPackages());
     await dispatch(getOnSale());
@@ -55,7 +56,7 @@ export default function Home() {
         </div>
       ) : (
         <React.Fragment>
-          <Hero destinations={allDestinations} />
+          <Hero destinations={sortDestinations} />
           <div className={style.feature_container}>
             <h2 className={style.h2}>Destacados</h2>
             <CardGenericContainer listCards={onSale} />

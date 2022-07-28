@@ -42,7 +42,7 @@
   font-size: 18px;
 }
 
-.user_profile_container hr {
+.create_line {
   width: 95%;
   border: none;
   height: 2px;
@@ -96,4 +96,14 @@
 
 .user_profile_link:hover {
   color: #4A9EAA;
+}
+
+.user_btn {
+  text-decoration: none;
+  color: #000;
+  font-size: 22px;
+}
+
+.user_btn:hover {
+  color: #000;
 }

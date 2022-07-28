@@ -1,20 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import { BsPersonPlusFill } from "react-icons/bs";
 import style from "./User.module.css";
 import { useAuth0 } from "@auth0/auth0-react";
+import UserEdit from "../../UserEdit/UserEdit";
 import { NavLink } from "react-router-dom";
 
 export default function UserPopOut() {
   const { user, isAuthenticated, loginWithPopup, logout } = useAuth0();
 
+    
+
   function handleClick(e) {
     e.preventDefault();
+    // if (e.target.id === "menuProfile") {
     document
       .getElementById("profile_container")
       .classList.toggle(`${style.open_profile}`);
-      console.log( document
-        .getElementById("profile_container")
-        .classList)
+
   }
 
   return !isAuthenticated ? (
@@ -23,8 +25,13 @@ export default function UserPopOut() {
     </div>
   ) : (
     <div className={style.profile_container}>
-      <button onClick={(e) => handleClick(e)} className={style.userIcon}>
+      <button
+        id="menuProfile"
+        onClick={(e) => handleClick(e)}
+        className={style.userIcon}
+      >
         <img
+          id='user_popout'
           src={user.picture}
           alt={`Hi ${user.name}`}
           className={style.nav_item_profile}
@@ -33,14 +40,12 @@ export default function UserPopOut() {
       <div id="profile_container" className={style.user_profile_container}>
         <img src={user.picture} alt="" />
         <p>{user.name}</p>
-        <hr />
+        <hr className={style.create_line} />
         <div className={style.user_profile_menu}>
-          <NavLink to="/dashboard" className={style.user_profile_link}>
-            Profile
-          </NavLink>
+
             <div>
-              <p>Mi Perfil</p>
-              <p>Historial de Compras</p>
+              <UserEdit />
+              <NavLink to='/dashboard' className={style.user_btn}>Dashboard</NavLink>
               <p>Servicio al Cliente</p>
             </div>
         </div>

@@ -35,16 +35,17 @@
 }
 
 .nav_menu_container {
-  position: fixed;
   width: 100%;
-  z-index: 990;
-  background-color: #0000004d;
+  height: 100%;
+  z-index: 989;
+  position: fixed;
   overflow-y: auto;
   overflow-x: hidden;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
+  background-color: #0000004d;
   visibility: hidden;
   transition: all 1s ease-in-out 250ms;
 }
@@ -54,6 +55,10 @@
   width: 25%;
   height: 100vh;
   z-index: 995;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
   overflow-y: visible;
   overflow-x: hidden;
   background-color: #fff;
@@ -110,7 +115,7 @@
   font-size: 24px;
 }
 
-.nav_menu_container a:hover {
+.nav_menu a:hover {
   color: #4a9eaae6;
 }
 
