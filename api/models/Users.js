@@ -1,5 +1,6 @@
 import { DataTypes, STRING } from 'sequelize';
 import { sequelize } from '../db.js';
+import { Order } from './Orders.js';
 
 export const User = sequelize.define('user', {
 	first_name: {
@@ -62,3 +63,5 @@ export const User = sequelize.define('user', {
 	paranoid:true,
 	deletedAt: 'destroyTime',
 });
+User.hasMany(Order)
+Order.belongsTo(User)

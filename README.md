@@ -63,7 +63,8 @@ const { priceFilterMin, priceFilterMax, dateMin, dateMax, durationFilterMin, dur
   }
 ]
 ```
-
+- *POST **"/user"** => Verifica si el usuario ingresado por el pop(Auth0) es nuevo (se esta registrando) o si ya existe (se esta logeando), en base a eso lo guarda en la Database local con el rol default de client (si es nuevo) o identifica su rol si se esta logeando. Esta ruta responde con un array de dos posiciones ['accion', 'rol'], el primer elemento es un string que indica register o login, si es nuevo usuario saldra 'register' indicando que si bien ya esta registrado, debería brindar información adicional (ver modelo user), de lo contrario saldra 'login', indicando que esto no es necesario. El segundo campo muestra el rol, Admin o Client, que es siempre Client si el primer elemento es register.
+IMPORTANTE: No probar esta ruta en postman, solo con el login del front ¿Por qué? porque para crear el usuario se esta requiriendo info de Auth0, por lo que se necesita primero que Auth0 verifique al usuario. Esto ya esta conectado (ver component UserPopOut, la función handleLogin, ver actions createUser)
 - *PATCH **"/packages/:id"** => para modificar "available", "featured" y "on_sale"*
 
 Los input por body son opcionales (para mayor flexibilidad al cambiar uno o varios).
