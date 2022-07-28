@@ -16,6 +16,8 @@ import {
   ORDER_BY_PRICE,
   FILTER_BY_DESTINATION,
   FILTER_PACKAGES_BY_DATE
+  GET_DESTINATIONS_WITH_PACKAGES,
+  GET_ALL_CATEGORIES,
 } from "./../actions/index.js";
 
 const initialState = {
@@ -32,6 +34,7 @@ const initialState = {
   detailPackage: {},
   relationated: [],
   user: {},
+  categories: [],
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -137,6 +140,18 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         filteredPackages: filteredPackagesDate
       };
+    case GET_ALL_CATEGORIES:
+      let sortCategories = action.payload.sort(function (a, b) {
+        if (a.name > b.name) return 1;
+        if (b.name > a.name) return -1;
+        return 0;
+      });
+
+      return {
+        ...state,
+        categories: sortCategories,
+      };
+
     default:
       return { ...state };
   }

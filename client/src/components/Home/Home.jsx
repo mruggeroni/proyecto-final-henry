@@ -22,7 +22,7 @@ export default function Home() {
     (state) => state.destinationsWithPackages
   );
   const onSale = useSelector((state) => state.onsale);
-  const sortDestinations = allDestinations.sort()
+  const sortDestinations = allDestinations.sort();
 
   useEffect(async () => {
     setLoading(true);
