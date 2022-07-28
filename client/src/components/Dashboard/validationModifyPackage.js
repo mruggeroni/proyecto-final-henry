@@ -17,7 +17,7 @@ export default function validationModifyPackage(input) {
     error.description = "La descripción debe tener menos de 1000 caracteres.";
   }
   //----- preguntamos por las imagenes o que?
-  if (input.main_image.length < 0) {
+  if (input.main_image.length <= 0) {
     error.main_image = "Se requiere una imagen principal";
   }
 

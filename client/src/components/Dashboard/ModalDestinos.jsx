@@ -18,6 +18,7 @@ const schema = yup.object().shape({
     .max(20, "Maximo 20")
     .required("Requerido"),
   image: yup.string().required("Requerido"),
+  region: yup.string().required("Required").nullable(),
 });
 
 export default function ModalDestinos({
@@ -33,6 +34,7 @@ export default function ModalDestinos({
   };
 
   const handleCrearDestino = async (e) => {
+    console.log(e);
     const respuesta = await dispatch(crearDestino(e));
     await dispatch(getAllDestinations());
     await dispatch(getAllActivities());
@@ -99,6 +101,39 @@ export default function ModalDestinos({
                     />
                     <Form.Control.Feedback type="invalid">
                       {errors.image}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </Row>
+                <Row className="mb-3">
+                  <Form.Group as={Col} md="12">
+                    <Form.Label>Region</Form.Label>
+                    <Form.Control
+                      as="select"
+                      name="region"
+                      value={values.region}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      isInvalid={!!errors.region}
+                    >
+                      <option selected={true} disabled="disabled" hidden>
+                        Seleccionar una Región...
+                      </option>
+                      <option value="Europa Occidental">
+                        Europa Occidental
+                      </option>
+                      <option value="Europa Central">Europa Central</option>
+                      <option value="Europa Oriental">Europa Oriental</option>
+                      <option value="Asia Oriental">Asia Oriental</option>
+                      <option value="Asia del Sur">Asia del Sur</option>
+                      <option value="Asia Sudoriental Continental">
+                        Asia Sudoriental Continental
+                      </option>
+                      <option value="Norte América">Norte América</option>
+                      <option value="Sudamérica">Sudamérica</option>
+                      <option value="América Central">América Central</option>
+                    </Form.Control>
+                    <Form.Control.Feedback type="invalid">
+                      {errors.region}
                     </Form.Control.Feedback>
                   </Form.Group>
                 </Row>
