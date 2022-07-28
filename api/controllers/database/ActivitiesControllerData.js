@@ -1,6 +1,6 @@
-import { Activity } from "/home/sadnena/pf/proyecto-final-henry/api/models/Activities.js";
-import { Classification } from "/home/sadnena/pf/proyecto-final-henry/api/models/Classification.js";
-import * as data from '/home/sadnena/pf/proyecto-final-henry/api/data/activities.js';
+import { Activity } from "../../models/Activities.js";
+import { Classification } from "../../models/Classification.js";
+import * as data from '../../data/activities.js';
 
 
 export const getActivitiesData = async () =>{
