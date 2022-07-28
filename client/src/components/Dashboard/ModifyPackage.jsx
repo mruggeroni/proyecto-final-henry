@@ -27,8 +27,20 @@ export default function ModifyPackages() {
   const types = useSelector((state) => state.types);
   const paquete = useSelector((state) => state.detailPackage);
   const dataNow = new Date().toISOString().split("T")[0];
-  const [fromDate, setFromDate] = useState(paquete.start_date);
+  const [fromDate, setFromDate] = useState(
+    new Date(paquete.start_date).toISOString().split("T")[0]
+  );
+  console.log("fromDate : ", fromDate);
   const [untilDate, setUntilDate] = useState(paquete.end_date);
+
+  console.log(dataNow);
+  //   console.log(paquete.start_date);
+  //   const fechaInicio = new Date(paquete.start_date);
+  //   console.log(fechaInicio);
+  //   const fechaFin = new Date(paquete.end_date).toISOString().split("T")[0];
+  //   console.log(fechaFin);
+  //   const [fromDate, setFromDate] = useState(fechaInicio);
+  //   const [untilDate, setUntilDate] = useState(fechaFin);
 
   const [input, setInput] = useState({
     name: "",
@@ -90,15 +102,6 @@ export default function ModifyPackages() {
     dispatch(getTypes());
     dispatch(getPackageById(id));
   }, [dispatch, id]);
-
-  //   console.log(dataNow);
-  //   console.log(paquete.start_date);
-  //   const fechaInicio = new Date(paquete.start_date);
-  //   console.log(fechaInicio);
-  //   const fechaFin = new Date(paquete.end_date).toISOString().split("T")[0];
-  //   console.log(fechaFin);
-  //   const [fromDate, setFromDate] = useState(fechaInicio);
-  //   const [untilDate, setUntilDate] = useState(fechaFin);
 
   const sortDestinations = allDestinations.sort(function (a, b) {
     if (a.name > b.name) return 1;
@@ -181,7 +184,7 @@ export default function ModifyPackages() {
       handleShow();
     } else {
       if (input.activities.length <= 10) {
-        if (!input.destinations.includes(e.target.value)) {
+        if (!input.activities.includes(e.target.value)) {
           setInput({
             ...input,
             activities: [...input.activities, e.target.value],
@@ -232,55 +235,58 @@ export default function ModifyPackages() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    input.images = [input.images0, input.images1, input.images2];
-    input.price = parseInt(input.price);
-    input.on_sale = parseInt(input.on_sale);
-    input.available = input.available === "true" ? true : false;
-    input.featured = input.featured === "true" ? true : false;
 
-    const valida = validationPackage({ ...input });
-    setError(valida);
-    if (
-      valida.name ||
-      valida.price ||
-      valida.description ||
-      valida.main_image ||
-      valida.images ||
-      valida.featured ||
-      valida.available ||
-      valida.on_sale ||
-      valida.region ||
-      valida.type ||
-      valida.seasson ||
-      valida.destinations
-    ) {
-      console.log(valida);
-      alert(
-        "Presta mas atencion al completar el formulario y volve a intentar ;)"
-      );
-    } else {
-      dispatch(createPackage(input));
-      alert("Nuevo paquete creado..");
-      setInput({
-        name: "",
-        price: "",
-        description: "",
-        main_image: "",
-        images0: "",
-        images1: "",
-        images2: "",
-        featured: "",
-        destinations: [],
-        start_date: "",
-        end_date: "",
-        available: "",
-        on_sale: "",
-        region: "",
-        seasson: "",
-        type: "",
-      });
-      navigate("/dashboard");
-    }
+    console.log(input);
+
+    // input.images = [input.images0, input.images1, input.images2];
+    // input.price = parseInt(input.price);
+    // input.on_sale = parseInt(input.on_sale);
+    // input.available = input.available === "true" ? true : false;
+    // input.featured = input.featured === "true" ? true : false;
+
+    // const valida = validationPackage({ ...input });
+    // setError(valida);
+    // if (
+    //   valida.name ||
+    //   valida.price ||
+    //   valida.description ||
+    //   valida.main_image ||
+    //   valida.images ||
+    //   valida.featured ||
+    //   valida.available ||
+    //   valida.on_sale ||
+    //   valida.region ||
+    //   valida.type ||
+    //   valida.seasson ||
+    //   valida.destinations
+    // ) {
+    //   console.log(valida);
+    //   alert(
+    //     "Presta mas atencion al completar el formulario y volve a intentar ;)"
+    //   );
+    // } else {
+    //   dispatch(createPackage(input));
+    //   alert("Nuevo paquete creado..");
+    //   setInput({
+    //     name: "",
+    //     price: "",
+    //     description: "",
+    //     main_image: "",
+    //     images0: "",
+    //     images1: "",
+    //     images2: "",
+    //     featured: "",
+    //     destinations: [],
+    //     start_date: "",
+    //     end_date: "",
+    //     available: "",
+    //     on_sale: "",
+    //     region: "",
+    //     seasson: "",
+    //     type: "",
+    //   });
+    //   navigate("/dashboard");
+    // }
   };
 
   const [show, setShow] = useState(false);
@@ -345,7 +351,7 @@ export default function ModifyPackages() {
                 name="start_date"
                 type="date"
                 id="from"
-                value={input.start_date}
+                value={fromDate}
                 min={dataNow}
                 onChange={(e) => handleChangeDate(e)}
                 className={style.create_input}
@@ -357,8 +363,8 @@ export default function ModifyPackages() {
                 name="end_date"
                 type="date"
                 id="until"
-                value={input.end_date}
-                min={input.start_date}
+                value={untilDate}
+                min={fromDate}
                 onChange={(e) => handleChangeDate(e)}
                 className={style.create_input}
               />
@@ -627,14 +633,37 @@ export default function ModifyPackages() {
               onChange={(e) => handleSelect(e)}
               className={style.create_input}
             >
-              <option selected={true} disabled="disabled">
-                Seleccionar una Estación...
+              <option disabled="disabled">Seleccionar una Estación...</option>
+              <option
+                selected={paquete.seasson === "Verano" ? true : false}
+                value="Verano"
+              >
+                Verano
               </option>
-              <option value="Verano">Verano</option>
-              <option value="Otoño">Otoño</option>
-              <option value="Invierno">Invierno</option>
-              <option value="Primavera">Primavera</option>
-              <option value="Especial">Especial</option>
+              <option
+                selected={paquete.seasson === "Otoño" ? true : false}
+                value="Otoño"
+              >
+                Otoño
+              </option>
+              <option
+                selected={paquete.seasson === "Invierno" ? true : false}
+                value="Invierno"
+              >
+                Invierno
+              </option>
+              <option
+                selected={paquete.seasson === "Primavera" ? true : false}
+                value="Primavera"
+              >
+                Primavera
+              </option>
+              <option
+                selected={paquete.seasson === "Especial" ? true : false}
+                value="Especial"
+              >
+                Especial
+              </option>
             </select>
           </div>
           <div className={style.create_input_container}>
@@ -645,11 +674,15 @@ export default function ModifyPackages() {
               onChange={(e) => handleSelect(e)}
               className={style.create_input}
             >
-              <option selected={true} disabled="disabled">
+              <option disabled="disabled">
                 Seleccionar un tipo para tu Paquete...
               </option>
               {types?.map((el) => (
-                <option key={el} value={el}>
+                <option
+                  selected={paquete.type === el ? true : false}
+                  key={el}
+                  value={el}
+                >
                   {el}
                 </option>
               ))}
