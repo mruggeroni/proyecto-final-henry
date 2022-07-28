@@ -3,17 +3,26 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  color: #000 !important;
+  overflow-y: auto;
 }
 
 .settings_email_container {
   width: 100%;
   display: flex;
   justify-content: space-around;
+  align-items: center;
   margin-bottom: 10px;
+}
+
+.settings_email_container .settings_input {
+  margin: auto 10px;
 }
 
 .settings_email {
   font-size: 24px;
+  margin: auto;
+  margin-right: 10px;
 }
 
 .settings_email_btn {
@@ -29,7 +38,10 @@
 
 .settings_input_container {
   position: relative;
- 
+}
+
+.settings_password_container .settings_input {
+  margin-bottom: 10px;
 }
 
 .settings_input {
@@ -42,12 +54,11 @@
   font-size: 16px;
   padding-left: 12px;
   padding-right: 10px;
-  margin-bottom: 25px;
 }
 
 .settings_label {
   position: absolute;
-  top: -5px;
+  top: 0px;
   left: 10px;
   z-index: 966;
   font-size: 14px;

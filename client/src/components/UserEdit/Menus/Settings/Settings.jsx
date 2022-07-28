@@ -36,7 +36,8 @@ export default function Settings({ showSettings, setShowSettings }) {
         <h2>Configuracion de la Cuenta</h2>
         <hr />
         <div className={s.settings_email_container}>
-          <span className={s.settings_email}>Tu email es <b>email@gmail.com</b></span>
+          <h3 className={s.settings_email}>Email</h3>
+            <input type='email' value='email@gmail.com' className={s.settings_input}/>
           <button className={s.settings_email_btn}>Cambiar</button>
         </div>
         <form className={s.settings_password_container}>
