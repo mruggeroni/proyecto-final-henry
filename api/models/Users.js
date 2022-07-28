@@ -1,5 +1,6 @@
-import { DataTypes } from 'sequelize';
+import { DataTypes, STRING } from 'sequelize';
 import { sequelize } from '../db.js';
+import { Order } from './Orders.js';
 
 
 export const User = sequelize.define('user', {
@@ -11,28 +12,27 @@ export const User = sequelize.define('user', {
 		type: DataTypes.STRING,
 		allowNull: false,
 	},
-	email: {
+	nickname: {
 		type: DataTypes.STRING,
-        allowNull: false,
-		unique: true,
+		allowNull: true,
 	},
-	username: {
-		type: DataTypes.STRING,
-        allowNull: false,
+	full_name: {
+		type: DataTypes.VIRTUAL,
+		get() {
+			return `${this.first_name} ${this.last_name}`;
+		},
+	},
+	email: {
+		type: DataTypes.TEXT,
+		allowNull: false,
 		unique: true,
 	},
 	password: {
 		type: DataTypes.STRING,
-        allowNull: false,
-		get() {
-			let pass = ""; 
-			for (let i = 0; i < this.password.length; i++) {
-				pass += "*";
-			};
-			return pass;
-		},
+		allowNull: true,
+		unique: false,
 	},
-	country: {
+	phone: {
 		type: DataTypes.STRING,
 		allowNull: true,
 	},
@@ -40,11 +40,11 @@ export const User = sequelize.define('user', {
 		type: DataTypes.STRING,
 		allowNull: true,
 	},
-	adress: {
+	state: {
 		type: DataTypes.STRING,
 		allowNull: true,
 	},
-    phone: {
+	postal_code: {
 		type: DataTypes.STRING,
 		allowNull: true,
 	},
@@ -60,8 +60,7 @@ export const User = sequelize.define('user', {
 }, {
 	timestamps: true,
 	createdAt: "created_date",
-	updateAt: "update_date",
-	deletedAt: "destroy_date",
-	paranoid: true,
-	freezeTableName: true,
+	updatedAt: "update_date",
+	paranoid:true,
+	deletedAt: 'destroyTime',
 });
