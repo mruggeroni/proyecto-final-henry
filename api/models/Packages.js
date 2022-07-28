@@ -16,6 +16,7 @@ export const Package = sequelize.define('package', {
 	},
 	main_image: {
 		type: DataTypes.STRING,
+		defaultValue: "",
 	},
 	images: {
 		type: DataTypes.ARRAY(DataTypes.STRING),
@@ -33,7 +34,14 @@ export const Package = sequelize.define('package', {
 		type: DataTypes.DATEONLY,
 		allowNull: false,
 	},
-    
+    duration: {
+		type: DataTypes.VIRTUAL,
+		get() {
+			const start_date = new Date(this.start_date);
+			const end_date = new Date(this.end_date);
+			return (end_date - start_date) / (1000*60*60*24);
+		},
+	},
     seasson: {
 		type: DataTypes.ENUM(
 			"Verano",
@@ -55,20 +63,23 @@ export const Package = sequelize.define('package', {
 	},
 	featured: {
 		type: DataTypes.BOOLEAN,
-
+		allowNull: false,
+		defaultValue: false,
 	},
 	available: {
 		type: DataTypes.BOOLEAN,
-
+		allowNull: false,
+		defaultValue: true,
 	},
 	on_sale: {
 		type: DataTypes.INTEGER,
+		allowNull: false,
 		defaultValue: 0,
 	},
 }, {
 	timestamps: true,
-  createdAt: false,
-  updatedAt: false,
+	createdAt: false,
+	updatedAt: false,
 	paranoid:true,
 	deletedAt: 'destroyTime'
 });
