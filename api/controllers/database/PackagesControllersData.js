@@ -2,6 +2,7 @@ import { Package } from '../../models/Packages.js';
 import { Destination } from '../../models/Destinations.js';
 import { Activity } from '../../models/Activities.js';
 import * as data from '../../data/JSON_paquetes.js';
+import moment from 'moment';
 
 
 export const getPackageData = async () =>{
@@ -11,7 +12,11 @@ export const getPackageData = async () =>{
             const infoDelJson = data.default;
 
             infoDelJson.map(async ({ name, description, main_image, images, price, start_date, end_date, seasson, type, featured, available, on_sale, destinations }) => {
-                let newPaquete = await Package.findOrCreate({
+                
+				start_date = moment(start_date, 'YYYY-MM-DD');
+				end_date = moment(end_date, 'YYYY-MM-DD');
+
+				let newPaquete = await Package.findOrCreate({
                     where:{
                         name, 
                     },
@@ -56,3 +61,4 @@ export const getPackageData = async () =>{
         console.log(error.message);
     };
 };
+
