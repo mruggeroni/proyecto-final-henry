@@ -14,9 +14,9 @@ import { getPackages } from '../controllers/getPackagesAllFiltersAndSortsControl
 const router = Router();
 
 //RUTAS 
-router.get('/packages/detail/:id', getPackagesDetail);
+router.get('/fsp/packages/:limitRender', getPackages);
 router.get('/packages/featured', getFeaturedPackages);
-router.get('/packages/:limitRender', getPackages);
+router.get('/packages/:id', getPackagesDetail);
 router.get('/on_sale', getOn_sale);
 router.get('/types', getTypes);
 router.get('/deletedPackages', getDeletedPackages)

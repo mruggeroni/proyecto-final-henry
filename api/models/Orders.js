@@ -1,6 +1,7 @@
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../db.js';
-import { OrderItem } from './OrderItems.js';
+// import { Classification } from './Classification.js';
+//import { Package } from './Packages.js';
 import { User } from './Users.js'
 
 export const Order = sequelize.define('order', {
@@ -14,7 +15,7 @@ export const Order = sequelize.define('order', {
 		allowNull: false,
 	},
 	status: {
-		type: DataTypes.ENUM('pending', 'paid'),
+		type: DataTypes.ENUM('pending', 'paid', 'completed'),
 		defaultValue: 'pending',
 	},
 }, {
@@ -23,6 +24,3 @@ export const Order = sequelize.define('order', {
 
 User.hasMany(Order);
 Order.belongsTo(User);
-
-Order.hasMany(OrderItem);
-OrderItem.belongsTo(Order);

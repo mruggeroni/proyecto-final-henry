@@ -8,7 +8,8 @@ export const GET_ALL_DESTINATIONS = "GET_ALL_DESTINATIONS";
 export const GET_ON_SALE = "GET_ON_SALE";
 export const GET_ACTIVITIES = "GET_ACTIVITIES";
 export const GET_TYPES = "GET_TYPES";
-export const POST_PACKAGE = "POST_PACKAGE";
+export const GET_USERS = "GET_USERS";
+export const POST_PACKAGE = "POST_PACKAGE"; 
 export const POST_USER = "POST_USER";
 export const ORDER_BY_PRICE = "ORDER_BY_PRICE";
 export const FILTER_BY_DESTINATION = "FILTER_BY_DESTINATION";
@@ -85,6 +86,7 @@ export const createPackage = (payload) => {
     }
   };
 };
+
 export const createUser = (payload) => {
   return async function (dispatch) {
     try {
@@ -100,6 +102,18 @@ export const createUser = (payload) => {
     }
   };
 };
+
+export const getUsers = () => {
+  return async function (dispatch) {
+    try {
+      const res = await axios.get('/user');
+      return dispatch({ type: GET_USERS, payload: res.data });
+
+    } catch(error) {
+      console.log(error)
+    }
+  }
+} 
 
 export function orderByPrice(payload) {
   return {

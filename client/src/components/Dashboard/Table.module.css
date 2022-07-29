@@ -29,6 +29,32 @@
     background-color: white;
 }
 
+.fl_table_btn {
+    background-color: transparent;
+    text-decoration: none;
+    border: none;
+    margin: 0 5px;
+    color: #000;
+}
+
+.fl_table_true {
+    background-color: #008000;
+    color: #fff;
+    padding: 3px 5px;
+    border-radius: 20px;
+}
+
+.fl_table_false {
+    background-color: #ff0000;
+    color: #fff;
+    padding: 3px 5px;
+    border-radius: 20px;
+}
+
+.fl_table_btn:hover {
+    color: #4a9eab;
+}
+
 .fl_table td,
 .fl_table th {
     text-align: center;

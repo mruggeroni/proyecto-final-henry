@@ -160,6 +160,9 @@ export default function ModifyActivity() {
     <div>
       <Dashboard />
       <div className={style.create_container}>
+        {
+          console.log(input)
+        }
         <h2>Modificar Actividad</h2>
         <hr className={style.create_line} />
         <form

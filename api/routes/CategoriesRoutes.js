@@ -1,11 +1,11 @@
 
 import { Router } from 'express';
-import { createClassification, getClassification, putClassification } from '../controllers/CategoriesController.js';
+import { createClassification, getCategories } from '../controllers/CategoriesController.js';
+
 
 const router = Router();
 
-router.get('/classification', getClassification);
+router.get('/categories', getCategories);
 router.post('/classification', createClassification);
-router.put('/classification/:id', putClassification)
 
 export default router;
