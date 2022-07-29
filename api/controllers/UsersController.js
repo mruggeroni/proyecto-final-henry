@@ -63,3 +63,19 @@ export const putUser = async (req, res) => {
 		res.status(400).send({ data: e.message })
 	}
 }
+
+export const patchIs_adminProperty = async (req, res) => {
+	try {
+		const id = req.params.id
+		const is_admin = req.body
+		await User.update(is_admin, {
+			where: {
+				id,
+			}
+		})
+		const updatedUser = await User.findByPk(id)
+		res.status(200).send(updatedUser)
+	} catch (e) {
+		res.status(400).send({ data: e.message })
+	}
+}
