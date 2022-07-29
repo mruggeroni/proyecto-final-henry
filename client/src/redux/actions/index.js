@@ -19,7 +19,7 @@ export const GET_ALL_CATEGORIES = "GET_ALL_CATEGORIES";
 export const getAllPackage = (limitRender) => {
   return async function (dispatch) {
     let res = await axios.get("/packages/" + limitRender);
-    console.log(res.data)
+    console.log(res.data);
     return dispatch({ type: GET_ALL_PACKAGES, payload: res.data });
   };
 };
@@ -88,15 +88,13 @@ export const createPackage = (payload) => {
 export const createUser = (payload) => {
   return async function (dispatch) {
     try {
-      const respuesta = await axios.post(
-        "/user",
-         {
-          headers:{
-            authorization: `Bearer ${payload}`
-          } 
-        }
-      );
-      return respuesta;
+      const res = await axios.post("/user", {
+        headers: {
+          authorization: `Bearer ${payload}`,
+        },
+      });
+      console.log(res.data);
+      return dispatch({ type: POST_USER, payload: res.data.message });
     } catch (e) {
       alert(e.message);
     }
@@ -123,6 +121,14 @@ export function orderByPrice(payload) {
 }
 
 export function filterPackagesByDestination(payload) {
+  // return async function (dispatch) {
+  //   try {
+  //     let res = await axios.get(`/packages/1000?destination=` + payload);
+  //     return dispatch({ type: FILTER_BY_DESTINATION, payload: res.data });
+  //   } catch (error) {
+  //     console.log(error.message);
+  //   }
+  // };
   return {
     type: FILTER_BY_DESTINATION,
     payload,
@@ -132,7 +138,9 @@ export function filterPackagesByDestination(payload) {
 export function filterPackagesByDate(value) {
   return async function (dispatch) {
     try {
-      let res = await axios.get(`/fsp/packages/1000?dateMin=${value[0]}&dateMax=${value[1]}`);
+      let res = await axios.get(
+        `/packages/1000?dateMin=${value[0]}&dateMax=${value[1]}`
+      );
       return dispatch({ type: FILTER_PACKAGES_BY_DATE, payload: res.data });
     } catch (error) {
       console.log(error.message);
@@ -216,6 +224,19 @@ export function modificarActividad(payload, id) {
       return respuesta;
     } catch (e) {
       alert(e.message);
+    }
+  };
+}
+
+export function borrarPaquete(payload) {
+  return async function (dispatch) {
+    console.log(payload);
+    try {
+      var json = await axios.delete("/packages?id=" + payload);
+      dispatch(getAllPackage(1000));
+      return json;
+    } catch (e) {
+      alert("No pudimos borrar el paquete!");
     }
   };
 }

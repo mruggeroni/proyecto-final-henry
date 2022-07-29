@@ -22,15 +22,15 @@ export default function ListPackages() {
     <div className={s.tbl_container}>
         <div class={s.table_wrapper}>
             <table class={s.fl_table}>
-            <thead>
+              <thead>
                 <tr>
-                    <th>Id</th>
-                    <th>Nombre</th>
-                    <th>Precio</th>
-                    <th>Destacado</th>
-                    <th>Disponible</th>
-                    <th>Promoción</th>
-                    <th>Editar/Eliminar</th>
+                  <th>Id</th>
+                  <th>Nombre</th>
+                  <th>Precio</th>
+                  <th>Destacado</th>
+                  <th>Disponible</th>
+                  <th>Promoción</th>
+                  <th>Editar/Eliminar</th>
                 </tr>
             </thead>
                 <tbody>
@@ -58,8 +58,9 @@ export default function ListPackages() {
                     }
                 </tbody>
             </table>
+          </div>
         </div>
-        </div>
-        </div>
-    </div>)
+      </div>
+    </div>
+  );
 }

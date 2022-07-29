@@ -95,13 +95,14 @@ const rootReducer = (state = initialState, action) => {
         relationated: action.payload,
       };
 
-    case POST_PACKAGE: //el case del POST por mas que no haga nada (devuelve el mismo objeto) tiene que estar SI O SI
+    case POST_PACKAGE:
       return {
         ...state,
       };
-   case POST_USER: 
+    case POST_USER:
       return {
         ...state,
+        user: action.payload,
       };
    case GET_USERS:
       return {
@@ -127,27 +128,21 @@ const rootReducer = (state = initialState, action) => {
       };
 
     case FILTER_BY_DESTINATION:
-      const allPackages = state.allPackages;
-      let aux = [];
-      action.payload === "all"
-        ? allPackages.forEach((e) => aux.push(e))
-        : allPackages.filter((p) =>
-            p.destinations.forEach((el) => {
-              el.name === action.payload && aux.push(p);
-            })
-          );
-
       return {
         ...state,
-        filteredPackages: aux,
+        filteredPackages: action.payload,
       };
     case FILTER_PACKAGES_BY_DATE:
       let filteredPackagesDate = [];
-      state.filteredPackages.forEach( (p) => action.payload.forEach( (f) => p.id === f.id && filteredPackagesDate.push(f) ) )
-      console.log(filteredPackagesDate)
+      state.filteredPackages.forEach((p) =>
+        action.payload.forEach(
+          (f) => p.id === f.id && filteredPackagesDate.push(f)
+        )
+      );
+      console.log(filteredPackagesDate);
       return {
         ...state,
-        filteredPackages: filteredPackagesDate
+        filteredPackages: filteredPackagesDate,
       };
     case GET_ALL_CATEGORIES:
       let sortCategories = action.payload.sort(function (a, b) {
