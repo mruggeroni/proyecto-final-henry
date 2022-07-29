@@ -39,12 +39,12 @@ export default function UserEdit() {
                 <hr className={s.create_line} />
                 <div className={s.profile_btn}>
                   <div>
-                    <button onClick={(handleShowProfile)} >Perfil</button>
-                    <button onClick={(handleShowSettings)}>Configuraciones</button>
+                    <button className={s.profile_menu_btn} onClick={(handleShowProfile)} >Perfil</button>
+                    <button className={s.profile_menu_btn} onClick={(handleShowSettings)}>Configuraciones</button>
                   </div>
                   <div>
-                    <button onClick={(logout)}>Finalizar Sesión</button>
-                    <button onClick={(handleClose)}>Cerrar</button>
+                    <button className={s.profile_menu_btn} onClick={(logout)}>Finalizar Sesión</button>
+                    <button className={s.profile_menu_btn} onClick={(handleClose)}>Cerrar</button>
                   </div>
                 </div>
             </div>

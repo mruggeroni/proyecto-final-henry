@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 // import validate from "./validationActivity.js";
 import Dashboard from "./Dashboard";
 import style from "./CreatePackage.module.css";
-import { createActivities, getCategories } from "../../redux/actions";
+import {
+  getAllActivities,
+  getCategories,
+  modificarActividad,
+} from "../../redux/actions";
 import ModalCategorias from "./ModalCategoria";
 
 function validate(input) {
   let error = {};
-  let regName = /^[a-zA-Z]*$/;
-  let regInteger = /^\d+$/;
-  let checkboxes = document.getElementsByName("check");
 
   if (!input.name) {
     error.name = "El nombre es requerido";
@@ -54,19 +55,21 @@ function firstCap(name) {
   return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
 }
 
-export default function ActivityCreate({ showCreateActivity, setShowCreateActivity }) {
+export default function ModifyActivity() {
+  const { id } = useParams();
   const dispatch = useDispatch();
-  // const activities = useSelector((state) => state.activities);
-  // const countries = useSelector((state) => state.allCountries);
+  const actividadesTodas = useSelector((state) => state.activities);
+
   const [error, setError] = useState({});
   const createBtn = document.getElementById("create");
-  const [input, setInput] = useState({
-    name: "",
-    description: "",
-    price: "",
-    image: "",
-    classification: "",
-  });
+  //   const [input, setInput] = useState({
+  //     name: "",
+  //     description: "",
+  //     price: "",
+  //     image: "",
+  //     classification: "",
+  //   });
+
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);
 
@@ -81,9 +84,17 @@ export default function ActivityCreate({ showCreateActivity, setShowCreateActivi
         [e.target.name]: e.target.value,
       })
     );
-    console.log("input: ", input);
-    console.log("error: ", error);
   };
+
+  const [input, setInput] = useState({
+    id: "",
+    name: "",
+    description: "",
+    image: "",
+    classification: "",
+  });
+
+  //   useEffect(() => {}, []);
 
   const handleSelectCategorias = (e) => {
     if (e.target.value === "otro") {
@@ -114,7 +125,9 @@ export default function ActivityCreate({ showCreateActivity, setShowCreateActivi
         image: "",
         classification: "",
       });
-      dispatch(createActivities(input));
+      console.log(input);
+      console.log(input.classification);
+      dispatch(modificarActividad(input, id));
       // Alert bootstrap
       alert("Actividad creada!");
     } else {
@@ -124,18 +137,33 @@ export default function ActivityCreate({ showCreateActivity, setShowCreateActivi
     }
   }
 
-  const categorias = useSelector((state) => state.categories);
   useEffect(async () => {
     const categorias = await dispatch(getCategories());
+    const actividades = await dispatch(getAllActivities());
+    const actividad = actividades.payload.filter(
+      (i) => parseInt(i.id) === parseInt(id)
+    );
+    if (Object.keys(actividad)?.length) {
+      setInput({
+        id: actividad[0].id,
+        name: actividad[0].name,
+        description: actividad[0].description,
+        image: actividad[0].image,
+        classification: actividad[0].classification.name,
+        price: actividad[0].price,
+      });
+    }
   }, []);
+  const categorias = useSelector((state) => state.categories);
 
   return (
-    // !showCreateActivity ? null
-    // :
     <div>
       <Dashboard />
       <div className={style.create_container}>
-        <h2>Crear una Actividad</h2>
+        {
+          console.log(input)
+        }
+        <h2>Modificar Actividad</h2>
         <hr className={style.create_line} />
         <form
           onSubmit={(e) => handleSubmit(e)}
@@ -147,6 +175,7 @@ export default function ActivityCreate({ showCreateActivity, setShowCreateActivi
             </label>
             <input
               type="text"
+              //   placeholder={actividad.name}
               className={style.create_input}
               value={input.name}
               name="name"
@@ -168,6 +197,7 @@ export default function ActivityCreate({ showCreateActivity, setShowCreateActivi
               cols="20"
               rows="10"
               value={input.description}
+              //   placeholder={actividad.description}
               className={style.create_input_textarea}
             ></textarea>
             {error.description ? (
@@ -186,6 +216,7 @@ export default function ActivityCreate({ showCreateActivity, setShowCreateActivi
               value={input.price}
               name="price"
               min="0"
+              //   placeholder={actividad.price}
               onChange={(e) => handleInputChange(e)}
             />
             {error.price ? (
@@ -215,7 +246,7 @@ export default function ActivityCreate({ showCreateActivity, setShowCreateActivi
               </option>
               {categorias?.map((el) => (
                 <option
-                  selected={input.classification === el.name ? true : false}
+                  selected={input.classification == el.name ? true : false}
                   key={el.id}
                   value={el.name}
                 >
@@ -259,7 +290,7 @@ export default function ActivityCreate({ showCreateActivity, setShowCreateActivi
             id="create"
             disabled={true}
           >
-            Crear actividad
+            Modificar actividad
           </button>
         </form>
       </div>

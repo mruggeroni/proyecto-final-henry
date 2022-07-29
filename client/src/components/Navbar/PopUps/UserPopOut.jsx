@@ -8,8 +8,6 @@ import { NavLink } from "react-router-dom";
 export default function UserPopOut() {
   const { user, isAuthenticated, loginWithPopup, logout } = useAuth0();
   const [showUser, setShowUser] = useState(false);
-  const handleShowUser = () => { setShowUser(true) }
-  const handleNotShowUser = () => { setShowUser(false) }
 
   function handleClick(e) {
     e.preventDefault();

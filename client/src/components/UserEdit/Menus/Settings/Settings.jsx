@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import * as yup from "yup";
 import { BsFillEyeFill, BsFillEyeSlashFill } from 'react-icons/bs';
 import s from './Settings.module.css';
 import { useSelector } from "react-redux";

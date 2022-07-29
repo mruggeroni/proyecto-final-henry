@@ -17,11 +17,10 @@ export default function Dashboard() {
           <hr className={style.create_line} />
         </div>
         <NavLink to='/dashboard/packages' className={style.links_item} >Crear paquete</NavLink>
-        <NavLink to='/dashboard/listPackages' className={style.links_item} >Lista paquete</NavLink>
         <NavLink to='/dashboard/activities' className={style.links_item} >Crear un actividad</NavLink>
-        <NavLink to='/dashboard/activities' className={style.links_item} >Lista de actividades</NavLink>
-        <NavLink to='/dashboard/activities' className={style.links_item} >Lista de usuarios</NavLink>
-        
+        <NavLink to='/dashboard/listPackages' className={style.links_item} >Lista paquete</NavLink>
+        <NavLink to='/dashboard/listActivities' className={style.links_item} >Lista de actividades</NavLink>
+        <NavLink to='/dashboard/listUsers' className={style.links_item} >Lista de usuarios</NavLink>
       </div>
     </div>
   );

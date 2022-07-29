@@ -18,8 +18,8 @@ ReactDOM.render(
       clientId={CLIENT_ID}
       // redirectUri={window.location.origin}
       redirectUri={"http://localhost:3000"}
-      audiencie={claves.AUDIENCIE} //deberia de ser privado -> lo usamos en las rutas tm
-      audience={claves.AUDIENCIE}
+      //audiencie="identificador unico" //deberia de ser privado -> lo usamos en las rutas tmb
+      audience="endpointPF"
       scope="openid profile email"
     >
       <App />

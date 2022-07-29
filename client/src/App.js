@@ -14,6 +14,9 @@ import ModifyPackages from "./components/Dashboard/ModifyPackage";
 import Checkout from "./components/Checkout/Checkout.jsx";
 import Historial from "./components/Historial/Historial.jsx";
 import ListPackages from "./components/Dashboard/ListPackages.jsx";
+import ModifyActivity from "./components/Dashboard/ModifyActivity.jsx";
+import ListActivities from "./components/Dashboard/ListActivities.jsx";
+import ListUsers from "./components/Dashboard/ListUsers.jsx";
 
 function App() {
   const { isAuthenticated } = useAuth0();
@@ -26,12 +29,18 @@ function App() {
         <Route path="/search" element={<Search />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/dashboard/listPackages" element={<ListPackages />} />
+        <Route path="/dashboard/listActivities" element={<ListActivities />} />
+        <Route path="/dashboard/listUsers" element={<ListUsers />} />
         <Route path="/dashboard/packages" element={<CreatePackage />} />
         <Route
           path="/dashboard/modifyPackage/:id"
           element={<ModifyPackages />}
         />
         <Route path="/dashboard/activities" element={<CreateActivity />} />
+        <Route
+          path="/dashboard/modifyActivities/:id"
+          element={<ModifyActivity />}
+        />
         {/* <Route path="/dashboard" element={isAuthenticated ? <Dashboard /> : <Navigate to="/" />} /> */}
         {/* <Route path="/dashboard/packages" element={isAuthenticated ? <CreatePackage /> : <Navigate to="/" />} /> */}
         {/* <Route path="/dashboard/activities" element={isAuthenticated ? <CreateActivity /> : <Navigate to="/" />} /> */}
