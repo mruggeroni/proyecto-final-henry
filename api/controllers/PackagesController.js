@@ -50,89 +50,128 @@ export const getFeaturedPackages = async (req, res) => {
 	};
 };
 
-export const createPackage = async (req, res) => {
-	const { name, description, main_image, images, price, featured, available, on_sale,
-	activities, destinations, start_date, end_date, seasson, type } = req.body;
-		console.log('PROBANDO');
+// export const createPackage = async (req, res) => {
+// 	const { name, description, main_image, images, price, featured, available, on_sale,
+// 	activities, destinations, start_date, end_date, seasson, type } = req.body;
+// 		console.log('PROBANDO');
 
+// 	try {
+// 		const newDestination = [];
+// 		if (destinations){
+// 			for (let i = 0; i < destinations.length; i++) {
+// 				const destinosCreados = await Destination.findOrCreate({
+// 					where: {
+// 						name: destinations[i].name,
+// 					},	
+// 					defaults: {
+// 						image: destinations[i].image,
+// 						region: destinations[i].region,
+// 					},
+// 				});
+// 				newDestination.push(destinosCreados[0]);
+// 			};
+// 		};
+// 		const newActivities = [];
+// 		if (activities) {
+// 			for (let i = 0; i < activities.length; i++) {
+// 				const actividadesCreadas = await Activity.findOrCreate({
+// 					where: {
+// 						name: activities[i].name,
+// 					}, 
+// 					defaults: {
+// 						description: activities[i].description, 
+// 						image: activities[i].image, 
+// 						price: activities[i].price,
+// 					},
+// 				});
+// 				if (activities.classification) {
+// 					const clasificacionEncontrada = await Classification.findOrCreate({
+// 						where: {
+// 							name: activities[i].classification.name,
+// 						}, 
+// 						defaults: {
+// 							image: activities[i].classification.image,
+// 						},
+// 					})
+// 					await clasificacionEncontrada[0].addActivities(actividadesCreadas[0]);
+// 					newActivities.push(actividadesCreadas[0]);
+// 				};
+// 			};
+// 		};
+// 		const newPackage = await Package.findOrCreate({ 
+// 			where:{
+// 				name: name
+// 			}, 
+// 			defaults: {
+// 				description: description, 
+// 				main_image: main_image, 
+// 				images: images, 
+// 				price: price, 
+// 				featured: featured, 
+// 				available : available, 
+// 				on_sale: on_sale,
+// 				start_date: start_date, 
+// 				end_date: end_date, 
+// 				seasson: seasson, 
+// 				type: type,
+// 			},
+// 		});
+// 		for (let i = 0; i < newActivities.length; i++) {
+// 			await newPackage[0].addActivities(newActivities[i]);
+// 		};
+// 		for (let i = 0; i < newDestination.length; i++) {
+// 			await newPackage[0].addDestinations(newDestination[i]);
+// 		};
+// 		console.log(newPackage);
+// 		if(newPackage[1] === false){
+// 			res.status(400).json({message: 'This Package alredy exists'});
+// 		} else {
+// 			res.status(201).json({message: 'Package created successfully'});
+// 		};
+// 	} catch (error) {
+// 		res.status(400).json({ message: error.message });
+// 	};
+// };
+
+export const createPackage = async (req, res)=>{
 	try {
-		const newDestination = [];
-		if (destinations){
-			for (let i = 0; i < destinations.length; i++) {
-				const destinosCreados = await Destination.findOrCreate({
-					where: {
-						name: destinations[i].name,
-					},	
-					defaults: {
-						image: destinations[i].image,
-						region: destinations[i].region,
-					},
-				});
-				newDestination.push(destinosCreados[0]);
-			};
-		};
-		const newActivities = [];
-		if (activities) {
-			for (let i = 0; i < activities.length; i++) {
-				const actividadesCreadas = await Activity.findOrCreate({
-					where: {
-						name: activities[i].name,
-					}, 
-					defaults: {
-						description: activities[i].description, 
-						image: activities[i].image, 
-						price: activities[i].price,
-					},
-				});
-				if (activities.classification) {
-					const clasificacionEncontrada = await Classification.findOrCreate({
-						where: {
-							name: activities[i].classification.name,
-						}, 
-						defaults: {
-							image: activities[i].classification.image,
-						},
-					})
-					await clasificacionEncontrada[0].addActivities(actividadesCreadas[0]);
-					newActivities.push(actividadesCreadas[0]);
-				};
-			};
-		};
-		const newPackage = await Package.findOrCreate({ 
-			where:{
-				name: name
-			}, 
-			defaults: {
-				description: description, 
-				main_image: main_image, 
-				images: images, 
-				price: price, 
-				featured: featured, 
-				available : available, 
-				on_sale: on_sale,
-				start_date: start_date, 
-				end_date: end_date, 
-				seasson: seasson, 
-				type: type,
-			},
-		});
-		for (let i = 0; i < newActivities.length; i++) {
-			await newPackage[0].addActivities(newActivities[i]);
-		};
-		for (let i = 0; i < newDestination.length; i++) {
-			await newPackage[0].addDestinations(newDestination[i]);
-		};
-		console.log(newPackage);
-		if(newPackage[1] === false){
-			res.status(400).json({message: 'This Package alredy exists'});
-		} else {
-			res.status(201).json({message: 'Package created successfully'});
-		};
-	} catch (error) {
-		res.status(400).json({ message: error.message });
-	};
-};
+		const { name, description, main_image, images, price, start_date, end_date, 
+		region, seasson, type, featured, available, on_sale, activities, destinations } = req.body
 
+		let packageCreated = await Package.findOrCreate({
+			where: {name: name},
+			defaults: {
+			description, 
+            main_image, 
+            images, 
+            price, 
+            start_date, 
+            end_date,  
+            seasson, 
+            type,
+            featured, 
+            available, 
+            on_sale,
+			}
+            
+            })
+			console.log(packageCreated)
+			let activitiesDb = await Activity.findAll({ where: { name: activities }});
+			let destinationsDb = await Destination.findAll({ where: { name: destinations }});
+			if(packageCreated[1]=== false){
+				res.status(400).json({ message: 'This package alredy exists' })
+			}
+			else{
+				packageCreated[0].setActivities(activitiesDb);
+			packageCreated[0].setDestinations(destinationsDb);
+			
+			return res.json({ message: 'Package created successfully' })
+			}
+			
+	} catch (error) {
+		res.status(400).json({ message: error.message })
+	}
+}
 export	const putPackage = async (req, res)=>{
 	try {
 		const nuevopaquete = req.body;
@@ -278,11 +317,19 @@ export const patchPackage = async (req, res) => {
 	const { featured, available, on_sale } = req.body;
 
 	try {
+		if (!featured && !(typeof featured === 'boolean')) throw new Error("featured is not boolean");
+		if (!available && !(typeof available === 'boolean')) throw new Error("available is not boolean");
+		if (!on_sale && !(typeof on_sale === 'number')) throw new Error("on_sale is not boolean");
 		const packageToModify = await Package.findByPk(id);
+		if (!packageToModify) throw new Error('package don\'t exist');
+		
+		const newFeatured = !(featured === undefined) ? featured : packageToModify.featured,
+			newAvailable = (typeof available === 'boolean') ? available : packageToModify.available,
+			newOn_sale = (typeof on_sale === 'number') ? Math.round(on_sale) : packageToModify.on_sale;
 		await Package.update({
-			featured: featured? featured : packageToModify.featured, 
-			available: available? available : packageToModify.available, 
-			on_sale: on_sale? on_sale : packageToModify.on_sale, 
+			featured: newFeatured, 
+			available: newAvailable, 
+			on_sale: newOn_sale, 
 		}, {
 			where: {
 				id,

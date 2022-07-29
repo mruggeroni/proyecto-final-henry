@@ -7,21 +7,22 @@ export const GET_ALL_DESTINATIONS = "GET_ALL_DESTINATIONS";
 export const GET_ON_SALE = "GET_ON_SALE";
 export const GET_ACTIVITIES = "GET_ACTIVITIES";
 export const GET_TYPES = "GET_TYPES";
-export const POST_PACKAGE = "POST_PACKAGE";
+export const POST_PACKAGE = "POST_PACKAGE"; 
+export const POST_USER = "POST_USER";
 export const ORDER_BY_PRICE = "ORDER_BY_PRICE";
 export const FILTER_BY_DESTINATION = "FILTER_BY_DESTINATION";
 export const GET_DESTINATIONS_WITH_PACKAGES = "GET_DESTINATIONS_WITH_PACKAGES";
 
 export const getAllPackage = () => {
   return async function (dispatch) {
-    let res = await axios.get("/packages");
+    let res = await axios.get("/packages/:limitRender");
     return dispatch({ type: GET_ALL_PACKAGES, payload: res.data });
   };
 };
 
 export const getPackageById = (id) => {
   return async function (dispatch) {
-    let res = await axios.get("/packages/" + id);
+    let res = await axios.get("/packages/detail/" + id);
     return dispatch({ type: GET_PACKAGE_BY_ID, payload: res.data[0] });
   };
 };
@@ -75,6 +76,23 @@ export const createPackage = (payload) => {
       const respuesta = await axios.post(
         "/packages",
         payload
+      );
+      return respuesta;
+    } catch (e) {
+      alert(e.message);
+    }
+  };
+};
+export const createUser = (payload) => {
+  return async function (dispatch) {
+    try {
+      const respuesta = await axios.post(
+        "/user",
+         {
+          headers:{
+            authorization: `Bearer ${payload}`
+          } 
+        }
       );
       return respuesta;
     } catch (e) {
