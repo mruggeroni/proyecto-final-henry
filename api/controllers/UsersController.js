@@ -115,3 +115,18 @@ export const getDeletedUsers = async (req, res) => {
 		res.status(400).send({ data: error.message })
 	}
 }
+
+export const restoreUser = async (req, res) => {
+	try {
+		const id = req.params.id
+		await User.restore({
+			where: {
+				id
+			}
+		})
+		const restoredUser = await User.findByPk(id)
+		res.status(200).send({'User restored successfully': restoredUser})
+	} catch (error) {
+		res.status(400).send({ data: error.message })
+	}
+}
