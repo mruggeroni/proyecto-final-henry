@@ -42,9 +42,15 @@ export default function UserPopOut() {
       <button id="menuProfile" onClick={handleClick} className={style.userIcon}>
         <img
           id="user_popout"
-          src={user.photo}
+          src={
+            user.photo
+              ? user.photo
+              : "https://w7.pngwing.com/pngs/524/696/png-transparent-computer-icons-user-symbol-symbol-miscellaneous-black-computer-icons.png"
+          }
           alt={`Hi ${user.name}`}
-          className={style.nav_item_profile}
+          className={
+            user.photo ? style.nav_item_profile : style.nav_item_profileError
+          }
         />
       </button>
       {console.log(showUser)}
