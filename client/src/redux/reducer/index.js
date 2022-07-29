@@ -18,6 +18,8 @@ import {
   FILTER_BY_DESTINATION,
   FILTER_PACKAGES_BY_DATE,
   GET_ALL_CATEGORIES,
+  GET_ALL_REGION,
+  GET_PK_REGION,
 } from "./../actions/index.js";
 
 const initialState = {
@@ -36,6 +38,7 @@ const initialState = {
   users: [],
   user: {},
   categories: [],
+  region: [],
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -47,6 +50,13 @@ const rootReducer = (state = initialState, action) => {
       };
 
     case GET_ALL_DESTINATIONS:
+      return {
+        ...state,
+        destinations: action.payload,
+      };
+    case GET_ALL_REGION:
+      const regiones = action.payload.map();
+
       return {
         ...state,
         destinations: action.payload,
@@ -154,6 +164,11 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         categories: sortCategories,
+      };
+    case GET_PK_REGION:
+      return {
+        ...state,
+        allPackages: action.payload,
       };
 
     default:

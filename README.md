@@ -59,10 +59,11 @@ propiedad duration habilitada.
 const { limitRender } = req.params;
 // controla cuantos paquetes trae por pagina.
 // en caso de no ser número, por defecto se setea en 12.
-const { page, priceSort, durationSort, type, region, destination, dateMin, dateMax } = req.query; 
+const { page, priceSort, durationSort, type, region, destination, dateMin, dateMax, available } = req.query; 
 // "priceSort" y "durationSort" esperan (asc: para orden ascendente y desc: para orden descendente).
 // "type", "region" y"destination" son sensibles a mayúscula o minúscula (además de las tildes). La busqueda debe ser LITERAL.
 // "dateMin" y "dateMax" forman el rango de busqueda para "start_date" (son string en formato fecha americana: "yyyy-mm-dd").
+// "available" espera true (para paquetes en stock) o false (para paquetes fuera de stock). Por defecto trae ambos.
 const { priceFilterMin, priceFilterMax, durationFilterMin, durationFilterMax } = req.body;
 // son pares que forman un rango de busqueda (en los dos casos son números enteros).
 ```
@@ -105,6 +106,97 @@ const { priceFilterMin, priceFilterMax, durationFilterMin, durationFilterMax } =
 - *POST **"/user"** => Verifica si el usuario ingresado por el pop(Auth0) es nuevo (se esta registrando) o si ya existe (se esta logeando), en base a eso lo guarda en la Database local con el rol default de client (si es nuevo) o identifica su rol si se esta logeando. Esta ruta responde con un array de dos posiciones ['accion', 'rol'], el primer elemento es un string que indica register o login, si es nuevo usuario saldra 'register' indicando que si bien ya esta registrado, debería brindar información adicional (ver modelo user), de lo contrario saldra 'login', indicando que esto no es necesario. El segundo campo muestra el rol, Admin o Client, que es siempre Client si el primer elemento es register.
 IMPORTANTE: No probar esta ruta en postman, solo con el login del front ¿Por qué? porque para crear el usuario se esta requiriendo info de Auth0, por lo que se necesita primero que Auth0 verifique al usuario. Esto ya esta conectado (ver component UserPopOut, la función handleLogin, ver actions createUser)
 
+- *GET **"/users"** => para modificar "available", "featured" y "on_sale"*
+
+recibe por query props. opcionales:
+```js
+	const { limitRender, page, destroyTime, is_admin } = req.query;
+  // "limitRender" y "page" controlan la cantidad de usuarios renderizados y la pagina respectivamente.
+  // "destroyTime" puede recibir "active" para filtrar por usuarios activos, "deleted" para borrados, una fecha para filtrar los eliminados desde entonces (por defecto devuelve todos los casos)
+  // "is_admin" recibe un true o false para filtrar la lista (en caso contrario devuelve ambos tipos de usuarios)
+```
+
+respuesta:
+```json
+
+```
+
+- *GET **"/user/:id"** => para traer detalles de un usuario (pensado como pensado usuario)*
+
+incluye el deslose de ordenes de compra del usuario
+
+respuesta:
+
+```json
+{
+  "full_name": "Administrador Prueba",
+  "id": 2,
+  "first_name": "Administrador",
+  "last_name": "Prueba",
+  "nickname": null,
+  "email": "inventado1234sadyira@gmail.com",
+  "phone": "310-214-9951",
+  "city": "Los Angeles",
+  "state": "California",
+  "postal_code": "90045",
+  "photo": "http://dummyimage.com/162x100.png/5fa2dd/ffffff",
+  "orders": [
+    {
+      "id": 5,
+      "date": "2022-09-11",
+      "total_order": "5082.7",
+      "status": "pending",
+      "packages": [
+        {
+          "duration": 10,
+          "name": "Triangulo monumental 10 días desde Barcelona",
+          "description": "descripción.",
+          "main_image": "https://demos.maperez.es/pfhenry/Triangulo%20monumental%2010%20días%20desde%20Barcelona%20-%20main.jpg",
+          "start_date": "2022-11-10",
+          "end_date": "2022-11-20",
+          "seasson": "Otoño",
+          "type": "Multidestino",
+          "featured": false,
+          "on_sale": 0,
+          "order_item": {
+            "quantity": 2,
+            "orderId": 5,
+            "packageId": 14
+          }
+        }
+      ]
+    },
+    {/* ... */},
+    {/* ... */},
+    /* ... */
+  ]
+}
+```
+
+- *GET **"/user/status/:id"** => para verificar si un usuario es admin o no*
+
+incluye propiedad "includeDeleted" por query (opcional) para realizar peticiones o no a usuarios eliminados
+
+respuesta:
+
+```json
+{
+  "email": "oekkel0@tuttocitta.it",
+  "is_admin": false
+}
+```
+
+- *GET **"/packages/orderQuantity/:id"** => para traer la cantidad de total ordenes de un paquete "orderQuantity" (tiene el id del paquete)*
+
+respuesta:
+
+```json
+{
+  "id": 3,
+  "orderQuantity": 5
+}
+```
+
 - *PATCH **"/packages/:id"** => para modificar "available", "featured" y "on_sale"*
 
 Los input por body son opcionales (para mayor flexibilidad al cambiar uno o varios).
@@ -138,11 +230,11 @@ post "/activities" = crea actividades.
 IMPORTANTE: Al crear por separado elegir clasifación preexistente
 ```json
 {
-        "name": "jsalkdija",
-        "description": "hjjbkhbjhbj",
-        "image": "https://demos.maperez.es/pfhenry/Tour%20de%20Highlights.jpg",
-        "price": 100,
-        "classification": "Familiar"
+  "name": "jsalkdija",
+  "description": "hjjbkhbjhbj",
+  "image": "https://demos.maperez.es/pfhenry/Tour%20de%20Highlights.jpg",
+  "price": 100,
+  "classification": "Familiar"
 }
 ```
 

@@ -36,13 +36,13 @@ export default function validation(input) {
     });
   }
 
-  if (input.featured !== true && input.featured !== false) {
-    error.featured = "Seleccionar si el paquetes es destacado o no";
-  }
+  // if (input.featured !== true && input.featured !== false) {
+  //   error.featured = "Seleccionar si el paquetes es destacado o no";
+  // }
 
-  if (input.available !== true && input.available !== false) {
-    error.available = "Seleccionar si el paquete esta disponible o no";
-  }
+  // if (input.available !== "true" && input.available !== "false") {
+  //   error.available = "Seleccionar si el paquete esta disponible o no";
+  // }
 
   if (input.on_sale < 0) {
     error.on_sale = "La oferna no puede ser menor a 0%";

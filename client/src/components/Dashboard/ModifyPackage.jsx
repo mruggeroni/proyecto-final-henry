@@ -46,9 +46,9 @@ export default function ModifyPackages() {
     region: "",
     seasson: "",
     type: "",
-    featured: false,
-    available: true,
-    on_sale: false,
+    featured: "false",
+    available: "true",
+    on_sale: 0,
   });
   console.log(input.destinations);
   useEffect(() => {

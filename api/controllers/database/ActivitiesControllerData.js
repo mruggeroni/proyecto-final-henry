@@ -30,7 +30,7 @@ export const getActivitiesData = async () =>{
                         name,
                     },
                 });
-                clasificacion.addActivities(actividades);
+                clasificacion?.addActivities(actividades);
             });
         };
         }catch (error){
