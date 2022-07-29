@@ -1,6 +1,6 @@
-import { Activity } from "/home/sadnena/pf/proyecto-final-henry/api/models/Activities.js";
-import { Classification } from "/home/sadnena/pf/proyecto-final-henry/api/models/Classification.js";
-import * as data from '/home/sadnena/pf/proyecto-final-henry/api/data/activities.js';
+import { Activity } from "../../models/Activities.js";
+import { Classification } from "../../models/Classification.js";
+import * as data from '../../data/activities.js';
 
 
 export const getActivitiesData = async () =>{
@@ -15,7 +15,6 @@ export const getActivitiesData = async () =>{
                         name: classification,
                     },
                 });
-                console.log(clasificacion)
                 clasificacion && await Activity.findOrCreate({
                     where: {
                         name, 
@@ -31,7 +30,7 @@ export const getActivitiesData = async () =>{
                         name,
                     },
                 });
-                clasificacion?.addActivities(actividades);
+                clasificacion.addActivities(actividades);
             });
         };
         }catch (error){

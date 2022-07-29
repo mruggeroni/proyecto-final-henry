@@ -12,13 +12,6 @@ export default function Card({ name, image, description, price }) {
     setChecked(!checked);
   }
 
-  const navigate = useNavigate();
-
-  function handleCard(e) {
-    e.preventDefault();
-    navigate("/detail/1");
-  }
-
   return (
     <div className={s.card}>
       <img src={image} alt="img not found" width="300vw" height="250vw" />
@@ -26,16 +19,19 @@ export default function Card({ name, image, description, price }) {
         <h3>{name}</h3>
         <br />
         <h5>
-          {description.length > 250
-            ? description.slice(0, 250) + " [more info...]"
+          {description.length > 310
+            ? description.slice(0, 310) + "..."
             : description}
         </h5>
       </div>
       <div className={s.rightGroup}>
+
         <div className={s.price}>
           <h3>${price}</h3>
           <h5>per Person</h5>
         </div>
+
+       
         <div className={s.hide} onClick={(e) => handleFavorite(e)}>
           <BotonFav checked={checked} />
         </div>

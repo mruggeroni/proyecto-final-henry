@@ -7,14 +7,17 @@ import {
   GET_ACTIVITIES,
   GET_TYPES,
   GET_SEASONS,
+  GET_USERS,
   GET_ALL_DESTINATIONS,
   GET_ON_SALE,
   GET_RELATIONATED,
+  GET_DESTINATIONS_WITH_PACKAGES,
   POST_PACKAGE,
   POST_USER,
   ORDER_BY_PRICE,
   FILTER_BY_DESTINATION,
-  GET_DESTINATIONS_WITH_PACKAGES,
+  FILTER_PACKAGES_BY_DATE,
+  GET_ALL_CATEGORIES,
 } from "./../actions/index.js";
 
 const initialState = {
@@ -30,7 +33,9 @@ const initialState = {
   onsale: [],
   detailPackage: {},
   relationated: [],
+  users: [],
   user: {},
+  categories: [],
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -60,7 +65,6 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         destinationsWithPackages: arr,
       };
-
     case GET_ON_SALE:
       return {
         ...state,
@@ -91,15 +95,20 @@ const rootReducer = (state = initialState, action) => {
         relationated: action.payload,
       };
 
-    case POST_PACKAGE: //el case del POST por mas que no haga nada (devuelve el mismo objeto) tiene que estar SI O SI
+    case POST_PACKAGE:
       return {
         ...state,
       };
-   case POST_USER: 
+    case POST_USER:
       return {
         ...state,
+        user: action.payload,
       };
-
+   case GET_USERS:
+      return {
+        ...state,
+        users: action.payload
+      };
     case ORDER_BY_PRICE:
       let sortPrice =
         action.payload === "minPrice"
@@ -119,27 +128,34 @@ const rootReducer = (state = initialState, action) => {
       };
 
     case FILTER_BY_DESTINATION:
-      const allPackages = state.allPackages;
-      /* 
-        action.payload === name destination (allPackages.destinations.name)
-        destinations = [{name: ''}] 
-        
-      */
-
-      //COMENTO LO DE ABAJO PORQUE allPackages ES UNDEFINED Y ROMPE
-      let aux = [];
-      action.payload === "all"
-        ? allPackages.forEach((e) => aux.push(e))
-        : allPackages.filter((p) =>
-            p.destinations.forEach((el) => {
-              el.name === action.payload && aux.push(p);
-            })
-          );
+      return {
+        ...state,
+        filteredPackages: action.payload,
+      };
+    case FILTER_PACKAGES_BY_DATE:
+      let filteredPackagesDate = [];
+      state.filteredPackages.forEach((p) =>
+        action.payload.forEach(
+          (f) => p.id === f.id && filteredPackagesDate.push(f)
+        )
+      );
+      console.log(filteredPackagesDate);
+      return {
+        ...state,
+        filteredPackages: filteredPackagesDate,
+      };
+    case GET_ALL_CATEGORIES:
+      let sortCategories = action.payload.sort(function (a, b) {
+        if (a.name > b.name) return 1;
+        if (b.name > a.name) return -1;
+        return 0;
+      });
 
       return {
         ...state,
-        filteredPackages: aux,
+        categories: sortCategories,
       };
+
     default:
       return { ...state };
   }

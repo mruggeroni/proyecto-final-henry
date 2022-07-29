@@ -147,6 +147,7 @@ IMPORTANTE: La estructura en la que deben enviar el paquete por body, la cual se
 Post Paquete/actividad/clasificación/destino:
 La estructura en la que deben enviar los datos es un objeto con todas las propiedades del paquete (name, type, etc), teniendo en cuenta que la propiedad destino es un array de objetos, cada objeto del array con las propiedades (name, image). La propiedad activities que es un array de objetos, cada objeto con las propiedades de la actividad (name, description, price, etc), teniendo en cuenta que la propiedad classification es un objeto con las propiedades (name, image).
 
+```JSON
 {
 "name": "Japón, Corea del Sur y China, un viaje al antiguo oriente",
 "price": 3000,
@@ -183,7 +184,8 @@ La estructura en la que deben enviar los datos es un objeto con todas las propie
 "image": "https://demos.maperez.es/pfhenry/Tour%20de%20Highlights.jpg",
 "classification": {"name":"Nichos",
 "image": "https://www.pngitem.com/pimgs/m/411-4110616_spirited-away-hd-png-download.png"
-}}]
+}}]}
+```
 
 Get featured: Se ejecuta en la ruta /, se obtiene un array de objetos, estos objetos son paquetes cuya propiedad 'featured' es true.
 [

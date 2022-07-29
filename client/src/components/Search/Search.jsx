@@ -18,12 +18,6 @@ import s from "./Search.module.css";
 import style from "./Select.module.css";
 
 export default function FilteredSearch() {
-  /* 
-    cuando estas parado en /search y refrescas, no se carga el estado de allPackages
-    YA ESTA SOLICIONADO.. LOS DESTINOS QUE SE DEBEN CARGAR EN EL FILTRO TAMBIEN... 
-    se soliciono con el useEffect
-  */
-
   const dispatch = useDispatch();
   const allPackages = useSelector((state) =>
     state.filteredPackages.length ? state.filteredPackages : state.allPackages
@@ -48,14 +42,14 @@ export default function FilteredSearch() {
     e.preventDefault();
     dispatch(filterPackagesByDestination(e.target.value));
     dispatch(getAllPackage());
+    setCurrentPage(1);
   };
 
   const [loading, setLoading] = useState(false);
 
   useEffect(async () => {
     setLoading(true);
-    await dispatch(getAllPackage());
-    await dispatch(filterPackagesByDestination("all"));
+    await dispatch(getAllPackage(10));
     await dispatch(getAllDestinations());
     await dispatch(getOnSale());
     await dispatch(getAllActivities());
@@ -66,7 +60,6 @@ export default function FilteredSearch() {
   useEffect(() => {
     return async () => {
       await dispatch(getAllPackage());
-      await dispatch(filterPackagesByDestination("all"));
       await dispatch(getAllDestinations());
       await dispatch(getOnSale());
       await dispatch(getAllActivities());

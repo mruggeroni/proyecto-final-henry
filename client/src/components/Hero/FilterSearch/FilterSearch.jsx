@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
+  filterPackagesByDate,
   filterPackagesByDestination,
   getAllPackage,
 } from "./../../../redux/actions/index";
@@ -11,13 +12,18 @@ export default function FilterSearch({ destinations }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const dataNow = new Date().toISOString().split("T")[0];
+  const [destination, setDestination] = useState('x')
   const [fromDate, setFromDate] = useState(dataNow);
   const [untilDate, setUntilDate] = useState(dataNow);
 
   const handleChange = (e) => {
     e.preventDefault();
-    dispatch(filterPackagesByDestination(e.target.value));
-    dispatch(getAllPackage());
+    if(e.target.id === 'searchDestinations') {
+      dispatch(getAllPackage());
+      dispatch(filterPackagesByDestination(e.target.value));
+      setDestination(e.target.value);
+    }
+
     if (e.target.id === "from") {
       if (new Date(e.target.value) > new Date(untilDate)) {
         setFromDate(e.target.value);
@@ -29,17 +35,19 @@ export default function FilterSearch({ destinations }) {
       setUntilDate(e.target.value);
     }
   };
-
+      
   const handleClick = (e) => {
     e.preventDefault();
-    // let value = document.getElementById("searchDestinations").value;
-    // dispatch(filterPackagesByDestination(value));
-    // console.log(value);
-    // console.log(fromDate);
-    // console.log(untilDate);
-    // dispatch(filterPackagesByDestination(value));
-    navigate("/search");
-  };
+    let value = document.getElementById("searchDestinations").value;
+    if(value !== 'x') {
+      if(fromDate === '' && untilDate === '') {
+        alert('Los calendario no pueden estar vacios');
+      } else {
+        dispatch(filterPackagesByDate([fromDate, untilDate]));
+        navigate("/search");
+      }
+    };
+  }
 
   return (
     <form className={style.form_container}>
@@ -59,11 +67,11 @@ export default function FilterSearch({ destinations }) {
         ))}
       </select>
       <input
-        disab
         type="date"
         id="from"
         value={fromDate}
         min={dataNow}
+        disabled={destination === 'x'}
         onChange={(e) => handleChange(e)}
         className={style.form_date}
       />
@@ -72,6 +80,7 @@ export default function FilterSearch({ destinations }) {
         id="until"
         value={untilDate}
         min={fromDate}
+        disabled={destination === 'x'}
         onChange={(e) => handleChange(e)}
         className={style.form_date}
       />
