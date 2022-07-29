@@ -1,10 +1,8 @@
 .tabNav {
-
-    position: absolute;
     top: 0;
     width: 28.4vw;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     /* visibility: hidden; */
     /* background-color: #e4eaea; */
@@ -16,17 +14,18 @@
 }
 
 .popUpContainer {
-  width: 100%;
-  border-bottom: solid #4a9eaae6;
-  display: flex;
+  width: 50%;
+  border-bottom: none;
+  position: fixed;
+  right: 0;
+  top: 1.5vw;
   flex-direction: row;
   justify-content: space-between;
   color: #fff;
   font-size: 2rem;
   text-decoration: none;
   cursor: pointer;
-
-  /* background-color: aquamarine; */
+  z-index: 1000;
 }
 .open_favorite {
   display: flex;
@@ -49,6 +48,7 @@
   padding: 2%;
   text-decoration: none;
   justify-items: center;
+  margin-bottom: 2vw;
 }
 
 .allFavorite_btn:hover {
@@ -96,8 +96,6 @@
 
 .favIcon {
   color: #fff;
-  font-size: 2rem;
   text-decoration: none;
   cursor: pointer;
-  align-self: flex-start;
 }

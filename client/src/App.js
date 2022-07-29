@@ -13,6 +13,7 @@ import "./App.css";
 import ModifyPackages from "./components/Dashboard/ModifyPackage";
 import Checkout from "./components/Checkout/Checkout.jsx";
 import Historial from "./components/Historial/Historial.jsx";
+import PopUps from "./components/PopUps/PopUps.jsx";
 
 function App() {
   const { isAuthenticated } = useAuth0();
@@ -20,6 +21,7 @@ function App() {
   return (
     <BrowserRouter>
       <Navbar />
+      <PopUps />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/search" element={<Search />} />

@@ -27,18 +27,14 @@ export default function FilteredSearch() {
   */
 
   const dispatch = useDispatch();
-  const allPackages = useSelector((state) =>
-    state.filteredPackages.length ? state.filteredPackages : state.allPackages
-  );
-  const allDestinations = useSelector(
-    (state) => state.destinationsWithPackages
-  );
+  const allPackages = useSelector((state) =>state.filteredPackages);
+  const allDestinations = useSelector((state) => state.destinationsWithPackages);
   const [order, setOrder] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [packagesPerPage, setPackagesPerPage] = useState(10);
   const indexOfLastPackages = currentPage * packagesPerPage;
   const indexOfFirstPackage = indexOfLastPackages - packagesPerPage;
-  const currentPackage = allPackages.slice(
+  const currentPackage = allPackages.length && allPackages.slice(
     indexOfFirstPackage,
     indexOfLastPackages
   );
@@ -120,8 +116,8 @@ export default function FilteredSearch() {
             currentPage={currentPage}
           />
           <div className={s.cards}>
-            {currentPackage &&
-              currentPackage?.map((p) => {
+            {currentPackage ?
+              currentPackage.map((p) => {
                 return (
                   <div className={s.eachcard} key={p.id}>
                     <Link to={"/detail/" + p.id} key={p.id}>
@@ -130,12 +126,14 @@ export default function FilteredSearch() {
                         image={p.main_image}
                         description={p.description}
                         price={p.price}
+                        id={p.id}
                         key={p.id}
                       />
                     </Link>
                   </div>
                 );
-              })}
+              }):
+              (<div className={s.noPaq}>No hay paquetes que cumplan con las condiciones solicitadada</div>)}
           </div>
         </div>
       )}

@@ -4,7 +4,6 @@ import { BsJustify, BsFillCaretRightFill } from "react-icons/bs";
 import style from "./Navbar.module.css";
 import NavDestinations from "./NavDestinations";
 import NavPromotions from "./NavPromotions";
-import PopUps from "./PopUps/PopUps";
 
 export default function Navbar() {
   useEffect(() => {
@@ -93,10 +92,9 @@ export default function Navbar() {
           >
             <BsJustify />
           </button>
-
-          <div className={style.icons}>
+{/*       <div className={style.icons}>
             <PopUps />
-          </div>
+          </div> */}
         </nav>
     </div>
   </div>

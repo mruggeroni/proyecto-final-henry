@@ -26,12 +26,22 @@
 	text-decoration: none;
 }
 
+.noPaq{
+	text-align: center;
+	margin-top: 7vw;
+	font-size: 1.5vw;
+}
+
 
 
 @media (max-width: 1000px) {
 
-  .view{
+  	.view{
 		margin-top: 3vw;
+	}
+	
+	.noPaq{
+		font-size: 2vw;
 	}
 }
 
@@ -39,10 +49,18 @@
    .view{
 		margin-top: 6vw;
 	}
+
+	.noPaq{
+		font-size: 2vw;
+	}
 }
 
 @media (max-width: 575px) {
    .view{
 		margin-top: 12vw;
+	}
+
+	.noPaq{
+		font-size: 3vw;
 	}
 }

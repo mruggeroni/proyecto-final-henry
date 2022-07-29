@@ -1,6 +1,5 @@
 import axios from "axios";
 
-export const GET_DESTINATIONS_WITH_PACKAGES = "GET_DESTINATIONS_WITH_PACKAGES";
 export const GET_PACKAGE_BY_ID = "GET_PACKAGE_BY_ID";
 export const GET_RELATIONATED = "GET_RELATIONATED";
 export const GET_ALL_PACKAGES = "GET_ALL_PACKAGES";
@@ -14,6 +13,8 @@ export const FILTER_BY_DESTINATION = "FILTER_BY_DESTINATION";
 export const FILTER_PACKAGES_BY_DATE = "FILTER_PACKAGES_BY_DATE";
 export const GET_DESTINATIONS_WITH_PACKAGES = "GET_DESTINATIONS_WITH_PACKAGES";
 export const GET_ALL_CATEGORIES = "GET_ALL_CATEGORIES";
+export const GET_LOCAL_STORAGE_CART = 'GET_LOCAL_STORAGE_CART';
+export const GET_LOCAL_STORAGE_FAVORITES = 'GET_LOCAL_STORAGE_FAVORITES';
 
 export const getAllPackage = (limitRender) => {
   return async function (dispatch) {
@@ -150,5 +151,19 @@ export const getCategories = () => {
   return async function (dispatch) {
     let res = await axios.get("/categories");
     return dispatch({ type: GET_ALL_CATEGORIES, payload: res.data });
+  };
+};
+
+export function getFavoritesLocalStorage(payload, id) {
+  return {
+    type: GET_LOCAL_STORAGE_FAVORITES,
+    payload,
+  };
+};
+
+export function getCartLocalStorage(payload, id) {
+  return {
+    type: GET_LOCAL_STORAGE_CART,
+    payload,
   };
 };

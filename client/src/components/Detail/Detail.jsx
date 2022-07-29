@@ -9,6 +9,8 @@ import {
   getAllActivities,
   getPackageById,
   getRelationated,
+  getCartLocalStorage,
+  getFavoritesLocalStorage
 } from "../../redux/actions/index";
 
 export default function Detail() {
@@ -18,6 +20,7 @@ export default function Detail() {
   const packageDetail = useSelector((state) => state.detailPackage);
   const relationatedPackage = useSelector((state) => state.relationated);
   const allActivities = useSelector((state) => state.activities);
+  const [checked, setChecked] = useState(false);
 
   useEffect(async () => {
     setLoading(true);
@@ -74,6 +77,31 @@ export default function Detail() {
     })();
   }, []);
 
+  function handleFavorite(e){
+    e.preventDefault();
+    setChecked(!checked);
+    packageDetail.image = packageDetail.main_image;
+
+    if(!checked){
+      if(!localStorage.getItem('favorites')) {
+        let favorites = [];
+        favorites.push(packageDetail);
+        localStorage.setItem('favorites', JSON.stringify(favorites));
+      } else {
+        let favorites = JSON.parse(localStorage.getItem('favorites'));
+        if(favorites?.filter((f) => f.id !== packageDetail.id)){
+          favorites.unshift(packageDetail);
+          localStorage.setItem('favorites', JSON.stringify(favorites));
+        }
+      }
+    }else{
+      let favorites = JSON.parse(localStorage.getItem('favorites'));
+      let remFav = favorites.filter((f) => {return f.id !== packageDetail.id});
+      localStorage.setItem('favorites', JSON.stringify(remFav));
+    }
+      dispatch(getFavoritesLocalStorage());
+  }
+
   const handleSelectCantidad = (e) => {
     console.log(e.target.value);
     let totalPaquete = price * e.target.value;
@@ -118,16 +146,30 @@ export default function Detail() {
   const navigate = useNavigate();
   const handleBotonRegresar = (e) => {
     e.preventDefault();
-    scrollToTop();
+    // scrollToTop();
     navigate(-1);
   };
 
   const handleBotonComprar = (e) => {
     e.preventDefault();
     input.paquete = packageDetail;
-    console.log(input);
-    console.log(input.actividades);
-    console.log(input.paquete);
+
+    if(!localStorage.getItem('cart')) {
+      let cart = [];
+      cart.unshift(input);
+      localStorage.setItem('cart', JSON.stringify(cart));
+    } else {
+      let cart = JSON.parse(localStorage.getItem('cart'));
+      cart.unshift(input);
+      localStorage.setItem('cart', JSON.stringify(cart));
+    }
+    scrollToTop();
+    dispatch(getCartLocalStorage());
+    setInput({
+      ...input,
+      actividades: [],
+    });
+    dispatch(getPackageById(id));
   };
 
   // para el desmonte del componente
@@ -165,7 +207,9 @@ export default function Detail() {
           <div className={s.contenedor}>
             <div className={s.contenedorBarraSuperior}>
               <div onClick={(e) => handleBotonRegresar(e)}>Regresar</div>
-              <BotonFav />
+              <div onClick={(e) => handleFavorite(e)}>
+              <BotonFav checked={ checked } />
+              </div>
             </div>
             <div className={s.contenedorDetalles}>
               <h1>{name}</h1>
