@@ -15,6 +15,7 @@ export const getActivitiesData = async () =>{
                         name: classification,
                     },
                 });
+                console.log(clasificacion)
                 clasificacion && await Activity.findOrCreate({
                     where: {
                         name, 
@@ -30,7 +31,7 @@ export const getActivitiesData = async () =>{
                         name,
                     },
                 });
-                clasificacion.addActivities(actividades);
+                clasificacion?.addActivities(actividades);
             });
         };
         }catch (error){

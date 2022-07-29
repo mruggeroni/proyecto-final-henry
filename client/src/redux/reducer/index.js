@@ -7,16 +7,15 @@ import {
   GET_ACTIVITIES,
   GET_TYPES,
   GET_SEASONS,
-  GET_USER,
   GET_ALL_DESTINATIONS,
   GET_ON_SALE,
   GET_RELATIONATED,
   GET_DESTINATIONS_WITH_PACKAGES,
   POST_PACKAGE,
+  POST_USER,
   ORDER_BY_PRICE,
   FILTER_BY_DESTINATION,
-  FILTER_PACKAGES_BY_DATE
-  GET_DESTINATIONS_WITH_PACKAGES,
+  FILTER_PACKAGES_BY_DATE,
   GET_ALL_CATEGORIES,
 } from "./../actions/index.js";
 
@@ -95,6 +94,10 @@ const rootReducer = (state = initialState, action) => {
       };
 
     case POST_PACKAGE: //el case del POST por mas que no haga nada (devuelve el mismo objeto) tiene que estar SI O SI
+      return {
+        ...state,
+      };
+   case POST_USER: 
       return {
         ...state,
       };

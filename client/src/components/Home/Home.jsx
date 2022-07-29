@@ -20,7 +20,7 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const allDestinations = useSelector(
     (state) => state.destinationsWithPackages
-  );
+  ); 
   const onSale = useSelector((state) => state.onsale);
   const sortDestinations = allDestinations.sort();
 
