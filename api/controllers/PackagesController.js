@@ -1,10 +1,12 @@
 
+import { sequelize } from '../db.js';
+import { Op } from 'sequelize';
 import { Package } from '../models/Packages.js';
 import { Destination } from '../models/Destinations.js';
 import { Activity } from '../models/Activities.js';
 import { Classification } from '../models/Classification.js'
-import { sequelize } from '../db.js';
-import { Op } from 'sequelize';
+import { OrderItem } from '../models/OrderItems.js';
+import { Order } from '../models/Orders.js';
 
 export const getFeaturedPackages = async (req, res) => {
 	const limit = parseInt(req.query.limit) || 3;
@@ -338,5 +340,29 @@ export const patchPackage = async (req, res) => {
 		res.status(200).json({message: 'Successfully Modified Package'});
 	} catch (error) {
 		res.status(400).json({ message: error.message });
+	};
+};
+
+export const getOrderNumerPackages = async (req, res) => {
+	const id = parseInt(req.params.id);
+
+	try {
+		const thePackage = await Package.findByPk(id, {
+			attributes: ['id'],
+			include: {
+				model: OrderItem,
+				attributes: ['quantity'],
+			},
+			include: {
+				model: Order,
+				attributes: ['id'],
+			},
+		});
+		if (!thePackage) throw new Error('package don\'t exist');
+		
+		const orderQuantity = thePackage.orders.reduce((sum, order) => sum + order.order_item.quantity, 0);
+		res.status(200).json({ id, orderQuantity });
+	} catch (error) {
+		res.status(404).json({ message: error.message });
 	};
 };
