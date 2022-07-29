@@ -5,13 +5,17 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { NavLink } from "react-router-dom";
 
 export default function UserPopOut() {
-  const { user, isAuthenticated, loginWithPopup, logout } = useAuth0();
+  const { user, isAuthenticated, loginWithPopup, logout, getAccessTokenSilently } = useAuth0();
 
-  function handleClick(e) {
-    e.preventDefault();
-    document
-      .getElementById("profile_container")
-      .classList.toggle(`${style.open_profile}`);
+  async function handleClick(e) {
+    try {
+      e.preventDefault();
+      document
+        .getElementById("profile_container")
+        .classList.toggle(`${style.open_profile}`);
+    } catch (error) {
+      console.log(error.message)
+    }
   }
 
   return !isAuthenticated ? (
