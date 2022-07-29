@@ -11,6 +11,7 @@ import {
 } from '../controllers/UsersController.js';
 import express from 'express'
 import { verifyJwt } from '../Auth/mw.js';
+import { prueba } from '../controllers/pruebaMW.js';
 
 const router = Router();
 
@@ -21,5 +22,6 @@ router.post('/user', createUser)
 router.put('/user/:id', putUser)
 router.patch('/user/:id', patchIs_adminProperty)
 router.delete('/user/:id', deleteUser)
+router.post('/prueba', prueba)
 
 export default router;

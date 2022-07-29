@@ -17,6 +17,12 @@ export default function UserPopOut() {
       document
         .getElementById("profile_container")
         .classList.toggle(`${style.open_profile}`);
+      const token = await getAccessTokenSilently()
+      await axios.post("/prueba",{
+        headers:{
+          authorization: `Bearer ${token}`
+        }}
+      );
     } catch (error) {
       console.log(error.message)
     }
