@@ -20,6 +20,7 @@ router.get('/packages/:id', getPackagesDetail);
 router.get('/on_sale', getOn_sale);
 router.get('/types', getTypes);
 router.get('/deletedPackages', getDeletedPackages)
+router.get('/packages', getPackages)
 router.post('/packages', createPackage);
 router.put('/packages/:id', putPackage);
 router.patch('/packages/:id', patchPackage);
