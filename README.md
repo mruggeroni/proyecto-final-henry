@@ -21,10 +21,11 @@ propiedad duration habilitada.
 const { limitRender } = req.params;
 // controla cuantos paquetes trae por pagina.
 // en caso de no ser número, por defecto se setea en 12.
-const { page, priceSort, durationSort, type, region, destination, dateMin, dateMax } = req.query; 
+const { page, priceSort, durationSort, type, region, destination, dateMin, dateMax, available } = req.query; 
 // "priceSort" y "durationSort" esperan (asc: para orden ascendente y desc: para orden descendente).
 // "type", "region" y"destination" son sensibles a mayúscula o minúscula (además de las tildes). La busqueda debe ser LITERAL.
 // "dateMin" y "dateMax" forman el rango de busqueda para "start_date" (son string en formato fecha americana: "yyyy-mm-dd").
+// "available" espera true (para paquetes en stock) o false (para paquetes fuera de stock). Por defecto trae ambos.
 const { priceFilterMin, priceFilterMax, durationFilterMin, durationFilterMax } = req.body;
 // son pares que forman un rango de busqueda (en los dos casos son números enteros).
 ```

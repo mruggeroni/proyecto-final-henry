@@ -7,7 +7,7 @@ import sequelize, { Op } from 'sequelize';
 
 export const getPackages = async (req, res) => {
     const { limitRender } = req.params;
-    const { page, priceSort, durationSort, type, region, destination, dateMin, dateMax } = req.query;
+    const { page, priceSort, durationSort, type, region, destination, dateMin, dateMax, available } = req.query;
     const { priceFilterMin, priceFilterMax/* , dateMin, dateMax */, durationFilterMin, durationFilterMax } = req.body;
 
     try {
@@ -36,7 +36,16 @@ export const getPackages = async (req, res) => {
             ],
             // ['where']: sequelize.where(sequelize.col('destinations', sequelize.col('name')), destination),
             where: {
-				available: true,
+				available: available === 'true' ? 
+                    true : 
+                        available === 'false' ? 
+                        false : {
+                            [Op.or]: [{
+								[Op.is]: true,
+							}, {
+								[Op.is]: false,
+							}],
+                        },
                 type: type ? type : {
                     [Op.not]: null,
                 },
