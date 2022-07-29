@@ -1,6 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
+import Dashboard from "./Dashboard";
 import s from './ListPackages.module.css';
 
 export default function ListPackages({ showListPackages, setShowListPackages }) {
@@ -8,8 +9,11 @@ export default function ListPackages({ showListPackages, setShowListPackages }) 
     const allPackages = useSelector( (state) => state.allPackages )
 
     return (
-        !showListPackages ? null
-        :
+        // !showListPackages ? null
+        // :
+        <div>
+            <Dashboard />
+    <div className={s.dashboard_container}>
     <div className={s.tbl_container}>
         <div class={s.table_wrapper}>
             <table class={s.fl_table}>
@@ -43,6 +47,8 @@ export default function ListPackages({ showListPackages, setShowListPackages }) 
                     }
                 </tbody>
             </table>
+        </div>
+        </div>
         </div>
     </div>)
 }

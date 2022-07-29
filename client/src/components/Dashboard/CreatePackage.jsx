@@ -245,9 +245,10 @@ export default function CreatePackage({ showCreatePackage, setShowCreatePackage 
   const handleShowDestinos = () => setShowDestinos(true);
 
   return (
-    !showCreatePackage ? null
-    :
+    // !showCreatePackage ? null
+    // :
     <div>
+      <Dashboard />
       <div className={style.create_container}>
         <h2>Crear un Paquete</h2>
         <hr className={style.create_line} />

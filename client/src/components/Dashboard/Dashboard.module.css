@@ -33,7 +33,7 @@
 .links_item {
     width: 100%;
     text-align: start;
-    background-color: transparent;
+    text-decoration: none;
     border: none;
     padding: 20px 0;
     padding-left: 30px;
@@ -44,6 +44,7 @@
 
 .links_item:hover {
     background-color: #4a9eab;
+    color: #000;
 }
 
 .dashboard_panel_title {
@@ -63,13 +64,14 @@
 
 .dashboard_show {
     width: 75%;
-    margin-left: 20%;
+    margin-left: 200px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-/* @media (max-width: 767px) {
+
+@media (max-width: 1000px) {
     .dashboard_panel_close {
         height: 10%;
         width: 100%;
@@ -81,17 +83,12 @@
         flex-direction: row;
     }
     .links_item {
-        width: 20%;
-        text-align: start;
-        font-size: 12px;
-        padding: 0;
+        height: 100%;
+        border: none;
+        font-size: 16px;
+        z-index: 999;
     }
     .dashboard_panel_title {
         display: none;
     }
-    .dashboard_show {
-        width: 100%;
-        margin-top: 50%;
-        margin-left: 0;
-    }
-} */
+} 

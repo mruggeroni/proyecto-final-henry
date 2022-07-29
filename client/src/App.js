@@ -13,6 +13,7 @@ import "./App.css";
 import ModifyPackages from "./components/Dashboard/ModifyPackage";
 import Checkout from "./components/Checkout/Checkout.jsx";
 import Historial from "./components/Historial/Historial.jsx";
+import ListPackages from "./components/Dashboard/ListPackages.jsx";
 
 function App() {
   const { isAuthenticated } = useAuth0();
@@ -24,6 +25,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/search" element={<Search />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/dashboard/listPackages" element={<ListPackages />} />
         <Route path="/dashboard/packages" element={<CreatePackage />} />
         <Route
           path="/dashboard/modifyPackage/:id"

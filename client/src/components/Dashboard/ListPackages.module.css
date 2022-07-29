@@ -54,7 +54,23 @@
     background: #f8f8f8;
 }
 
+.dashboard_container {
+    width: 100%;
+    margin-left: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 /* Responsive */
+
+@media (max-width: 1000px) {
+    .dashboard_container {
+        margin-left: 0;
+        margin-top: 85px;
+    }
+}
+
 
 /* @media (max-width: 767px) {
     .fl_table {

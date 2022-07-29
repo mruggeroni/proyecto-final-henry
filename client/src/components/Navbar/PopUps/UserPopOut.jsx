@@ -32,21 +32,24 @@ export default function UserPopOut() {
       >
         <img
           id='user_popout'
-          src={user.picture}
+          src={user.photo}
           alt={`Hi ${user.name}`}
           className={style.nav_item_profile}
         />
       </button>
       <div id="profile_container" className={style.user_profile_container}>
-        <img src={user.picture} alt="" />
+        {/* <div onClick={handleClick} className={style.back}>
+
+        </div> */}
+        <img src={user.photo} alt={user.name} />
         <p>{user.name}</p>
         <hr className={style.create_line} />
         <div className={style.user_profile_menu}>
-
             <div>
               <UserEdit />
               <NavLink to='/dashboard' className={style.user_btn}>Dashboard</NavLink>
-              <p>Servicio al Cliente</p>
+              <NavLink to='./' className={style.user_btn}>Servicio al Cliente</NavLink>
+              {/* <p></p> */}
             </div>
         </div>
         <hr />
