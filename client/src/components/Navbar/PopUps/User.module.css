@@ -110,10 +110,6 @@
   color: #000;
 }
 
-.user_profile_menu div *:hover {
-  color: #4A9EAA;
-}
-
 .back {
   position: fixed;
   width: 100%;

@@ -7,6 +7,7 @@ import {
   GET_ACTIVITIES,
   GET_TYPES,
   GET_SEASONS,
+  GET_USERS,
   GET_ALL_DESTINATIONS,
   GET_ON_SALE,
   GET_RELATIONATED,
@@ -32,6 +33,7 @@ const initialState = {
   onsale: [],
   detailPackage: {},
   relationated: [],
+  users: [],
   user: {},
   categories: [],
 };
@@ -101,7 +103,11 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
       };
-
+   case GET_USERS:
+      return {
+        ...state,
+        users: action.payload
+      };
     case ORDER_BY_PRICE:
       let sortPrice =
         action.payload === "minPrice"

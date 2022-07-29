@@ -1,16 +1,21 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
+import { getAllPackage } from "../../redux/actions";
 import Dashboard from "./Dashboard";
-import s from './ListPackages.module.css';
+import s from './Table.module.css';
 
-export default function ListPackages({ showListPackages, setShowListPackages }) {
-
+export default function ListPackages() {
+    const dispatch = useDispatch();
     const allPackages = useSelector( (state) => state.allPackages )
 
+    useEffect( () => {
+        if(!allPackages.length) {
+            dispatch(getAllPackage(1000))
+        }
+    }, [dispatch]);
+
     return (
-        // !showListPackages ? null
-        // :
         <div>
             <Dashboard />
     <div className={s.dashboard_container}>
@@ -35,12 +40,18 @@ export default function ListPackages({ showListPackages, setShowListPackages }) 
                                 <td>{p.id}</td>
                                 <td>{p.name}</td>
                                 <td>${p.price}</td>
-                                <td>{p.feature ? 'true' : 'false'}</td>
-                                <td>{p.available ? 'true' : 'false'}</td>
+                                <td>
+                                    {p.feature ? <div className={s.fl_table_true}>true</div> : <div className={s.fl_table_false}>false</div>}
+                                </td>
+                                <td>
+                                    {p.available ? <div className={s.fl_table_true}>true</div> : <div className={s.fl_table_false}>false</div>}
+                                </td>
                                 <td>%{p.on_sale}</td>
                                 <td>
-                                    <NavLink to={`/dashboard/modifyPackage/${p.id}`} >Editar</NavLink>
-                                    <button >Delete</button>
+                                    <NavLink to={`/dashboard/modifyPackage/${p.id}`} className={s.fl_table_btn} >
+                                        Editar
+                                    </NavLink>
+                                    <button className={s.fl_table_btn} >Delete</button>
                                 </td>
                             </tr>
                         })
