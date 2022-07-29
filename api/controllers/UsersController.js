@@ -3,9 +3,9 @@ import axios from 'axios';
 
 export const getUsers = async (req, res) => {
 	try {
-		console.log(req)
-		// const users = await User.findAll();
-		// res.status(200).json(users);
+		// console.log(req)
+		const users = await User.findAll();
+		res.status(200).json(users);
 	} catch (error) {
 		return res.status(500).json({ message: error.message });
 	}
@@ -45,5 +45,21 @@ export const createUser = async (req, res) =>{
 		res.status(200).json({message: currentUsuario});
 	} catch (error) {
 		return res.status(400).json({ message: error.message });
+	}
+}
+
+export const putUser = async (req, res) => {
+	try {
+		const newUser = req.body;
+		const id = req.params.id
+		await User.update(newUser, {
+			where: {
+				id,
+			}
+		})
+		const updatedUser = await User.findByPk(id)
+		res.status(200).send(updatedUser)
+	} catch (e) {
+		res.status(400).send({ data: e.message })
 	}
 }
