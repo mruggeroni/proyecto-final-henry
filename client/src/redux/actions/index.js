@@ -139,3 +139,38 @@ export const getCategories = () => {
     return dispatch({ type: GET_ALL_CATEGORIES, payload: res.data });
   };
 };
+
+export const createCategories = (payload) => {
+  return async function (dispatch) {
+    try {
+      const respuesta = await axios.post("/classification", payload);
+      return respuesta;
+    } catch (e) {
+      alert(e.message);
+    }
+  };
+};
+
+export const createActivities = (payload) => {
+  return async function (dispatch) {
+    try {
+      const respuesta = await axios.post("/activities", payload);
+      return respuesta;
+    } catch (e) {
+      alert(e.message);
+    }
+  };
+};
+
+export function modificarActividad(payload, id) {
+  console.log("payload: ", payload.price);
+  console.log("id: ", id);
+  return async function (dispatch) {
+    try {
+      const respuesta = await axios.put("activities/" + id, payload);
+      return respuesta;
+    } catch (e) {
+      alert(e.message);
+    }
+  };
+}
