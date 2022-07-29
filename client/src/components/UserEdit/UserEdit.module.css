@@ -55,22 +55,21 @@
   color: #000;
 }
 
-.profile_menu button {
-
+.profile_menu_btn {
     width: 100%;
     border: none;
     margin-top: 10px;
     background-color: transparent;
     padding: 15px 0;
     cursor: pointer;
+    color: #000;
 }
 
-.profile_menu button:hover {
-  background-color: #4a9eaa;
+.profile_menu_btn:hover {
+    background-color: #4a9eaa;
 }
 
 .profile_menu_item {
-
     width: 60%;
     margin: 20px auto;
     /* padding: 40px; */

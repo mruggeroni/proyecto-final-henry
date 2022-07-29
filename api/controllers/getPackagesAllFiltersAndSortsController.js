@@ -7,20 +7,22 @@ import sequelize, { Op } from 'sequelize';
 
 export const getPackages = async (req, res) => {
     const { limitRender } = req.params;
-    const { page, priceSort, durationSort, type, region, destination, dateMin, dateMax } = req.query;
-    const { priceFilterMin, priceFilterMax/* , dateMin, dateMax */, durationFilterMin, durationFilterMax } = req.body;
+    const { page, priceSort, durationSort, type, region, destination } = req.query;
+    const { priceFilterMin, priceFilterMax, dateMin, dateMax, durationFilterMin, durationFilterMax } = req.body;
+
+    const limitRend = parseInt(limitRender) || 12,
+        pag = parseInt(page) || 1,
+        priceS = priceSort?.toLowerCase(),
+        durationS = durationSort?.toLowerCase();
 
     try {
-        const limitRend = parseInt(limitRender) || 12,
-            pag = parseInt(page) || 1,
-            priceS = priceSort?.toLowerCase(),
-            durationS = durationSort?.toLowerCase(),
-            durationFilterExist = (durationFilterMin && durationFilterMax) ? true : false;
-        
 		const packages = await Package.findAll({
             include: [
                 {
                     model: Destination,
+                    // where: {
+                    //     name: destination,
+                    // },
                     attributes: ['name', "region"],
                     through: {
                         attributes: [],
@@ -62,7 +64,7 @@ export const getPackages = async (req, res) => {
                 // },
                 // [destination? 'destinations' : ""]: sequelize.fn(),
                 // [destination? 'destinations' : ""]: sequelize.where(sequelize.col('name')),
-                price: (priceFilterMin && priceFilterMax) ? {
+                price: (priceFilterMin && priceFilterMax)? {
                     [Op.and]: {
                         [Op.gte]: priceFilterMin,
                         [Op.lte]: priceFilterMax,
@@ -70,7 +72,7 @@ export const getPackages = async (req, res) => {
                 } : {
                     [Op.not]: null,
                 },
-                start_date: (dateMin && dateMax) ? {
+                start_date: (dateMin && dateMax)? {
                     [Op.and]: {
                         [Op.gte]: dateMin,
                         [Op.lte]: dateMax,
@@ -87,21 +89,17 @@ export const getPackages = async (req, res) => {
                 //     [Op.not]: null,
                 // },
 			},
-			[(priceSort/*  || durationSort */) && 'order']: [
-				priceS === 'asc' ? 
-                ['price', 'ASC'] : 
-                    priceS === 'desc' ? 
-                    ['price', 'DESC'] : 
-                        // durationS === 'asc' ? 
-                        // ['duration', 'ASC'] : 
-                        //     durationS === 'desc' ? 
-                        //     ['duration', 'DESC'] : 
-                                null,
-                // durationS === 'asc' ? 
-                // ['duration', 'ASC'] : 
-                //     durationS === 'desc' ? 
-                //     ['duration', 'DESC'] : 
-                //         null,
+			[(priceSort || durationSort) && 'order']: [
+				priceS === 'asc'? 
+                    ['price', 'ASC'] : 
+                    priceS === 'desc'? 
+                        ['price', 'DESC'] : 
+                        ['id', 'ASC'],
+                durationS === 'asc'? 
+                    ['duration', 'ASC'] : 
+                    durationS === 'desc'? 
+                        ['duration', 'DESC'] : 
+                        ['id', 'ASC'],
 			],
             offset: limitRend * (pag - 1),
 			limit: limitRend,
@@ -116,30 +114,13 @@ export const getPackages = async (req, res) => {
             //     'on_sale',
             // ],
 		});
-
-        let packagesResult = packages.filter(p => {
-            let durationF = durationFilterExist ? 
-                ((durationFilterMin <= p.duration) && (p.duration <= durationFilterMax)) :
-                true;
-            return durationF && p.destinations.some(d => {
-                let regionF = region ? (d.region === region) : true;
-                let destinationF = destination ? (d.name === destination) : true;
-                return regionF && destinationF;
-            });
-        });
-        packagesResult = ((durationS === 'asc') || (durationS === 'desc')) ? 
-            packagesResult.sort((p1, p2) => {
-                let order = durationS === 'asc' ? 
-                    p1.duration - p2.duration : 
-                    p2.duration - p1.duration;
-                return !priceS ?
-                    order :
-                        (p1.price === p2.price) ?
-                        order :
-                        true;
-                }) : 
-            packagesResult;
-
+        const packagesResult = (destination && region) ? 
+            packages.filter(p => p.destinations.some(d => (d.region === region) && (d.name === destination))) :
+                destination ? 
+                packages.filter(p => p.destinations.some(d => d.name === destination)) :
+                    region ? 
+                    packages.filter(p => p.destinations.some(d => d.region === region)) :
+                    packages;
 		res.status(200).json(packagesResult);
 	} catch (error) {
 		return res.status(404).json({ message: error.message });
