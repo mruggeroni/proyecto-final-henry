@@ -18,14 +18,6 @@ import s from "./Search.module.css";
 import style from "./Select.module.css";
 
 export default function FilteredSearch() {
-  /* 
-    cuando estas parado en /search y refrescas, no se carga el estado de allPackages
-    YA ESTA SOLICIONADO.. LOS DESTINOS QUE SE DEBEN CARGAR EN EL FILTRO TAMBIEN... 
-    se soliciono con el useEffect
-
-    Arreglar que cuando se filtra en el home y manda un array vacio, poner un mensaje [no hay paquetes para mostrar]
-  */
-
   const dispatch = useDispatch();
   const allPackages = useSelector((state) =>
     state.filteredPackages.length ? state.filteredPackages : state.allPackages
@@ -57,7 +49,7 @@ export default function FilteredSearch() {
 
   useEffect(async () => {
     setLoading(true);
-    await dispatch(getAllPackage(1000));
+    await dispatch(getAllPackage(10));
     await dispatch(getAllDestinations());
     await dispatch(getOnSale());
     await dispatch(getAllActivities());
