@@ -1,4 +1,3 @@
-
 import { Activity } from "../models/Activities.js";
 import { Classification } from "../models/Classification.js";
 
@@ -10,9 +9,9 @@ export const getActivities = async (req, res) => {
 		}});
 		res.status(200).json(activities);
 	} catch (error) {
-		return res.status(500).json({ message: error.message });
-	}
-}
+		return res.status(404).json({ message: error.message });
+	};
+};
 
 export const createActivity = async (req, res) => {
 	console.log(req.body);
@@ -28,27 +27,12 @@ export const createActivity = async (req, res) => {
 		const nuv = await clasificacion.addActivities(nuevaActividad[0])
 		console.log(nuv)
 		if(nuevaActividad[1]=== false){
-			return res.status(500).json({ message: 'This Activity alredy exists'})
+			return res.status(400).json({ message: 'This Activity alredy exists'})
 		} else {
-			res.status(200).json({message: 'Activity created successfully'})
-		}
+			res.status(201).json({message: 'Activity created successfully'})
+		};
 	} catch (error) {
-		return res.status(500).json({ message: error.message });
-	}
-}
-export const putActivity = async (req, res) => {
-	try {
-	  let nuevactividad = req.body
-	  let FindId = req.params.id
-	  const updateado = await Activity.update(nuevactividad, {
-		where: {
-		  id: FindId
-		}})
-		res.status(200).json({message:'Activity updated'})
-	} catch (error) {
-	  return res.status(500).json({ message: error.message });
-	}
-  
-	  
-  }
+		return res.status(400).json({ message: error.message });
+	};
+};
 

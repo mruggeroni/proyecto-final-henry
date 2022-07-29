@@ -9,11 +9,13 @@
 }
 
 .view{
-	display: inline-flex;
-	justify-content: flex-end;
+	width: 90%;
+	display: flex;
+	/* display: inline-flex; */
+	/* justify-content: flex-end; */
+	align-items: center;
 	justify-content: space-between;
 	margin: auto;
-	width: 90%;
 }
 
 .cards{

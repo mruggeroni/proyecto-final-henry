@@ -8,7 +8,6 @@ import DestinationsRoutes from './routes/DestinationsRoutes.js'
 import UsersRoutes from './routes/UsersRoutes.js';
 import OrderRoutes from './routes/OrdersRouter.js';
 
-
 const app = express();
 
 // middlewares

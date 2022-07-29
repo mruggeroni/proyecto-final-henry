@@ -11,24 +11,37 @@ import {
   getAllActivities,
   getAllPackage,
   getDestinationsWithPackages,
+  createUser,
 } from "../../redux/actions/index";
+import BacktoTop from "../BacktoTop/BacktoTop";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export default function Home() {
   const dispatch = useDispatch();
+  const {
+    user,
+    isAuthenticated,
+    loginWithPopup,
+    logout,
+    getAccessTokenSilently,
+  } = useAuth0();
 
   const [loading, setLoading] = useState(true);
   const allDestinations = useSelector(
     (state) => state.destinationsWithPackages
   );
   const onSale = useSelector((state) => state.onsale);
+  const sortDestinations = allDestinations.sort();
 
   useEffect(async () => {
     setLoading(true);
-    await dispatch(getAllPackage());
+    await dispatch(getAllPackage(1000));
     await dispatch(getAllDestinations());
     await dispatch(getDestinationsWithPackages());
     await dispatch(getOnSale());
     await dispatch(getAllActivities());
+    const token = await getAccessTokenSilently();
+    await dispatch(createUser(token));
     setLoading(false);
   }, [dispatch]);
 
@@ -54,7 +67,7 @@ export default function Home() {
         </div>
       ) : (
         <React.Fragment>
-          <Hero destinations={allDestinations} />
+          <Hero destinations={sortDestinations} />
           <div className={style.feature_container}>
             <h2 className={style.h2}>Destacados</h2>
             <CardGenericContainer listCards={onSale} />
@@ -65,6 +78,7 @@ export default function Home() {
           </div>
         </React.Fragment>
       )}
+      {/* <BacktoTop/> */}
       {/* <Footer /> */}
     </div>
   );
