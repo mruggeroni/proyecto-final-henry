@@ -5,6 +5,7 @@ import style from "./Navbar.module.css";
 import NavDestinations from "./NavDestinations";
 import NavPromotions from "./NavPromotions";
 import PopUps from "./PopUps/PopUps";
+import NavRegion from "./NavRegion";
 
 export default function Navbar() {
   useEffect(() => {
@@ -22,6 +23,9 @@ export default function Navbar() {
       .getElementById("nav_menu_destinations")
       .classList?.remove(`${style.is_active}`);
     document
+      .getElementById("nav_menu_region")
+      .classList?.remove(`${style.is_active}`);
+    document
       .getElementById("nav_menu_promotions")
       .classList?.remove(`${style.is_active}`);
   }
@@ -35,9 +39,11 @@ export default function Navbar() {
 
   return (
     <div id="nav" className={style.container}>
-      <div id="nav_menu" onClick={() => handleClose()} className={`${style.nav_menu_container}`}>
-
-      </div>
+      <div
+        id="nav_menu"
+        onClick={() => handleClose()}
+        className={`${style.nav_menu_container}`}
+      ></div>
       <nav id="nav_menu_items" className={`${style.nav_menu}`}>
         <div className={style.nav_menu_container_close}>
           <button
@@ -61,6 +67,12 @@ export default function Navbar() {
           Promociones <BsFillCaretRightFill />
         </button>
         <button
+          onClick={() => handleOpen("nav_menu_region")}
+          className={style.nav_menu_item}
+        >
+          Regiones <BsFillCaretRightFill />
+        </button>
+        <button
           onClick={() => handleOpen("nav_menu_destinations")}
           className={style.nav_menu_item}
         >
@@ -82,8 +94,9 @@ export default function Navbar() {
         </NavLink>
       </nav>
 
-        <NavPromotions handleClose={handleClose} />
-        <NavDestinations handleClose={handleClose} />
+      <NavPromotions handleClose={handleClose} />
+      <NavDestinations handleClose={handleClose} />
+      <NavRegion handleClose={handleClose} />
 
       <div className={style.nav_container}>
         <nav className={style.nav_items}>
@@ -98,7 +111,7 @@ export default function Navbar() {
             <PopUps />
           </div>
         </nav>
+      </div>
     </div>
-  </div>
   );
 }

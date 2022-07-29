@@ -40,8 +40,10 @@ export default function Home() {
     await dispatch(getDestinationsWithPackages());
     await dispatch(getOnSale());
     await dispatch(getAllActivities());
-    const token = await getAccessTokenSilently();
-    await dispatch(createUser(token));
+    // if (isAuthenticated) {
+    //   const token = await dispatch(createUser(token));
+    //   console.log(token);
+    // }
     setLoading(false);
   }, [dispatch]);
 

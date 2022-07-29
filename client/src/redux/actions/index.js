@@ -14,6 +14,8 @@ export const ORDER_BY_PRICE = "ORDER_BY_PRICE";
 export const FILTER_BY_DESTINATION = "FILTER_BY_DESTINATION";
 export const FILTER_PACKAGES_BY_DATE = "FILTER_PACKAGES_BY_DATE";
 export const GET_ALL_CATEGORIES = "GET_ALL_CATEGORIES";
+export const GET_ALL_REGION = "GET_ALL_REGION";
+export const GET_PK_REGION = "GET_PK_REGION";
 
 export const getAllPackage = (limitRender) => {
   return async function (dispatch) {
@@ -107,14 +109,13 @@ export function orderByPrice(payload) {
 }
 
 export function filterPackagesByDestination(payload) {
-  // return async function (dispatch) {
-  //   try {
-  //     let res = await axios.get(`/packages/1000?destination=` + payload);
-  //     return dispatch({ type: FILTER_BY_DESTINATION, payload: res.data });
-  //   } catch (error) {
-  //     console.log(error.message);
-  //   }
-  // };
+  return {
+    type: FILTER_BY_DESTINATION,
+    payload,
+  };
+}
+
+export function filtradoPorRegion(payload) {
   return {
     type: FILTER_BY_DESTINATION,
     payload,
@@ -221,6 +222,19 @@ export function borrarPaquete(payload) {
       var json = await axios.delete("/packages?id=" + payload);
       dispatch(getAllPackage(1000));
       return json;
+    } catch (e) {
+      alert("No pudimos borrar el paquete!");
+    }
+  };
+}
+
+export function paquetesPorRegion(payload) {
+  return async function (dispatch) {
+    console.log(payload);
+    try {
+      var res = await axios.get("/packages/1000?region=" + payload);
+      console.log(res);
+      return dispatch({ tipe: GET_PK_REGION, payload: res.data });
     } catch (e) {
       alert("No pudimos borrar el paquete!");
     }

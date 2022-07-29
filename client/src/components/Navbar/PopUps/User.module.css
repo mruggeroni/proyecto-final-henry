@@ -12,6 +12,12 @@
   border-radius: 20px;
 }
 
+.nav_item_profileError {
+  width: 40px;
+  height: 40px;
+  box-shadow: 0 1px 2px #161616;
+}
+
 .user_profile_container {
   position: absolute;
   top: 90px;
@@ -44,7 +50,7 @@
   height: 2px;
   margin: 0;
   opacity: 100%;
-  background-color: #4A9EAA;
+  background-color: #4a9eaa;
 }
 
 .user_profile_menu {
@@ -79,7 +85,7 @@
   background-color: #949797;
 }
 
-.userIcon{
+.userIcon {
   background-color: transparent;
   border: none;
   color: #fff;
@@ -95,7 +101,7 @@
 }
 
 .user_profile_link:hover {
-  color: #4A9EAA;
+  color: #4a9eaa;
 }
 
 .user_btn {
@@ -111,7 +117,7 @@
 }
 
 .user_profile_menu div *:hover {
-  color: #4A9EAA;
+  color: #4a9eaa;
 }
 
 .back {
