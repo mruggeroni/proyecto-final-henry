@@ -106,7 +106,7 @@ export const createUser = (payload) => {
 export const getUsers = () => {
   return async function (dispatch) {
     try {
-      const res = await axios.get('/user');
+      const res = await axios.get('/users');
       return dispatch({ type: GET_USERS, payload: res.data });
 
     } catch(error) {

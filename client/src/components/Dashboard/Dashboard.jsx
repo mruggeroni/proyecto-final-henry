@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import CreatePackage from './CreatePackage.jsx'
 import CreateActivity from './CreateActivity.jsx'
@@ -6,8 +6,17 @@ import style from "./Dashboard.module.css";
 import ListPackages from "./ListPackages.jsx";
 import { BsFillArrowRightCircleFill, BsFillArrowLeftCircleFill } from 'react-icons/bs'
 import { NavLink } from "react-router-dom";
+import { getAllActivities, getAllPackage, getUsers } from "../../redux/actions/index.js";
+import { useDispatch } from "react-redux";
 
 export default function Dashboard() {
+  const dispatch = useDispatch();
+
+  useEffect( () => {
+    dispatch(getAllActivities())
+    dispatch(getAllPackage(10))
+    dispatch(getUsers())
+  }, [dispatch]);
 
   return (
     <div className={style.dashboard_container}>
