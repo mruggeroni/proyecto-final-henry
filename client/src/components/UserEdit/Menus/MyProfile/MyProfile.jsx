@@ -1,15 +1,13 @@
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import s from './MyProfile.module.css';
 
 export default function MyProfile({ showProfile, setShowProfile }) {
 
+    const user = useSelector( (state) => state.user );
+
     const handleSubmit = (e) => {
-    };
-  
-    const handleChange = (e) => {
-    };
-  
-    const handleClose = () => {
+        e.preventDefault();
     };
   
   return (
@@ -20,33 +18,46 @@ export default function MyProfile({ showProfile, setShowProfile }) {
         <hr />
         <form className={s.profile_information_container}>
         <div className={s.profile_image_container}>
-            <img src="https://www.avesdeuruguay.com/cres.jpg" alt="" />
+            <img src={user.photo || 'https://www.avesdeuruguay.com/cres.jpg'} onError={ (e) => e.target.src = 'https://www.avesdeuruguay.com/cres.jpg' } alt={user.full_name} />
             <div className={s.profile_input_container}>
             <label className={s.profile_label}>Imagen</label>
-            <input type='text' value='https://www.avesdeuruguay.com/cres.jpg' className={s.profile_input} />
+            <input type='text' value={user.photo} className={s.profile_input} />
             </div>
         </div>
         <div className={s.profile_input_container}>
             <label className={s.profile_label}>Nombre</label>
-            <input type='text' className={s.profile_input} />
+            <input type='text' value={user.first_name} className={s.profile_input} />
         </div>
         <div className={s.profile_input_container}>
             <label className={s.profile_label}>Apellido</label>
-            <input type='text' className={s.profile_input} />
+            <input type='text' value={user.last_name} className={s.profile_input} />
         </div>
         <div className={s.profile_input_container}>
-            <label className={s.profile_label}>Username</label>
-            <input type='text' className={s.profile_input} />
+            <label className={s.profile_label}>Numero de telefono</label>
+            <input type='text' value={user.phone} className={s.profile_input} />
         </div>
         <div className={s.profile_input_container}>
-            <label className={s.profile_label}>Otro</label>
-            <input type='text' className={s.profile_input} />
+            <label className={s.profile_label}>Dirección</label>
+            <input type='text' value={user.address_line1} className={s.profile_input} />
         </div>
         <div className={s.profile_input_container}>
-            <label className={s.profile_label}>Otro otro</label>
-            <input type='text' className={s.profile_input} />
+            <label className={s.profile_label}>Ciudad</label>
+            <input type='text' value={user.city} className={s.profile_input} />
         </div>
-        <button className={s.profile_btn_save}>Guardar cambios</button>
+        <div className={s.profile_input_container}>
+            <label className={s.profile_label}>Estado</label>
+            <input type='text' value={user.state} className={s.profile_input} />
+        </div>
+        <div className={s.profile_input_container}>
+            <label className={s.profile_label}>Codigo postal</label>
+            <input type='text' value={user.postal_code} className={s.profile_input} />
+        </div>
+        <div className={s.profile_input_container}>
+            <label className={s.profile_label}>Pais</label>
+            <input type='text' value={user.country} className={s.profile_input} />
+        </div>
+        
+        <button onClick={handleSubmit} className={s.profile_btn_save}>Guardar cambios</button>
         </form>
     </div>
   );

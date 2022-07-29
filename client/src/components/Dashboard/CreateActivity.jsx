@@ -130,9 +130,10 @@ export default function ActivityCreate({ showCreateActivity, setShowCreateActivi
   }, []);
 
   return (
-    !showCreateActivity ? null
-    :
+    // !showCreateActivity ? null
+    // :
     <div>
+      <Dashboard />
       <div className={style.create_container}>
         <h2>Crear una Actividad</h2>
         <hr className={style.create_line} />
