@@ -6,7 +6,45 @@ DB_HOST= "(por defecto es 'localhost')"
 DB_DIALECT= "(por defecto es 'postgres')" 
 PORT= "(por defecto es '3001')"
 
-
+Usuarios de prueba que se encuentran en la database y en Auth0 para pruebas en front: Solo se debe entrar en la pagina desde front, ingresando el correo y la contraseña de cualquiera que de los dos usuarios. El primero es administrador, el segundo es cliente.
+```json
+    {
+        "first_name": "Administrador",
+        "last_name": "Prueba",
+        "email": "sadyirapruebaad@gmail.com",
+        "password" : "Inventado123",
+        "phone": "310-214-9951",
+        "address_line1": "6 Brentwood Place",
+        "address_line2": "null",
+        "city": "Los Angeles",
+        "state": "California",
+        "postal_code": "90045",
+        "country": "United States",
+        "is_admin": "true",
+        "photo": "http://dummyimage.com/162x100.png/5fa2dd/ffffff",
+        "created_date": "2022-07-28 22:41:18",
+        "update_date": "2022-08-01 18:41:15",
+        "destroyTime": "null"
+    },
+    {
+        "first_name": "Cliente",
+        "last_name": "Prueba",
+        "email": "sadyirapruebacl@gmail.com",
+        "password" : "Inventado123",
+        "phone": "310-214-9951",
+        "address_line1": "6 Brentwood Place",
+        "address_line2": "null",
+        "city": "Los Angeles",
+        "state": "California",
+        "postal_code": "90045",
+        "country": "United States",
+        "is_admin": "false",
+        "photo": "http://dummyimage.com/162x100.png/5fa2dd/ffffff",
+        "created_date": "2022-07-28 22:41:18",
+        "update_date": "2022-08-01 18:41:15",
+        "destroyTime": "null"
+    },
+    ```
 
 RUTAS DISPONIBLES:
 
