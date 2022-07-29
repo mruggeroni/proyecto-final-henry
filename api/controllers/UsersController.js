@@ -1,4 +1,5 @@
 import { User } from '../models/Users.js';
+import { Op } from 'sequelize';
 import axios from 'axios';
 
 export const getUsers = async (req, res) => {
@@ -77,5 +78,40 @@ export const patchIs_adminProperty = async (req, res) => {
 		res.status(200).send(updatedUser)
 	} catch (e) {
 		res.status(400).send({ data: e.message })
+	}
+}
+
+export const deleteUser = async (req, res) => {
+	try {
+		const id = req.params.id;
+		const deleted = await User.findByPk(id)
+
+		deleted && await User.destroy({
+			where: {
+				id
+			}
+		})
+		deleted? res.status(200).send('User deleted successfully') 
+		: res.status(200).send('The User was already deleted'); 
+		
+	} catch (error) {
+		res.status(400).send({ data: error.message })
+	}
+}
+
+export const getDeletedUsers = async (req, res) => {
+	try {
+		const deleted = await User.findAll({
+			where:{
+				destroyTime:{
+					[Op.ne]: null,
+				}
+			},
+			paranoid: false
+		})
+		deleted.length? res.status(200).send(deleted)
+		: res.status(200).send('No deleted users found')
+	} catch (error) {
+		res.status(400).send({ data: error.message })
 	}
 }
