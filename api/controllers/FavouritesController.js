@@ -23,12 +23,33 @@ export const addFavourite = async (req, res) => {
 				email: userInfo.email,
 			}
 		})
-		// console.log(userInfo)
-		// console.log(packages);
-		// console.log(user)
 		user.addPackage(packages)		
 		res.status(200).send('Added to favourite successfully')
   } catch (e) {
     res.status(400).send({ data: e.message });
   }
+}
+
+export const getFavourites = async (req, res) => {
+	try {
+		const accessToken = req.headers.authorization.split(" ")[1];
+		const response = await axios.get(
+			"https://dev-33fzkaw8.us.auth0.com/userinfo",
+			{
+				headers: {
+					authorization: `Bearer ${accessToken}`,
+				},
+			}
+		);
+		const userInfo = response.data;
+		const user = await User.findOne({
+			where:{
+				email: userInfo.email,
+			}
+		})
+		const favourites = await user.getPackages({ joinTableAttributes: [] })
+		res.status(200).send(favourites)
+	} catch (e) {
+		res.status(400).send({ data: e.message })
+	}
 }
