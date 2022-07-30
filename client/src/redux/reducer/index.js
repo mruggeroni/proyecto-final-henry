@@ -1,12 +1,8 @@
 import {
   GET_ALL_PACKAGES,
   GET_PACKAGE_BY_ID,
-  GET_DESTINATIONS,
-  GET_REGIONS,
-  SEARCH_PACKAGES,
   GET_ACTIVITIES,
   GET_TYPES,
-  GET_SEASONS,
   GET_USERS,
   GET_ALL_DESTINATIONS,
   GET_ON_SALE,
@@ -20,17 +16,21 @@ import {
   GET_ALL_CATEGORIES,
   GET_ALL_REGION,
   GET_PK_REGION,
+  GET_LOCAL_STORAGE_FAVORITES,
+  GET_LOCAL_STORAGE_CART
 } from "./../actions/index.js";
 
 const initialState = {
   allPackages: [],
   filteredPackages: [],
   activities: [],
+  cart: [],
   destinations: [],
   destinationsWithPackages: [],
   regions: [],
   types: [],
   seasons: [],
+  favorites: [],
   featured: [],
   onsale: [],
   detailPackage: {},
@@ -55,8 +55,7 @@ const rootReducer = (state = initialState, action) => {
         destinations: action.payload,
       };
     case GET_ALL_REGION:
-      const regiones = action.payload.map();
-
+      // const regiones = action.payload.map();
       return {
         ...state,
         destinations: action.payload,
@@ -132,15 +131,38 @@ const rootReducer = (state = initialState, action) => {
               if (b.price > a.price) return 1;
               return 0;
             });
+      let favSort =
+        action.payload === "minPrice"
+        ? state.favorites.sort(function (a, b) {
+            if (a.price > b.price) return 1;
+            if (b.price > a.price) return -1;
+            return 0;
+          })
+        : state.favorites.sort(function (a, b) {
+            if (a.price > b.price) return -1;
+            if (b.price > a.price) return 1;
+            return 0;
+          });
       return {
         ...state,
         filteredPackages: sortPrice,
+        favorites: favSort
       };
 
     case FILTER_BY_DESTINATION:
+      const allPackages = state.allPackages;
+      let aux = [];
+      action.payload === "all"
+        ? allPackages.forEach((e) => aux.push(e))
+        : allPackages.filter((p) =>
+            p.destinations.forEach((el) => {
+              el.name === action.payload && aux.push(p);
+            })
+          );
+
       return {
         ...state,
-        filteredPackages: action.payload,
+        filteredPackages: aux,
       };
     case FILTER_PACKAGES_BY_DATE:
       let filteredPackagesDate = [];
@@ -149,7 +171,6 @@ const rootReducer = (state = initialState, action) => {
           (f) => p.id === f.id && filteredPackagesDate.push(f)
         )
       );
-      console.log(filteredPackagesDate);
       return {
         ...state,
         filteredPackages: filteredPackagesDate,
@@ -168,7 +189,19 @@ const rootReducer = (state = initialState, action) => {
     case GET_PK_REGION:
       return {
         ...state,
-        allPackages: action.payload,
+        allPackages: action.payload
+      }
+    case GET_LOCAL_STORAGE_FAVORITES:
+      let localStorageFav = JSON.parse(localStorage.getItem('favorites'));
+      return {
+        ...state,
+        favorites: localStorageFav,
+      };
+    case GET_LOCAL_STORAGE_CART:
+      let localStorageCart = JSON.parse(localStorage.getItem('cart'));
+      return {
+        ...state,
+        cart: localStorageCart,
       };
 
     default:

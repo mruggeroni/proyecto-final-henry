@@ -31,7 +31,7 @@
         "photo": "http://dummyimage.com/162x100.png/5fa2dd/ffffff",
         "created_date": "2022-07-28 22:41:18",
         "update_date": "2022-08-01 18:41:15",
-        "destroyTime": "2022-08-02 18:41:15"
+        "destroyTime": "null"
     },
     {
         "first_name": "Joyan",

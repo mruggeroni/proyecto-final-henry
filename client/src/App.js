@@ -14,6 +14,7 @@ import ListPackages from "./components/Dashboard/ListPackages.jsx";
 import ModifyActivity from "./components/Dashboard/ModifyActivity.jsx";
 import ListActivities from "./components/Dashboard/ListActivities.jsx";
 import ListUsers from "./components/Dashboard/ListUsers.jsx";
+import PopUps from './components/PopUps/PopUps.jsx'
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
@@ -22,7 +23,8 @@ function App() {
   return (
     <BrowserRouter>
       <Navbar />
-      <Routes>
+      <PopUps />
+      <Routes> 
         <Route path="/" element={<Home />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/dashboard/listPackages" element={<ListPackages />} />

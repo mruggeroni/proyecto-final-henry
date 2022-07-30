@@ -20,8 +20,8 @@ export default function ListPackages() {
       <Dashboard />
       <div className={s.dashboard_container}>
         <div className={s.tbl_container}>
-          <div class={s.table_wrapper}>
-            <table class={s.fl_table}>
+          <div className={s.table_wrapper}>
+            <table className={s.fl_table}>
               <thead>
                 <tr>
                   <th>Id</th>

@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { BsPersonPlusFill } from "react-icons/bs";
 import style from "./User.module.css";
 import { useAuth0 } from "@auth0/auth0-react";
-import UserEdit from "../../UserEdit/UserEdit";
+import UserEdit from "../UserEdit/UserEdit";
 import { NavLink } from "react-router-dom";
-import { createUser } from "../../../redux/actions";
+import { createUser } from "../../redux/actions/index";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function UserPopOut() {

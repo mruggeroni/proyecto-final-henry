@@ -1,6 +1,5 @@
 import axios from "axios";
 
-export const GET_DESTINATIONS_WITH_PACKAGES = "GET_DESTINATIONS_WITH_PACKAGES";
 export const GET_PACKAGE_BY_ID = "GET_PACKAGE_BY_ID";
 export const GET_RELATIONATED = "GET_RELATIONATED";
 export const GET_ALL_PACKAGES = "GET_ALL_PACKAGES";
@@ -17,6 +16,9 @@ export const FILTER_PACKAGES_BY_DATE = "FILTER_PACKAGES_BY_DATE";
 export const GET_ALL_CATEGORIES = "GET_ALL_CATEGORIES";
 export const GET_ALL_REGION = "GET_ALL_REGION";
 export const GET_PK_REGION = "GET_PK_REGION";
+export const GET_LOCAL_STORAGE_CART = 'GET_LOCAL_STORAGE_CART';
+export const GET_LOCAL_STORAGE_FAVORITES = 'GET_LOCAL_STORAGE_FAVORITES';
+export const GET_DESTINATIONS_WITH_PACKAGES = 'GET_DESTINATIONS_WITH_PACKAGES';
 
 export const getAllPackage = (limitRender) => {
   return async function (dispatch) {
@@ -106,7 +108,6 @@ export const getUsers = (limitRender) => {
     try {
       const res = await axios.get('/users?limitRender=' + limitRender);
       return dispatch({ type: GET_USERS, payload: res.data });
-
     } catch(error) {
       console.log(error)
     }
@@ -148,7 +149,7 @@ export function filterPackagesByDate(value) {
 }
 
 export const crearDestino = (payload) => {
-  return async function (dispatch) {
+  return async function () {
     try {
       const respuesta = await axios.post("/destinations", payload);
       return respuesta;
@@ -159,7 +160,7 @@ export const crearDestino = (payload) => {
 };
 
 export const crearActividad = (payload) => {
-  return async function (dispatch) {
+  return async function () {
     try {
       const respuesta = await axios.post("/activities", payload);
       return respuesta;
@@ -170,9 +171,8 @@ export const crearActividad = (payload) => {
 };
 
 export function modificarPaquete(payload, id) {
-  return async function (dispatch) {
+  return async function () {
     try {
-      console.log("payload 0: ", payload[0]);
       const respuesta = await axios.put("/packages/" + id, payload[0]);
       const respuesta2 = await axios.patch("/packages/" + id, payload[1]);
       return respuesta2; // como no necesitamos hacer nada podemos no dispachar nada
@@ -191,7 +191,7 @@ export const getCategories = () => {
 };
 
 export const createCategories = (payload) => {
-  return async function (dispatch) {
+  return async function () {
     try {
       const respuesta = await axios.post("/classification", payload);
       return respuesta;
@@ -202,7 +202,7 @@ export const createCategories = (payload) => {
 };
 
 export const createActivities = (payload) => {
-  return async function (dispatch) {
+  return async function () {
     try {
       const respuesta = await axios.post("/activities", payload);
       return respuesta;
@@ -213,9 +213,7 @@ export const createActivities = (payload) => {
 };
 
 export function modificarActividad(payload, id) {
-  console.log("payload: ", payload.price);
-  console.log("id: ", id);
-  return async function (dispatch) {
+  return async function () {
     try {
       const respuesta = await axios.put("activities/" + id, payload);
       return respuesta;
@@ -249,3 +247,16 @@ export function paquetesPorRegion(payload) {
     }
   };
 }
+export function getFavoritesLocalStorage(payload, id) {
+  return {
+    type: GET_LOCAL_STORAGE_FAVORITES,
+    payload,
+  };
+};
+
+export function getCartLocalStorage(payload, id) {
+  return {
+    type: GET_LOCAL_STORAGE_CART,
+    payload,
+  };
+};

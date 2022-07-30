@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { NavLink } from "react-router-dom";
 import { getUsers } from "../../redux/actions";
 import Dashboard from "./Dashboard";
 import s from "./Table.module.css";
@@ -20,8 +19,8 @@ export default function ListUsers() {
       <Dashboard />
       <div className={s.dashboard_container}>
         <div className={s.tbl_container}>
-          <div class={s.table_wrapper}>
-            <table class={s.fl_table}>
+          <div className={s.table_wrapper}>
+            <table className={s.fl_table}>
               <thead>
                 <tr>
                   <th>Id</th>
