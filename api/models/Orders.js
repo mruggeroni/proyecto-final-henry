@@ -14,8 +14,8 @@ export const Order = sequelize.define('order', {
 		allowNull: false,
 	},
 	status: {
-		type: DataTypes.ENUM('pending', 'paid', 'saved'),
-		defaultValue: 'pending',
+		type: DataTypes.ENUM('pending', 'paid', 'saved', 'shopping cart'),
+		defaultValue: 'shopping cart',
 	},
 }, {
 	timestamps: false,

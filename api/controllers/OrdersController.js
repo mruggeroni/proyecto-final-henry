@@ -1,13 +1,18 @@
 import { User } from "../models/Users.js";
 import { Order } from "../models/Orders.js";
-import { OrderItem } from "../models/OrderItems.js";
-import { Package } from '../models/Packages.js';
+// import { OrderItem } from "../models/OrderItems.js";
+import { Package, OrderItem } from '../models/Packages.js';
 import { Op } from "sequelize";
 
 export const getOrders = async (req, res) => {
-	
 	try {
-		const orders = await Order.findAll({
+		const page = parseInt(req.query.page) || 1;
+		const limit = parseInt(req.query.limit) || 10;
+		const offset = limit * (page - 1);
+		const totalRows = await Order.count();
+		const totalPage = Math.ceil(totalRows / limit);
+
+		const results = await Order.findAll({
 			include: {
 				model: User,
 				attributes: [
@@ -16,8 +21,53 @@ export const getOrders = async (req, res) => {
 					'last_name',
 				],
 			},
+			offset: offset,
+			limit: limit,
+			order: [
+				['id', 'DESC']
+			]
 		});
-		res.status(200).json(orders);
+		
+		res.status(200).json({results, page, limit, totalRows, totalPage});
+	} catch (error) {
+		return res.status(404).json({ message: error.message });
+	};
+};
+
+export const getOrdersByStatus = async (req, res) => {
+	try {
+		const status = req.params.status;
+		
+		const page = parseInt(req.query.page) || 1;
+		const limit = parseInt(req.query.limit) || 10;
+		const offset = limit * (page - 1);
+		const totalRows = await Order.count({
+			where: {
+				status: status
+			}
+		});
+		const totalPage = Math.ceil(totalRows / limit);
+
+		const results = await Order.findAll({
+			include: {
+				model: User,
+				attributes: [
+					'id',
+					'first_name',
+					'last_name',
+				],
+			},
+			where: {
+				status: status
+			},
+			offset: offset,
+			limit: limit,
+			order: [
+				['id', 'DESC']
+			]
+		});
+		
+		res.status(200).json({results, page, limit, totalRows, totalPage});
 	} catch (error) {
 		return res.status(404).json({ message: error.message });
 	};
@@ -85,9 +135,29 @@ export const getCart = async (req, res) => {
 	};
 };
 
+export const createOrder = async (req, res) => {
+	const { userId, total_order, quantity, packageId } = req.body;
+
+	try {
+		const newOrder = await Order.create({
+			userId,
+			total_order,
+		});
+		
+		for (let i = 0; i < packageId.length; i++) {
+			const paquete = await Package.findByPk(packageId[i]);
+			await newOrder.addPackage(paquete, {through: OrderItem});
+		}
+		
+		res.status(200).json(newOrder);
+	} catch (error) {
+		return res.status(500).json({ error: error.message });
+	}
+}	
+
 export const createCart = async (req, res) => {
-	const { userId } = req.params;
-	const { total_order, quantity, packagesId } = req.body;
+	// const { userId } = req.params;
+	const { userId, total_order, quantity, packagesId } = req.body;
 
 	try {
 		const user = await User.findOne({
