@@ -3,7 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 // import validate from "./validationActivity.js";
 import Dashboard from "./Dashboard";
 import style from "./CreatePackage.module.css";
-import { createActivities, getCategories } from "../../redux/actions";
+import {
+  createActivities,
+  getCategories,
+  getAllActivities,
+} from "../../redux/actions";
 import ModalCategorias from "./ModalCategoria";
 
 function validate(input) {
@@ -50,12 +54,12 @@ function firstCap(name) {
   return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
 }
 
-export default function ActivityCreate({ showCreateActivity, setShowCreateActivity }) {
+export default function ActivityCreate({
+  showCreateActivity,
+  setShowCreateActivity,
+}) {
   const dispatch = useDispatch();
-  // const activities = useSelector((state) => state.activities);
-  // const countries = useSelector((state) => state.allCountries);
   const [error, setError] = useState({});
-  // const createBtn = document.getElementById("create");
   const [input, setInput] = useState({
     name: "",
     description: "",
@@ -77,8 +81,6 @@ export default function ActivityCreate({ showCreateActivity, setShowCreateActivi
         [e.target.name]: e.target.value,
       })
     );
-    console.log("input: ", input);
-    console.log("error: ", error);
   };
 
   const handleSelectCategorias = (e) => {
@@ -111,7 +113,7 @@ export default function ActivityCreate({ showCreateActivity, setShowCreateActivi
         classification: "",
       });
       dispatch(createActivities(input));
-      // Alert bootstrap
+      dispatch(getAllActivities());
       alert("Actividad creada!");
     } else {
       alert(
