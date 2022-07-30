@@ -1,14 +1,16 @@
 import { Router } from 'express';
 import { 
-	createOrder, 
+	createCart, 
 	getOrderDetail, 
-	getOrders 
+	getOrders,
+    getCart,
 } from '../controllers/OrdersController.js';
 
 const router = Router();
 
+router.get('/cart/:userId', getCart);
 router.get('/orders', getOrders);
 router.get('/orders/:id', getOrderDetail);
-router.post('/orders', createOrder);
+router.post('/cart/:userId', createCart);
 
 export default router;
