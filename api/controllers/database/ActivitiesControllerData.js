@@ -15,7 +15,6 @@ export const getActivitiesData = async () =>{
                         name: classification,
                     },
                 });
-                console.log(clasificacion)
                 clasificacion && await Activity.findOrCreate({
                     where: {
                         name, 

@@ -1,5 +1,6 @@
 import * as data from '../../data/order_items.js';
-import { OrderItem } from '../../models/Packages.js';
+import { OrderItem } from '../../models/OrderItems.js';
+
 export const getOrderItemData = async () => {
     try {
         if (!(await OrderItem.findAndCountAll())?.count) {

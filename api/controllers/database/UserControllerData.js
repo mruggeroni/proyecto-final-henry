@@ -1,5 +1,6 @@
 import * as data from '../../data/users.js';
 import { User } from '../../models/Users.js';
+
 export const getUserData = async () => {
     try {
         if (!(await User.findAndCountAll())?.count) {

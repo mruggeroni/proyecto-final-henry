@@ -9,7 +9,4 @@ export const OrderItem = sequelize.define('order_item', {
 	}
 }, {
 	timestamps: false,
-	// tableName: 'Order_Items',
-}
-);
-
+});
