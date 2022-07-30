@@ -14,20 +14,12 @@ export const verifyJwt = expressJwt({
 	algorithms: ['RS256']
 })
 
-export const verifySuperAdminPermission = async (req, res) => {
-	try {
-		const token = req.body.headers.authorization.split(" ")[1];
-		const res = await axios.get(
-			"https://dev-33fzkaw8.us.auth0.com/userinfo",
-			{
-				headers: {
-					authorization: `Bearer ${token}`,
-				},
-			}
-		);
-		const userInfo = res.data;
-		console.log(userInfo)
-	} catch (error) {
-		
-	}
+export const verifySuperAdminPermission = (req, res, next) => {
+	const permissions = req.auth.permissions[0]
+	permissions === 'SuperAdmin' ? next() : res.status(403).send('Not authorized'); 
+}
+
+export const verifyAdminOrSuperAdminPermission = (req, res, next) => {
+	const permissions = req.auth.permissions[0]
+	permissions === 'SuperAdmin' ? next() : permissions === 'Admin'? next() : res.status(403).send('Not authorized'); 
 }
