@@ -6,14 +6,19 @@ import {
   createPackage,
   getAllActivities,
   getAllDestinations,
+  getCategories,
   getTypes,
 } from "../../redux/actions";
 import style from "./CreatePackage.module.css";
 import Dashboard from "./Dashboard";
 import validationPackage from "./validationPackage.js";
-import Toast from "react-bootstrap/Toast";
+import ModalActividades from "./ModalActividades";
+import ModalDestinos from "./ModalDestinos";
 
-export default function CreatePackage() {
+export default function CreatePackage({
+  showCreatePackage,
+  setShowCreatePackage,
+}) {
   const dispatch = useDispatch();
   const [aux, setAux] = useState(false);
   useEffect(() => {
@@ -25,6 +30,7 @@ export default function CreatePackage() {
   const navigate = useNavigate();
 
   const allDestinations = useSelector((state) => state.destinations);
+  const allActivities = useSelector((state) => state.activities);
   const types = useSelector((state) => state.types);
 
   const dataNow = new Date().toISOString().split("T")[0];
@@ -32,6 +38,12 @@ export default function CreatePackage() {
   const [untilDate, setUntilDate] = useState(dataNow);
 
   const sortDestinations = allDestinations.sort(function (a, b) {
+    if (a.name > b.name) return 1;
+    if (b.name > a.name) return -1;
+    return 0;
+  });
+
+  const sortActivities = allActivities.sort(function (a, b) {
     if (a.name > b.name) return 1;
     if (b.name > a.name) return -1;
     return 0;
@@ -47,14 +59,15 @@ export default function CreatePackage() {
     images2: "",
     images: [],
     destinations: [],
+    activities: [],
     start_date: dataNow,
     end_date: dataNow,
-    region: "",
+    // region: "",
     seasson: "",
     type: "",
-    featured: false,
-    available: true,
-    on_sale: false,
+    featured: "false",
+    available: "true",
+    on_sale: 0,
   });
 
   const [error, setError] = useState({
@@ -66,12 +79,13 @@ export default function CreatePackage() {
     images1: "",
     images2: "",
     featured: "",
-    destinations: [],
+    destinations: "",
+    activities: "",
     start_date: "",
     end_date: "",
     available: "",
     on_sale: "",
-    region: "",
+    // region: "",
     seasson: "",
     type: "",
   });
@@ -96,33 +110,45 @@ export default function CreatePackage() {
       ...input,
       [e.target.name]: e.target.value,
     });
-    // setError(
-    //   validationPackage({
-    //     ...input,
-    //     [e.target.name]: e.target.value,
-    //   })
-    // );
-    console.log(e.target.value);
   };
 
   const handleSelectDestinations = (e) => {
-    if (input.destinations.length <= 4) {
-      if (!input.destinations.includes(e.target.value)) {
-        setInput({
-          ...input,
-          destinations: [...input.destinations, e.target.value],
-        });
-        e.target.value = "default";
-        console.log(e.target.value);
-        // setError(
-        //   validationPackage({
-        //     ...input,
-        //     destinations: [...input.destinations, e.target.value],
-        //   })
-        // );
-      } else {
-        e.target.value = "default";
-        return alert("Ese país ya fue seleccionado!");
+    if (e.target.value === "otro") {
+      console.log("soy otro");
+      e.target.value = "default";
+      handleShowDestinos();
+    } else {
+      if (input.destinations.length <= 4) {
+        if (!input.destinations.includes(e.target.value)) {
+          setInput({
+            ...input,
+            destinations: [...input.destinations, e.target.value],
+          });
+          e.target.value = "default";
+        } else {
+          e.target.value = "default";
+          return alert("Ese país ya fue seleccionado!");
+        }
+      }
+    }
+  };
+  const handleSelectActividades = (e) => {
+    if (e.target.value === "otro") {
+      console.log("soy otro");
+      e.target.value = "default";
+      handleShow();
+    } else {
+      if (input.activities.length <= 10) {
+        if (!input.activities.includes(e.target.value)) {
+          setInput({
+            ...input,
+            activities: [...input.activities, e.target.value],
+          });
+          e.target.value = "default";
+        } else {
+          e.target.value = "default";
+          return alert("Esa actividad ya fue seleccionada!");
+        }
       }
     }
   };
@@ -132,13 +158,6 @@ export default function CreatePackage() {
       ...input,
       [e.target.name]: e.target.value,
     });
-    // setError(
-    //   validationPackage({
-    //     ...input,
-    //     [e.target.name]: e.target.value,
-    //   })
-    // );
-    console.log(e.target.value);
   };
 
   const handleChangeDate = (e) => {
@@ -160,13 +179,13 @@ export default function CreatePackage() {
       ...input,
       destinations: input.destinations.filter((i) => i !== e.target.innerText),
     });
-    // setError(
-    //   validationPackage({
-    //     ...input,
-    //     [e.target.name]: e.target.value,
-    //   })
-    // );
-    console.log(e.target.value);
+  }
+
+  function handleBorrarActividades(e) {
+    setInput({
+      ...input,
+      activities: input.activities.filter((i) => i !== e.target.innerText),
+    });
   }
 
   const handleSubmit = (e) => {
@@ -176,7 +195,6 @@ export default function CreatePackage() {
     input.on_sale = parseInt(input.on_sale);
     input.available = input.available === "true" ? true : false;
     input.featured = input.featured === "true" ? true : false;
-
     const valida = validationPackage({ ...input });
     setError(valida);
     if (
@@ -188,11 +206,12 @@ export default function CreatePackage() {
       valida.featured ||
       valida.available ||
       valida.on_sale ||
-      valida.region ||
+      // valida.region ||
       valida.type ||
       valida.seasson ||
       valida.destinations
     ) {
+      console.log(input);
       console.log(valida);
       alert(
         "Presta mas atencion al completar el formulario y volve a intentar ;)"
@@ -214,7 +233,7 @@ export default function CreatePackage() {
         end_date: "",
         available: "",
         on_sale: "",
-        region: "",
+        // region: "",
         seasson: "",
         type: "",
       });
@@ -222,7 +241,15 @@ export default function CreatePackage() {
     }
   };
 
+  const [show, setShow] = useState(false);
+  const handleShow = () => setShow(true);
+
+  const [showDestinos, setShowDestinos] = useState(false);
+  const handleShowDestinos = () => setShowDestinos(true);
+
   return (
+    // !showCreatePackage ? null
+    // :
     <div>
       <Dashboard />
       <div className={style.create_container}>
@@ -232,271 +259,354 @@ export default function CreatePackage() {
           onSubmit={(e) => handleSubmit(e)}
           className={style.create_form_container}
         >
-          <div className={style.create_form_container}>
-            <div className={style.create_input_container}>
-              {error.name && <span>{error.name}</span>}
-              <label className={style.create_label}>Nombre</label>
+          <div className={style.create_input_container}>
+            <label className={style.create_label}>Nombre</label>
+            <input
+              type="text"
+              className={style.create_input}
+              name="name"
+              value={input.name}
+              onChange={(e) => handleChangeInputs(e)}
+            />
+            {error.name && <span className={style.error}>{error.name}</span>}
+          </div>
+          <div className={style.create_input_container}>
+            <label className={style.create_label}>Precio</label>
+            <input
+              value={input.price}
+              name="price"
+              min="0"
+              step="1"
+              type="number"
+              className={style.create_input}
+              onChange={(e) => handleChangeInputs(e)}
+            />
+            {error.price && <span className={style.error}>{error.price}</span>}
+          </div>
+          <div className={style.create_textarea_container}>
+            <label className={style.create_label}>Descripción</label>
+            <textarea
+              name="description"
+              cols="30"
+              rows="10"
+              className={style.create_input_textarea}
+              onChange={(e) => handleChangeInputs(e)}
+            ></textarea>
+            {error.description && (
+              <span className={style.error}>{error.description}</span>
+            )}
+          </div>
+          <div className={style.create_input_date_container}>
+            <div className={style.create_input_date}>
+              <label className={style.create_label}>Fecha de Inicio</label>
               <input
+                name="start_date"
+                type="date"
+                id="from"
+                value={fromDate}
+                min={dataNow}
+                onChange={(e) => handleChangeDate(e)}
+                className={style.create_input}
+              />
+            </div>
+            <div className={style.create_input_date}>
+              <label className={style.create_label}>Fecha de Fin</label>
+              <input
+                name="end_date"
+                type="date"
+                id="until"
+                value={untilDate}
+                min={fromDate}
+                onChange={(e) => handleChangeDate(e)}
+                className={style.create_input}
+              />
+            </div>
+          </div>
+          <div className={style.create_input_container}>
+            <label className={style.create_label}>% Descuento</label>
+            <input
+              value={input.on_sale}
+              name="on_sale"
+              className={style.create_input}
+              type="number"
+              min="0"
+              max="100"
+              step="1"
+              id="on_sale"
+              onChange={(e) => handleChangeInputs(e)}
+            />
+            {error.on_sale && (
+              <span className={style.error}>{error.on_sale}</span>
+            )}
+          </div>
+
+          <div className={style.create_input_container}>
+            <label className={style.create_label}>Paquete destacado</label>
+            <select
+              name="featured"
+              onChange={(e) => handleSelect(e)}
+              className={style.create_input}
+            >
+              <option value={true}>Si</option>
+              <option selected={true} value={false}>
+                No
+              </option>
+            </select>
+            {error.featured && (
+              <span className={style.error}>{error.featured}</span>
+            )}
+          </div>
+          <div className={style.create_input_container}>
+            <label className={style.create_label}>Paquete en stock</label>
+            <select
+              name="available"
+              onChange={(e) => handleSelect(e)}
+              className={style.create_input}
+            >
+              <option selected={true} value="true">
+                Si
+              </option>
+              <option value="false">No</option>
+            </select>
+            {error.available && (
+              <span className={style.error}>{error.available}</span>
+            )}
+          </div>
+
+          {/* <div className={style.create_input_container}>
+            {error.region && <span>{error.region}</span>}
+            <label className={style.create_label}>Región</label>
+            <select
+              name="region"
+              onChange={(e) => handleSelect(e)}
+              className={style.create_input}
+            >
+              <option selected={true} disabled="disabled" hidden>
+                Seleccionar una Región...
+              </option>
+              <option value="Europa Occidental">Europa Occidental</option>
+              <option value="Europa Central">Europa Central</option>
+              <option value="Europa Oriental">Europa Oriental</option>
+              <option value="Asia Oriental">Asia Oriental</option>
+              <option value="Asia del Sur">Asia del Sur</option>
+              <option value="Asia Sudoriental Continental">
+                Asia Sudoriental Continental
+              </option>
+              <option value="Norte América">Norte América</option>
+              <option value="Sudamérica">Sudamérica</option>
+              <option value="América Central">América Central</option>
+            </select>
+          </div> */}
+
+          <div className={style.create_input_container}>
+            <label className={style.create_label}>Destinos</label>
+            <select
+              id="destinationsSelect"
+              name="destinations"
+              onChange={(e) => handleSelectDestinations(e)}
+              className={style.create_input}
+            >
+              <option
+                value="default"
+                placeholder="Seleccionar Destinos..."
+                selected
+                disabled
+                hidden
+              >
+                Seleccionar Destinos...
+              </option>
+              {sortDestinations?.map((el) => (
+                <option key={el.name} value={el.name}>
+                  {el.name}
+                </option>
+              ))}
+              <option value="otro" placeholder="Nuevo destino">
+                Nuevo destino
+              </option>
+            </select>
+            {error.destinations && (
+              <span className={style.error}>{error.destinations}</span>
+            )}
+          </div>
+          <ModalDestinos
+            showDestinos={showDestinos}
+            setShowDestinos={setShowDestinos}
+            setInput={setInput}
+            input={input}
+          />
+
+          {input.destinations
+            .sort(function (a, b) {
+              if (a > b) {
+                return 1;
+              }
+              if (b > a) {
+                return -1;
+              }
+              return 0;
+            })
+            .map((i, o) => (
+              <div
+                key={"destinations" + o}
+                id="input_destinations"
+                className={style.create_destinations_items}
+                onClick={(e) => handleBorrarDestinations(e)}
+                value={i.name}
+              >
+                {i}
+              </div>
+            ))}
+
+          {/* Final destinos */}
+
+          <div className={style.create_input_container}>
+            <label className={style.create_label}>Actividades</label>
+            <select
+              id="actividadesSelect"
+              name="actividadesSelect"
+              onChange={(e) => handleSelectActividades(e)}
+              className={style.create_input}
+            >
+              <option
+                value="default"
+                placeholder="Seleccionar Actividades..."
+                selected
+                disabled
+                hidden
+              >
+                Seleccionar Actividades...
+              </option>
+              {sortActivities?.map((el) => (
+                <option key={el.name} value={el.name}>
+                  {el.name}
+                </option>
+              ))}
+              <option value="otro" placeholder="Nueva actividad">
+                Nueva actividad
+              </option>
+            </select>
+            {error.activities && <span>{error.activities}</span>}
+          </div>
+          <ModalActividades
+            show={show}
+            setShow={setShow}
+            setInput={setInput}
+            input={input}
+          />
+
+          {input.activities
+            .sort(function (a, b) {
+              if (a > b) {
+                return 1;
+              }
+              if (b > a) {
+                return -1;
+              }
+              return 0;
+            })
+            .map((i, o) => (
+              <div
+                key={"activities" + o}
+                id="input_activities"
+                className={style.create_destinations_items}
+                onClick={(e) => handleBorrarActividades(e)}
+                value={i.name}
+              >
+                {i}
+              </div>
+            ))}
+
+          {/* Final actividades */}
+
+          <div className={style.create_input_container}>
+            <label className={style.create_label}>Estación</label>
+            <select
+              name="seasson"
+              onChange={(e) => handleSelect(e)}
+              className={style.create_input}
+            >
+              <option selected={true} disabled="disabled">
+                Seleccionar una Estación...
+              </option>
+              <option value="Verano">Verano</option>
+              <option value="Otoño">Otoño</option>
+              <option value="Invierno">Invierno</option>
+              <option value="Primavera">Primavera</option>
+              <option value="Especial">Especial</option>
+            </select>
+            {error.seasson && (
+              <span className={style.error}>{error.seasson}</span>
+            )}
+          </div>
+          <div className={style.create_input_container}>
+            <label className={style.create_label}>Tipo</label>
+            <select
+              name="type"
+              onChange={(e) => handleSelect(e)}
+              className={style.create_input}
+            >
+              <option selected={true} disabled="disabled">
+                Seleccionar un tipo para tu Paquete...
+              </option>
+              {types?.map((el) => (
+                <option key={el} value={el}>
+                  {el}
+                </option>
+              ))}
+            </select>
+            {error.type && <span className={style.error}>{error.type}</span>}
+          </div>
+          <div
+            id="create_images"
+            className={style.create_input_images_container}
+          >
+            <div className={style.create_input_images}>
+              <label className={style.create_label}>Imágen Principal</label>
+              <input
+                onChange={(e) => handleChangeInputs(e)}
+                name="main_image"
                 type="text"
                 className={style.create_input}
-                name="name"
-                value={input.name}
-                onChange={(e) => handleChangeInputs(e)}
+                value={input.main_image}
               />
-            </div>
-            <div className={style.create_input_container}>
-              {error.price && <span>{error.price}</span>}
-              <label className={style.create_label}>Precio</label>
-              <input
-                value={input.price}
-                name="price"
-                min="1"
-                step="1"
-                type="number"
-                className={style.create_input}
-                onChange={(e) => handleChangeInputs(e)}
-              />
-            </div>
-            <div className={style.create_textarea_container}>
-              {error.description && <span>{error.description}</span>}
-              <label className={style.create_label}>Descripción</label>
-              <textarea
-                name="description"
-                cols="30"
-                rows="10"
-                className={style.create_input_textarea}
-                onChange={(e) => handleChangeInputs(e)}
-              ></textarea>
-            </div>
-            <div className={style.create_input_date_container}>
-              <div className={style.create_input_date}>
-                <label className={style.create_label}>Fecha de Inicio</label>
-                <input
-                  name="start_date"
-                  type="date"
-                  id="from"
-                  value={fromDate}
-                  min={dataNow}
-                  onChange={(e) => handleChangeDate(e)}
-                  className={style.create_input}
-                />
-              </div>
-              <div className={style.create_input_date}>
-                <label className={style.create_label}>Fecha de Fin</label>
-                <input
-                  name="end_date"
-                  type="date"
-                  id="until"
-                  value={untilDate}
-                  min={fromDate}
-                  onChange={(e) => handleChangeDate(e)}
-                  className={style.create_input}
-                />
-              </div>
-            </div>
-            <div className={style.create_input_container}>
-              {error.on_sale && <span>{error.on_sale}</span>}
-              <label className={style.create_label}>Promoción</label>
-              <input
-                value={input.on_sale}
-                name="on_sale"
-                className={style.create_input}
-                type="number"
-                min="0"
-                max="100"
-                step="1"
-                id="on_sale"
-                onChange={(e) => handleChangeInputs(e)}
-              />
-            </div>
-            <div className={style.create_input_container}>
-              {error.featured && <span>{error.featured}</span>}
-              <label className={style.create_label}>Destacado</label>
-              <select
-                name="featured"
-                onChange={(e) => handleSelect(e)}
-                className={style.create_input}
+              <button
+                onClick={(e) => handleAddImage(e)}
+                className={style.create_input_btn}
               >
-                <option selected={true} disabled="disabled">
-                  Seleccionar si tu Paquete esta destacado...
-                </option>
-                <option value="true">Si</option>
-                <option value="false">No</option>
-              </select>
-            </div>
-            <div className={style.create_input_container}>
-              {error.available && <span>{error.available}</span>}
-              <label className={style.create_label}>Stock</label>
-              <select
-                name="available"
-                onChange={(e) => handleSelect(e)}
-                className={style.create_input}
+                <BsPlusLg />
+              </button>
+              <button
+                onClick={(e) => handleRemoveImage(e)}
+                className={style.create_input_btn}
               >
-                <option selected={true} disable="disabled" value="true">
-                  Selecciona el stook
-                </option>
-                <option value="true">Verdadero</option>
-                <option value="false">Falso</option>
-              </select>
+                <BsDashLg />
+              </button>
             </div>
-            <div className={style.create_input_container}>
-              {error.destinations && <span>{error.destinations}</span>}
-              <label className={style.create_label}>Destinos</label>
-              <select
-                id="destinationsSelect"
-                name="destinations"
-                onChange={(e) => handleSelectDestinations(e)}
-                className={style.create_input}
-              >
-                <option
-                  value="default"
-                  placeholder="Seleccionar Destinos..."
-                  selected
-                  disabled
-                  hidden
-                >
-                  Seleccionar Destinos...
-                </option>
-                {sortDestinations?.map((el) => (
-                  <option key={el.name} value={el.name}>
-                    {el.name}
-                  </option>
-                ))}
-
-                {/* TENEMOS QUE CREAR UNA SITUACION EN EL "handleSelectDestinations" 
-                PARA MANEJAR EL CASO DE CREAR UN DESTINO NUEVO*/}
-                {/* <option value="crear">"Crear un destino nuevo.."</option> */}
-              </select>
-            </div>
-
-            {input.destinations
-              .sort(function (a, b) {
-                if (a > b) {
-                  return 1;
-                }
-                if (b > a) {
-                  return -1;
-                }
-                return 0;
-              })
-              .map((i, o) => (
-                <div
-                  key={"destinations" + o}
-                  id="input_destinations"
-                  className={style.create_destinations_items}
-                  onClick={(e) => handleBorrarDestinations(e)}
-                  value={i.name}
-                >
-                  {i}
+            {error.main_image && (
+              <span className={style.error}>{error.main_image}</span>
+            )}
+            {input.images?.map((i, index) => {
+              return (
+                <div key={i + index} className={style.create_input_images}>
+                  <label className={style.create_label}>
+                    Imágen {index + 1}
+                  </label>
+                  <input
+                    id={index}
+                    name={"images" + index}
+                    value={input["images" + index]}
+                    type="text"
+                    onChange={(e) => handleChangeInputs(e)}
+                    className={style.create_input}
+                  />
+                  {error["images" + index] && (
+                    <span className={style.error}>
+                      {error["images" + index]}
+                    </span>
+                  )}
                 </div>
-              ))}
-
-            {/* Final destinos */}
-            <div className={style.create_input_container}>
-              {error.region && <span>{error.region}</span>}
-              <label className={style.create_label}>Región</label>
-              <select
-                name="region"
-                onChange={(e) => handleSelect(e)}
-                className={style.create_input}
-              >
-                <option selected={true} disabled="disabled">
-                  Seleccionar una Región...
-                </option>
-                <option value="Europa Occidental">Europa Occidental</option>
-                <option value="Europa Central">Europa Central</option>
-                <option value="Europa Oriental">Europa Oriental</option>
-                <option value="Asia Oriental">Asia Oriental</option>
-                <option value="Asia del Sur">Asia del Sur</option>
-                <option value="Asia Sudoriental Continental">
-                  Asia Sudoriental Continental
-                </option>
-                <option value="Norte América">Norte América</option>
-                <option value="Sudamérica">Sudamérica</option>
-                <option value="América Central">América Central</option>
-              </select>
-            </div>
-            <div className={style.create_input_container}>
-              {error.seasson && <span>{error.seasson}</span>}
-              <label className={style.create_label}>Estación</label>
-              <select
-                name="seasson"
-                onChange={(e) => handleSelect(e)}
-                className={style.create_input}
-              >
-                <option selected={true} disabled="disabled">
-                  Seleccionar una Estación...
-                </option>
-                <option value="Verano">Verano</option>
-                <option value="Otoño">Otoño</option>
-                <option value="Invierno">Invierno</option>
-                <option value="Primavera">Primavera</option>
-                <option value="Especial">Especial</option>
-              </select>
-            </div>
-            <div className={style.create_input_container}>
-              {error.type && <span>{error.type}</span>}
-              <label className={style.create_label}>Tipo</label>
-              <select
-                name="type"
-                onChange={(e) => handleSelect(e)}
-                className={style.create_input}
-              >
-                <option selected={true} disabled="disabled">
-                  Seleccionar un tipo para tu Paquete...
-                </option>
-                {types?.map((el) => (
-                  <option key={el} value={el}>
-                    {el}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div
-              id="create_images"
-              className={style.create_input_images_container}
-            >
-              <div className={style.create_input_images}>
-                {error.main_image && <span>{error.main_image}</span>}
-                <label className={style.create_label}>Imágen Principal</label>
-                <input
-                  onChange={(e) => handleChangeInputs(e)}
-                  name="main_image"
-                  type="text"
-                  className={style.create_input}
-                  value={input.main_image}
-                />
-                <button
-                  onClick={(e) => handleAddImage(e)}
-                  className={style.create_input_btn}
-                >
-                  <BsPlusLg />
-                </button>
-                <button
-                  onClick={(e) => handleRemoveImage(e)}
-                  className={style.create_input_btn}
-                >
-                  <BsDashLg />
-                </button>
-              </div>
-              {input.images?.map((i, index) => {
-                return (
-                  <div key={i + index} className={style.create_input_images}>
-                    <label className={style.create_label}>
-                      Imágen {index + 1}
-                    </label>
-                    <input
-                      id={index}
-                      name={"images" + index}
-                      value={input["images" + index]}
-                      type="text"
-                      onChange={(e) => handleChangeInputs(e)}
-                      className={style.create_input}
-                    />
-                  </div>
-                );
-              })}
-            </div>
+              );
+            })}
           </div>
 
           <div className={style.create_input_container}>

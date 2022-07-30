@@ -4,6 +4,8 @@ import {
   deleteUser,
   getDeletedUsers,
   getUsers,
+  getUserDetail,
+  getUserStatus,
   patchIs_adminProperty,
   putUser,
   restoreUser,
@@ -16,6 +18,8 @@ const router = Router();
 
 router.get('/user',verifyJwt, verifyAdminOrSuperAdminPermission , getUsers);
 router.get('/deletedUsers', verifyJwt, verifyAdminOrSuperAdminPermission, getDeletedUsers)
+router.get('/user/status/:id', getUserStatus);
+router.get('/user/:id', getUserDetail);
 router.post('/user', createUser)
 router.put('/user/:id', putUser)
 router.patch('/restoreUser/:id',verifyJwt, verifyAdminOrSuperAdminPermission, restoreUser)

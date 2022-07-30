@@ -1,16 +1,19 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useState } from "react";
+import { Link, NavLink } from 'react-router-dom';
 import { AiOutlineHeart } from "react-icons/ai";
 import style from "./User.module.css";
-import Card from '../Favorites/FavoriteCard.jsx';
+import s from './PopUps.module.css'
+import Card from '../../Favorites/FavoriteCard.jsx';
 
 export default function FavoritesPopOut(){
 
   // const favorites = useSelector((state) => state.user.favorites);
+  const [isActive, setIsActive] = useState(false);
 
-   function handleClick(e) {
+  function handleFavClick(e) {
     e.preventDefault();
-    document.getElementById("profile_container").classList.toggle(`${style.open_profile}`);
+    setIsActive(!isActive);
   }
 
   const favorites = [
@@ -51,12 +54,15 @@ export default function FavoritesPopOut(){
       ]
 
    return(
-      <div className={style.nav_item}>
-        <AiOutlineHeart />
-        <div id="profile_container" className={style.user_profile_container}>
-          <p>My Favorites ({favorites.length})</p>
+    <div onClick={(e) => handleFavClick(e)} className={s.favIcon}>
+      <div>
+      <AiOutlineHeart />
+      </div>
+      <div id="favorite_container" className={isActive ? s.open_favorite : s.user_profile_container}>
+        <div>
+          <p className={s.favTitle}>My Favorites ({favorites.length})</p>
           <hr />
-          <div id="profile_container" >
+          <div  className={style.user_profile_link}>
             {favorites && favorites.map((p) => {
               return(
                 <div key= {p.id}>
@@ -67,9 +73,10 @@ export default function FavoritesPopOut(){
           </div>
           <hr />
           <Link to= '/favorites'>
-            <button className={style.user_profile_btn}>All Favorites</button>
+            <button className={s.allFavorite_btn}>All Favorites</button>
           </Link>
         </div>
       </div>
-    )
+    </div>
+  )
 }
