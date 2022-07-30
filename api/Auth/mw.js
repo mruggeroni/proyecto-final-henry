@@ -1,6 +1,7 @@
 import jwt from 'express-jwt';
 import jwksr from 'jwks-rsa'
 const { expressjwt: expressJwt } = jwt
+
 export const verifyJwt = expressJwt({
 	secret: jwksr.expressJwtSecret({
 		cache: true,
@@ -12,6 +13,7 @@ export const verifyJwt = expressJwt({
 	issuer: "https://dev-33fzkaw8.us.auth0.com/",
 	algorithms: ['RS256']
 })
+<<<<<<< HEAD
 export const verifySuperAdminPermission = (req, res, next) => {
     const permissions = req.auth.permissions[0]
 	console.log('PERMISO')
@@ -21,4 +23,15 @@ export const verifySuperAdminPermission = (req, res, next) => {
 export const verifyAdminOrSuperAdminPermission = (req, res, next) => {
     const permissions = req.auth.permissions[0]
     permissions === 'SuperAdmin' ? next() : permissions === 'Admin'? next() : res.status(403).send('Not authorized'); 
+=======
+
+export const verifySuperAdminPermission = (req, res, next) => {
+	const permissions = req.auth.permissions[0]
+	permissions === 'SuperAdmin' ? next() : res.status(403).send('Not authorized'); 
+}
+
+export const verifyAdminOrSuperAdminPermission = (req, res, next) => {
+	const permissions = req.auth.permissions[0]
+	permissions === 'SuperAdmin' ? next() : permissions === 'Admin'? next() : res.status(403).send('Not authorized'); 
+>>>>>>> develop
 }
