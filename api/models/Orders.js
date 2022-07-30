@@ -20,3 +20,9 @@ export const Order = sequelize.define('order', {
 }, {
 	timestamps: false,
 });
+
+User.hasMany(Order);
+Order.belongsTo(User);
+
+Order.hasMany(OrderItem);
+OrderItem.belongsTo(Order);

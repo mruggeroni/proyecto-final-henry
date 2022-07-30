@@ -3,7 +3,7 @@ import { sequelize } from '../db.js';
 import { Destination } from './Destinations.js';
 import { Activity } from './Activities.js';
 import { Order } from './Orders.js';
-import { OrderItem } from './OrderItems.js';
+// import { OrderItem } from './OrderItems.js';
 
 export const Package = sequelize.define('package', {
 	name: {
@@ -83,6 +83,16 @@ export const Package = sequelize.define('package', {
 	updatedAt: false,
 	paranoid: true,
 	deletedAt: 'destroyTime'
+});
+
+export const OrderItem = sequelize.define('order_item', {
+	quantity: {
+		type: DataTypes.INTEGER,
+		allowNull: false,
+		defaultValue: 1,
+	}
+}, {
+	timestamps: false,
 });
 
 
