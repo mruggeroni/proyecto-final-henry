@@ -5,8 +5,20 @@ import { Package } from '../models/Packages.js';
 import { Op } from "sequelize";
 
 export const getOrders = async (req, res) => {
+
+	const {user, status} = req.query;
+	
+	let filter = {};
+	if (status && !user) filter = {status: status};
+	if (!status && user) filter = {userId: user};
+	if (status && user) filter = {status: status, userId: user};
+	
 	try {
-		const orders = await Order.findAll({
+		const page = parseInt(req.query.page) || 1;
+		const limit = parseInt(req.query.limit) || 10;
+		const offset = limit * (page - 1);
+		const totalRows = await Order.count({
+			where: filter,
 			include: {
 				model: User,
 				attributes: [
@@ -16,11 +28,33 @@ export const getOrders = async (req, res) => {
 				],
 			},
 		});
-		res.status(200).json(orders);
+		const totalPages = Math.ceil(totalRows / limit);
+
+		const results = await Order.findAll({
+			where: filter,
+			include: {
+				model: User,
+				attributes: [
+					'id',
+					'first_name',
+					'last_name',
+				],
+			},
+			offset: offset,
+			limit: limit,
+			order: [
+				['id', 'DESC']
+			]
+		});
+
+		res.status(200).json({
+			page, limit, totalRows, totalPages, results
+		});
 	} catch (error) {
 		return res.status(404).json({ message: error.message });
 	};
 };
+
 
 export const getOrderDetail = async (req, res) => {
 	const orderId = parseInt(req.params.id);
