@@ -17,6 +17,7 @@ import ListPackages from "./components/Dashboard/ListPackages.jsx";
 import ModifyActivity from "./components/Dashboard/ModifyActivity.jsx";
 import ListActivities from "./components/Dashboard/ListActivities.jsx";
 import ListUsers from "./components/Dashboard/ListUsers.jsx";
+import PopUps from "./components/PopUps/PopUps.jsx";
 
 function App() {
   const { isAuthenticated } = useAuth0();
@@ -24,6 +25,7 @@ function App() {
   return (
     <BrowserRouter>
       <Navbar />
+      <PopUps />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/search" element={<Search />} />

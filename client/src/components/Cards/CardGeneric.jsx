@@ -12,12 +12,20 @@ export default function CardGeneric({ feature }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  function scrollToTop() {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
+
   const handleClick = (e) => {
     e.preventDefault();
     dispatch(getPackageById(feature.id));
     dispatch(getRelationated(feature.id));
     dispatch(getAllActivities());
     navigate(`/detail/${feature.id}`); //undefined
+    scrollToTop();
   };
 
   return (

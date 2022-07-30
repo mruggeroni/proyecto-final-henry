@@ -20,17 +20,21 @@ import {
   GET_ALL_CATEGORIES,
   GET_ALL_REGION,
   GET_PK_REGION,
+  GET_LOCAL_STORAGE_FAVORITES,
+  GET_LOCAL_STORAGE_CART
 } from "./../actions/index.js";
 
 const initialState = {
   allPackages: [],
   filteredPackages: [],
   activities: [],
+  cart: [],
   destinations: [],
   destinationsWithPackages: [],
   regions: [],
   types: [],
   seasons: [],
+  favorites: [],
   featured: [],
   onsale: [],
   detailPackage: {},
@@ -132,9 +136,22 @@ const rootReducer = (state = initialState, action) => {
               if (b.price > a.price) return 1;
               return 0;
             });
+      let favSort =
+        action.payload === "minPrice"
+        ? state.favorites.sort(function (a, b) {
+            if (a.price > b.price) return 1;
+            if (b.price > a.price) return -1;
+            return 0;
+          })
+        : state.favorites.sort(function (a, b) {
+            if (a.price > b.price) return -1;
+            if (b.price > a.price) return 1;
+            return 0;
+          });
       return {
         ...state,
         filteredPackages: sortPrice,
+        favorites: favSort
       };
 
     case FILTER_BY_DESTINATION:
@@ -168,7 +185,19 @@ const rootReducer = (state = initialState, action) => {
     case GET_PK_REGION:
       return {
         ...state,
-        allPackages: action.payload,
+        allPackages: action.payload
+      }
+    case GET_LOCAL_STORAGE_FAVORITES:
+      let localStorageFav = JSON.parse(localStorage.getItem('favorites'));
+      return {
+        ...state,
+        favorites: localStorageFav,
+      };
+    case GET_LOCAL_STORAGE_CART:
+      let localStorageCart = JSON.parse(localStorage.getItem('cart'));
+      return {
+        ...state,
+        cart: localStorageCart,
       };
 
     default:

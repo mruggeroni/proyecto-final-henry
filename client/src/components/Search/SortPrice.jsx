@@ -1,11 +1,12 @@
 import React from "react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { orderByPrice } from "../../redux/actions/index";
+import { getFavoritesLocalStorage, orderByPrice } from "../../redux/actions/index";
 import s from "./Select.module.css";
 
 export default function SortPrice({ setOrder, setCurrentPage }) {
   const dispatch = useDispatch();
+  
 
   function handlePriceSort(e) {
     e.preventDefault();
@@ -13,6 +14,8 @@ export default function SortPrice({ setOrder, setCurrentPage }) {
     setOrder(`Ordenado ${e.target.value}`);
     setCurrentPage(1);
   }
+
+  
 
   return (
     <div>

@@ -106,10 +106,9 @@ export default function Navbar() {
           >
             <BsJustify />
           </button>
-
-          <div className={style.icons}>
+{/*       <div className={style.icons}>
             <PopUps />
-          </div>
+          </div> */}
         </nav>
       </div>
     </div>

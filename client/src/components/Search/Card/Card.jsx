@@ -1,15 +1,36 @@
 import React from "react";
 import BotonFav from "../../Detail/BotonFav";
 import { useState } from "react";
+import { useDispatch } from 'react-redux';
+import {   getFavoritesLocalStorage } from "../../../redux/actions/index";
 import s from "./Cards.module.css";
-import { Link, useNavigate } from "react-router-dom";
 
-export default function Card({ name, image, description, price }) {
+export default function Card({ name, image, description, price, id }) {
   const [checked, setChecked] = useState(false);
+  const favPackage = { name, image, description, price, id };
+  const dispatch = useDispatch();
 
   function handleFavorite(e) {
     e.preventDefault();
     setChecked(!checked);
+
+    if(!checked){
+    if(!localStorage.getItem('favorites')) {
+      let favorites = [];
+      favorites.push(favPackage);
+      localStorage.setItem('favorites', JSON.stringify(favorites));
+    } else {
+      let favorites = JSON.parse(localStorage.getItem('favorites'));
+      if(favorites?.filter((f) => f.id !== id)){
+        favorites.unshift(favPackage);
+        localStorage.setItem('favorites', JSON.stringify(favorites));
+      }
+    }}else{
+      let favorites = JSON.parse(localStorage.getItem('favorites'));
+      let remFav = favorites.filter((f) => {return f.id !== id});
+      localStorage.setItem('favorites', JSON.stringify(remFav));
+    }
+    dispatch(getFavoritesLocalStorage());
   }
 
   return (

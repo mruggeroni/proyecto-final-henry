@@ -64,22 +64,3 @@
   font-size: 14px;
 }
 
-.settings_btn_save {
-  background-color: #4A9EAACC;
-  font-size: 20px;
-  color: #fff;
-  width: 80%;
-  padding: 5px 0;
-  border: none;
-  margin-bottom: 15px;
-}
-
-.settings_btn_delete {
-  background-color: transparent;
-  border: none;
-  font-size: 20px;
-}
-
-.settings_btn_delete:hover {
-  color: #4A9EAACC;
-}
