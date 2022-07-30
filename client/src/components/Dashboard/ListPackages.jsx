@@ -27,6 +27,11 @@ export default function ListPackages() {
                   <th>Id</th>
                   <th>Nombre</th>
                   <th>Precio</th>
+                  <th>Fecha de inicio</th>
+                  <th>Fecha de fin</th>
+                  <th>Temporada</th>
+                  <th>Tipo</th>
+                  <th>Destinos</th>
                   <th>Destacado</th>
                   <th>Disponible</th>
                   <th>Promoción</th>
@@ -41,8 +46,13 @@ export default function ListPackages() {
                         <td>{p.id}</td>
                         <td>{p.name}</td>
                         <td>${p.price}</td>
+                        <td>{p.start_date}</td>
+                        <td>{p.end_date}</td>
+                        <td>{p.seasson}</td>
+                        <td>{p.type}</td>
+                        <td>{p.destinations.map( (d) => p.destinations.length > 1 ? `${d.name} | ` : d.name)}</td>
                         <td>
-                          {p.feature ? (
+                          {p.featured ? (
                             <div className={s.fl_table_true}>true</div>
                           ) : (
                             <div className={s.fl_table_false}>false</div>
@@ -55,7 +65,7 @@ export default function ListPackages() {
                             <div className={s.fl_table_false}>false</div>
                           )}
                         </td>
-                        <td>%{p.on_sale}</td>
+                        <td>{p.on_sale ? `%${p.on_sale}` : p.on_sale }</td>
                         <td>
                           <NavLink
                             to={`/dashboard/modifyPackage/${p.id}`}

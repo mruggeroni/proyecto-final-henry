@@ -31,6 +31,7 @@ export default function ListUsers() {
                   <th>Ciudad</th>
                   <th>Estado</th>
                   <th>Codigo postal</th>
+                  <th>Fecha de creación</th>
                   <th>Admin</th>
                   <th>Eliminar</th>
                 </tr>
@@ -48,6 +49,7 @@ export default function ListUsers() {
                         <td>{u.city}</td>
                         <td>{u.state}</td>
                         <td>{u.postal_code}</td>
+                        <td>{u.created_date}</td>
                         <td>
                           {u.is_admin ? (
                             <div className={s.fl_table_true}>true</div>

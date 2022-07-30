@@ -28,6 +28,7 @@ export default function ListActivities() {
                   <th>Nombre</th>
                   <th>Descripción</th>
                   <th>Precio</th>
+                  <th>Categoria</th>
                   <th>Editar/Eliminar</th>
                 </tr>
               </thead>
@@ -40,6 +41,7 @@ export default function ListActivities() {
                         <td>{a.name}</td>
                         <td>{a.description}</td>
                         <td>${a.price}</td>
+                        <td>{a.classification.name}</td>
                         <td>
                           <NavLink
                             to={`/dashboard/modifyActivities/${a.id}`}
