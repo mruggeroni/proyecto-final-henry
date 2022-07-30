@@ -474,7 +474,7 @@ Devuelve un array con todos los paquetes, cada paquete posee la estructura sigui
 
 - *GET **'/deletedUsers'** = Devuelve un arreglo con los usuarios que fueron 'eliminados' *
 
-- *GET **'/restoreUser/:id'** = Restaura el usuario indicado mediante el 'id' *
+- *PATCH **'/restoreUser/:id'** = Restaura el usuario indicado mediante el 'id' *
 
 - *PUT **'/user/:id'** = Actualiza propiedades del usuario indicado mediante el 'id'
   ```json
