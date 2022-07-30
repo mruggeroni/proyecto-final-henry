@@ -19,6 +19,23 @@ export const GET_PK_REGION = "GET_PK_REGION";
 export const GET_LOCAL_STORAGE_CART = "GET_LOCAL_STORAGE_CART";
 export const GET_LOCAL_STORAGE_FAVORITES = "GET_LOCAL_STORAGE_FAVORITES";
 export const GET_DESTINATIONS_WITH_PACKAGES = "GET_DESTINATIONS_WITH_PACKAGES";
+export const UPDATE_USER = 'UPDATE_USER';
+export const DELETE_USER = 'DELETE_USER';
+export const GET_USER_BY_ID = 'GET_USER_BY_ID';
+
+export const updateUser = (id, newUser) => {
+  return async function (dispatch) {
+    let res = await axios.put('/user/' + id, newUser);
+    return dispatch({ type: UPDATE_USER, payload: res.data })
+  }
+}
+
+export const deleteUser = (id) => {
+  return async function (dispatch) {
+    let res = await axios.delete('/user/' + id);
+    return dispatch({ type: DELETE_USER, payload: res.data })
+  }
+}
 
 export const getAllPackage = (limitRender) => {
   return async function (dispatch) {
@@ -104,10 +121,21 @@ export const createUser = (payload) => {
   };
 };
 
-export const getUsers = () => {
+export const getUsers = (limitRender) => {
   return async function (dispatch) {
     try {
-      const res = await axios.get("/users");
+      const res = await axios.get("/user?limitRender=" + limitRender);
+      return dispatch({ type: GET_USERS, payload: res.data });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export const getUserById = (id) => {
+  return async function (dispatch) {
+    try {
+      const res = await axios.get("/user/" + id);
       return dispatch({ type: GET_USERS, payload: res.data });
     } catch (error) {
       console.log(error);

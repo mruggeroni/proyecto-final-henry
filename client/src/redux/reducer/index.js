@@ -18,6 +18,9 @@ import {
   GET_PK_REGION,
   GET_LOCAL_STORAGE_FAVORITES,
   GET_LOCAL_STORAGE_CART,
+  DELETE_USER,
+  UPDATE_USER,
+  GET_USER_BY_ID
 } from "./../actions/index.js";
 
 const initialState = {
@@ -117,6 +120,21 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         users: action.payload,
+      };
+    case DELETE_USER:
+      return {
+        ...state,
+        users: {},
+      };
+    case UPDATE_USER:
+      return {
+        ...state,
+        user: action.payload,
+      };
+    case GET_USER_BY_ID:
+      return {
+        ...state,
+        user: action.payload,
       };
     case ORDER_BY_PRICE:
       let sortPrice =
