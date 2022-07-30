@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { BsPlusLg, BsDashLg, BsDash } from "react-icons/bs";
+import { BsPlusLg, BsDashLg } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
   createPackage,
   getAllActivities,
   getAllDestinations,
-  getCategories,
+  // getCategories,
   getTypes,
 } from "../../redux/actions";
 import style from "./CreatePackage.module.css";
@@ -248,8 +248,6 @@ export default function CreatePackage({
   const handleShowDestinos = () => setShowDestinos(true);
 
   return (
-    // !showCreatePackage ? null
-    // :
     <div>
       <Dashboard />
       <div className={style.create_container}>

@@ -1,5 +1,4 @@
 import React from 'react';
-import { useState } from 'react';
 import Remove from './RemoveFavorite.jsx';
 import s from './FavoriteCard.module.css';
 

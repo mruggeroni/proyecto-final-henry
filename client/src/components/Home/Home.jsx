@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Hero from "../Hero/Hero";
 import style from "./Home.module.css";
-import imgTest from "./../../assets/img/background-image2 2.jpg";
 import CardGenericContainer from "../Cards/CardGenericContainer.jsx";
-import Footer from "../Footer/Footer";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getAllDestinations,
@@ -13,7 +11,7 @@ import {
   getDestinationsWithPackages,
   createUser,
 } from "../../redux/actions/index";
-import BacktoTop from "../BacktoTop/BacktoTop";
+// import BacktoTop from "../BacktoTop/BacktoTop";
 import { useAuth0 } from "@auth0/auth0-react";
 
 export default function Home() {
@@ -45,20 +43,6 @@ export default function Home() {
     //   console.log(token);
     // }
     setLoading(false);
-  }, [dispatch]);
-
-  useEffect(() => {
-    dispatch(getAllDestinations());
-    dispatch(getOnSale());
-    dispatch(getAllActivities());
-  }, [dispatch]);
-
-  useEffect(() => {
-    return async () => {
-      await dispatch(getAllDestinations());
-      await dispatch(getOnSale());
-      await dispatch(getAllActivities());
-    };
   }, [dispatch]);
 
   return (

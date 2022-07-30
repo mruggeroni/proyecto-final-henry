@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 // import validate from "./validationActivity.js";
 import Dashboard from "./Dashboard";
@@ -9,9 +8,6 @@ import ModalCategorias from "./ModalCategoria";
 
 function validate(input) {
   let error = {};
-  let regName = /^[a-zA-Z]*$/;
-  let regInteger = /^\d+$/;
-  let checkboxes = document.getElementsByName("check");
 
   if (!input.name) {
     error.name = "El nombre es requerido";
@@ -59,7 +55,7 @@ export default function ActivityCreate({ showCreateActivity, setShowCreateActivi
   // const activities = useSelector((state) => state.activities);
   // const countries = useSelector((state) => state.allCountries);
   const [error, setError] = useState({});
-  const createBtn = document.getElementById("create");
+  // const createBtn = document.getElementById("create");
   const [input, setInput] = useState({
     name: "",
     description: "",
@@ -130,8 +126,6 @@ export default function ActivityCreate({ showCreateActivity, setShowCreateActivi
   }, []);
 
   return (
-    // !showCreateActivity ? null
-    // :
     <div>
       <Dashboard />
       <div className={style.create_container}>

@@ -1,14 +1,13 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useState } from "react";
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import style from "./User.module.css";
 import s from './PopUps.module.css'
 import Card from '../Favorites/FavoriteCard.jsx';
-import { useDispatch, useSelector } from 'react-redux';
 
 export default function CartPopOut(){
-  const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
   const [isVisible, setIsVisible] = useState(false);
 

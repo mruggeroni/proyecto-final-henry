@@ -1,5 +1,4 @@
 import React from "react";
-import { useDispatch } from 'react-redux';
 import s from "./CardCheckout.module.css";
 import Remove from '../Favorites/RemoveFavorite';
 

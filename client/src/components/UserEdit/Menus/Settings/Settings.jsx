@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 export default function Settings({ showSettings, setShowSettings }) {
 
   const user = useSelector( (state) => state.user );
-  const [password, setPassword] = useState({
+  const [password/* , setPassword */] = useState({
     currentPassword: '',
     newPassword: ''
   });

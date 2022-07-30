@@ -1,12 +1,8 @@
 import {
   GET_ALL_PACKAGES,
   GET_PACKAGE_BY_ID,
-  GET_DESTINATIONS,
-  GET_REGIONS,
-  SEARCH_PACKAGES,
   GET_ACTIVITIES,
   GET_TYPES,
-  GET_SEASONS,
   GET_USERS,
   GET_ALL_DESTINATIONS,
   GET_ON_SALE,
@@ -59,8 +55,7 @@ const rootReducer = (state = initialState, action) => {
         destinations: action.payload,
       };
     case GET_ALL_REGION:
-      const regiones = action.payload.map();
-
+      // const regiones = action.payload.map();
       return {
         ...state,
         destinations: action.payload,
@@ -166,7 +161,6 @@ const rootReducer = (state = initialState, action) => {
           (f) => p.id === f.id && filteredPackagesDate.push(f)
         )
       );
-      console.log(filteredPackagesDate);
       return {
         ...state,
         filteredPackages: filteredPackagesDate,

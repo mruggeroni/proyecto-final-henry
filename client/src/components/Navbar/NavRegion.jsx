@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 import { BsFillCaretLeftFill } from "react-icons/bs";
@@ -12,7 +12,7 @@ export default function NavRegion({ handleClose }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const allDestinations = useSelector((state) => state.destinations);
+  // const allDestinations = useSelector((state) => state.destinations);
 
   useEffect(() => {
     dispatch(getAllDestinations());
@@ -87,7 +87,7 @@ export default function NavRegion({ handleClose }) {
       </NavLink>
       <NavLink
         to={`/search`}
-        key={"Asia del Sur" + "destinations"}
+        key={"Asia Sudoriental Continental" + "destinations"}
         onClick={(e) => handleClick(e)}
         className={style.nav_menu_item}
       >

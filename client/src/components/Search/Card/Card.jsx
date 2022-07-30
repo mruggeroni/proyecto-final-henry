@@ -2,7 +2,7 @@ import React from "react";
 import BotonFav from "../../Detail/BotonFav";
 import { useState } from "react";
 import { useDispatch } from 'react-redux';
-import {   getFavoritesLocalStorage } from "../../../redux/actions/index";
+import { getFavoritesLocalStorage } from "../../../redux/actions/index";
 import s from "./Cards.module.css";
 
 export default function Card({ name, image, description, price, id }) {

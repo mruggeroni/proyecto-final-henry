@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { getCartLocalStorage } from "../../redux/actions";
 import CardCheckout from './CardCheckout';
 import Login from './Login.jsx';
 import CreateAccount from './CrateAccount.jsx'
 import s from './Checkout.module.css';
 import { HiOutlineEmojiSad } from "react-icons/hi";
-import style from '../UserEdit/UserEdit.module.css'
+// import style from '../UserEdit/UserEdit.module.css'
 
 export default function(){
     const cart = useSelector((state) =>state.cart);
