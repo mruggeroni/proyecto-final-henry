@@ -4,14 +4,11 @@ import s from "./CardCheckout.module.css";
 import Remove from '../Favorites/RemoveFavorite';
 
 export default function Card({ name, image, qty, price, total, id, activities }) {
-  
-//   const dispatch = useDispatch();
-
 
   return (
     <div className={s.checkoutCard}>    
         <div className={s.removeCard}>
-            <Remove popUp={'cart'}/>
+            <Remove popUp={'cart'} id={id}/>
         </div>
         <div className={s.topGroup}>
             <div>

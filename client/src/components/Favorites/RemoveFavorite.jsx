@@ -6,11 +6,10 @@ import BotonFav from '../Detail/BotonFav'
 
 export default function RemoveFavorite({ id, popUp, componente }){
 	const dispatch = useDispatch();
-	console.log(popUp)
 
 	const handleRemove = (e) => {
 	 	e.preventDefault();
-		 if(popUp === 'cart'){
+		if(popUp === 'cart'){
 			let cart = JSON.parse(localStorage.getItem('cart'));
     		let remCart = cart.filter((c) => {return c.paquete.id !== id});
       		localStorage.setItem('cart', JSON.stringify(remCart));
@@ -20,8 +19,7 @@ export default function RemoveFavorite({ id, popUp, componente }){
     		let remFav = favorites.filter((f) => {return f.id !== id});
       		localStorage.setItem('favorites', JSON.stringify(remFav));
     		dispatch(getFavoritesLocalStorage());
-		}
-		
+		}	
 	}
 
 	return(

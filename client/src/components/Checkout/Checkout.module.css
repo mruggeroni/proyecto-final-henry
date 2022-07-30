@@ -8,21 +8,22 @@
 .logInCreateAcc{
   width: 100%;
   padding: 3vw;
-  padding-bottom: 8vw;
+  padding-bottom: 3vw;
 }
 
 .right{
   width: 100%;
   padding: 3vw;
-  padding-bottom: 8vw;
+  padding-bottom: 0;
 }
 
 .headerCheckout{
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  margin-top: 7vw;
+  margin-top: 3vw;
   margin-left: 2.5vw;
+  margin-bottom: 1vw;
   font-size: 2vw;
 }
 
@@ -35,17 +36,49 @@
   color: #4a9eab;
 }
 
+.lines{
+  display: flex;
+  
+}
+
+.lines hr{
+  margin: 0;
+}
+
+.line{
+  z-index: 5;
+  width: 50%;
+}
+
+.create_line {
+  width: 50%;
+  height: 5px;
+  opacity: 100%;
+  background-color: #4a9eaa;
+  border: none;
+  z-index: 0;
+}
+
+.create_lineAccount{
+  width: 50%;
+  height: 5px;
+  opacity: 100%;
+  background-color: green;
+  border: none;
+  z-index: 0;
+}
+
 .left{
   width: 100%;
   background-color: #e4eaea;
   padding: 3vw;
-  padding-bottom: 8vw;
+  padding-bottom: 3vw;
 }
 
 .resumenCarrito{
-  margin-top: 7vw;
+  margin-top: 6.2vw;
   margin-left: 2.5vw;
-  font-size: 3vw;
+  font-size: 2.5vw;
 }
 
 .cardCheckoutContainer > * {
@@ -55,4 +88,33 @@
 
 .cardCheckoutContainer:hover > *{
   color: gray;
+}
+
+.noPaq{
+  width: 90%;
+  background-color: #fafafa;
+  margin: auto;
+  margin-top: 5vw;
+  display: flex;
+  flex-direction: column;
+  height: 20vw;
+  text-decoration: none;
+  box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24),
+  0 17px 50px 0 rgba(0, 0, 0, 0.19);
+}
+
+.sadFace{
+  margin: auto;
+  font-size: 7vw;
+}
+
+.vacioPaq{
+  margin: auto;
+  margin-top: 0;
+  font-size: 1.3vw;
+  text-decoration: none;
+}
+
+.noPaq:hover{
+  color: black;
 }

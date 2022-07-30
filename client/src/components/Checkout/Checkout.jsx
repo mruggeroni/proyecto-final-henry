@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { getCartLocalStorage } from "../../redux/actions";
 import CardCheckout from './CardCheckout';
-// import Login from './Login.jsx';
-// import CreateAccount from './CrateAccount.jsx'
+import Login from './Login.jsx';
+import CreateAccount from './CrateAccount.jsx'
 import s from './Checkout.module.css';
+import { HiOutlineEmojiSad } from "react-icons/hi";
 import style from '../UserEdit/UserEdit.module.css'
 
 export default function(){
     const cart = useSelector((state) =>state.cart);
-    // const [show, setShow] = useState(false);
-    // const handleClose = () => setShow(false);
-    // const handleShow = () => setShow(true);
     const [showLogin, setShowLogin] = useState(true);
     const [showCreateAccount, setShowCreateAccount] = useState(false);
     const dispatch = useDispatch();
@@ -28,7 +26,7 @@ export default function(){
 
     const handleShowCreateAccount = () => {
         setShowCreateAccount(true);
-        setShowCreateAccount(false);
+        setShowLogin(false);
       }
 
     return(
@@ -38,20 +36,20 @@ export default function(){
                         <div className={s.headerCheckout}>
                             <button onClick={(handleShowLogin)} >Login</button>
                             <button onClick={(handleShowCreateAccount)}>Crear Cuenta</button>
-                        </div><hr />  
+                       </div>
+                      { !showLogin ? <div className={s.lines}><hr className={s.line}/><hr className={s.create_line}/></div> : <div className={s.lines}><hr className={s.create_line}/><hr className={s.line}/></div>}
                     </div>
-                {/* <div className={style.profile_menu_item}>
+                <div>
                     <Login showProfile={showLogin} setShowProfile={setShowLogin} />
                     <CreateAccount showSettings={showCreateAccount} setShowSettings={setShowCreateAccount} />
-                </div> */}
+                </div>
             </div>
             <div className={s.left}>
                 <h1 className={s.resumenCarrito}>Resumen del Carrito</h1>
-                {/* <div> */}
-                {cart ? cart.map((p) => {
+                {cart?.length ? cart.map((p) => {
                 return (
-                  <div className={s.cardCheckoutContainer} key={p.id}>
-                    <Link to={"/detail/" + p.paquete.id} key={p.id}>
+                  <div className={s.cardCheckoutContainer} key={p.paquete.id}>
+                    <Link to={"/detail/" + p.paquete.id} key={p.paquete.id}>
                       <CardCheckout
                         name={p.paquete.name}
                         image={p.paquete.main_image}
@@ -59,14 +57,22 @@ export default function(){
                         price={p.paquete.price}
                         total={p.total}
                         activities={p.actividades}
-                        id={p.id}
+                        id={p.paquete.id}
                         key={p.id}
                       />
                     </Link>
                   </div>
                 );
               }):
-              (<div className={s.noPaq}>Tu carrito se encuentra vacío</div>)}
+              (<div className={s.cardCheckoutContainer}>
+                  <div className={s.noPaq}>
+                      <div className={s.sadFace}>
+                        <HiOutlineEmojiSad />
+                      </div>
+                      <p className={s.vacioPaq}>Tu carrito se encuentra vacío</p>
+                  </div>
+                </div>
+                )}
                 {/* </div> */}
             </div>
        </div>

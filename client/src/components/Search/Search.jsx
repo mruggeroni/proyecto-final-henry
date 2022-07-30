@@ -12,6 +12,7 @@ import {
   getAllPackage,
   getDestinationsWithPackages,
   getOnSale,
+  getFavoritesLocalStorage
 } from "./../../redux/actions/index";
 import Paginado from "../Paginado/paginado";
 import s from "./Search.module.css";
@@ -58,6 +59,7 @@ export default function FilteredSearch() {
     await dispatch(getOnSale());
     await dispatch(getAllActivities());
     await dispatch(getDestinationsWithPackages());
+    await dispatch(getFavoritesLocalStorage());
     setLoading(false);
   }, []);
 

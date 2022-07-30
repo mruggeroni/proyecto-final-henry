@@ -3,14 +3,14 @@ import * as yup from "yup";
 import { BsFillEyeFill, BsFillEyeSlashFill } from 'react-icons/bs';
 import s from './Settings.module.css';
 
-const schema = yup.object().shape({
-  name: yup
-    .string()
-    .min(2, "Muy corto")
-    .max(20, "Maximo 20")
-    .required("Requerido"),
-  image: yup.string().required("Requerido"),
-}); 
+// const schema = yup.object().shape({
+//   name: yup
+//     .string()
+//     .min(2, "Muy corto")
+//     .max(20, "Maximo 20")
+//     .required("Requerido"),
+//   image: yup.string().required("Requerido"),
+// }); 
 
 
 

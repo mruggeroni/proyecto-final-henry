@@ -3,10 +3,11 @@
     background-color: #fafafa;
     margin: auto;
     margin-left: vw;
-    margin-top: 3vw;
+    margin-top: 2.5vw;
     display: flex;
     flex-direction: column;
     padding: 2vw;
+    padding-bottom: 0;
     text-decoration: none;
     box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24),
     0 17px 50px 0 rgba(0, 0, 0, 0.19);

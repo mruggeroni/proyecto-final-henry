@@ -1,19 +1,20 @@
 import React, { useState } from "react";
 import * as yup from "yup";
 import { BsFillEyeFill, BsFillEyeSlashFill } from 'react-icons/bs';
-import s from '../UserEdit/Menus/MyProfile/Settings.module.css';
+import s from './Login.module.css';
 
-const schema = yup.object().shape({
-  name: yup
-    .string()
-    .min(2, "Muy corto")
-    .max(20, "Maximo 20")
-    .required("Requerido"),
-  image: yup.string().required("Requerido"),
-}); 
+// const schema = yup.object().shape({
+//   name: yup
+//     .string()
+//     .min(2, "Muy corto")
+//     .max(20, "Maximo 20")
+//     .required("Requerido"),
+//   image: yup.string().required("Requerido"),
+// }); 
 
-export default function Settings({ showSettings, setShowSettings }) {
+export default function CreateAccount({ showSettings, setShowSettings }) {
   let [ showPassword, setShowPassword ] = useState(false);
+  
   const handlePassword = (e) => {
     e.preventDefault();
     setShowPassword(!showPassword)
@@ -21,29 +22,39 @@ export default function Settings({ showSettings, setShowSettings }) {
 
   return (
     !showSettings ? null
-    : <div className={s.settings_container}>
-        <h2>Configuracion de la Cuenta</h2>
-        <hr />
-        <div className={s.settings_email_container}>
-          <h3 className={s.settings_email}>Email</h3>
-            <input type='email' value='email@gmail.com' className={s.settings_input}/>
-          <button className={s.settings_email_btn}>Cambiar</button>
-        </div>
-        <form className={s.settings_password_container}>
-        <h3>Contraseña</h3>
-          <div className={s.settings_input_container}>
-                <label className={s.settings_label}>Contraseña Actual</label>
-                <input type={showPassword ? 'text' : 'password'} className={s.settings_input} />
-          </div>
-          <div className={s.settings_input_container}>
-                <label className={s.settings_label}>Nueva Contraseña</label>
-                <input type={showPassword ? 'text' : 'password'} className={s.settings_input} />
-                <span onClick={ (e) =>  handlePassword(e) }>{ showPassword ? <BsFillEyeSlashFill /> : <BsFillEyeFill /> }</span>
-          </div>
-          <button className={s.settings_btn_save}>Guardar Contraseña</button>
-        </form>
-        <button className={s.settings_btn_delete}>Eliminar cuenta</button>
-        
+    : <div className={s.createAcc_container}>
+        <div className={s.profile_input_container}>
+          <label className={s.profile_label}>Nombre</label>
+          <input type='text' className={s.profile_input} />
     </div>
+    <div className={s.profile_input_container}>
+          <label className={s.profile_label}>Apellido</label>
+          <input type='text' className={s.profile_input} />
+    </div>
+    <div className={s.halfandhalf}>
+      <div className={s.date_input_container}>
+          <label className={s.profile_label}>Fecha de Nacimiento</label>
+          <input type='date' className={s.profile_input} />
+      </div>
+      <div className={s.telefono_input_container}>
+          <label className={s.profile_label}>Teléfono</label>
+          <input type='tel' className={s.profile_input} />
+      </div>
+    </div>
+    <div className={s.profile_input_container}>
+          <label className={s.profile_label}>Email</label>
+          <input type='text' className={s.profile_input} />
+    </div>
+    <div className={s.settings_password_container}>
+      <div className={s.password}>
+            <label className={s.settings_label}>Contraseña</label>
+            <input type={showPassword ? 'text' : 'password'} className={s.profile_input} />
+            <span className={s.eyeHide} onClick={ (e) =>  handlePassword(e)}>{ showPassword ? <BsFillEyeSlashFill /> : <BsFillEyeFill /> }</span>
+      </div>
+    </div>
+    <div>
+      <button type="submit" className={s.profile_btn_save}>Crear Cuenta</button>
+    </div>
+</div>   
   );
 }
