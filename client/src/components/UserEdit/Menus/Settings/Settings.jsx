@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { BsFillEyeFill, BsFillEyeSlashFill } from 'react-icons/bs';
+import { MdBuild } from 'react-icons/md';
 import { useSelector } from "react-redux";
 import s from './Settings.module.css';
 
@@ -42,6 +43,11 @@ export default function Settings({ showSettings, setShowSettings }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(input)
+    setTimeout(() => {
+      setShowSettings(true)
+      console.log('reset')
+    }, 0);
+    setShowSettings(false) 
   };
 
   const handleChange = (e) => {
@@ -62,16 +68,19 @@ export default function Settings({ showSettings, setShowSettings }) {
   return (
     !showSettings ? null
     : <div className={s.settings_container}>
-        <h2>Configuracion de la Cuenta</h2>
+        <div className={s.title}>
+          <h2 className={s.settings_title}>Configuracion de la Cuenta <MdBuild className={s.setting_build} /> </h2>
+        </div>
         <hr />
         <div className={s.settings_email_container}>
           <h3 className={s.settings_email}>Email</h3>
             <input type='email' 
                     name='email'
+                    disabled={true}
                     onChange={handleChange} 
                     value={input.email}
                     className={s.settings_input}/>
-          <button onClick={handleSubmit} className={s.settings_email_btn}>Cambiar</button>
+          <button onClick={handleSubmit} disabled={true} className={s.settings_email_btn}>Cambiar</button>
         </div>
         <form className={s.settings_password_container}>
         <h3>Contraseña</h3>
@@ -90,11 +99,11 @@ export default function Settings({ showSettings, setShowSettings }) {
                         onChange={ (e) => handleChange(e) }
                         value={input.newPassword} 
                         className={s.settings_input} />
-                <span onClick={ (e) =>  handlePassword(e) }>{ showPassword ? <BsFillEyeSlashFill /> : <BsFillEyeFill /> }</span>
+                <span onClick={ (e) => handlePassword(e) }>{ showPassword ? <BsFillEyeSlashFill /> : <BsFillEyeFill /> }</span>
           </div>
-          <button onClick={handleSubmit} className={s.settings_btn_save}>Guardar Contraseña</button>
+          <button onClick={handleSubmit} disabled={true} className={s.settings_btn_save}>Guardar Contraseña</button>
         </form>
-        <button onClick={handleDelete} className={s.settings_btn_delete}>Eliminar cuenta</button>
+        <button onClick={handleDelete} disabled={true} className={s.settings_btn_delete}>Eliminar cuenta</button>
         
     </div>
   );

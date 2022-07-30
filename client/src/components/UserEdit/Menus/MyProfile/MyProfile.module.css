@@ -9,6 +9,7 @@
 
 .profile_information_container {
   position: relative;
+  text-align: center;
   height: inherit;
   overflow-x: hidden;
 }
@@ -22,7 +23,7 @@
 }
 
 .profile_input {
-  width: 90%;
+  width: 95%;
   height: 5vh;
   background-color: #e4eaea99;
   color: #383838;
@@ -32,6 +33,18 @@
   margin-right: 60px;
   padding-left: 12px;
   padding-right: 10px;
+}
+
+.profile_input_image_container {
+  width:  100%;
+  display: flex;
+  justify-content: center;
+}
+
+.profile_input_image {
+  height: 5vh;
+  font-size: 16px;
+  margin: 10px auto;
 }
 
 .profile_label {
