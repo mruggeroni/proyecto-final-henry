@@ -53,7 +53,7 @@ export default function ListPackages() {
                             className={s.fl_table_btn}
                             onClick={(e) => handleModificar(p.id)}
                           >
-                            Modificar
+                            Editar
                           </button>
                         </td>
                       </tr>

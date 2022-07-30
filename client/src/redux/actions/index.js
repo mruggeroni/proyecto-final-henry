@@ -36,7 +36,8 @@ export const getPackageById = (id) => {
 
 export const getRelationated = (id) => {
   return async function (dispatch) {
-    let res = await axios.get("/packages/" + id);
+    let res = await axios.get("/packages/detail/" + id);
+    console.log(res.data);
     return dispatch({ type: GET_RELATIONATED, payload: res.data[1] });
   };
 };

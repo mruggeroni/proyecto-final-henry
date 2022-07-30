@@ -48,7 +48,7 @@ export default function ModalCategoriaModificar({
     <>
       <Modal show={showModificar} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Eliminar categoria</Modal.Title>
+          <Modal.Title>Editar categoria</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Formik
@@ -108,7 +108,7 @@ export default function ModalCategoriaModificar({
                   Cerrar
                 </Button>
                 <Button variant="primary" type="submit">
-                  Modificar categoria
+                  Editar categoria
                 </Button>
               </Form>
             )}
