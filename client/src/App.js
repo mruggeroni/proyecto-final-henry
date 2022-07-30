@@ -14,26 +14,33 @@ import ListPackages from "./components/Dashboard/ListPackages.jsx";
 import ModifyActivity from "./components/Dashboard/ModifyActivity.jsx";
 import ListActivities from "./components/Dashboard/ListActivities.jsx";
 import ListUsers from "./components/Dashboard/ListUsers.jsx";
-import PopUps from './components/PopUps/PopUps.jsx'
+import PopUps from "./components/PopUps/PopUps.jsx";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
+import ListCategories from "./components/Dashboard/ListCategories.jsx";
 
 function App() {
-
   return (
     <BrowserRouter>
       <Navbar />
       <PopUps />
-      <Routes> 
+      <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/dashboard/listPackages" element={<ListPackages />} />
         <Route path="/dashboard/listActivities" element={<ListActivities />} />
+        <Route path="/dashboard/listCategories" element={<ListCategories />} />
         <Route path="/dashboard/listUsers" element={<ListUsers />} />
         <Route path="/dashboard/packages" element={<CreatePackage />} />
         <Route path="/dashboard/activities" element={<CreateActivity />} />
-        <Route path="/dashboard/modifyPackage/:id" element={<ModifyPackages />} />
-        <Route path="/dashboard/modifyActivities/:id" element={<ModifyActivity />} />
+        <Route
+          path="/dashboard/modifyPackage/:id"
+          element={<ModifyPackages />}
+        />
+        <Route
+          path="/dashboard/modifyActivities/:id"
+          element={<ModifyActivity />}
+        />
         <Route path="/search" element={<Search />} />
         <Route path="/profile" element={<Home />} />
         <Route path="/detail/:id" element={<Detail />} />
