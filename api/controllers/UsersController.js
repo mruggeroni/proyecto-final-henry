@@ -151,7 +151,7 @@ export const createUser = async (req, res) =>{
 		defaults: {first_name: userInfo.given_name || userInfo.nickname,
 			last_name: userInfo.family_name || "missing",
 			photo: userInfo.picture,
-			is_admin: true,
+			is_admin: false,
 		}})
 		console.log(usuarioDB)
 
