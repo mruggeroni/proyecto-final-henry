@@ -15,10 +15,10 @@ export default  function ListUsers() {
     useEffect( async () => {
       
         const token = await getAccessTokenSilently()
-        //if(!users.length) {
+        if(!users.length) {
             
             dispatch(getUsers(token))
-        //}
+        }
     }, [dispatch]);
 
     return (

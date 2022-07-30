@@ -28,14 +28,15 @@ export default function ModalDestinos({
   input,
 }) {
   const dispatch = useDispatch();
-
+  const { getAccessTokenSilently} = useAuth0();
   const handleClose = () => {
     setShowDestinos(false);
   };
 
   const handleCrearDestino = async (e) => {
     console.log(e);
-    const respuesta = await dispatch(crearDestino(e));
+    const token = await getAccessTokenSilently()
+    const respuesta = await dispatch(crearDestino(e, token));
     await dispatch(getAllDestinations());
     await dispatch(getAllActivities());
     setShowDestinos(false);

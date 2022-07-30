@@ -192,13 +192,23 @@ export const crearActividad = (payload, token) => {
   };
 };
 
-export function modificarPaquete(payload, id) {
+export function modificarPaquete(payload, id, token) {
   return async function (dispatch) {
     try {
       console.log("payload 0: ", payload[0]);
-      const respuesta = await axios.put("/packages/" + id, payload[0]);
+      const respuesta = await axios.put("/packages/" + id, payload[0],
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
       console.log("respuesta : ", respuesta);
-      const respuesta2 = await axios.patch("/packages/" + id, payload[1]);
+      const respuesta2 = await axios.patch("/packages/" + id, payload[1],
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
       console.log("respuesta2 : ", respuesta2);
       return respuesta2; // como no necesitamos hacer nada podemos no dispachar nada
     } catch (e) {
@@ -247,12 +257,17 @@ export const createActivities = (payload, token) => {
   };
 };
 
-export function modificarActividad(payload, id) {
+export function modificarActividad(payload, id, token) {
   console.log("payload: ", payload.price);
   console.log("id: ", id);
   return async function (dispatch) {
     try {
-      const respuesta = await axios.put("activities/" + id, payload);
+      const respuesta = await axios.put("activities/" + id, payload,
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
       return respuesta;
     } catch (e) {
       alert(e.message);

@@ -6,6 +6,8 @@ import Dashboard from "./Dashboard";
 import style from "./CreatePackage.module.css";
 import { createActivities, getCategories } from "../../redux/actions";
 import ModalCategorias from "./ModalCategoria";
+import { useAuth0 } from "@auth0/auth0-react";
+
 
 function validate(input) {
   let error = {};
@@ -56,6 +58,7 @@ function firstCap(name) {
 
 export default function ActivityCreate({ showCreateActivity, setShowCreateActivity }) {
   const dispatch = useDispatch();
+  const { getAccessTokenSilently} = useAuth0();
   // const activities = useSelector((state) => state.activities);
   // const countries = useSelector((state) => state.allCountries);
   const [error, setError] = useState({});
@@ -103,8 +106,9 @@ export default function ActivityCreate({ showCreateActivity, setShowCreateActivi
     }
   };
 
-  function handleSubmit(e) {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const token = await getAccessTokenSilently()
     e.price = parseInt(e.price);
     if (!Object.keys(error).length) {
       setInput({
@@ -114,7 +118,7 @@ export default function ActivityCreate({ showCreateActivity, setShowCreateActivi
         image: "",
         classification: "",
       });
-      dispatch(createActivities(input));
+      dispatch(createActivities(input, token));
       // Alert bootstrap
       alert("Actividad creada!");
     } else {

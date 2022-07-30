@@ -59,6 +59,7 @@ function firstCap(name) {
 export default function ModifyActivity() {
   const { id } = useParams();
   const dispatch = useDispatch();
+  const { getAccessTokenSilently} = useAuth0();
   const actividadesTodas = useSelector((state) => state.activities);
 
   const [error, setError] = useState({});
@@ -115,8 +116,9 @@ export default function ModifyActivity() {
     }
   };
 
-  function handleSubmit(e) {
+  const handleSubmit = async (e) =>{
     e.preventDefault();
+    const token = await getAccessTokenSilently()
     e.price = parseInt(e.price);
     if (!Object.keys(error).length) {
       setInput({
@@ -128,7 +130,7 @@ export default function ModifyActivity() {
       });
       console.log(input);
       console.log(input.classification);
-      dispatch(modificarActividad(input, id));
+      dispatch(modificarActividad(input, id, token));
       // Alert bootstrap
       alert("Actividad creada!");
     } else {

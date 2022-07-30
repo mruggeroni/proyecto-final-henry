@@ -26,7 +26,7 @@ router.get('/types', getTypes);
 router.get('/deletedPackages', verifyAdminOrSuperAdminPermission, getDeletedPackages);
 router.post('/packages',verifyAdminOrSuperAdminPermission, createPackage);
 router.put('/packages/:id', verifyAdminOrSuperAdminPermission, putPackage);
-router.patch('/packages/:id', patchPackage);
+router.patch('/packages/:id', verifyAdminOrSuperAdminPermission, patchPackage);
 router.delete('/packages', verifyAdminOrSuperAdminPermission, deletePackage);
 
 export default router;
