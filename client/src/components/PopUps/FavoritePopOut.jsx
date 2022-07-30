@@ -34,11 +34,11 @@ export default function FavoritesPopOut() {
         className={isActive ? s.open_favorite : s.user_profile_container}
       >
         <div>
-          <p className={s.favTitle}>My Favorites ({favorites.length})</p>
+          <p className={s.favTitle}>My Favorites ({favorites && favorites?.length})</p>
           <hr />
           <div className={style.user_profile_link}>
             {favorites &&
-              favorites.map((p) => {
+              favorites?.map((p) => {
                 return (
                   <div key={p.id}>
                     <Card

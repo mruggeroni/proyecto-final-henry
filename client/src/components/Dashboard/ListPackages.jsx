@@ -15,6 +15,10 @@ export default function ListPackages() {
     }
   }, [dispatch]);
 
+  const handleDelete = () => {
+    
+  }
+
   return (
     <div>
       <Dashboard />

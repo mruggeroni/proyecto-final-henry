@@ -163,8 +163,8 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         filteredPackages: aux,
-      };
-    case FILTER_PACKAGES_BY_DATE:
+      }  
+      case FILTER_PACKAGES_BY_DATE:
       let filteredPackagesDate = [];
       state.filteredPackages.forEach((p) =>
         action.payload.forEach(
