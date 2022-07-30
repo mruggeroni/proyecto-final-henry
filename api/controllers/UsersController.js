@@ -139,7 +139,7 @@ export const createUser = async (req, res) =>{
 		let usuario = usuarioDB[1] === false? "login": "register"
 		const currentUsuario = [usuario, role]
 		console.log(currentUsuario)
-		res.status(201).json({message: currentUsuario});
+		res.status(201).json(usuarioDB);
 	} catch (error) {
 		return res.status(400).json({ message: error.message });
 	}

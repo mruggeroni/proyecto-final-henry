@@ -14,8 +14,8 @@ export default function Dashboard() {
 
   useEffect( () => {
     dispatch(getAllActivities())
-    dispatch(getAllPackage(10))
-    dispatch(getUsers())
+    dispatch(getAllPackage(1000))
+    dispatch(getUsers(1000))
   }, [dispatch]);
 
   return (

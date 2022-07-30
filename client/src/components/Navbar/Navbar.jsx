@@ -15,7 +15,7 @@ export default function Navbar() {
   }, [handleClose]);
 
   function handleClose() {
-    document.getElementById("nav_menu").classList?.remove(`${style.is_active}`);
+    document.getElementById("nav_menu")?.classList?.remove(`${style.is_active}`);
     document
       .getElementById("nav_menu_items")
       .classList?.remove(`${style.is_active}`);

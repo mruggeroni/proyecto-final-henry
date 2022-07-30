@@ -21,7 +21,6 @@ export const GET_PK_REGION = "GET_PK_REGION";
 export const getAllPackage = (limitRender) => {
   return async function (dispatch) {
     let res = await axios.get("/packages/" + limitRender);
-    console.log(res.data);
     return dispatch({ type: GET_ALL_PACKAGES, payload: res.data });
   };
 };
@@ -95,18 +94,17 @@ export const createUser = (payload) => {
           authorization: `Bearer ${payload}`,
         },
       });
-      console.log(res.data);
-      return dispatch({ type: POST_USER, payload: res.data.message });
+      return dispatch({ type: POST_USER, payload: res.data[0] });
     } catch (e) {
       alert(e.message);
     }
   };
 };
 
-export const getUsers = () => {
+export const getUsers = (limitRender) => {
   return async function (dispatch) {
     try {
-      const res = await axios.get('/users');
+      const res = await axios.get('/users?limitRender=' + limitRender);
       return dispatch({ type: GET_USERS, payload: res.data });
 
     } catch(error) {
@@ -176,9 +174,7 @@ export function modificarPaquete(payload, id) {
     try {
       console.log("payload 0: ", payload[0]);
       const respuesta = await axios.put("/packages/" + id, payload[0]);
-      console.log("respuesta : ", respuesta);
       const respuesta2 = await axios.patch("/packages/" + id, payload[1]);
-      console.log("respuesta2 : ", respuesta2);
       return respuesta2; // como no necesitamos hacer nada podemos no dispachar nada
     } catch (e) {
       alert(e.message);
@@ -247,7 +243,6 @@ export function paquetesPorRegion(payload) {
     console.log(payload);
     try {
       var res = await axios.get("/packages/1000?region=" + payload);
-      console.log(res);
       return dispatch({ tipe: GET_PK_REGION, payload: res.data });
     } catch (e) {
       alert("No pudimos borrar el paquete!");

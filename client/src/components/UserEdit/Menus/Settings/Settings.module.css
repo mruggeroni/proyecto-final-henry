@@ -4,7 +4,6 @@
   flex-direction: column;
   justify-content: space-between;
   color: #000 !important;
-  overflow-y: auto;
 }
 
 .settings_email_container {
@@ -34,6 +33,7 @@
 
 .settings_password_container {
   position: relative;
+  margin-top: 15px;
 }
 
 .settings_input_container {

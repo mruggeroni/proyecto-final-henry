@@ -1,13 +1,47 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import s from './MyProfile.module.css';
+import { validations } from "./validations";
 
-export default function MyProfile({ showProfile, setShowProfile }) {
+export default function MyProfile({ user, showProfile, setShowProfile }) {
 
-    const user = useSelector( (state) => state.user );
+    // const user = useSelector( (state) => state.user );
+   /*  const user = {
+        first_name: 'Ezequiel',
+        last_name: 'Bamio',
+        phone: 1136457522,
+        address_line1: '',
+        city: 'Buenos Aires',
+        state: '',
+        postal_code: 2200,
+        country: 'Argentina',
+        email: 'eze@gmail.com',
+        photo: 'https://www.avesdeuruguay.com/cres.jpg'
+    } */
+    const [errors, setErrors] = useState({})
+    const [input, setInput] = useState({...user});
+
+    useEffect( () => {
+        setInput({...user})
+    }, [user])
+
+    const handleChange = (e) => {
+        e.preventDefault();
+        setInput({
+            ...input,
+            [e.target.name]: e.target.value 
+        });
+        setErrors(validations({
+            ...input,
+            [e.target.name]: e.target.value 
+        }));
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        if(window.alert('Seguro desea modificar los datos?')) {
+            console.log(input);
+        }
     };
   
   return (
@@ -18,182 +52,114 @@ export default function MyProfile({ showProfile, setShowProfile }) {
         <hr />
         <form className={s.profile_information_container}>
         <div className={s.profile_image_container}>
-            <img src={user.photo || 'https://www.avesdeuruguay.com/cres.jpg'} onError={ (e) => e.target.src = 'https://www.avesdeuruguay.com/cres.jpg' } alt={user.full_name} />
+            <img src={user.photo || 'https://www.avesdeuruguay.com/cres.jpg'} 
+                onError={ (e) => e.target.src = 'https://www.avesdeuruguay.com/cres.jpg' } 
+                alt={user.full_name} />
             <div className={s.profile_input_container}>
             <label className={s.profile_label}>Imagen</label>
-            <input type='text' value={user.photo} className={s.profile_input} />
+            <input type='text' 
+                    name='photo'
+                    onChange={handleChange}
+                    value={input.photo} 
+                    className={s.profile_input} />
             </div>
+            {
+                errors.photo && <h4 className={s.profile_error}>{errors.photo}</h4>
+            }
         </div>
         <div className={s.profile_input_container}>
             <label className={s.profile_label}>Nombre</label>
-            <input type='text' value={user.first_name} className={s.profile_input} />
+            <input type='text' 
+                    name='first_name' 
+                    value={input.first_name} 
+                    onChange={handleChange} 
+                    className={s.profile_input} />
+                    <div></div>
+        {
+            errors.first_name && <h4 className={s.profile_error}>{errors.first_name}</h4>
+        }
         </div>
         <div className={s.profile_input_container}>
             <label className={s.profile_label}>Apellido</label>
-            <input type='text' value={user.last_name} className={s.profile_input} />
+            <input type='text' 
+                    name='last_name' 
+                    value={input.last_name} 
+                    onChange={handleChange} 
+                    className={s.profile_input} />
+        {
+            errors.last_name && <h4 className={s.profile_error}>{errors.last_name}</h4>
+        }
         </div>
         <div className={s.profile_input_container}>
             <label className={s.profile_label}>Numero de telefono</label>
-            <input type='text' value={user.phone} className={s.profile_input} />
+            <input type='text' 
+                    name='phone' 
+                    value={input.phone} 
+                    onChange={handleChange} 
+                    className={s.profile_input} />
+        {
+            errors.phone && <h4 className={s.profile_error}>{errors.phone}</h4>
+        }
         </div>
         <div className={s.profile_input_container}>
             <label className={s.profile_label}>Dirección</label>
-            <input type='text' value={user.address_line1} className={s.profile_input} />
+            <input type='text' 
+                    name='address_line1' 
+                    value={input.address_line1} 
+                    onChange={handleChange} 
+                    className={s.profile_input} />
+        {
+            errors.address_line1 && <h4 className={s.profile_error}>{errors.address_line1}</h4>
+        }
         </div>
         <div className={s.profile_input_container}>
             <label className={s.profile_label}>Ciudad</label>
-            <input type='text' value={user.city} className={s.profile_input} />
+            <input type='text' 
+                    name='city' 
+                    value={input.city} 
+                    onChange={handleChange} 
+                    className={s.profile_input} />
+        {
+            errors.city && <h4 className={s.profile_error}>{errors.city}</h4>
+        }
         </div>
         <div className={s.profile_input_container}>
             <label className={s.profile_label}>Estado</label>
-            <input type='text' value={user.state} className={s.profile_input} />
+            <input type='text' 
+                    name='state' 
+                    value={input.state} 
+                    onChange={handleChange} 
+                    className={s.profile_input} />
+        {
+            errors.state && <h4 className={s.profile_error}>{errors.state}</h4>
+        }
         </div>
         <div className={s.profile_input_container}>
             <label className={s.profile_label}>Codigo postal</label>
-            <input type='text' value={user.postal_code} className={s.profile_input} />
+            <input type='text' 
+                    name='postal_code' 
+                    value={input.postal_code} 
+                    onChange={handleChange} 
+                    className={s.profile_input} />
+        {
+            errors.postal_code && <h4 className={s.profile_error}>{errors.postal_code}</h4>
+        }
         </div>
         <div className={s.profile_input_container}>
             <label className={s.profile_label}>Pais</label>
-            <input type='text' value={user.country} className={s.profile_input} />
+            <input type='text' 
+                    name='country' 
+                    value={input.country} 
+                    onChange={handleChange} 
+                    className={s.profile_input} />
+            {
+                errors.postal_code && <h4 className={s.profile_error}>{errors.postal_code}</h4>
+            }   
         </div>
         
-        <button onClick={handleSubmit} className={s.profile_btn_save}>Guardar cambios</button>
+        <button onClick={handleSubmit} disabled={Object.keys(errors).length} className={s.profile_btn_save}>Guardar cambios</button>
+        
         </form>
     </div>
   );
 }
-
-
-
-/* 
-<Formik
-        validationSchema={schema}
-        onSubmit={handleSubmit}
-        initialValues={{
-        firstName: "Mark",
-        lastName: "Otto",
-        username: "",
-        city: "",
-        state: "",
-        zip: "",
-        terms: false,
-        }}
-    >
-        {({
-        handleSubmit,
-        handleChange,
-        handleBlur,
-        values,
-        touched,
-        isValid,
-        errors,
-        }) => (
-        <Form noValidate onSubmit={handleSubmit}>
-            <Row className="mb-3">
-            <Form.Group as={Col} md="4" controlId="validationFormik01">
-                <Form.Label>First name</Form.Label>
-                <Form.Control
-                type="text"
-                name="firstName"
-                value={values.firstName}
-                onChange={handleChange}
-                isValid={touched.firstName && !errors.firstName}
-                />
-                <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-            </Form.Group>
-            <Form.Group as={Col} md="4" controlId="validationFormik02">
-                <Form.Label>Last name</Form.Label>
-                <Form.Control
-                type="text"
-                name="lastName"
-                value={values.lastName}
-                onChange={handleChange}
-                isValid={touched.lastName && !errors.lastName}
-                />
-
-                <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-            </Form.Group>
-            <Form.Group
-                as={Col}
-                md="4"
-                controlId="validationFormikUsername"
-            >
-                <Form.Label>Username</Form.Label>
-                <InputGroup hasValidation>
-                <InputGroup.Text id="inputGroupPrepend">
-                    @
-                </InputGroup.Text>
-                <Form.Control
-                    type="text"
-                    placeholder="Username"
-                    aria-describedby="inputGroupPrepend"
-                    name="username"
-                    value={values.username}
-                    onChange={handleChange}
-                    isInvalid={!!errors.username}
-                />
-                <Form.Control.Feedback type="invalid">
-                    {errors.username}
-                </Form.Control.Feedback>
-                </InputGroup>
-            </Form.Group>
-            </Row>
-            <Row className="mb-3">
-            <Form.Group as={Col} md="6" controlId="validationFormik03">
-                <Form.Label>City</Form.Label>
-                <Form.Control
-                type="text"
-                placeholder="City"
-                name="city"
-                value={values.city}
-                onChange={handleChange}
-                isInvalid={!!errors.city}
-                />
-
-                <Form.Control.Feedback type="invalid">
-                {errors.city}
-                </Form.Control.Feedback>
-            </Form.Group>
-            <Form.Group as={Col} md="3" controlId="validationFormik04">
-                <Form.Label>State</Form.Label>
-                <Form.Control
-                type="text"
-                placeholder="State"
-                name="state"
-                value={values.state}
-                onChange={handleChange}
-                isInvalid={!!errors.state}
-                />
-                <Form.Control.Feedback type="invalid">
-                {errors.state}
-                </Form.Control.Feedback>
-            </Form.Group>
-            <Form.Group as={Col} md="3" controlId="validationFormik05">
-                <Form.Label>Zip</Form.Label>
-                <Form.Control
-                type="text"
-                placeholder="Zip"
-                name="zip"
-                value={values.zip}
-                onChange={handleChange}
-                isInvalid={!!errors.zip}
-                />
-
-                <Form.Control.Feedback type="invalid">
-                {errors.zip}
-                </Form.Control.Feedback>
-            </Form.Group>
-            </Row>
-            
-            <Button variant="secondary" onClick={handleClose}>
-            Cerrar
-            </Button>
-            <Button variant="primary" type="submit">
-            Crear destino
-            </Button>
-        </Form>
-        )}
-    </Formik>
-
-
-*/
