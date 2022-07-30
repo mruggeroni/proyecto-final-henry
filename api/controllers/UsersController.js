@@ -1,8 +1,6 @@
 import { User } from '../models/Users.js';
 import { Op } from 'sequelize';
 import axios from 'axios';
-import { Op } from 'sequelize';
-import { User } from '../models/Users.js';
 import { Order } from '../models/Orders.js';
 import { OrderItem } from '../models/OrderItems.js';
 import { Package } from '../models/Packages.js';
