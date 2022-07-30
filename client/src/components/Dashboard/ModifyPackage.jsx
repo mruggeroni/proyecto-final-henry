@@ -9,6 +9,7 @@ import {
   getTypes,
   modificarPaquete,
 } from "../../redux/actions";
+import { useAuth0 } from "@auth0/auth0-react";
 import style from "./ModifyPackage.module.css";
 import Dashboard from "./Dashboard";
 import validationModifyPackage from "./validationModifyPackage.js";

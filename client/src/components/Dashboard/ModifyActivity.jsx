@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 // import validate from "./validationActivity.js";
 import Dashboard from "./Dashboard";
+import { useAuth0 } from "@auth0/auth0-react";
 import style from "./CreatePackage.module.css";
 import {
   getAllActivities,

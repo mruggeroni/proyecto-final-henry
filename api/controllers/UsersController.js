@@ -7,8 +7,12 @@ import { Package } from '../models/Packages.js';
 
 export const getUsers = async (req, res) => {
 	const { limitRender, page, destroyTime, is_admin } = req.query;
-
+	//console.log(token)
+	//console.log('HERE')
+	//console.log(req)
 	try {
+
+		//console.log(respuesta)
 		const limitRend = parseInt(limitRender) || 30,
             pag = parseInt(page) || 1,
 			is_ad = is_admin === 'true' ? 
@@ -54,6 +58,20 @@ export const getUserDetail = async (req, res) => {
 	const { id } = req.params;
 
 	try {
+		const permissions = req.auth.permissions[0]
+		const accessToken = req.headers.authorization.split(" ")[1];
+		console.log("token: ", accessToken);
+		const respuesta = await axios.get(
+			"https://dev-33fzkaw8.us.auth0.com/userinfo",
+			{
+				headers: {
+					authorization: `Bearer ${accessToken}`,
+				},
+			}
+		);
+		
+		const userInfo = respuesta.data;
+		
 		const idUser = parseInt(id);
 
 		const user = await User.findByPk(idUser, {
@@ -85,7 +103,12 @@ export const getUserDetail = async (req, res) => {
 				],
 			},
 		});
-		res.status(200).json(user);
+		if(permissions === 'SuperAdmin' || permissions === 'Admin' || user.email === userInfo.email){
+			res.status(200).json(user);
+		}
+		else{
+			res.status(401).json({ message: 'You dont have permissions to see this information'})
+		}
 	} catch (error) {
 		return res.status(404).json({ message: error.message });
 	};
@@ -128,7 +151,7 @@ export const createUser = async (req, res) =>{
 		defaults: {first_name: userInfo.given_name || userInfo.nickname,
 			last_name: userInfo.family_name || "missing",
 			photo: userInfo.picture,
-			is_admin: false,
+			is_admin: true,
 		}})
 		console.log(usuarioDB)
 

@@ -12,6 +12,7 @@ import {
 } from '../controllers/PackagesController.js';
 import { getPackagesDetail } from '../controllers/PackagesDetailController.js';
 import { getPackages } from '../controllers/getPackagesAllFiltersAndSortsController.js';
+import { verifyAdminOrSuperAdminPermission } from '/home/sadnena/pf/proyecto-final-henry/api/Auth/mw.js';
 
 const router = Router();
 
@@ -22,10 +23,10 @@ router.get('/packages/featured', getFeaturedPackages);
 router.get('/packages/:limitRender', getPackages);
 router.get('/on_sale', getOn_sale);
 router.get('/types', getTypes);
-router.get('/deletedPackages', getDeletedPackages);
-router.post('/packages', createPackage);
-router.put('/packages/:id', putPackage);
+router.get('/deletedPackages', verifyAdminOrSuperAdminPermission, getDeletedPackages);
+router.post('/packages',verifyAdminOrSuperAdminPermission, createPackage);
+router.put('/packages/:id', verifyAdminOrSuperAdminPermission, putPackage);
 router.patch('/packages/:id', patchPackage);
-router.delete('/packages', deletePackage);
+router.delete('/packages', verifyAdminOrSuperAdminPermission, deletePackage);
 
 export default router;

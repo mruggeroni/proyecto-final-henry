@@ -63,6 +63,7 @@ export const getOnSale = () => {
 };
 
 export const getAllActivities = () => {
+
   return async function (dispatch) {
     let res = await axios.get("/activities");
     return dispatch({ type: GET_ACTIVITIES, payload: res.data });
@@ -76,10 +77,15 @@ export const getTypes = () => {
   };
 };
 
-export const createPackage = (payload) => {
+export const createPackage = (payload, token) => {
   return async function (dispatch) {
     try {
-      const respuesta = await axios.post("/packages", payload);
+      const respuesta = await axios.post("/packages", payload, 
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
       return respuesta;
     } catch (e) {
       alert(e.message);
@@ -90,6 +96,7 @@ export const createPackage = (payload) => {
 export const createUser = (payload) => {
   return async function (dispatch) {
     try {
+      
       const res = await axios.post("/user", {
         headers: {
           authorization: `Bearer ${payload}`,
@@ -103,10 +110,13 @@ export const createUser = (payload) => {
   };
 };
 
-export const getUsers = () => {
+export const getUsers = (token) => {
   return async function (dispatch) {
     try {
-      const res = await axios.get('/user');
+      const res = await axios.get('/user',{
+        headers: {
+          authorization: `Bearer ${token}`,
+        }});
       return dispatch({ type: GET_USERS, payload: res.data });
 
     } catch(error) {
@@ -149,10 +159,16 @@ export function filterPackagesByDate(value) {
   };
 }
 
-export const crearDestino = (payload) => {
+export const crearDestino = (payload, token) => {
   return async function (dispatch) {
     try {
-      const respuesta = await axios.post("/destinations", payload);
+      const respuesta = await axios.post("/destinations", payload,
+       
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
       return respuesta;
     } catch (e) {
       alert(e.message);
@@ -160,10 +176,15 @@ export const crearDestino = (payload) => {
   };
 };
 
-export const crearActividad = (payload) => {
+export const crearActividad = (payload, token) => {
   return async function (dispatch) {
     try {
-      const respuesta = await axios.post("/activities", payload);
+      const respuesta = await axios.post("/activities", payload,
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
       return respuesta;
     } catch (e) {
       alert(e.message);
@@ -194,10 +215,15 @@ export const getCategories = () => {
   };
 };
 
-export const createCategories = (payload) => {
+export const createCategories = (payload, token) => {
   return async function (dispatch) {
     try {
-      const respuesta = await axios.post("/classification", payload);
+      const respuesta = await axios.post("/classification", payload,
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
       return respuesta;
     } catch (e) {
       alert(e.message);
@@ -205,10 +231,15 @@ export const createCategories = (payload) => {
   };
 };
 
-export const createActivities = (payload) => {
+export const createActivities = (payload, token) => {
   return async function (dispatch) {
     try {
-      const respuesta = await axios.post("/activities", payload);
+      const respuesta = await axios.post("/activities", payload,
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
       return respuesta;
     } catch (e) {
       alert(e.message);
@@ -229,11 +260,16 @@ export function modificarActividad(payload, id) {
   };
 }
 
-export function borrarPaquete(payload) {
+export function borrarPaquete(payload, token) {
   return async function (dispatch) {
     console.log(payload);
     try {
-      var json = await axios.delete("/packages?id=" + payload);
+      var json = await axios.delete("/packages?id=" + payload,
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
       dispatch(getAllPackage(1000));
       return json;
     } catch (e) {

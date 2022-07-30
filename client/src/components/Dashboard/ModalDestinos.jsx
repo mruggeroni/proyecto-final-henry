@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import { useDispatch } from "react-redux";
-
+import { useAuth0 } from "@auth0/auth0-react";
 import { Formik } from "formik";
 import * as yup from "yup";
 import { Button, Col, Form, InputGroup, Row } from "react-bootstrap";

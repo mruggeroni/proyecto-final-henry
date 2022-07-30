@@ -4,15 +4,21 @@ import { NavLink } from "react-router-dom";
 import { getUsers } from "../../redux/actions";
 import Dashboard from "./Dashboard";
 import s from './Table.module.css';
+import { useAuth0 } from "@auth0/auth0-react";
 
-export default function ListUsers() {
+
+
+export default  function ListUsers() {
     const dispatch = useDispatch();
     const users = useSelector( (state) => state.users )
-
-    useEffect( () => {
-        if(!users.length) {
-            dispatch(getUsers())
-        }
+    const { getAccessTokenSilently} = useAuth0();
+    useEffect( async () => {
+      
+        const token = await getAccessTokenSilently()
+        //if(!users.length) {
+            
+            dispatch(getUsers(token))
+        //}
     }, [dispatch]);
 
     return (

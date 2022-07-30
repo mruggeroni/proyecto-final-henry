@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import validateActivity from "./validationActivity";
 import { Formik } from "formik";
 import * as yup from "yup";
+import { useAuth0 } from "@auth0/auth0-react";
 import { Button, Col, Form, InputGroup, Row } from "react-bootstrap";
 import {
   crearActividad,
