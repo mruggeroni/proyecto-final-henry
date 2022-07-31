@@ -15,11 +15,14 @@ export const verifyJwt = expressJwt({
 })
 
 export const verifySuperAdminPermission = (req, res, next) => {
-	const permissions = req.auth.permissions[0]
-	permissions === 'SuperAdmin' ? next() : res.status(403).send('Not authorized'); 
+	if(req.auth){const permissions = req.auth.permissions[0]
+		permissions === 'SuperAdmin' ? next() : res.status(403).send('Not authorized'); }
+	
 }
 
 export const verifyAdminOrSuperAdminPermission = (req, res, next) => {
-	const permissions = req.auth.permissions[0]
+
+		const permissions = req.auth.permissions[0]
 	permissions === 'SuperAdmin' ? next() : permissions === 'Admin'? next() : res.status(403).send('Not authorized'); 
+	
 }

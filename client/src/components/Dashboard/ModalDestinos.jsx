@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import { useDispatch } from "react-redux";
-
+import { useAuth0 } from "@auth0/auth0-react";
 import { Formik } from "formik";
 import * as yup from "yup";
 import { Button, Col, Form, InputGroup, Row } from "react-bootstrap";
@@ -28,14 +28,15 @@ export default function ModalDestinos({
   input,
 }) {
   const dispatch = useDispatch();
-
+  const { getAccessTokenSilently} = useAuth0();
   const handleClose = () => {
     setShowDestinos(false);
   };
 
   const handleCrearDestino = async (e) => {
     console.log(e);
-    const respuesta = await dispatch(crearDestino(e));
+    const token = await getAccessTokenSilently()
+    const respuesta = await dispatch(crearDestino(e, token));
     await dispatch(getAllDestinations());
     await dispatch(getAllActivities());
     setShowDestinos(false);
