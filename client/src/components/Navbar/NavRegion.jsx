@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 import { BsFillCaretLeftFill } from "react-icons/bs";
 import {
   getAllDestinations,
   filterPackagesByDestination,
+  paquetesPorRegion,
 } from "../../redux/actions/index";
 import style from "./Navbar.module.css";
 
@@ -20,9 +21,9 @@ export default function NavRegion({ handleClose }) {
     }
   }, [dispatch]);
 
-  function handleClick(e) {
+  function handleClickRegion(e) {
     e.preventDefault();
-    dispatch(filterPackagesByDestination(e.target.innerText));
+    dispatch(paquetesPorRegion(e.target.innerText));
     navigate("/search");
     // navigate(`/search/${e.target.innerText}`);
     handleClose();
@@ -50,7 +51,7 @@ export default function NavRegion({ handleClose }) {
       <NavLink
         to={`/search`}
         key={"Europa Occidental" + "destinations"}
-        onClick={(e) => handleClick(e)}
+        onClick={(e) => handleClickRegion(e)}
         className={style.nav_menu_item}
       >
         Europa Occidental
@@ -58,7 +59,7 @@ export default function NavRegion({ handleClose }) {
       <NavLink
         to={`/search`}
         key={"Europa Central" + "destinations"}
-        onClick={(e) => handleClick(e)}
+        onClick={(e) => handleClickRegion(e)}
         className={style.nav_menu_item}
       >
         Europa Central
@@ -66,7 +67,7 @@ export default function NavRegion({ handleClose }) {
       <NavLink
         to={`/search`}
         key={"Europa Oriental" + "destinations"}
-        onClick={(e) => handleClick(e)}
+        onClick={(e) => handleClickRegion(e)}
         className={style.nav_menu_item}
       >
         Europa Oriental
@@ -74,7 +75,7 @@ export default function NavRegion({ handleClose }) {
       <NavLink
         to={`/search`}
         key={"Asia Oriental" + "destinations"}
-        onClick={(e) => handleClick(e)}
+        onClick={(e) => handleClickRegion(e)}
         className={style.nav_menu_item}
       >
         Asia Oriental
@@ -82,7 +83,7 @@ export default function NavRegion({ handleClose }) {
       <NavLink
         to={`/search`}
         key={"Asia del Sur" + "destinations"}
-        onClick={(e) => handleClick(e)}
+        onClick={(e) => handleClickRegion(e)}
         className={style.nav_menu_item}
       >
         Asia del Sur
@@ -90,7 +91,7 @@ export default function NavRegion({ handleClose }) {
       <NavLink
         to={`/search`}
         key={"Asia Sudoriental Continental" + "destinations"}
-        onClick={(e) => handleClick(e)}
+        onClick={(e) => handleClickRegion(e)}
         className={style.nav_menu_item}
       >
         Asia Sudoriental Continental
@@ -98,7 +99,7 @@ export default function NavRegion({ handleClose }) {
       <NavLink
         to={`/search`}
         key={"Norte América" + "destinations"}
-        onClick={(e) => handleClick(e)}
+        onClick={(e) => handleClickRegion(e)}
         className={style.nav_menu_item}
       >
         Norte América
@@ -106,7 +107,7 @@ export default function NavRegion({ handleClose }) {
       <NavLink
         to={`/search`}
         key={"Sudamérica" + "destinations"}
-        onClick={(e) => handleClick(e)}
+        onClick={(e) => handleClickRegion(e)}
         className={style.nav_menu_item}
       >
         Sudamérica
@@ -114,7 +115,7 @@ export default function NavRegion({ handleClose }) {
       <NavLink
         to={`/search`}
         key={"América Central" + "destinations"}
-        onClick={(e) => handleClick(e)}
+        onClick={(e) => handleClickRegion(e)}
         className={style.nav_menu_item}
       >
         América Central

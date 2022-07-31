@@ -13,6 +13,7 @@ import {
 } from "../../redux/actions/index";
 // import BacktoTop from "../BacktoTop/BacktoTop";
 import { useAuth0 } from "@auth0/auth0-react";
+import Footer from "../Footer/Footer";
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -64,8 +65,7 @@ export default function Home() {
           </div>
         </React.Fragment>
       )}
-      {/* <BacktoTop/> */}
-      {/* <Footer /> */}
+      <Footer />
     </div>
   );
 }

@@ -57,7 +57,7 @@ export const getUserDetail = async (req, res) => {
 		const idUser = parseInt(id);
 
 		const user = await User.findByPk(idUser, {
-			include: {
+			/* include: {
 				model: Order,
 				attributes: {
 					exclude: ['userId'],
@@ -74,7 +74,7 @@ export const getUserDetail = async (req, res) => {
 						exclude: ['id', 'available', 'destroyTime', 'images', 'price' ],
 					},
 				},
-			},
+			}, */
 			attributes: {
 				exclude: [
 					'password', 
@@ -142,5 +142,87 @@ export const createUser = async (req, res) =>{
 		res.status(201).json(usuarioDB);
 	} catch (error) {
 		return res.status(400).json({ message: error.message });
+	}
+}
+
+export const putUser = async (req, res) => {
+	try {
+		const newUser = req.body;
+		const id = req.params.id
+		await User.update(newUser, {
+			where: {
+				id,
+			}
+		})
+		const updatedUser = await User.findByPk(id)
+		res.status(200).send(updatedUser)
+	} catch (e) {
+		res.status(400).send({ data: e.message })
+	}
+}
+
+export const patchIs_adminProperty = async (req, res) => {
+	try {
+		const id = req.params.id
+		const is_admin = req.body
+		await User.update(is_admin, {
+			where: {
+				id,
+			}
+		})
+		const updatedUser = await User.findByPk(id)
+		res.status(200).send(updatedUser)
+	} catch (e) {
+		res.status(400).send({ data: e.message })
+	}
+}
+
+export const deleteUser = async (req, res) => {
+	try {
+		const id = req.params.id;
+		const deleted = await User.findByPk(id)
+
+		deleted && await User.destroy({
+			where: {
+				id
+			}
+		})
+		deleted? res.status(200).send('User deleted successfully') 
+		: res.status(200).send('The User was already deleted'); 
+		
+	} catch (error) {
+		res.status(400).send({ data: error.message })
+	}
+}
+
+export const getDeletedUsers = async (req, res) => {
+	try {
+		const deleted = await User.findAll({
+			where:{
+				destroyTime:{
+					[Op.ne]: null,
+				}
+			},
+			paranoid: false
+		})
+		deleted.length? res.status(200).send(deleted)
+		: res.status(200).send('No deleted users found')
+	} catch (error) {
+		res.status(400).send({ data: error.message })
+	}
+}
+
+export const restoreUser = async (req, res) => {
+	try {
+		const id = req.params.id
+		await User.restore({
+			where: {
+				id
+			}
+		})
+		const restoredUser = await User.findByPk(id)
+		res.status(200).send({'User restored successfully': restoredUser})
+	} catch (error) {
+		res.status(400).send({ data: error.message })
 	}
 }

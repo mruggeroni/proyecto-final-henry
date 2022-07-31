@@ -51,7 +51,7 @@ export default function CreatePackage({
 
   const [input, setInput] = useState({
     name: "",
-    price: 0,
+    price: "",
     description: "",
     main_image: "",
     images0: "",
