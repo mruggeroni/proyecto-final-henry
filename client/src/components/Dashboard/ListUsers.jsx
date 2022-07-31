@@ -1,19 +1,30 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
-import { getUsers } from "../../redux/actions";
+import { borrarUsuario, getUsers } from "../../redux/actions";
 import Dashboard from "./Dashboard";
 import s from './Table.module.css';
+import { useAuth0 } from "@auth0/auth0-react";
 
-export default function ListUsers() {
+
+
+export default  function ListUsers() {
     const dispatch = useDispatch();
     const users = useSelector( (state) => state.users )
-
-    useEffect( () => {
+    const { getAccessTokenSilently} = useAuth0();
+    useEffect( async () => {
+      
+        const token = await getAccessTokenSilently()
         if(!users.length) {
-            dispatch(getUsers())
+            
+            dispatch(getUsers(token))
         }
     }, [dispatch]);
+   const handleDelete = async (id) =>{
+    const token = await getAccessTokenSilently()
+    dispatch(borrarUsuario(id, token))
+    dispatch(getUsers(token))
+   }
 
     return (
         <div>
@@ -52,7 +63,7 @@ export default function ListUsers() {
                                             {u.is_admin ? <div className={s.fl_table_true}>true</div> : <div className={s.fl_table_false}>false</div>}
                                         </td>
                                         <td>
-                                            <button className={s.fl_table_btn}>Delete</button>
+                                            <button className={s.fl_table_btn} onClick={(e) => handleDelete(u.id)}>Delete</button>
                                         </td>
                                     </tr>
                                 })

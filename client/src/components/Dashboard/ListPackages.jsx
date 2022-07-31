@@ -1,20 +1,25 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
-import { getAllPackage } from "../../redux/actions";
+import { borrarPaquete, getAllPackage } from "../../redux/actions";
 import Dashboard from "./Dashboard";
 import s from './Table.module.css';
+import { useAuth0 } from "@auth0/auth0-react";
 
 export default function ListPackages() {
     const dispatch = useDispatch();
     const allPackages = useSelector( (state) => state.allPackages )
+    const { getAccessTokenSilently} = useAuth0();
 
     useEffect( () => {
         if(!allPackages.length) {
             dispatch(getAllPackage(1000))
         }
     }, [dispatch]);
-
+    const handleDelete = async (id) =>{
+        const token = await getAccessTokenSilently()
+        dispatch(borrarPaquete(id, token))
+       }
     return (
         <div>
             <Dashboard />
@@ -51,7 +56,7 @@ export default function ListPackages() {
                                     <NavLink to={`/dashboard/modifyPackage/${p.id}`} className={s.fl_table_btn} >
                                         Editar
                                     </NavLink>
-                                    <button className={s.fl_table_btn} >Delete</button>
+                                    <button className={s.fl_table_btn} onClick={(e) => handleDelete(p.id)}>Delete</button>
                                 </td>
                             </tr>
                         })

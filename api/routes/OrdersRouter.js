@@ -1,4 +1,5 @@
 import { Router } from 'express';
+// import { verifyAdminOrSuperAdminPermission, verifyJwt } from '../Auth/mw.js';
 import { 
 	getOrders,
 	getOrderDetail, 
@@ -12,6 +13,7 @@ import {
 
 const router = Router();
 
+// router.get('/orders', verifyJwt, verifyAdminOrSuperAdminPermission, getOrders);
 router.get('/orders', getOrders);
 router.get('/orders/:id', getOrderDetail);
 router.patch('/order/:orderId', patchStatusOrder);
