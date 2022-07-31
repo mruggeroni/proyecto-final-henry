@@ -8,7 +8,6 @@ import { createActivities, getCategories } from "../../redux/actions";
 import ModalCategorias from "./ModalCategoria";
 import { useAuth0 } from "@auth0/auth0-react";
 
-
 function validate(input) {
   let error = {};
   let regName = /^[a-zA-Z]*$/;
@@ -108,7 +107,9 @@ export default function ActivityCreate({ showCreateActivity, setShowCreateActivi
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const token = await getAccessTokenSilently()
+    const token = await getAccessTokenSilently();
+    console.log('HERE')
+    console.log(token)
     e.price = parseInt(e.price);
     if (!Object.keys(error).length) {
       setInput({

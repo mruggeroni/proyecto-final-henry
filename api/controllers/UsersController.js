@@ -58,17 +58,17 @@ export const getUserDetail = async (req, res) => {
 	const { id } = req.params;
 
 	try {
-		const permissions = req.auth.permissions[0]
-		const accessToken = req.headers.authorization.split(" ")[1];
-		console.log("token: ", accessToken);
-		const respuesta = await axios.get(
-			"https://dev-33fzkaw8.us.auth0.com/userinfo",
-			{
-				headers: {
-					authorization: `Bearer ${accessToken}`,
-				},
-			}
-		);
+		// const permissions = req.auth.permissions[0]
+		// const accessToken = req.headers.authorization.split(" ")[1];
+		// console.log("token: ", accessToken);
+		// const respuesta = await axios.get(
+		// 	"https://dev-33fzkaw8.us.auth0.com/userinfo",
+		// 	{
+		// 		headers: {
+		// 			authorization: `Bearer ${accessToken}`,
+		// 		},
+		// 	}
+		// );
 		
 		const userInfo = respuesta.data;
 		
@@ -103,12 +103,13 @@ export const getUserDetail = async (req, res) => {
 				],
 			},
 		});
-		if(permissions === 'SuperAdmin' || permissions === 'Admin' || user.email === userInfo.email){
-			res.status(200).json(user);
-		}
-		else{
-			res.status(401).json({ message: 'You dont have permissions to see this information'})
-		}
+		res.status(200).json(user);
+		// if(permissions === 'SuperAdmin' || permissions === 'Admin' || user.email === userInfo.email){
+			
+		// }
+		// else{
+		// 	res.status(401).json({ message: 'You dont have permissions to see this information'})
+		// }
 	} catch (error) {
 		return res.status(404).json({ message: error.message });
 	};
@@ -142,6 +143,7 @@ export const createUser = async (req, res) =>{
 				},
 			}
 		);
+		
 		const userInfo = respuesta.data;
 		const usuarioDB = await User.findOrCreate({where: {email: userInfo.email},
 		defaults: {first_name: userInfo.given_name || userInfo.nickname,
@@ -152,7 +154,8 @@ export const createUser = async (req, res) =>{
 	const role = usuarioDB[0].dataValues.is_admin === true? 'Admin': 'Client'
 	let usuario = usuarioDB[1] === false? "login": "register"
 	const currentUsuario = [usuario, role]
-	res.status(200).json({message: currentUsuario});
+	console.log(currentUsuario)
+	res.status(200).json(usuarioDB[0]);
 	} catch (error) {
 		return res.status(400).json({ message: error.message });
 	}

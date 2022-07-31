@@ -192,7 +192,8 @@ export default function CreatePackage({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const token = await getAccessTokenSilently()
+    const token = await getAccessTokenSilently();
+    console.log(token)
     input.images = [input.images0, input.images1, input.images2];
     input.price = parseInt(input.price);
     input.on_sale = parseInt(input.on_sale);
@@ -220,7 +221,7 @@ export default function CreatePackage({
         "Presta mas atencion al completar el formulario y volve a intentar ;)"
       );
     } else {
-
+      
       dispatch(createPackage(input, token));
       alert("Nuevo paquete creado..");
       setInput({

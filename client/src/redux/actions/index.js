@@ -179,6 +179,8 @@ export const crearDestino = (payload, token) => {
 export const crearActividad = (payload, token) => {
   return async function (dispatch) {
     try {
+      console.log('HERE')
+      console.log(JSON.stringify(token,null,2))
       const respuesta = await axios.post("/activities", payload,
       {
         headers: {
@@ -220,7 +222,7 @@ export function modificarPaquete(payload, id, token) {
 // categories seria classification => se usa poara crea una actividad
 export const getCategories = () => {
   return async function (dispatch) {
-    let res = await axios.get("/categories");
+    let res = await axios.get("/classification");
     return dispatch({ type: GET_ALL_CATEGORIES, payload: res.data });
   };
 };
@@ -286,6 +288,23 @@ export function borrarPaquete(payload, token) {
         },
       });
       dispatch(getAllPackage(1000));
+      return json;
+    } catch (e) {
+      alert("No pudimos borrar el paquete!");
+    }
+  };
+}
+export function borrarUsuario(payload, token) {
+  return async function (dispatch) {
+    console.log(payload);
+    try {
+      var json = await axios.delete("/user/" + payload,
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
+      dispatch(getUsers);
       return json;
     } catch (e) {
       alert("No pudimos borrar el paquete!");
