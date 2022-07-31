@@ -18,6 +18,7 @@
     flex-direction: column;
     align-items: flex-start;
     background-color: #E4EAEA;
+    box-shadow: 0 2px 20px #0000004d;
 }
 
 .dashboard_panel_close {

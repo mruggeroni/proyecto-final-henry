@@ -52,6 +52,20 @@
   --fill: var(--fill-active);
   --stroke: var(--stroke-active);
 }
+
+.favoriteHeart{
+  --stroke: #f51d1d;
+  --fill: #f51d1d;
+  --shadow: rgba(0, 9, 61, 0.45);
+  cursor: pointer;
+  position: relative;
+}
+
+.favoriteHeart input + svg {
+  --fill: var(--fill-active);
+  --stroke: var(--stroke-active);
+}
+
 @keyframes uncheck {
   0% {
     transform: rotate(-30deg) translateX(13.5px) translateY(8px);

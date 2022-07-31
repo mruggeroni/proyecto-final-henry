@@ -20,26 +20,28 @@ export default function ListActivities() {
       <Dashboard />
       <div className={s.dashboard_container}>
         <div className={s.tbl_container}>
-          <div class={s.table_wrapper}>
-            <table class={s.fl_table}>
+          <div className={s.table_wrapper}>
+            <table className={s.fl_table}>
               <thead>
                 <tr>
                   <th>Id</th>
                   <th>Nombre</th>
                   <th>Descripción</th>
                   <th>Precio</th>
-                  <th>Editar/Eliminar</th>
+                  <th>Categoria</th>
+                  <th>Editar</th>
                 </tr>
               </thead>
               <tbody>
                 {activities.length &&
                   activities.map((a) => {
                     return (
-                      <tr>
+                      <tr key={"activitiesList" + a.name}>
                         <td>{a.id}</td>
                         <td>{a.name}</td>
                         <td>{a.description}</td>
                         <td>${a.price}</td>
+                        <td>{a.classification.name}</td>
                         <td>
                           <NavLink
                             to={`/dashboard/modifyActivities/${a.id}`}
@@ -47,7 +49,7 @@ export default function ListActivities() {
                           >
                             Editar
                           </NavLink>
-                          <button className={s.fl_table_btn}>Delete</button>
+                          {/* <button className={s.fl_table_btn}>Delete</button> */}
                         </td>
                       </tr>
                     );

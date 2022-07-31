@@ -1,17 +1,24 @@
 import { useAuth0 } from '@auth0/auth0-react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import MyProfile from './Menus/MyProfile/MyProfile';
 import Settings from './Menus/Settings/Settings';
 import s from './UserEdit.module.css';
 
 export default function UserEdit() {
-  const { user, logout } = useAuth0();
-  const [show, setShow] = useState(false);
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const { logout } = useAuth0();
+  let user = useSelector( (state) => state.user );
+  
   const [showProfile, setShowProfile] = useState(true);
   const [showSettings, setShowSettings] = useState(false);
+  const [show, setShow] = useState(false);
+  const handleClose = () => {
+    setShowSettings(false)
+    setShow(false)
+    setShowProfile(true)
+  };
+
+  const handleShow = () => setShow(true);
   const handleShowProfile = () => {
     setShowProfile(true);
     setShowSettings(false);
@@ -34,7 +41,7 @@ export default function UserEdit() {
             <div className={s.profile_menu}>
                 <div className={s.profile_menu_title}>
                     <span>Hola,</span>
-                    <h3>{user.name}</h3>
+                    <h3>{user.full_name}</h3>
                 </div>
                 <hr className={s.create_line} />
                 <div className={s.profile_btn}>
@@ -49,8 +56,8 @@ export default function UserEdit() {
                 </div>
             </div>
             <div className={s.profile_menu_item}>
-                <MyProfile showProfile={showProfile} setShowProfile={setShowProfile} />
-                <Settings showSettings={showSettings} setShowSettings={setShowSettings} />
+                <MyProfile user={user} showProfile={showProfile} setShowProfile={setShowProfile} />
+                <Settings user={user} showSettings={showSettings} setShowSettings={setShowSettings} />
             </div>
         </div>
       </div>

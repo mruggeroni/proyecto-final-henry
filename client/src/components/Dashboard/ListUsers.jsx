@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getUsers } from "../../redux/actions";
+import { deleteUser, getUsers } from "../../redux/actions";
 import Dashboard from "./Dashboard";
 import s from "./Table.module.css";
 
@@ -8,9 +8,21 @@ export default function ListUsers() {
   const dispatch = useDispatch();
   const users = useSelector((state) => state.users);
 
+  const handleDelete = async (e, id, nombre) => {
+    // console.log(e);
+    if (prompt(`Para borrar el paquete escribe '${nombre}'`) === nombre) {
+      let res = await dispatch(deleteUser(id));
+      dispatch(getUsers(1000));
+      console.log(res)
+      alert("El paquete se borro");
+    } else {
+      alert("El paquete no se borro");
+    }
+  };
+
   useEffect(() => {
     if (!users.length) {
-      dispatch(getUsers());
+      dispatch(getUsers(1000));
     }
   }, [dispatch]);
 
@@ -19,8 +31,8 @@ export default function ListUsers() {
       <Dashboard />
       <div className={s.dashboard_container}>
         <div className={s.tbl_container}>
-          <div class={s.table_wrapper}>
-            <table class={s.fl_table}>
+          <div className={s.table_wrapper}>
+            <table className={s.fl_table}>
               <thead>
                 <tr>
                   <th>Id</th>
@@ -31,6 +43,7 @@ export default function ListUsers() {
                   <th>Ciudad</th>
                   <th>Estado</th>
                   <th>Codigo postal</th>
+                  <th>Fecha de creación</th>
                   <th>Admin</th>
                   <th>Eliminar</th>
                 </tr>
@@ -39,7 +52,7 @@ export default function ListUsers() {
                 {users.length &&
                   users.map((u) => {
                     return (
-                      <tr>
+                      <tr key={"usersList" + u.first_name}>
                         <td>{u.id}</td>
                         <td>{u.first_name}</td>
                         <td>{u.last_name}</td>
@@ -48,6 +61,7 @@ export default function ListUsers() {
                         <td>{u.city}</td>
                         <td>{u.state}</td>
                         <td>{u.postal_code}</td>
+                        <td>{u.created_date}</td>
                         <td>
                           {u.is_admin ? (
                             <div className={s.fl_table_true}>true</div>
@@ -56,7 +70,7 @@ export default function ListUsers() {
                           )}
                         </td>
                         <td>
-                          <button className={s.fl_table_btn}>Delete</button>
+                          <button onClick={(e) => handleDelete(e, u.id, u.first_name) } className={s.fl_table_btn}>Delete</button>
                         </td>
                       </tr>
                     );

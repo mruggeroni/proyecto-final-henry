@@ -1,13 +1,26 @@
 import React, { useEffect } from "react";
+import { BsWindowSidebar } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
-import { getAllPackage } from "../../redux/actions";
+import { borrarPaquete, getAllPackage } from "../../redux/actions";
 import Dashboard from "./Dashboard";
 import s from "./Table.module.css";
 
 export default function ListPackages() {
   const dispatch = useDispatch();
   const allPackages = useSelector((state) => state.allPackages);
+
+  const handleBorrar = async (id, nombre) => {
+    // console.log(e);
+    if (prompt(`Para borrar el paquete escribe '${nombre}'`) === nombre) {
+      await dispatch(borrarPaquete(id));
+      await dispatch(getAllPackage(10000));
+      alert("El paquete se borro");
+    } else {
+      alert("El paquete no se borro");
+      console.log("gola");
+    }
+  };
 
   useEffect(() => {
     if (!allPackages.length) {
@@ -37,12 +50,12 @@ export default function ListPackages() {
                 {allPackages.length &&
                   allPackages.map((p) => {
                     return (
-                      <tr>
+                      <tr key={"packagesList" + p.name}>
                         <td>{p.id}</td>
                         <td>{p.name}</td>
                         <td>${p.price}</td>
                         <td>
-                          {p.feature ? (
+                          {p.featured ? (
                             <div className={s.fl_table_true}>true</div>
                           ) : (
                             <div className={s.fl_table_false}>false</div>
@@ -63,7 +76,12 @@ export default function ListPackages() {
                           >
                             Editar
                           </NavLink>
-                          <button className={s.fl_table_btn}>Delete</button>
+                          <button
+                            onClick={(e) => handleBorrar(p.id, p.name)}
+                            className={s.fl_table_btn}
+                          >
+                            Delete
+                          </button>
                         </td>
                       </tr>
                     );

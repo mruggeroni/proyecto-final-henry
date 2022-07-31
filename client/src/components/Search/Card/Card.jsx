@@ -54,7 +54,7 @@ export default function Card({ name, image, description, price, id }) {
 
        
         <div className={s.hide} onClick={(e) => handleFavorite(e)}>
-          <BotonFav checked={checked} />
+          <BotonFav checked={checked} id={id}/>
         </div>
       </div>
       <div>

@@ -8,7 +8,7 @@ export const GET_ON_SALE = "GET_ON_SALE";
 export const GET_ACTIVITIES = "GET_ACTIVITIES";
 export const GET_TYPES = "GET_TYPES";
 export const GET_USERS = "GET_USERS";
-export const POST_PACKAGE = "POST_PACKAGE"; 
+export const POST_PACKAGE = "POST_PACKAGE";
 export const POST_USER = "POST_USER";
 export const ORDER_BY_PRICE = "ORDER_BY_PRICE";
 export const FILTER_BY_DESTINATION = "FILTER_BY_DESTINATION";
@@ -16,14 +16,30 @@ export const FILTER_PACKAGES_BY_DATE = "FILTER_PACKAGES_BY_DATE";
 export const GET_ALL_CATEGORIES = "GET_ALL_CATEGORIES";
 export const GET_ALL_REGION = "GET_ALL_REGION";
 export const GET_PK_REGION = "GET_PK_REGION";
-export const GET_LOCAL_STORAGE_CART = 'GET_LOCAL_STORAGE_CART';
-export const GET_LOCAL_STORAGE_FAVORITES = 'GET_LOCAL_STORAGE_FAVORITES';
-export const GET_DESTINATIONS_WITH_PACKAGES = 'GET_DESTINATIONS_WITH_PACKAGES';
+export const GET_LOCAL_STORAGE_CART = "GET_LOCAL_STORAGE_CART";
+export const GET_LOCAL_STORAGE_FAVORITES = "GET_LOCAL_STORAGE_FAVORITES";
+export const GET_DESTINATIONS_WITH_PACKAGES = "GET_DESTINATIONS_WITH_PACKAGES";
+export const UPDATE_USER = 'UPDATE_USER';
+export const DELETE_USER = 'DELETE_USER';
+export const GET_USER_BY_ID = 'GET_USER_BY_ID';
+
+export const updateUser = (id, newUser) => {
+  return async function (dispatch) {
+    let res = await axios.put('/user/' + id, newUser);
+    return dispatch({ type: UPDATE_USER, payload: res.data })
+  }
+}
+
+export const deleteUser = (id) => {
+  return async function (dispatch) {
+    let res = await axios.delete('/user/' + id);
+    return dispatch({ type: DELETE_USER, payload: res.data })
+  }
+}
 
 export const getAllPackage = (limitRender) => {
   return async function (dispatch) {
     let res = await axios.get("/packages/" + limitRender);
-    console.log(res.data);
     return dispatch({ type: GET_ALL_PACKAGES, payload: res.data });
   };
 };
@@ -37,7 +53,8 @@ export const getPackageById = (id) => {
 
 export const getRelationated = (id) => {
   return async function (dispatch) {
-    let res = await axios.get("/packages/" + id);
+    let res = await axios.get("/packages/detail/" + id);
+    console.log(res.data);
     return dispatch({ type: GET_RELATIONATED, payload: res.data[1] });
   };
 };
@@ -97,23 +114,34 @@ export const createUser = (payload) => {
           authorization: `Bearer ${payload}`,
         },
       });
-      return dispatch({ type: POST_USER, payload: res.data.message });
+      return dispatch({ type: POST_USER, payload: res.data[0] });
     } catch (e) {
       alert(e.message);
     }
   };
 };
 
-export const getUsers = () => {
+export const getUsers = (limitRender) => {
   return async function (dispatch) {
     try {
-      const res = await axios.get('/user');
+      const res = await axios.get("/user?limitRender=" + limitRender);
       return dispatch({ type: GET_USERS, payload: res.data });
-    } catch(error) {
-      console.log(error)
+    } catch (error) {
+      console.log(error);
     }
-  }
-} 
+  };
+};
+
+export const getUserById = (id) => {
+  return async function (dispatch) {
+    try {
+      const res = await axios.get("/user/" + id);
+      return dispatch({ type: GET_USERS, payload: res.data });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
 
 export function orderByPrice(payload) {
   return {
@@ -129,10 +157,14 @@ export function filterPackagesByDestination(payload) {
   };
 }
 
-export function filtradoPorRegion(payload) {
-  return {
-    type: FILTER_BY_DESTINATION,
-    payload,
+export function paquetesPorRegion(payload) {
+  return async function (dispatch) {
+    try {
+      let res = await axios.get(`/packages/1000?region=${payload}`);
+      return dispatch({ type: GET_PK_REGION, payload: res.data });
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 }
 
@@ -172,21 +204,23 @@ export const crearActividad = (payload) => {
 };
 
 export function modificarPaquete(payload, id) {
-  return async function () {
+  return async function (dispatch) {
     try {
+      console.log("payload 0: ", payload[0]);
       const respuesta = await axios.put("/packages/" + id, payload[0]);
+      console.log("respuesta : ", respuesta);
       const respuesta2 = await axios.patch("/packages/" + id, payload[1]);
+      console.log("respuesta2 : ", respuesta2);
       return respuesta2; // como no necesitamos hacer nada podemos no dispachar nada
     } catch (e) {
       alert(e.message);
     }
   };
 }
-
 // categories seria classification => se usa poara crea una actividad
 export const getCategories = () => {
   return async function (dispatch) {
-    let res = await axios.get("/categories");
+    let res = await axios.get("/classification");
     return dispatch({ type: GET_ALL_CATEGORIES, payload: res.data });
   };
 };
@@ -237,27 +271,29 @@ export function borrarPaquete(payload) {
   };
 }
 
-export function paquetesPorRegion(payload) {
-  return async function (dispatch) {
-    console.log(payload);
-    try {
-      var res = await axios.get("/packages/1000?region=" + payload);
-      return dispatch({ tipe: GET_PK_REGION, payload: res.data });
-    } catch (e) {
-      alert("No pudimos borrar el paquete!");
-    }
-  };
-}
 export function getFavoritesLocalStorage(payload, id) {
   return {
     type: GET_LOCAL_STORAGE_FAVORITES,
     payload,
   };
-};
+}
 
 export function getCartLocalStorage(payload, id) {
   return {
     type: GET_LOCAL_STORAGE_CART,
     payload,
   };
-};
+}
+
+export function modificarCategoria(id, payload) {
+  return async function (dispatch) {
+    console.log(payload);
+    try {
+      var json = await axios.put("/classification/" + id, payload);
+      dispatch(getCategories());
+      return json;
+    } catch (e) {
+      alert("No pudimos modificar la categoria!");
+    }
+  };
+}

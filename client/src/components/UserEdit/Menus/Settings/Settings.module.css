@@ -4,7 +4,20 @@
   flex-direction: column;
   justify-content: space-between;
   color: #000 !important;
-  overflow-y: auto;
+}
+
+.setting_title h2 {
+  display: inline;
+}
+
+.settings_title {
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.setting_build {
+  color: #d80707;
 }
 
 .settings_email_container {
@@ -34,6 +47,8 @@
 
 .settings_password_container {
   position: relative;
+  text-align: center;
+  margin-top: 15px;
 }
 
 .settings_input_container {
@@ -64,3 +79,22 @@
   font-size: 14px;
 }
 
+.settings_btn_save {
+  background-color: #4A9EAACC;
+  font-size: 20px;
+  color: #fff;
+  width: 80%;
+  padding: 5px 0;
+  border: none;
+  margin-bottom: 15px;
+}
+
+.settings_btn_delete {
+  background-color: transparent;
+  border: none;
+  font-size: 20px;
+}
+
+.settings_btn_delete:hover {
+  color: #4A9EAACC;
+}

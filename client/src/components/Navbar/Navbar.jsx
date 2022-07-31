@@ -10,7 +10,7 @@ import NavRegion from "./NavRegion";
 export default function Navbar() {
 
   function handleClose() {
-    document.getElementById("nav_menu").classList?.remove(`${style.is_active}`);
+    document.getElementById("nav_menu")?.classList?.remove(`${style.is_active}`);
     document
       .getElementById("nav_menu_items")
       .classList?.remove(`${style.is_active}`);
