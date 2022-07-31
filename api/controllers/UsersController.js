@@ -64,14 +64,24 @@ export const getUserDetail = async (req, res) => {
 				},
 				include: {
 					model: OrderItem,
-					attributes: {
-						exclude: ['orderId', 'packageId'],
+					through: {
+						attributes: ['quantity'],
 					},
 				},
 				include: {
 					model: Package,
 					attributes: {
-						exclude: ['id', 'available', 'destroyTime', 'images', 'price' ],
+						exclude: [
+							'description', 
+							'images', 
+							'featured', 
+							'available', 
+							'on_sale', 
+							'destroyTime'
+						],
+					},
+					through: {
+						attributes: ['quantity'],
 					},
 				},
 			},
@@ -85,7 +95,13 @@ export const getUserDetail = async (req, res) => {
 				],
 			},
 		});
-		res.status(200).json(user);
+		const userCopy = JSON.parse(JSON.stringify(user));
+		userCopy.carts = userCopy.orders.filter(order => order.status === 'shopping cart');
+		userCopy.orders = userCopy.orders.filter(order => order.status !== 'shopping cart');
+		userCopy.orders_pending = userCopy.orders.filter(order => order.status === 'pending');
+		userCopy.orders_paid = userCopy.orders.filter(order => order.status === 'paid');
+		userCopy.orders_cancel = userCopy.orders.filter(order => order.status === 'cancel');
+		res.status(200).json(userCopy);
 	} catch (error) {
 		return res.status(404).json({ message: error.message });
 	};
