@@ -7,6 +7,7 @@ import ActivitiesRoutes from './routes/ActivitiesRoutes.js';
 import DestinationsRoutes from './routes/DestinationsRoutes.js'
 import UsersRoutes from './routes/UsersRoutes.js';
 import OrderRoutes from './routes/OrdersRouter.js';
+import FavouritesRoutes from './routes/FavouritesRoutes.js'
 
 
 const app = express();
@@ -22,6 +23,7 @@ app.use(ActivitiesRoutes);
 app.use(DestinationsRoutes);
 app.use(UsersRoutes);
 app.use(OrderRoutes);
+app.use(FavouritesRoutes)
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*'); // update to match the domain you will make the request from
