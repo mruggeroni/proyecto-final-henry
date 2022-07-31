@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { Package } from "../models/Packages.js";
+import { RatingAndFavourite } from '../models/RatingAndFavourite.js';
 import { User } from "../models/Users.js";
 
 // -------------- FUNCIONES AUXILIARES ------------------------
@@ -27,14 +28,11 @@ export const addRating = async (req, res) => {
 
 export const getRating = async (req, res) => {
 	try {
-		const userInfo = await getUserInfoByToken(req);
-		const user = await findOneUserFromDataBase(userInfo.email)
-		const favourites = await user.getPackages({ joinTableAttributes: ['rating']})
-		const filtered = []
-		favourites.forEach(e => {
-			if(e.ratingAndFavourite.rating !== null) filtered.push(e)
-		})
-		res.status(200).send(filtered)
+		const id = req.params.id
+		const favourites = await RatingAndFavourite.findAll({where: {packageId: id}})
+		let count = 0;
+		favourites.forEach(e=> count += e.rating)
+		count? res.status(200).send(Math.ceil((count / favourites.length)) + "") : res.status(200).send('This package is unrated')
 	} catch (e) {
 		res.status(400).send({ data: e.message })
 	}
