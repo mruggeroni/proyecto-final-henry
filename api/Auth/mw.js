@@ -1,16 +1,17 @@
 import jwt from 'express-jwt';
 import jwksr from 'jwks-rsa'
 const { expressjwt: expressJwt } = jwt
+import 'dotenv/config';
 
 export const verifyJwt = expressJwt({
 	secret: jwksr.expressJwtSecret({
 		cache: true,
 		rateLimit: true,
 		jwksRequestsPerMinute: 5,
-		jwksUri: 'https://dev-33fzkaw8.us.auth0.com/.well-known/jwks.json'
+		jwksUri: process.env.JWKSURI
 	}),
-	audience: "endpointPF",
-	issuer: "https://dev-33fzkaw8.us.auth0.com/",
+	audience: process.env.AUDIENCE,
+	issuer: process.env.ISSUER,
 	algorithms: ['RS256']
 })
 
