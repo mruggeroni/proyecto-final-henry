@@ -9,7 +9,7 @@ import s from './Checkout.module.css';
 import { HiOutlineEmojiSad } from "react-icons/hi";
 // import style from '../UserEdit/UserEdit.module.css'
 
-export default function(){
+export default function CheckoutCart(){
     const cart = useSelector((state) =>state.cart);
     const [showLogin, setShowLogin] = useState(true);
     const [showCreateAccount, setShowCreateAccount] = useState(false);

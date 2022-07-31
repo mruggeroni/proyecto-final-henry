@@ -21,13 +21,15 @@ export default function Detail() {
   const packageDetail = useSelector((state) => state.detailPackage);
   const relationatedPackage = useSelector((state) => state.relationated);
   const allActivities = useSelector((state) => state.activities);
-  const [checked, setChecked] = useState(false);
+  const favorites = useSelector((state) => state.favorites);
+  const [checkeado, setCheckeado] = useState(false);
 
   useEffect(async () => {
     setLoading(true);
     await dispatch(getPackageById(id));
     await dispatch(getRelationated(id));
     await dispatch(getAllActivities());
+    await dispatch(getFavoritesLocalStorage());
     setLoading(false);
   }, [dispatch]);
   const [loading, setLoading] = useState(false);
@@ -78,11 +80,31 @@ export default function Detail() {
     })();
   }, []);
 
-  function handleFavorite(e) {
-    e.preventDefault();
-    setChecked(!checked);
-    packageDetail.image = packageDetail.main_image;
+  
+  useEffect(() => {
+    console.log(favorites);
+    console.log(id);
+    console.log(checkeado);
+    // favorites?.forEach((f) => f.id === parseInt(id) && setCheckeado(true));
 
+    for (let i = 0; i < favorites.length; i++) {
+      if(favorites[i].id === parseInt(id)){
+        setCheckeado(true); 
+        break;
+      }
+    }
+
+    console.log(checkeado + ' sofi crack')
+    console.log('estoy aqui y seguiree')
+  }, [favorites]);
+
+  function handleFavorite(e) {
+    if(!checkeado){
+      if(!localStorage.getItem('favorites')) {
+        let favorites = [];
+        favorites.push(packageDetail);
+        localStorage.setItem('favorites', JSON.stringify(favorites));
+        setCheckeado(true);
     if (!checked) {
       if (!localStorage.getItem("favorites")) {
         let favorites = [];
@@ -92,7 +114,8 @@ export default function Detail() {
         let favorites = JSON.parse(localStorage.getItem("favorites"));
         if (favorites?.filter((f) => f.id !== packageDetail.id)) {
           favorites.unshift(packageDetail);
-          localStorage.setItem("favorites", JSON.stringify(favorites));
+          localStorage.setItem('favorites', JSON.stringify(favorites));
+          setCheckeado(true);
         }
       }
     } else {
@@ -209,7 +232,8 @@ export default function Detail() {
             <div className={s.contenedorBarraSuperior}>
               <div onClick={(e) => handleBotonRegresar(e)}>Home</div>
               <div onClick={(e) => handleFavorite(e)}>
-                <BotonFav checked={checked} />
+                <BotonFav setChecked={setCheckeado} checked={checkeado} id={ parseInt(id) } componente={'detail'} />
+
               </div>
             </div>
             <div className={s.contenedorDetalles}>
@@ -221,7 +245,7 @@ export default function Detail() {
               />
               <div className={s.resto}>
                 <h3>
-                  {start_date} / {end_date}
+                  {start_date?.split('-').reverse().join('-')} / {end_date?.split('-').reverse().join('-')}
                 </h3>
                 <h3>U$S {price}</h3>
                 <h3>
@@ -325,10 +349,11 @@ export default function Detail() {
             <div className={s.tituloDestacados}>
               Quizas tambien te interesen estos paquetes!!
             </div>
-            <CardGenericContainer listCards={relationatedPackage} />
+            {/* <CardGenericContainer listCards={relationatedPackage} /> */}
           </div>
         )}
       </div>
     </div>
   );
 }
+

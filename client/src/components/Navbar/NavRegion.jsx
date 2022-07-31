@@ -16,7 +16,9 @@ export default function NavRegion({ handleClose }) {
   const allDestinations = useSelector((state) => state.destinations);
 
   useEffect(() => {
-    dispatch(getAllDestinations());
+    if(!allDestinations.length) {
+      dispatch(getAllDestinations());
+    }
   }, [dispatch]);
 
   function handleClickRegion(e) {

@@ -35,6 +35,10 @@
   padding-right: 10px;
 }
 
+
+.profile_input_image input[type='file']{
+  background-color: transparent;
+
 .profile_input_image_container {
   width:  100%;
   display: flex;
