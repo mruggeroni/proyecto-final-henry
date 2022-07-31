@@ -9,9 +9,6 @@ export const validations = (input) => {
     if(!input.phone) {
         errors.phone = 'El campo del telefono no puede estar vacio';
     }
-    if(!input.address_line1) {
-        errors.address_line1 = 'El campo del la dirección no puede estar vacio';
-    }
     if(!input.city) {
         errors.city = 'El campo de la ciudad no puede estar vacio';
     }
@@ -20,9 +17,6 @@ export const validations = (input) => {
     }
     if(!input.postal_code) {
         errors.postal_code = 'El campo del codigo postal no puede estar vacio';
-    }
-    if(!input.country) {
-        errors.country = 'El campo del pais no puede esta vacio';
     }
     if(!input.email) {
         errors.email = 'El campo del email no puede estar vacio';

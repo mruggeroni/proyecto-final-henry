@@ -1,12 +1,24 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getUsers } from "../../redux/actions";
+import { deleteUser, getUsers } from "../../redux/actions";
 import Dashboard from "./Dashboard";
 import s from "./Table.module.css";
 
 export default function ListUsers() {
   const dispatch = useDispatch();
   const users = useSelector((state) => state.users);
+
+  const handleDelete = async (e, id, nombre) => {
+    // console.log(e);
+    if (prompt(`Para borrar el paquete escribe '${nombre}'`) === nombre) {
+      let res = await dispatch(deleteUser(id));
+      dispatch(getUsers(1000));
+      console.log(res)
+      alert("El paquete se borro");
+    } else {
+      alert("El paquete no se borro");
+    }
+  };
 
   useEffect(() => {
     if (!users.length) {
@@ -58,7 +70,7 @@ export default function ListUsers() {
                           )}
                         </td>
                         <td>
-                          <button className={s.fl_table_btn}>Delete</button>
+                          <button onClick={(e) => handleDelete(e, u.id, u.first_name) } className={s.fl_table_btn}>Delete</button>
                         </td>
                       </tr>
                     );

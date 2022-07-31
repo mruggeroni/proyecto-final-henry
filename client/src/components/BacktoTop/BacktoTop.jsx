@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import s from './BacktoTop.module.css';
 
 export default function BacktoTop(){
   // The back-to-top button is hidden at the beginning
@@ -22,8 +23,18 @@ export default function BacktoTop(){
     });
   };
 
-  return (
-    <>
+  return ( showButton && (
+        <button onClick={scrollToTop} className={s.backtoTop_btn}>
+          &#8679;
+        </button>
+      )
+  );
+};
+
+
+
+/* 
+<div className={s.backtoTop_container}>
       <div className="container">
         <div className="box box--1"></div>
         <div className="box box--2"></div>
@@ -33,11 +44,11 @@ export default function BacktoTop(){
       </div>
 
       {showButton && (
-        <button onClick={scrollToTop} className="back-to-top">
+        <button onClick={scrollToTop} className={s.backtoTop_btn}>
           &#8679;
         </button>
       )}
-      {/* &#8679; is used to create the upward arrow */}
-    </>
-  );
-};
+      &#8679; is used to create the upward arrow
+      </div>
+
+*/

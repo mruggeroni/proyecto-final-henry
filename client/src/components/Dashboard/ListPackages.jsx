@@ -50,7 +50,7 @@ export default function ListPackages() {
                 {allPackages.length &&
                   allPackages.map((p) => {
                     return (
-                      <tr>
+                      <tr key={"packagesList" + p.name}>
                         <td>{p.id}</td>
                         <td>{p.name}</td>
                         <td>${p.price}</td>
