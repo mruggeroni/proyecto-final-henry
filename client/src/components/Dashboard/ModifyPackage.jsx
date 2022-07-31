@@ -9,6 +9,7 @@ import {
   getTypes,
   modificarPaquete,
 } from "../../redux/actions";
+import { useAuth0 } from "@auth0/auth0-react";
 import style from "./ModifyPackage.module.css";
 import Dashboard from "./Dashboard";
 import validationModifyPackage from "./validationModifyPackage.js";
@@ -21,7 +22,7 @@ export default function ModifyPackages() {
   const dispatch = useDispatch();
   const [aux, setAux] = useState(false);
   const navigate = useNavigate();
-
+  const { getAccessTokenSilently} = useAuth0();
   const allDestinations = useSelector((state) => state.destinations);
   const allActivities = useSelector((state) => state.activities);
   const types = useSelector((state) => state.types);
@@ -233,7 +234,7 @@ export default function ModifyPackages() {
     });
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     console.log(input);
     e.preventDefault();
     input.images = [input.images0, input.images1, input.images2];
@@ -241,7 +242,7 @@ export default function ModifyPackages() {
     input.on_sale = parseInt(input.on_sale);
     input.available = input.available === "true" ? true : false;
     input.featured = input.featured === "true" ? true : false;
-
+    const token = await getAccessTokenSilently()
     const valida = validationModifyPackage({ ...input });
     setError(valida);
     if (
@@ -281,7 +282,7 @@ export default function ModifyPackages() {
       put.destinations = input.destinations;
       const modificar = [put, patch];
 
-      dispatch(modificarPaquete(modificar, id));
+      dispatch(modificarPaquete(modificar, id, token));
       alert("Nuevo paquete creado..");
       setInput({
         name: "",
