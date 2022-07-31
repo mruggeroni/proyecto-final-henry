@@ -4,6 +4,7 @@ import { Destination } from './Destinations.js';
 import { Activity } from './Activities.js';
 import { Order } from './Orders.js';
 import { OrderItem } from './OrderItems.js';
+import { User } from './Users.js';
 
 export const Package = sequelize.define('package', {
 	name: {
@@ -94,3 +95,6 @@ Destination.belongsToMany(Package, {through: 'Package_Destination'})
 
 Package.belongsToMany(Activity, {through: 'Package_Activity'})
 Activity.belongsToMany(Package, {through: 'Package_Activity'})
+
+User.belongsToMany(Package, {through: 'Favourites'})
+Package.belongsToMany(User, {through: 'Favourites'})

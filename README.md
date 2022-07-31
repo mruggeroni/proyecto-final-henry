@@ -603,3 +603,62 @@ GET packages (ordenamiento por precio, default los muestra por precio descendien
 GET packages (ordenamiento por precio, default los muestra por precio descendiente), se encuentra en la ruta '/packages', para ordenar ascendente el precio '/packages?price=ASC', para ordenar descendente el precio '/packages?price=DESC'.
 
 Devuelve un array con todos los paquetes, cada paquete posee la estructura siguiente: { "id": 1, "name": "Grecia Peninsular 7 días desde Atenas", "description": "Viaje de 7 días por la región continental de Grecia con guías en español. Salimos hacia la región de Tesalia en el norte de Grecia, para visitar los Monasterios de Meteora. El siguiente destino es Delfos, sede del oráculo más importante de la antigüedad. Continuamos con la visita de la mítica Atenas, emblema universal del mundo clásico. Continuamos dirección sur por el Peloponeso para conocer Corinto, Micenas, luego Olimpia, cuna de los Juegos Olímpicos y el espléndido Teatro de Epidauro.", "main_image": "https://demos.maperez.es/pfhenry/Grecia%20Peninsular%207%20días%20desde%20Atenas%20-%20main.jpg", "images": [ "https://demos.maperez.es/pfhenry/Grecia%20Peninsular%207%20días%20desde%20Atenas%20-%201.jpg", "https://demos.maperez.es/pfhenry/Grecia%20Peninsular%207%20días%20desde%20Atenas%20-%202.jpg", "https://demos.maperez.es/pfhenry/Grecia%20Peninsular%207%20días%20desde%20Atenas%20-%203.jpg" ], "price": 1000, "start_date": "2022-08-15", "end_date": "2022-08-22", "region": "Europa Central", "seasson": "Verano", "type": "Pack Large", "featured": false, "available": true, "on_sale": 10, "activities": [ { "name": "Tour de Highlights", "classification": { "name": "Familiar" }, "Package_Activity": { "createdAt": "2022-07-24T13:00:50.887Z", "updatedAt": "2022-07-24T13:00:50.887Z", "packageId": 1, "activityId": 1 } }, { "name": "Tour de Museos", "classification": { "name": "Familiar" }, "Package_Activity": { "createdAt": "2022-07-24T13:00:52.342Z", "updatedAt": "2022-07-24T13:00:52.342Z", "packageId": 1, "activityId": 3 } } ], "destinations": [ { "name": "Grecia", "Package_Destination": { "createdAt": "2022-07-24T13:00:50.008Z", "updatedAt": "2022-07-24T13:00:50.008Z", "packageId": 1, "destinationId": 8 } } ] },
+
+- *GET **'/deletedUsers'** = Devuelve un arreglo con los usuarios que fueron 'eliminados' *
+
+- *PATCH **'/restoreUser/:id'** = Restaura el usuario indicado mediante el 'id' *
+
+- *PUT **'/user/:id'** = Actualiza propiedades del usuario indicado mediante el 'id'
+  ```json
+  {
+    "first_name": "Olia",
+    "last_name": "Ekkel",
+    "nickname": null,
+    "email": "oekkel0@tuttocitta.it",
+    "phone": "310-214-9951",
+    "city": "Los Angeles",
+    "state": "California",
+    "postal_code": "90045",
+    "photo": "http://dummyimage.com/162x100.png/5fa2dd/ffffff"
+  }
+  ```
+  En el Json de arriba se muestran todas las propiedades que pueden modificarse (ASI ES COMO DEBEN ENVIAR LA INFO DESDE EL FRONT).*
+
+- *PATCH **'/user/:id'** = Actualiza la propiedad 'is_admin 'del usuario indicado mediante el 'id'
+  ```json
+  {
+	  "is_admin": true
+	}
+  ```
+  En el Json de arriba se muestra la forma en que se debe enviar la info desde el FRONT.
+ *
+
+- *DELETE **'/user/:id'** = Elimina el usuario indicado mediante el 'id' *
+
+- *POST **'/favourites/:id'** = Añade un paquete a los favoritos de un usuario.
+  Cómo uso esta ruta? --> Es necesario enviar el 'id' del packete en el endPoint (/user/'idPackete'). Tambien es necesario que envien en el token del usuario mediante 'headers' --> Ejemplo con sintaxis diferente a la usada en el bootcamp: 
+  ```js
+  axios({
+    method: '', // <--- aqui insertan el tipo de peticion 'get', 'delete', 'post', 'patch'
+    url: '', // <--- aqui la url: /favourites/${idDelPackete}
+    data: {}, // <--- aqui envian la info por body
+    headers: {'authorization': `Bearer ${token}`} //<--- aqui es donde envian la info por header y debeser enviadade esa forma ({'authorization': `Bearer ${token}`})
+    //Esta exlicacion se debe a que en la peticiones de tipo post/put/patch puede ocurrir una confucion y en vez de enviar el token por 'headers' la envien por body y asi explota todo.
+  })
+  ```
+- *GET **'/favourites'** = retorna un array con todos los packetes favoritos de un usuario.
+  Cómo uso esta ruta? --> Es necesario enviar el token del usuario mediante 'headers' --> Ejemplo:
+  ```js
+  //FORMA 1
+  axios.get('/favourites', {headers: {'authorization': `Bearer ${token}`}})
+  //FORMA 2
+  axios({
+    method: '',
+    url: '',
+    headers: {'authorization': `Bearer ${token}`}
+  })
+  ```
+*
+- * DELETE **'/favourites/:id'** = Elimina de favoritos el packete indicado mediante el 'id'.
+  Cómo uso esta ruta? --> ¡¡VER EJEMPLO DE LA RUTA DE POST '/favourites/:id'!!
+*
