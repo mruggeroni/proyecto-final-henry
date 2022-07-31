@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import validateActivity from "./validationActivity";
 import { Formik } from "formik";
 import * as yup from "yup";
+import { useAuth0 } from "@auth0/auth0-react";
 import { Button, Col, Form, InputGroup, Row } from "react-bootstrap";
 import {
   crearActividad,
@@ -25,7 +26,7 @@ const schema = yup.object().shape({
 
 export default function ModalActividades({ show, setShow, setInput, input }) {
   const dispatch = useDispatch();
-
+  const { getAccessTokenSilently} = useAuth0();
   const handleClose = () => {
     setShow(false);
     // setInputModal({
@@ -42,7 +43,8 @@ export default function ModalActividades({ show, setShow, setInput, input }) {
   const categorias = useSelector((state) => state.categories);
 
   const handleCrearCategoria = async (e) => {
-    const respuesta = await dispatch(createCategories(e));
+    const token = await getAccessTokenSilently()
+    const respuesta = await dispatch(createCategories(e, token));
     await dispatch(getAllDestinations());
     await dispatch(getAllActivities());
     setShow(false);
