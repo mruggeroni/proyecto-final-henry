@@ -3,8 +3,6 @@ import { BsFillEyeFill, BsFillEyeSlashFill } from "react-icons/bs";
 import s from '../Login.module.css';
 export default function CheckoutConfirmation({ showProfile, setShowProfile }) {
 
- 
-
     let [ showPassword, setShowPassword ] = useState(false);
   const handlePassword = (e) => {
     e.preventDefault();

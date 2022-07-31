@@ -22,14 +22,3 @@ export default function PopUps() {
   );
 }
 
-{/* <Nav fill variant="tabs" className={s.popUpContainer}>
-  <Nav.Item>
-    <FavoritesPopOut />
-  </Nav.Item>
-  <Nav.Item>  
-    <UserPopOut />
-  </Nav.Item> 
-  <Nav.Item>  
-    <CartPopOut />
-  </Nav.Item>
-</Nav> */}
