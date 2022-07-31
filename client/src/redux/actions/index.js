@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 export const GET_PACKAGE_BY_ID = "GET_PACKAGE_BY_ID";
 export const GET_RELATIONATED = "GET_RELATIONATED";
@@ -19,6 +19,8 @@ export const GET_PK_REGION = "GET_PK_REGION";
 export const GET_LOCAL_STORAGE_CART = "GET_LOCAL_STORAGE_CART";
 export const GET_LOCAL_STORAGE_FAVORITES = "GET_LOCAL_STORAGE_FAVORITES";
 export const GET_DESTINATIONS_WITH_PACKAGES = "GET_DESTINATIONS_WITH_PACKAGES";
+export const FILTRAR = "FILTRAR";
+export const ORDENAR = "ORDENAR";
 
 export const getAllPackage = (limitRender) => {
   return async function (dispatch) {
@@ -268,4 +270,20 @@ export function modificarCategoria(id, payload) {
       alert("No pudimos modificar la categoria!");
     }
   };
+}
+
+export function filtrar(target, id) {
+  return async function (dispatch) {
+    const paquetes = await axios.get("/packages/10000");
+    return dispatch({ type: FILTRAR, payload: paquetes.data, target, id });
+  };
+  // return { type: FILTRAR, target, id };
+}
+
+export function ordenar(target) {
+  // return async function (dispatch) {
+  //   const paquetes = await axios.get("/packages/10000");
+  //   return dispatch({ type: ORDENAR, payload: paquetes.data, target: payload });
+  // };
+  return { type: ORDENAR, target };
 }
