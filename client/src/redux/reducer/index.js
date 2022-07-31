@@ -18,10 +18,22 @@ import {
   GET_PK_REGION,
   GET_LOCAL_STORAGE_FAVORITES,
   GET_LOCAL_STORAGE_CART,
+  FILTRAR,
+  ORDENAR,
   DELETE_USER,
   UPDATE_USER,
   GET_USER_BY_ID
 } from "./../actions/index.js";
+
+import {
+  filtrarDestinos,
+  funcionOdenar,
+  filtrarFechaDesde,
+  filtrarFechaHasta,
+  filtrarType,
+  filtrarPrecioDesde,
+  filtrarPrecioHasta,
+} from "./funciones.js";
 
 const initialState = {
   allPackages: [],
@@ -42,6 +54,17 @@ const initialState = {
   user: {},
   categories: [],
   region: [],
+  ordenado: { tipo: "precio", forma: "asc" },
+  //filtrado y ordenamiento
+  page: 1,
+  limitRender: 100000,
+  filtradoType: "",
+  filtradoRegion: "",
+  filtradoDestino: "",
+  filtradoDateMin: "",
+  filtradoDateMax: "",
+  priceFilterMin: 0,
+  priceFilterMax: 1000000,
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -50,6 +73,7 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         allPackages: action.payload,
+        filteredPackages: action.payload,
       };
 
     case GET_ALL_DESTINATIONS:
@@ -221,6 +245,266 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         cart: localStorageCart,
       };
+
+    case FILTRAR:
+      console.log("filtrar", action);
+      // primero ordenamos
+      let ordenados = funcionOdenar(
+        state.allPackages,
+        state.ordenado.tipo,
+        state.ordenado.forma
+      );
+
+      // filtramos
+      //por destino
+      if (action.id === "searchDestinations") {
+        let filtradosDestino = filtrarDestinos(ordenados, action.target);
+        let filtradosFechaDesde = filtrarFechaDesde(
+          filtradosDestino,
+          state.filtradoDateMin?.length ? state.filtradoDateMin : "all"
+        );
+        let filtradosFechaHasta = filtrarFechaHasta(
+          filtradosFechaDesde,
+          state.filtradoDateMax?.length ? state.filtradoDateMax : "all"
+        );
+        let filtradoPrecioDesde = filtrarPrecioDesde(
+          filtradosFechaHasta,
+          state.priceFilterMin
+        );
+        let filtradoPrecioHasta = filtrarPrecioHasta(
+          filtradoPrecioDesde,
+          state.priceFilterMax
+        );
+        let filtradoType = filtrarType(
+          filtradoPrecioHasta,
+          state.filtradoType?.length ? state.filtradoType : "all"
+        );
+        return {
+          ...state,
+          filteredPackages: filtradoType,
+          filtradoDestino: action.target,
+        };
+      }
+      //por fecha desde
+      if (action.id === "from") {
+        let filtradoFechaDesde = filtrarFechaDesde(ordenados, action.target);
+        let filtradoDestino = filtrarDestinos(
+          filtradoFechaDesde,
+          state.filtradoDestino?.length ? state.filtradoDestino : "all"
+        );
+        let filtradoFechaHasta = filtrarFechaHasta(
+          filtradoDestino,
+          state.filtradoDateMax.length ? state.filtradoDateMax : "all"
+        );
+        let filtradoPrecioDesde = filtrarPrecioDesde(
+          filtradoFechaHasta,
+          state.priceFilterMin
+        );
+        let filtradoPrecioHasta = filtrarPrecioHasta(
+          filtradoPrecioDesde,
+          state.priceFilterMax
+        );
+        let filtradoType = filtrarType(
+          filtradoPrecioHasta,
+          state.filtradoType?.length ? state.filtradoType : "all"
+        );
+        return {
+          ...state,
+          filteredPackages: filtradoType,
+          filtradoDateMin: action.target,
+        };
+      }
+      //por fecha hasta
+      if (action.id === "until") {
+        let filtradoFechaHasta = filtrarFechaHasta(ordenados, action.target);
+        let filtradoDestino = filtrarDestinos(
+          filtradoFechaHasta,
+          state.filtradoDestino?.length ? state.filtradoDestino : "all"
+        );
+        let filtradosFechaDesde = filtrarFechaDesde(
+          filtradoDestino,
+          state.filtradoDateMin?.length ? state.filtradoDateMin : "all"
+        );
+
+        let filtradoPrecioDesde = filtrarPrecioDesde(
+          filtradosFechaDesde,
+          state.priceFilterMin
+        );
+        let filtradoPrecioHasta = filtrarPrecioHasta(
+          filtradoPrecioDesde,
+          state.priceFilterMax
+        );
+
+        let filtradoType = filtrarType(
+          filtradoPrecioHasta,
+          state.filtradoType?.length ? state.filtradoType : "all"
+        );
+        return {
+          ...state,
+          filteredPackages: filtradoType,
+          filtradoDateMax: action.target,
+        };
+      }
+
+      //por Type
+      if (action.id === "searchType") {
+        let filtradoType = filtrarType(ordenados, action.target);
+
+        let filtradoDestino = filtrarDestinos(
+          filtradoType,
+          state.filtradoDestino.length ? state.filtradoDestino : "all"
+        );
+        let filtradosFechaDesde = filtrarFechaDesde(
+          filtradoDestino,
+          state.filtradoDateMin?.length ? state.filtradoDateMin : "all"
+        );
+        let filtradoFechaHasta = filtrarFechaHasta(
+          filtradosFechaDesde,
+          state.filtradoDateMax?.length ? state.filtradoDateMax : "all"
+        );
+        let filtradoPrecioDesde = filtrarPrecioDesde(
+          filtradoFechaHasta,
+          state.priceFilterMin
+        );
+        let filtradoPrecioHasta = filtrarPrecioHasta(
+          filtradoPrecioDesde,
+          state.priceFilterMax
+        );
+        return {
+          ...state,
+          filteredPackages: filtradoPrecioHasta,
+          filtradoType: action.target,
+        };
+      }
+
+      //filtrado precio DESDE
+      if (action.id === "precioDesde") {
+        let filtadosPrecioDesde = filtrarPrecioDesde(ordenados, action.target);
+        let filtradoDestino = filtrarDestinos(
+          filtadosPrecioDesde,
+          state.filtradoDestino?.length ? state.filtradoDestino : "all"
+        );
+        let filtradosFechaDesde = filtrarFechaDesde(
+          filtradoDestino,
+          state.filtradoDateMin?.length ? state.filtradoDateMin : "all"
+        );
+
+        let filtradoFechaHasta = filtrarFechaHasta(
+          filtradosFechaDesde,
+          state.filtradoDateMax?.length ? state.filtradoDateMax : "all"
+        );
+        let filtradoPrecioHasta = filtrarPrecioHasta(
+          filtradoFechaHasta,
+          state.priceFilterMax < action.target
+            ? action.target
+            : state.priceFilterMax
+        );
+        console.log(filtradoFechaHasta);
+        console.log(filtradoPrecioHasta);
+        let filtradoType = filtrarType(
+          filtradoPrecioHasta,
+          state.filtradoType?.length ? state.filtradoType : "all"
+        );
+        return {
+          ...state,
+          filteredPackages: filtradoType,
+          priceFilterMin: action.target,
+          priceFilterMax:
+            state.priceFilterMax < action.target
+              ? action.target
+              : state.priceFilterMax,
+        };
+      }
+
+      //filtrado precio HASTA
+      if (action.id === "precioHasta") {
+        let filtadosPrecioHasta = filtrarPrecioHasta(ordenados, action.target);
+
+        let filtradoDestino = filtrarDestinos(
+          filtadosPrecioHasta,
+          state.filtradoDestino?.length ? state.filtradoDestino : "all"
+        );
+        let filtradosFechaDesde = filtrarFechaDesde(
+          filtradoDestino,
+          state.filtradoDateMin?.length ? state.filtradoDateMin : "all"
+        );
+        let filtradoFechaHasta = filtrarFechaHasta(
+          filtradosFechaDesde,
+          state.filtradoDateMax?.length ? state.filtradoDateMax : "all"
+        );
+        let filtradoPrecioDesde = filtrarPrecioDesde(
+          filtradoFechaHasta,
+          state.priceFilterMin > action.target
+            ? action.target
+            : state.priceFilterMin
+        );
+        let filtradoType = filtrarType(
+          filtradoPrecioDesde,
+          state.filtradoType?.length ? state.filtradoType : "all"
+        );
+        console.log(filtradoType);
+        return {
+          ...state,
+          filteredPackages: filtradoType,
+          priceFilterMin:
+            state.priceFilterMin > action.target
+              ? action.target
+              : state.priceFilterMin,
+          priceFilterMax: action.target,
+        };
+      }
+
+      //reiniciar estados
+      if (action.id === "reset") {
+        return {
+          ...state,
+          filteredPackages: action.payload,
+          ordenado: { tipo: "precio", forma: "asc" },
+          limitRender: 100000,
+          filtradoType: "",
+          filtradoRegion: "",
+          filtradoDestino: "",
+          filtradoDateMin: "",
+          filtradoDateMax: "",
+          priceFilterMin: 0,
+          priceFilterMax: 1000000,
+        };
+      }
+    case ORDENAR:
+      console.log("ordenar", action);
+      if (action.target === "precio" || action.target === "duracion") {
+        const ordenadas = funcionOdenar(
+          state.filteredPackages.length < 1
+            ? state.allPackages
+            : state.filteredPackages,
+          action.target,
+          state.ordenado.forma
+        );
+        return {
+          ...state,
+          filteredPackages: ordenadas,
+          ordenado: {
+            ...state.ordenado,
+            tipo: action.target,
+          },
+        };
+      } else {
+        const ordenadas = funcionOdenar(
+          state.filteredPackages.length < 1
+            ? state.allPackages
+            : state.filteredPackages,
+          state.ordenado.tipo,
+          action.target
+        );
+        return {
+          ...state,
+          filteredPackages: ordenadas,
+          ordenado: {
+            ...state.ordenado,
+            forma: action.target,
+          },
+        };
+      }
 
     default:
       return { ...state };
