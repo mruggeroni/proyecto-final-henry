@@ -662,3 +662,9 @@ Devuelve un array con todos los paquetes, cada paquete posee la estructura sigui
 - * DELETE **'/favourites/:id'** = Elimina de favoritos el packete indicado mediante el 'id'.
   Cómo uso esta ruta? --> ¡¡VER EJEMPLO DE LA RUTA DE POST '/favourites/:id'!!
 *
+- * POST **'/rating/:id'** = Agrega rating a un paquete. Para usar esta ruta es necesario enviar el id del paquete y el rating mediante query! --> Ejemplo (/rating/3?rating=5)
+*
+- * GET **'/rating/:id'** = Devuelve el rating de un paquete. Para usar esta ruta es necesario enviar el id del paquete.
+*
+- * DELETE **/rating/:id** = Elimina el rating de un paquete. Para usar esta ruta es necesario enviar el id del paquete.
+*
