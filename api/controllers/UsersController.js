@@ -154,7 +154,7 @@ export const createUser = async (req, res) =>{
 	const role = usuarioDB[0].dataValues.is_admin === true? 'Admin': 'Client'
 	let usuario = usuarioDB[1] === false? "login": "register"
 	const currentUsuario = [usuario, role]
-	console.log(currentUsuario)
+	console.log(usuarioDB[0])
 	res.status(200).json(usuarioDB[0]);
 	} catch (error) {
 		return res.status(400).json({ message: error.message });
