@@ -7,10 +7,25 @@ import { Op } from "sequelize";
 export const getOrders = async (req, res) => {
 
 	const {user, status} = req.query;
+
+	let filter = {status: {[Op.not]: 'shopping cart'}}
+
+	if (status && !user) filter = {
+		status: {
+			[Op.and]: [{
+				[Op.not]: 'shopping cart',
+				[Op.eq]: status
+			}]
+		}
+	};
+
+	if (!status && user) filter = {
+		status: {
+			[Op.not]: 'shopping cart',
+		},
+		userId: user,
+	};
 	
-	let filter = {};
-	if (status && !user) filter = {status: status};
-	if (!status && user) filter = {userId: user};
 	if (status && user) filter = {status: status, userId: user};
 	
 	try {
