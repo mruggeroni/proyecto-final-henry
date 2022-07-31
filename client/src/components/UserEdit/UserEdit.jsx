@@ -1,5 +1,5 @@
 import { useAuth0 } from '@auth0/auth0-react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import MyProfile from './Menus/MyProfile/MyProfile';
 import Settings from './Menus/Settings/Settings';
@@ -7,14 +7,22 @@ import s from './UserEdit.module.css';
 
 export default function UserEdit() {
   const { logout } = useAuth0();
-  const user = useSelector( (state) => state.user );
+  let user = useSelector( (state) => state.user );
+  
+  const [showProfile, setShowProfile] = useState(true);
+  const [showSettings, setShowSettings] = useState(false);
   const [show, setShow] = useState(false);
+  const handleClose = () => {
+    setShowSettings(false)
+    setShow(false)
+    setShowProfile(true)
+  };
 
-  const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const [showProfile, setShowProfile] = useState(true);
   const [showSettings, setShowSettings] = useState(false);
   const [render, setRender] = useState('');
+
   const handleShowProfile = () => {
     setShowProfile(true);
     setShowSettings(false);

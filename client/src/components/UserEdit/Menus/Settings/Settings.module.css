@@ -6,6 +6,20 @@
   color: #000 !important;
 }
 
+.setting_title h2 {
+  display: inline;
+}
+
+.settings_title {
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.setting_build {
+  color: #d80707;
+}
+
 .settings_email_container {
   width: 100%;
   display: flex;
@@ -33,6 +47,7 @@
 
 .settings_password_container {
   position: relative;
+  text-align: center;
   margin-top: 15px;
 }
 

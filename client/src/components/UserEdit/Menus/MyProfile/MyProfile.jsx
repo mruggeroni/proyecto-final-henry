@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import s from './MyProfile.module.css';
 import { validations } from "./validations";
 import axios from "axios"
-
 export default function MyProfile({ user, setRender, showProfile, setShowProfile }) {
+import axios from 'axios';
+import { getUserById, updateUser } from "../../../../redux/actions";
+export default function MyProfile({ showProfile, setShowProfile }) {
 
-    // const user = useSelector( (state) => state.user );
+    const dispatch = useDispatch();
+    const user = useSelector( (state) => state.user );
    /*  const user = {
         first_name: 'Ezequiel',
         last_name: 'Bamio',
@@ -26,8 +29,23 @@ export default function MyProfile({ user, setRender, showProfile, setShowProfile
     const [archivo, setArchivo] = useState("");
   
     useEffect( () => {
+    const [archivo, setArchivo] = useState("");
+
+    useEffect( async () => {
+        await dispatch(getUserById(user.id))
         setInput({...user})
     }, [user])
+
+    useEffect( () => {
+        return () => {
+            setTimeout(() => {
+                // reset page
+                setInput({...user})
+                setShowProfile(true)
+            }, 0);
+            setShowProfile(false)  
+        }
+    }, [])
 
     const handleChange = (e) => {
         e.preventDefault();
@@ -65,6 +83,48 @@ export default function MyProfile({ user, setRender, showProfile, setShowProfile
             setArchivo('');
             setShowProfile(false);
             setInput({...user});
+    const handleClickImage = async (e) => {
+        e.preventDefault();
+        if(archivo[0]) {
+            const files = e.target.files;
+            const data = new FormData();
+            data.append("file", archivo[0]);
+            data.append("upload_preset", "kdrl9hzn");
+            const res = await axios.post(
+              "https://api.cloudinary.com/v1_1/dmfmud5fb/image/upload",
+              data
+            );
+            setInput({
+                ...input,
+                photo: res.data.secure_url
+            });
+        }
+        alert('Debes seleccionar una imagen');
+    }
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if(window.confirm('Seguro desea modificar los datos?')) {
+            let resUpdated;
+            if(archivo[0]) {
+                const files = e.target.files;
+                const data = new FormData();
+                data.append("file", archivo[0]);
+                data.append("upload_preset", "emhwd5ue");
+                const res = await axios.post(
+                  "https://api.cloudinary.com/v1_1/duie0xk67/image/upload",
+                  data
+                );
+                resUpdated = await dispatch(updateUser(user.id, {...input, photo: res.data.secure_url}));
+            } else {
+                resUpdated = await dispatch(updateUser(user.id, input));
+            }
+            setTimeout(() => {
+                // reset page
+                dispatch(getUserById(user.id))
+                setShowProfile(true)
+            }, 0);
+            setShowProfile(false)            
         }
     };
   
@@ -76,7 +136,8 @@ export default function MyProfile({ user, setRender, showProfile, setShowProfile
         <hr />
         <form className={s.profile_information_container}>
         <div className={s.profile_image_container}>
-            <img src={user.photo || 'https://www.avesdeuruguay.com/cres.jpg'} 
+            <div className={s.profile_input_image_container}>
+            <img src={input.photo || 'https://www.avesdeuruguay.com/cres.jpg'} 
                 onError={ (e) => e.target.src = 'https://www.avesdeuruguay.com/cres.jpg' } 
                 alt={user.full_name} />
             <div className={s.profile_input_container}>
@@ -91,6 +152,11 @@ export default function MyProfile({ user, setRender, showProfile, setShowProfile
                     onChange={handleChange}
                     value={input.photo} 
                     className={s.profile_input} /> */}
+            <input type="file"
+                    name="file"
+                    onChange={handleChange}
+                    className={s.profile_input_image}
+                />
             </div>
             {
                 errors.photo && <h4 className={s.profile_error}>{errors.photo}</h4>
@@ -131,17 +197,6 @@ export default function MyProfile({ user, setRender, showProfile, setShowProfile
         }
         </div>
         <div className={s.profile_input_container}>
-            <label className={s.profile_label}>Dirección</label>
-            <input type='text' 
-                    name='address_line1' 
-                    value={input.address_line1} 
-                    onChange={handleChange} 
-                    className={s.profile_input} />
-        {
-            errors.address_line1 && <h4 className={s.profile_error}>{errors.address_line1}</h4>
-        }
-        </div>
-        <div className={s.profile_input_container}>
             <label className={s.profile_label}>Ciudad</label>
             <input type='text' 
                     name='city' 
@@ -173,17 +228,6 @@ export default function MyProfile({ user, setRender, showProfile, setShowProfile
         {
             errors.postal_code && <h4 className={s.profile_error}>{errors.postal_code}</h4>
         }
-        </div>
-        <div className={s.profile_input_container}>
-            <label className={s.profile_label}>Pais</label>
-            <input type='text' 
-                    name='country' 
-                    value={input.country} 
-                    onChange={handleChange} 
-                    className={s.profile_input} />
-            {
-                errors.postal_code && <h4 className={s.profile_error}>{errors.postal_code}</h4>
-            }   
         </div>
         
         <button onClick={handleSubmit} disabled={Object.keys(errors).length} className={s.profile_btn_save}>Guardar cambios</button>

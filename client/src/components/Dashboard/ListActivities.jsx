@@ -29,7 +29,7 @@ export default function ListActivities() {
                   <th>Descripción</th>
                   <th>Precio</th>
                   <th>Categoria</th>
-                  <th>Editar/Eliminar</th>
+                  <th>Editar</th>
                 </tr>
               </thead>
               <tbody>
@@ -49,7 +49,7 @@ export default function ListActivities() {
                           >
                             Editar
                           </NavLink>
-                          <button className={s.fl_table_btn}>Delete</button>
+                          {/* <button className={s.fl_table_btn}>Delete</button> */}
                         </td>
                       </tr>
                     );

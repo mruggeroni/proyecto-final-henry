@@ -10,7 +10,8 @@ import {
   getPackageById,
   getRelationated,
   getCartLocalStorage,
-  getFavoritesLocalStorage
+  getFavoritesLocalStorage,
+  getAllPackage,
 } from "../../redux/actions/index";
 
 export default function Detail() {
@@ -97,42 +98,41 @@ export default function Detail() {
     console.log('estoy aqui y seguiree')
   }, [favorites]);
 
-  function handleFavorite(e){
-    e.preventDefault();
-    setCheckeado(!checkeado);
-    // favorites?.forEach((f) => f.id === parseInt(id) && setCheckeado(true));
-    packageDetail.image = packageDetail.main_image;
-    // dispatch(getFavoritesLocalStorage());
-
+  function handleFavorite(e) {
     if(!checkeado){
       if(!localStorage.getItem('favorites')) {
         let favorites = [];
         favorites.push(packageDetail);
         localStorage.setItem('favorites', JSON.stringify(favorites));
         setCheckeado(true);
+    if (!checked) {
+      if (!localStorage.getItem("favorites")) {
+        let favorites = [];
+        favorites.push(packageDetail);
+        localStorage.setItem("favorites", JSON.stringify(favorites));
       } else {
-        let favorites = JSON.parse(localStorage.getItem('favorites'));
-        if(favorites?.filter((f) => f.id !== packageDetail.id)){
+        let favorites = JSON.parse(localStorage.getItem("favorites"));
+        if (favorites?.filter((f) => f.id !== packageDetail.id)) {
           favorites.unshift(packageDetail);
           localStorage.setItem('favorites', JSON.stringify(favorites));
           setCheckeado(true);
         }
       }
-    }else{
-      let favorites = JSON.parse(localStorage.getItem('favorites'));
-      let remFav = favorites.filter((f) => {return f.id !== packageDetail.id});
-      localStorage.setItem('favorites', JSON.stringify(remFav));
+    } else {
+      let favorites = JSON.parse(localStorage.getItem("favorites"));
+      let remFav = favorites.filter((f) => {
+        return f.id !== packageDetail.id;
+      });
+      localStorage.setItem("favorites", JSON.stringify(remFav));
     }
     dispatch(getFavoritesLocalStorage());
   }
 
   const handleSelectCantidad = (e) => {
-    console.log(e.target.value);
     let totalPaquete = price * e.target.value;
     let actividadesSeleccionadas = [];
     checkboxEstado.forEach((i, index) => {
       if (i === true) {
-        console.log(parseInt(packageDetail.activities[index].price));
         totalPaquete +=
           parseInt(packageDetail.activities[index].price) * e.target.value;
       }
@@ -171,21 +171,22 @@ export default function Detail() {
   const handleBotonRegresar = (e) => {
     e.preventDefault();
     // scrollToTop();
-    navigate(-1);
+    navigate("/");
+    dispatch(getAllPackage());
   };
 
   const handleBotonComprar = (e) => {
     e.preventDefault();
     input.paquete = packageDetail;
 
-    if(!localStorage.getItem('cart')) {
+    if (!localStorage.getItem("cart")) {
       let cart = [];
       cart.unshift(input);
-      localStorage.setItem('cart', JSON.stringify(cart));
+      localStorage.setItem("cart", JSON.stringify(cart));
     } else {
-      let cart = JSON.parse(localStorage.getItem('cart'));
+      let cart = JSON.parse(localStorage.getItem("cart"));
       cart.unshift(input);
-      localStorage.setItem('cart', JSON.stringify(cart));
+      localStorage.setItem("cart", JSON.stringify(cart));
     }
     scrollToTop();
     dispatch(getCartLocalStorage());
@@ -198,18 +199,17 @@ export default function Detail() {
 
   // para el desmonte del componente
   useEffect(() => {
-    (() => {
-      return async () => {
-        setLoading(true);
-        setInput({});
-        setCheckboxEstado(new Array(10).fill(false));
-        await dispatch(getPackageById(id));
-        await dispatch(getRelationated(id));
-        setTimeout(function () {
-          setLoading(false);
-        }, 10000);
-      };
-    })();
+    return () => {
+      setLoading(true);
+      setInput({});
+      setCheckboxEstado(new Array(10).fill(false));
+      dispatch(getPackageById(1));
+      console.log("entro aca ");
+      dispatch(getRelationated(id));
+      setTimeout(function () {
+        setLoading(false);
+      }, 10000);
+    };
   }, [dispatch, setCheckboxEstado, setInput]);
 
   return (
@@ -230,9 +230,10 @@ export default function Detail() {
         ) : (
           <div className={s.contenedor}>
             <div className={s.contenedorBarraSuperior}>
-              <div onClick={(e) => handleBotonRegresar(e)}>Regresar</div>
+              <div onClick={(e) => handleBotonRegresar(e)}>Home</div>
               <div onClick={(e) => handleFavorite(e)}>
                 <BotonFav setChecked={setCheckeado} checked={checkeado} id={ parseInt(id) } componente={'detail'} />
+
               </div>
             </div>
             <div className={s.contenedorDetalles}>
