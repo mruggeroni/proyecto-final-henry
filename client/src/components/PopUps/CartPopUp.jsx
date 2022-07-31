@@ -51,7 +51,7 @@ export default function CartPopOut() {
               })}
           </div>
           <hr />
-          <Link to="/checkout">
+          <Link to="/cart">
             <button className={s.allFavorite_btn}>Checkout</button>
           </Link>
         </div>

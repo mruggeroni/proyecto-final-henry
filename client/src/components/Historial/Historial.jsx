@@ -7,7 +7,7 @@ import {
   filterPackagesByDestination,
   getAllPackage,
 } from "./../../redux/actions/index";
-import s from '../Search/Search.module.css'
+import s from './Historial.module.css'
 import style from "../Search/Select.module.css";
 import HistorialCard from "./HistorialCard";
 import SortPrice from "../Search/SortPrice.jsx";
@@ -82,9 +82,9 @@ export default function Historial() {
             paginado={paginado}
             currentPage={currentPage}
           />
-          <div className={s.cards}>
+          <div className={s.cardsHistorial}>
             {currentPackage &&
-              currentPackage?.map((p) => { console.log(p)
+              currentPackage?.map((p) => {
                 return (
                   <div className={s.eachcard} key={p.id}>
                     <Link to={"/detail/" + p.id} key={p.id}>

@@ -15,6 +15,8 @@ import ModifyActivity from "./components/Dashboard/ModifyActivity.jsx";
 import ListActivities from "./components/Dashboard/ListActivities.jsx";
 import ListUsers from "./components/Dashboard/ListUsers.jsx";
 import PopUps from './components/PopUps/PopUps.jsx'
+import CreateAccountModal from './components/CreateAccount Modal/CreateAccountModal.jsx'
+import CheckoutParent from './components/Checkout/CheckoutForm/CheckoutParent.jsx'
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
@@ -38,10 +40,12 @@ function App() {
         <Route path="/profile" element={<Home />} />
         <Route path="/detail/:id" element={<Detail />} />
         <Route path="/favorites" element={<Favorites />} />
-        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/cart" element={<Checkout />} />
+        <Route path="/checkout" element={<CheckoutParent />} />
         <Route path="/historial" element={<Historial />} />
         <Route path="/faq" element={<Home />} />
         <Route path="/contact" element={<Home />} />
+        <Route path='/createaccount' element={<CreateAccountModal />} />
         <Route path="*" element={<Home />} />
       </Routes>
     </BrowserRouter>

@@ -23,7 +23,7 @@ export default function Favorites() {
 				<SortPrice componente={'favoritesList'}/>
 			</div> */}
       <div className={s.cardContainer}>
-        {favorites.length ? (
+        {favorites?.length ? (
           favorites.map((p) => {
             return (
               <div className={s.eachCard} key={p.id}>

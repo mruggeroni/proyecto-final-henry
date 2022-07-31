@@ -12,10 +12,12 @@ export default function NavRegion({ handleClose }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // const allDestinations = useSelector((state) => state.destinations);
+  const allDestinations = useSelector((state) => state.destinations);
 
   useEffect(() => {
-    dispatch(getAllDestinations());
+    if(!allDestinations.length) {
+      dispatch(getAllDestinations());
+    }
   }, [dispatch]);
 
   function handleClick(e) {

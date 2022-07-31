@@ -3,8 +3,8 @@ import { BsFillEyeFill, BsFillEyeSlashFill } from 'react-icons/bs';
 import { useSelector } from "react-redux";
 import s from './Settings.module.css';
 
-export default function Settings({ showSettings, setShowSettings }) {
-  const user = useSelector( (state) => state.user );
+export default function Settings({ user, showSettings, setShowSettings }) {
+  // const user = useSelector( (state) => state.user );
   // console.log(user)
   /* const user = {
     first_name: 'Ezequiel',
@@ -42,10 +42,16 @@ export default function Settings({ showSettings, setShowSettings }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(input)
+    setShowSettings(false);
+    setInput({
+      email: user.email,
+      currentPassword: '',
+      newPassword: ''
+    });
   };
 
   const handleChange = (e) => {
-    e.preventDefault();
+    e.preventDefault(); 
     setInput({
       ...input,
       [e.target.name]: e.target.value 

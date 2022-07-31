@@ -1,0 +1,54 @@
+.checkoutStepsContainer {
+    margin-top: 90px;
+    display: flex;
+    flex-direction: row;
+    /* margin-left: 3vw; */
+    width: 100%;
+}
+
+.logInCreateAcc {
+    width: 100%;
+    height: 100vh;
+    padding: 3vw;
+    /* background-color: red; */
+}
+
+.header_container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.icons_container {
+    width: 50%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.icons_item {
+    font-size: 2vw;
+}
+
+.icons_complete {
+    color: #10af1d;
+}
+
+.icons_line {
+    width: 10vw;
+    border: none;
+    height: 3px;
+    opacity: 100%;
+    margin: 20px 5px;
+    background-color: #000;
+}
+
+.icons_line_incomplete {
+    background-color: #e4eaea;
+}
+
+.icons_incomplete {
+    color: #e4eaea;
+}

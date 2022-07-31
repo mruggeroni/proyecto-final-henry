@@ -24,7 +24,7 @@ export default function RemoveFavorite({ id, popUp, componente }){
 
 	return(
 			componente === 'favoriteList' ?
-			<a className={s.addRem} onClick={(e) => handleRemove(e)}><BotonFav checked={true}/></a> :
+			<a className={s.addRem} onClick={(e) => handleRemove(e)}><BotonFav checked={true} componente={componente}/></a> :
 			<a className={s.addRem} onClick={(e) => handleRemove(e)}>Remove</a>
 	)
 }

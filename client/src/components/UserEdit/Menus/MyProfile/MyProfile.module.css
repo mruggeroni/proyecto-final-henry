@@ -34,6 +34,10 @@
   padding-right: 10px;
 }
 
+.profile_input_image input[type='file']{
+  background-color: transparent;
+}
+
 .profile_label {
   position: absolute;
   top: 0px;

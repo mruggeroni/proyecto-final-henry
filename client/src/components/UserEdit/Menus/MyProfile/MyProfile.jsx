@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import s from './MyProfile.module.css';
 import { validations } from "./validations";
+import axios from "axios"
 
-export default function MyProfile({ user, showProfile, setShowProfile }) {
+export default function MyProfile({ user, setRender, showProfile, setShowProfile }) {
 
     // const user = useSelector( (state) => state.user );
    /*  const user = {
@@ -20,27 +21,50 @@ export default function MyProfile({ user, showProfile, setShowProfile }) {
     } */
     const [errors, setErrors] = useState({})
     const [input, setInput] = useState({...user});
-
+    const [imagen, setImagen] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [archivo, setArchivo] = useState("");
+  
     useEffect( () => {
         setInput({...user})
     }, [user])
 
     const handleChange = (e) => {
         e.preventDefault();
-        setInput({
-            ...input,
-            [e.target.name]: e.target.value 
-        });
-        setErrors(validations({
-            ...input,
-            [e.target.name]: e.target.value 
-        }));
+        if(e.target.name === 'file') {
+            setArchivo(e.target.files);
+        } else {
+            setInput({
+                ...input,
+                [e.target.name]: e.target.value 
+            });
+            setErrors(validations({
+                ...input,
+                [e.target.name]: e.target.value 
+            }));
+        }
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        if(window.alert('Seguro desea modificar los datos?')) {
-            console.log(input);
+        if(window.confirm('Seguro desea modificar los datos?')) {
+            if(archivo[0]) {    
+                const files = e.target.files;
+                const data = new FormData();
+                data.append("file", archivo[0]);
+                data.append("upload_preset", "kdrl9hzn");
+                setLoading(true);
+                const res = await axios.post(
+                  "https://api.cloudinary.com/v1_1/dmfmud5fb/image/upload",
+                  data
+                );
+                setImagen(res.secure_url);
+                setLoading(false);
+                console.log(archivo[0]);
+            }
+            setArchivo('');
+            setShowProfile(false);
+            setInput({...user});
         }
     };
   
@@ -57,11 +81,16 @@ export default function MyProfile({ user, showProfile, setShowProfile }) {
                 alt={user.full_name} />
             <div className={s.profile_input_container}>
             <label className={s.profile_label}>Imagen</label>
-            <input type='text' 
+            <input type="file"
+                name="file"
+                onChange={handleChange} 
+                className={s.profile_input_image} 
+            />
+            {/* <input type='text' 
                     name='photo'
                     onChange={handleChange}
                     value={input.photo} 
-                    className={s.profile_input} />
+                    className={s.profile_input} /> */}
             </div>
             {
                 errors.photo && <h4 className={s.profile_error}>{errors.photo}</h4>

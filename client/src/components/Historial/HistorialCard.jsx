@@ -1,8 +1,7 @@
 import React from "react";
-import s from "../Search/Card/Card";
+import s from "../Search/Card/Cards.module.css";
 
 export default function Card({ name, image, description, price, id, start_date, end_date }) {
-
   return (
     <div className={s.card}>
       <img src={image} alt="img not found" width="300vw" height="250vw" />
