@@ -94,40 +94,85 @@ export const getOrderDetail = async (req, res) => {
 	};
 };
 
-export const getCart = async (req, res) => {
+export const patchStatusOrder = async (req, res) => {
+	const orderId = parseInt(req.params.orderId);
+	const { newStatus } = req.query;
+
+	try {
+		if (!(newStatus !== 'paid') || !(newStatus !== 'cancel')) throw new Error("Status order must be 'paid' or 'cancel'");
+
+		const order = await Order.update({
+			status: newStatus,
+		}, {
+			where: {
+				[Op.and]: [{
+					id: orderId,
+				}, {
+					status: 'pending',
+				}],
+			},
+		});
+
+		order ? 
+		res.status(200).json({ message: `Order status changed to \'${newStatus}\' successfully` }) : 
+		res.status(404).json({ message: "Order not found" });
+	} catch (error) {
+		return res.status(400).json({ message: error.message });
+	};
+};
+
+export const getCarts = async (req, res) => {
 	const userId = parseInt(req.params.userId);
+	const cartNumber = parseInt(req.query.cartNumber);
 
 	try {
 		const user = await User.findByPk(userId, {
 			include: {
 				model: Order,
+				attributes: {
+					exclude: ['userId'],
+				},
 				where: {
 					status: {
 						[Op.eq]: 'shopping cart',
 					}, 
 				},
-				attributes: {
-					exclude: ['userId'],
-				},
 				include: {
 					model: OrderItem,
-					attributes: {
-						exclude: ['orderId', 'packageId'],
+					through: {
+						attributes: ['quantity'],
 					},
 				},
 				include: {
 					model: Package,
 					attributes: {
-						exclude: ['available', 'destroyTime', 'images' ],
+						exclude: [
+							'description', 
+							'images', 
+							'featured', 
+							'available', 
+							'on_sale', 
+							'destroyTime'
+						],
+					},
+					through: {
+						attributes: ['quantity'],
 					},
 				},
 			},
 		});
-		const cart = user.orders[0];
+		const carts = (user && user.orders.length) ? user.orders : null;
+		const cart = carts ? carts[cartNumber - 1] : null;
+		const response = cartNumber ? 
+			cart : 
+			{ 
+				carts_quantity: carts ? carts.length : 0, 
+				carts,
+			};
 
-		cart ? 
-		res.status(200).json(cart) : 
-		res.status(404).json({ message: "Order not found" });
+		((!cartNumber && carts) || (cartNumber && cart)) ? 
+		res.status(200).json(response) : 
+		res.status(404).json({ message: `${cartNumber ? 'Cart' : 'Carts'} not found` });
 	} catch (error) {
 		return res.status(400).json({ message: error.message });
 	};
@@ -135,60 +180,157 @@ export const getCart = async (req, res) => {
 
 export const createCart = async (req, res) => {
 	const { userId } = req.params;
-	const { total_order, quantity, packagesId } = req.body;
+	const { packagesId, quantitiesPackages, total_order } = req.body;
 
 	try {
 		const user = await User.findOne({
 			where: {
 				id: userId,
-				'$orders.status$': {
-					[Op.not]: 'shopping cart',
-				},
 			},
 			include: [{
 				model: Order,
-				as: 'orders',
 				include: {
 					model: OrderItem,
-					attributes: {
-						exclude: [],
-					},
 				},
 				include: {
 					model: Package,
-					attributes: {
-						exclude: ['id', 'available', 'destroyTime', 'images', 'price' ],
-					},
 				},
 			}],
 		});
+		const cart = await Order.create({
+			total_order,
+		});
+		const paquetes = await Package.findAll({
+			where: {
+				id: packagesId,
+			},
+		});
 
-		// if (!(Object.keys(existCart).length)) {
-			const cart = await Order.create({
-				total_order,
-			});
-			const paquetes = await Package.findAll({
-				where: {
-					id: packagesId,
-				},
-			});
-			cart.addPackages(paquetes, { 
-				through: OrderItem, 
-			});
-			user.addOrders(cart);
-			const newCart = await Order.findByPk(cart.id);
-			await OrderItem.update({
-				quantity,
+		cart.setPackages(paquetes, { 
+			through: OrderItem, 
+		});
+		user.addOrders(cart);
+
+		await Order.findByPk(cart.id);
+		await Promise.all(packagesId.map((packageId, index) => {
+			return OrderItem.update({
+				quantity: quantitiesPackages[index],
 			}, {
 				where: {
-					orderId: newCart.id,
+					[Op.and]: [{
+						orderId: cart?.id,
+					}, {
+						packageId,
+					}],
 				},
-			});
-			return res.status(201).json(newCart/* user */);
-		// } else {
-		// 	throw new Error('user has shopping cart');
-		// };
+			})
+			.catch(err => console.log(err.message));
+		}));
+		return res.status(201).json({ message: 'Cart created successfully' });
 	} catch (error) {
 		return res.status(400).json({ error: error.message });
+	};
+};
+
+export const updateCart = async (req, res) => {
+	const { cartId } = req.params;
+	const { packagesId, quantitiesPackages, total_order } = req.body;
+
+	try {
+		await Order.update({
+			total_order,
+		}, {
+			where: {
+				[Op.and]: [{
+					id: cartId,
+				}, {
+					status: 'shopping cart',
+				}],
+			},
+		});
+		const cart = await Order.findOne({
+			where: {
+				[Op.and]: [{
+					id: cartId,
+				}, {
+					status: 'shopping cart',
+				}],
+			},
+		});
+		const paquetes = await Package.findAll({
+			where: {
+				id: packagesId,
+			},
+		});
+
+		cart.setPackages(paquetes, { 
+			through: OrderItem, 
+		});
+
+		await Order.findByPk(cart.id);
+		await Promise.all(packagesId.map((packageId, index) => {
+			return OrderItem.update({
+				quantity: quantitiesPackages[index],
+			}, {
+				where: {
+					[Op.and]: [{
+						orderId: cartId,
+					}, {
+						packageId,
+					}],
+				},
+			})
+			.catch(err => console.log(err.message));
+		}));
+		return res.status(200).json({ message: 'Cart updated successfully' });
+	} catch (error) {
+		return res.status(400).json({ error: error.message });
+	};
+};
+
+export const patchStatusCart = async (req, res) => {
+	const cartId = parseInt(req.params.cartId);
+
+	try {
+		const cart = await Order.update({
+			status: 'pending',
+		}, {
+			where: {
+				[Op.and]: [{
+					id: cartId,
+				}, {
+					status: 'shopping cart',
+				}],
+			},
+		});
+
+		cart ? 
+		res.status(200).json({ message: "Cart status changed to \'pending\' successfully" }) : 
+		res.status(404).json({ message: "Cart not found" });
+	} catch (error) {
+		return res.status(400).json({ message: error.message });
+	};
+};
+
+export const deleteCart = async (req, res) => {
+	const cartId = parseInt(req.params.cartId);
+
+	try {
+		const cart = await Order.findByPk(cartId);
+		cart && await Order.destroy({
+			where: {
+				[Op.and]: [{
+					id: cartId,
+				}, {
+					status: 'shopping cart',
+				}],
+			},
+		});
+
+		cart ? 
+		res.status(200).json({ message: "Cart deleted successfully" }) : 
+		res.status(404).json({ message: "Cart not found" });
+	} catch (error) {
+		return res.status(400).json({ message: error.message });
 	};
 };
