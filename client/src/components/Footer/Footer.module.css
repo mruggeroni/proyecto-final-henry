@@ -60,4 +60,7 @@
   .footer_container {
     height: 100%;
   }
+  .footer_links {
+    flex-wrap: wrap;
+  }
 }
