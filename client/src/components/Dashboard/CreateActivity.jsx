@@ -1,20 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 // import validate from "./validationActivity.js";
 import Dashboard from "./Dashboard";
 import style from "./CreatePackage.module.css";
+import {
+  createActivities,
+  getCategories,
+  getAllActivities,
+} from "../../redux/actions";
+import ModalCategorias from "./ModalCategoria";
+import { useAuth0 } from "@auth0/auth0-react";
 
 function validate(input) {
   let error = {};
-  let regName = /^[a-zA-Z]*$/;
-  let regInteger = /^\d+$/;
-  let checkboxes = document.getElementsByName("check");
 
   if (!input.name) {
     error.name = "El nombre es requerido";
-  } else if (!regName.test(input.name)) {
-    error.name = "El nombre es inválido";
   } else if (input.name.length > 20) {
     error.name = "El nombre debe tener menos de 20 caracteres";
   }
@@ -27,17 +28,23 @@ function validate(input) {
 
   if (!input.price) {
     error.price = "El precio es requerido";
-  } else if (!regInteger.test(input.price)) {
-    error.price = "El precio debe ser un número entero";
   } else if (input.price <= 0) {
     error.price = "El precio es inválido";
   } else if (input.price >= 1000) {
+    error.price = "La actividad no puede costar más de U$S 1.000";
+  }
+
+  if (!input.image) {
+    error.image = "La imagen es requerida";
+  } else if (input.image.length >= 1000) {
     error.price = "La actividad no puede costar más de U$S1000";
   }
 
   if (!input.classification) {
     error.classification = "La clasificación es requerida";
-  } else {
+  }
+
+  if (!Object.keys(error).length) {
     let createBtn = document.getElementById("create");
     createBtn.removeAttribute("disabled");
   }
@@ -48,12 +55,15 @@ function firstCap(name) {
   return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
 }
 
-export default function ActivityCreate() {
+export default function ActivityCreate({
+  showCreateActivity,
+  setShowCreateActivity,
+}) {
   const dispatch = useDispatch();
+  const { getAccessTokenSilently} = useAuth0();
   // const activities = useSelector((state) => state.activities);
   // const countries = useSelector((state) => state.allCountries);
   const [error, setError] = useState({});
-  const createBtn = document.getElementById("create");
   const [input, setInput] = useState({
     name: "",
     description: "",
@@ -61,6 +71,8 @@ export default function ActivityCreate() {
     image: "",
     classification: "",
   });
+  const [show, setShow] = useState(false);
+  const handleShow = () => setShow(true);
 
   const handleInputChange = (e) => {
     setInput({
@@ -75,41 +87,30 @@ export default function ActivityCreate() {
     );
   };
 
-  function handleCheck(e) {
-    let checkboxes = document.getElementsByName("check");
-
-    checkboxes.forEach((item) => {
-      if (item.value !== e.target.value) item.checked = false;
-    });
-
-    if (e.target.checked) {
+  const handleSelectCategorias = (e) => {
+    if (e.target.value === "otro") {
+      e.target.value = "default";
+      handleShow();
+    } else {
       setInput({
         ...input,
-        season: e.target.value,
+        classification: e.target.value,
       });
       setError(
         validate({
           ...input,
-          season: e.target.value,
+          classification: e.target.value,
         })
       );
-    } else {
-      setError(
-        validate({
-          ...input,
-          season: "",
-        })
-      );
-
-      createBtn.setAttribute("disabled", true);
     }
-  }
+  };
 
-  function handleSubmit(e) {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // dispatch(postActivity(input));
-    // if(error) alert('The Form is not completed correctly. Try again!');
-
+    const token = await getAccessTokenSilently();
+    console.log('HERE')
+    console.log(token)
+    e.price = parseInt(e.price);
     if (!Object.keys(error).length) {
       setInput({
         name: "",
@@ -118,20 +119,25 @@ export default function ActivityCreate() {
         image: "",
         classification: "",
       });
+      dispatch(getAllActivities());
+      dispatch(createActivities(input, token));
       // Alert bootstrap
-      alert("Activity created!");
+      alert("Actividad creada!");
+    } else {
+      alert(
+        "El formulario no esta completado correctamente, intenta de nuevo!"
+      );
     }
   }
 
-  // useEffect(() => {
-  // 	dispatch(getActivities());
-  // 	dispatch(getCountries());
-  // }, []);
+  const categorias = useSelector((state) => state.categories);
+  useEffect(async () => {
+    const categorias = await dispatch(getCategories());
+  }, []);
 
   return (
     <div>
       <Dashboard />
-      {/* <Link to= '/'><button>Return...</button></Link> */}
       <div className={style.create_container}>
         <h2>Crear una Actividad</h2>
         <hr className={style.create_line} />
@@ -139,32 +145,40 @@ export default function ActivityCreate() {
           onSubmit={(e) => handleSubmit(e)}
           className={style.create_form_container}
         >
-          <div className={style.create_form_container}>
-            <div className={style.create_input_container}>
-              <label className={style.create_label}>
-                <b>Nombre</b>
-              </label>
-              <input
-                type="text"
-                className={style.create_input}
-                value={input.name}
-                name="name"
-                onChange={(e) => handleInputChange(e)}
-              />
-              {/* {error.name ? (<p>{error.name}</p>) : <br />} */}
-            </div>
+          <div className={style.create_input_container}>
+            <label className={style.create_label}>
+              <b>Nombre</b>
+            </label>
+            <input
+              type="text"
+              className={style.create_input}
+              value={input.name}
+              name="name"
+              onChange={(e) => handleInputChange(e)}
+            />
+            {error.name ? (
+              <div className={style.error}>{error.name}</div>
+            ) : (
+              <br />
+            )}
           </div>
           <div className={style.create_textarea_container}>
             <label className={style.create_label}>
               <b>Descripción</b>
             </label>
             <textarea
+              onChange={(e) => handleInputChange(e)}
               name="description"
               cols="20"
               rows="10"
+              value={input.description}
               className={style.create_input_textarea}
             ></textarea>
-            {/* {error.description ? (<p>{error.description}</p>) : <br />} */}
+            {error.description ? (
+              <div className={style.error}>{error.description}</div>
+            ) : (
+              <br />
+            )}
           </div>
           <div className={style.create_input_container}>
             <label className={style.create_label}>
@@ -173,58 +187,59 @@ export default function ActivityCreate() {
             <input
               type="number"
               className={style.create_input}
-              value={input.duration}
+              value={input.price}
               name="price"
               min="0"
               onChange={(e) => handleInputChange(e)}
             />
-            {/* {error.price ? (<p>{error.price}</p>) : <br />} */}
+            {error.price ? (
+              <div className={style.error}>{error.price}</div>
+            ) : (
+              <br />
+            )}
           </div>
-          <div>
-            <label>
-              <b>Clasificación:</b>
-            </label>
-            <label>
-              <span>Familiar</span>
-              <input
-                type="checkbox"
-                name="check"
-                value="Familiar"
-                onChange={(e) => handleCheck(e)}
-              />
-              <span>Crucero</span>
-              <input
-                type="checkbox"
-                name="check"
-                value="Crucero"
-                onChange={(e) => handleCheck(e)}
-              />
-              <span>Pack Short</span>
-              <input
-                type="checkbox"
-                name="check"
-                value="Pack Short"
-                onChange={(e) => handleCheck(e)}
-              />
-              <span>Pack Large</span>
-              <input
-                type="checkbox"
-                name="check"
-                value="Pack Large"
-                onChange={(e) => handleCheck(e)}
-              />
-              <span>Multidestino</span>
-              <input
-                type="checkbox"
-                name="check"
-                value="Multidestino"
-                onChange={(e) => handleCheck(e)}
-              />
-              <span></span>
-            </label>
-            <br />
-            {/* {error.season ? (<p >{error.season}</p>) : <br />} */}
+          <div className={style.create_input_container}>
+            <label className={style.create_label}>Categoria</label>
+            <select
+              name="type"
+              onChange={(e) => handleSelectCategorias(e)}
+              className={style.create_input}
+            >
+              <option
+                value="default"
+                selected={
+                  input.classification === "default" ||
+                  input.classification === ""
+                    ? true
+                    : false
+                }
+                disabled="disabled"
+              >
+                Seleccionar una categoria para la actividad
+              </option>
+              {categorias?.map((el) => (
+                <option
+                  selected={input.classification === el.name ? true : false}
+                  key={el.id}
+                  value={el.name}
+                >
+                  {el.name}
+                </option>
+              ))}
+              <option value="otro">Crear categoria</option>
+            </select>
+            {error.categorie && (
+              <span className={style.error}>{error.categorie}</span>
+            )}
           </div>
+
+          <ModalCategorias
+            show={show}
+            setShow={setShow}
+            setInput={setInput}
+            input={input}
+          />
+
           <br />
           <div
             id="create_images"
@@ -233,10 +248,13 @@ export default function ActivityCreate() {
             <div className={style.create_input_images}>
               <label className={style.create_label}>Imágen</label>
               <input
-                name="main_image"
+                onChange={(e) => handleInputChange(e)}
+                name="image"
                 type="text"
+                value={input.image}
                 className={style.create_input}
               />
+              {error.image && <div className={style.error}>{error.image} </div>}
             </div>
           </div>
           <button
@@ -245,7 +263,7 @@ export default function ActivityCreate() {
             id="create"
             disabled={true}
           >
-            Create Activity
+            Crear actividad
           </button>
         </form>
       </div>

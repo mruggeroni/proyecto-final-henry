@@ -1,13 +1,12 @@
-import { Router } from 'express';
-import { createCategory, getCategories } from '../controllers/CategoriesController.js';
-//import { getCategoriesData } from '../controllers/database/ClassificationControllerData.js';
 
+import { Router } from 'express';
+import { createClassification, getClassification, putClassification } from '../controllers/CategoriesController.js';
+// import { verifyAdminOrSuperAdminPermission, verifyJwt } from '/home/sadnena/pf/proyecto-final-henry/api/Auth/mw.js';
+import { verifyAdminOrSuperAdminPermission, verifyJwt } from '../Auth/mw.js';
 const router = Router();
 
-router.get('/categories', getCategories);
-router.post('/categories', createCategory);
-// RUTAS EXCLUSIVAS PARA CARGAR LOS DATOS A LA DATABASE, SI NECESITA CARGAR LOS DATOS A SU DB LOCAL USE ESTAS RUTAS
-//router.get('/classifications', getCategoriesData)
+router.get('/classification', getClassification);
+router.post('/classification', verifyJwt, verifyAdminOrSuperAdminPermission, createClassification);
+router.put('/classification/:id', verifyJwt, verifyAdminOrSuperAdminPermission, putClassification)
 
-
-export default router;
+export default router; 

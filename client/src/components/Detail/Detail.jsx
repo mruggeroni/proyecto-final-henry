@@ -9,6 +9,9 @@ import {
   getAllActivities,
   getPackageById,
   getRelationated,
+  getCartLocalStorage,
+  getFavoritesLocalStorage,
+  getAllPackage,
 } from "../../redux/actions/index";
 
 export default function Detail() {
@@ -18,12 +21,15 @@ export default function Detail() {
   const packageDetail = useSelector((state) => state.detailPackage);
   const relationatedPackage = useSelector((state) => state.relationated);
   const allActivities = useSelector((state) => state.activities);
+  const favorites = useSelector((state) => state.favorites);
+  const [checkeado, setCheckeado] = useState(false);
 
   useEffect(async () => {
     setLoading(true);
     await dispatch(getPackageById(id));
     await dispatch(getRelationated(id));
     await dispatch(getAllActivities());
+    await dispatch(getFavoritesLocalStorage());
     setLoading(false);
   }, [dispatch]);
   const [loading, setLoading] = useState(false);
@@ -46,6 +52,13 @@ export default function Detail() {
     destinations,
   } = packageDetail;
 
+  function scrollToTop() {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
+
   const [input, setInput] = useState({
     cantidad: 1,
     total: 0,
@@ -67,13 +80,65 @@ export default function Detail() {
     })();
   }, []);
 
+  
+  // useEffect(() => {
+    // console.log(favorites);
+    // console.log(id);
+    // console.log(checkeado);
+    // favorites?.forEach((f) => f.id === parseInt(id) && setCheckeado(true));
+
+    // for (let i = 0; i < favorites.length; i++) {
+    //   if(favorites[i].id === parseInt(id)){
+    //     setCheckeado(true); 
+    //     break;
+    //   }
+    // }
+
+    // console.log(checkeado + ' sofi crack')
+    // console.log('estoy aqui y seguiree')
+  // }, [favorites]);
+  useEffect(() => {
+    favorites?.forEach((f) => f.id === id && setCheckeado(true));
+  }, [favorites]);
+
+  function handleFavorite(e) {
+    setCheckeado(!checkeado);
+
+    if(!checkeado){
+      if(!localStorage.getItem('favorites')) {
+        let favorites = [];
+        favorites.push(packageDetail);
+        localStorage.setItem('favorites', JSON.stringify(favorites));
+        setCheckeado(true);
+      }
+    if (!checkeado) {
+      if (!localStorage.getItem("favorites")) {
+        let favorites = [];
+        favorites.push(packageDetail);
+        localStorage.setItem("favorites", JSON.stringify(favorites));
+      } else {
+        let favorites = JSON.parse(localStorage.getItem("favorites"));
+          favorites.unshift(packageDetail);
+          localStorage.setItem('favorites', JSON.stringify(favorites));
+          setCheckeado(true);
+      }
+    } else {
+      let favorites = JSON.parse(localStorage.getItem("favorites"));
+      console.log(checkeado)
+      let remFav = favorites.filter((f) => {
+        console.log(f.id, packageDetail.id)
+        return f.id !== packageDetail.id;
+      });
+      localStorage.setItem("favorites", JSON.stringify(remFav));
+    }
+    dispatch(getFavoritesLocalStorage());
+  }}
+
   const handleSelectCantidad = (e) => {
-    console.log(e.target.value);
     let totalPaquete = price * e.target.value;
     let actividadesSeleccionadas = [];
     checkboxEstado.forEach((i, index) => {
       if (i === true) {
-        console.log(parseInt(packageDetail.activities[index].price));
         totalPaquete +=
           parseInt(packageDetail.activities[index].price) * e.target.value;
       }
@@ -109,33 +174,52 @@ export default function Detail() {
   }
 
   const navigate = useNavigate();
+  
   const handleBotonRegresar = (e) => {
     e.preventDefault();
-    navigate(-1);
+    // scrollToTop();
+    navigate('/');
+    dispatch(getAllPackage());
+    // dispatch(getPackageById(id)); TENDRIAMOS QUE VER SI CON LOCAL STORAGE SE PUEDE ENCONREAR EK ID  
   };
 
   const handleBotonComprar = (e) => {
     e.preventDefault();
     input.paquete = packageDetail;
-    console.log(input);
+
+    if (!localStorage.getItem("cart")) {
+      let cart = [];
+      cart.unshift(input);
+      localStorage.setItem("cart", JSON.stringify(cart));
+    } else {
+      let cart = JSON.parse(localStorage.getItem("cart"));
+      cart.unshift(input);
+      localStorage.setItem("cart", JSON.stringify(cart));
+    }
+    scrollToTop();
+    dispatch(getCartLocalStorage());
+    setInput({
+      ...input,
+      actividades: [],
+    });
+    dispatch(getPackageById(id));
   };
 
   // para el desmonte del componente
   useEffect(() => {
-    (() => {
-      return async () => {
-        setLoading(true);
-        setInput({});
-        setCheckboxEstado(new Array(10).fill(false));
-        await dispatch(getPackageById(id));
-        await dispatch(getRelationated(id));
-        setTimeout(function () {
-          setLoading(false);
-        }, 10000);
-      };
-    })();
+    return () => {
+      setLoading(true);
+      setInput({});
+      setCheckboxEstado(new Array(10).fill(false));
+      dispatch(getPackageById(1));
+      console.log("entro aca ");
+      dispatch(getRelationated(id));
+      setTimeout(function () {
+        setLoading(false);
+      }, 10000);
+    };
   }, [dispatch, setCheckboxEstado, setInput]);
-
+  console.log('se repite')
   return (
     <div
       style={{
@@ -154,8 +238,11 @@ export default function Detail() {
         ) : (
           <div className={s.contenedor}>
             <div className={s.contenedorBarraSuperior}>
-              <div onClick={(e) => handleBotonRegresar(e)}>Regresar</div>
-              <BotonFav />
+              <div onClick={(e) => handleBotonRegresar(e)}>Home</div>
+              <div onClick={(e) => handleFavorite(e)}>
+                <BotonFav setChecked={setCheckeado} checked={checkeado} id={ parseInt(id) } componente={'detail'} />
+
+              </div>
             </div>
             <div className={s.contenedorDetalles}>
               <h1>{name}</h1>
@@ -166,7 +253,7 @@ export default function Detail() {
               />
               <div className={s.resto}>
                 <h3>
-                  {start_date} / {end_date}
+                  {start_date?.split('-').reverse().join('-')} / {end_date?.split('-').reverse().join('-')}
                 </h3>
                 <h3>U$S {price}</h3>
                 <h3>
@@ -190,7 +277,7 @@ export default function Detail() {
               <label className={s.cantidad} htmlFor="selectCantidad">
                 Cantidad {"    "}
                 <select
-                  onClick={(e) => {
+                  onChange={(e) => {
                     handleSelectCantidad(e);
                   }}
                   name="selectCantidad"
@@ -205,7 +292,7 @@ export default function Detail() {
                   <option value="5">5</option>
                   <option value="6">6</option>
                   <option value="7">7</option>
-                  <option value="1">8</option>
+                  <option value="8">8</option>
                 </select>
               </label>
             </div>

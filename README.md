@@ -1,25 +1,286 @@
-Variables de entorno: DB= "Nombre de la DB" DB_USER= "Usuario de Postgres" DB_PASSWORD= "Pass de Postgres" DB_HOST= "(por defecto es 'localhost')" DB_DIALECT= "(por defecto es 'postgres')" PORT= "(por defecto es '3001')"
+Variables de entorno:
+DB= "Nombre de la DB"
+DB_USER= "Usuario de Postgres"
+DB_PASSWORD= "Pass de Postgres"
+DB_HOST= "(por defecto es 'localhost')"
+DB_DIALECT= "(por defecto es 'postgres')"
+PORT= "(por defecto es '3001')"
 
-RUTAS DISPONIBLES: get "/types" = array con los tipos de Packages
+Usuarios de prueba que se encuentran en la database y en Auth0 para pruebas en front: Solo se debe entrar en la pagina desde front, ingresando el correo y la contraseña de cualquiera que de los dos usuarios. El primero es administrador, el segundo es cliente.
+
+````json
+    {
+        "first_name": "Administrador",
+        "last_name": "Prueba",
+        "email": "sadyirapruebaad@gmail.com",
+        "password" : "Inventado123",
+        "phone": "310-214-9951",
+        "address_line1": "6 Brentwood Place",
+        "address_line2": "null",
+        "city": "Los Angeles",
+        "state": "California",
+        "postal_code": "90045",
+        "country": "United States",
+        "is_admin": "true",
+        "photo": "http://dummyimage.com/162x100.png/5fa2dd/ffffff",
+        "created_date": "2022-07-28 22:41:18",
+        "update_date": "2022-08-01 18:41:15",
+        "destroyTime": "null"
+    },
+    {
+        "first_name": "Cliente",
+        "last_name": "Prueba",
+        "email": "sadyirapruebacl@gmail.com",
+        "password" : "Inventado123",
+        "phone": "310-214-9951",
+        "address_line1": "6 Brentwood Place",
+        "address_line2": "null",
+        "city": "Los Angeles",
+        "state": "California",
+        "postal_code": "90045",
+        "country": "United States",
+        "is_admin": "false",
+        "photo": "http://dummyimage.com/162x100.png/5fa2dd/ffffff",
+        "created_date": "2022-07-28 22:41:18",
+        "update_date": "2022-08-01 18:41:15",
+        "destroyTime": "null"
+    },
+    ```
 
 RUTAS DISPONIBLES:
-get "/packages/featured" = array con paquetes destacados, 3 por defecto, la ruta se puede modificar con un query: "/packages/featured?limit=Numero"
 
-get "/types" = array con los tipos de Packages
+- *GET **"/packages/:limitRender"** => array de paquetes*
 
-get "/on_sale" => array de 3 paquetes aleatorios con la propiedad 'on_sale' > 0 (paquetes con descuentos)
+Varibles que puede recibir (a excepcion de params, son todas opcioneles).
+propiedad duration habilitada.
 
-get "/destinations" = array con los destinos
+```js
+// Incluye paginado, renderizado personalisable y opciones de filtros y odenamientos solapables.
 
-get "/activities" = array con los tipos de actividades
+const { limitRender } = req.params;
+// controla cuantos paquetes trae por pagina.
+// en caso de no ser número, por defecto se setea en 12.
+const { page, priceSort, durationSort, type, region, destination, dateMin, dateMax, available } = req.query;
+// "priceSort" y "durationSort" esperan (asc: para orden ascendente y desc: para orden descendente).
+// "type", "region" y"destination" son sensibles a mayúscula o minúscula (además de las tildes). La busqueda debe ser LITERAL.
+// "dateMin" y "dateMax" forman el rango de busqueda para "start_date" (son string en formato fecha americana: "yyyy-mm-dd").
+// "available" espera true (para paquetes en stock) o false (para paquetes fuera de stock). Por defecto trae ambos.
+const { priceFilterMin, priceFilterMax, durationFilterMin, durationFilterMax } = req.body;
+// son pares que forman un rango de busqueda (en los dos casos son números enteros).
+````
 
-get "/packages" = array con paquetes
+```json
+[
+  {
+    "id": 1,
+    "name": "Nombre",
+    "description": "Descripción.",
+    "main_image": "https://demos.maperez.es/pfhenry/rutaAustralMain.jpg",
+    "images": [
+      "https://demos.maperez.es/pfhenry/rutaAustral1.jpg",
+      "https://demos.maperez.es/pfhenry/rutaAustral2.jpg",
+      "https://demos.maperez.es/pfhenry/rutaAustral3.jpg"
+    ],
+    "price": 4000,
+    "start_date": "2022-08-27",
+    "end_date": "2022-09-17",
+    "seasson": "Invierno",
+    "type": "Pack Large",
+    "featured": true,
+    "available": true,
+    "on_sale": 0,
+    "destinations": [
+      {
+        "name": "Argentina",
+        "region": "Sudamérica"
+      }
+    ],
+    "activities": [
+      {
+        "name": "Tour de Museos",
+        "price": 150
+      }
+    ]
+  }
+]
+```
 
-get "/activities" = array con actividades
+- \*POST **"/user"** => Verifica si el usuario ingresado por el pop(Auth0) es nuevo (se esta registrando) o si ya existe (se esta logeando), en base a eso lo guarda en la Database local con el rol default de client (si es nuevo) o identifica su rol si se esta logeando. Esta ruta responde con un array de dos posiciones ['accion', 'rol'], el primer elemento es un string que indica register o login, si es nuevo usuario saldra 'register' indicando que si bien ya esta registrado, debería brindar información adicional (ver modelo user), de lo contrario saldra 'login', indicando que esto no es necesario. El segundo campo muestra el rol, Admin o Client, que es siempre Client si el primer elemento es register.
+  IMPORTANTE: No probar esta ruta en postman, solo con el login del front ¿Por qué? porque para crear el usuario se esta requiriendo info de Auth0, por lo que se necesita primero que Auth0 verifique al usuario. Esto ya esta conectado (ver component UserPopOut, la función handleLogin, ver actions createUser)
 
-get "/packages/:id" = array con el detalle de un paquete y paquetes recomendados (ver abajo)
+- _GET **"/users"** => para modificar "available", "featured" y "on_sale"_
+
+recibe por query props. opcionales:
+
+```js
+const { limitRender, page, destroyTime, is_admin } = req.query;
+// "limitRender" y "page" controlan la cantidad de usuarios renderizados y la pagina respectivamente.
+// "destroyTime" puede recibir "active" para filtrar por usuarios activos, "deleted" para borrados, una fecha para filtrar los eliminados desde entonces (por defecto devuelve todos los casos)
+// "is_admin" recibe un true o false para filtrar la lista (en caso contrario devuelve ambos tipos de usuarios)
+```
+
+respuesta:
+
+```json
+
+```
+
+- _GET **"/user/:id"** => para traer detalles de un usuario (pensado como pensado usuario)_
+
+incluye el deslose de ordenes de compra del usuario
+
+respuesta:
+
+```json
+{
+  "full_name": "Administrador Prueba",
+  "id": 2,
+  "first_name": "Administrador",
+  "last_name": "Prueba",
+  "nickname": null,
+  "email": "inventado1234sadyira@gmail.com",
+  "phone": "310-214-9951",
+  "city": "Los Angeles",
+  "state": "California",
+  "postal_code": "90045",
+  "photo": "http://dummyimage.com/162x100.png/5fa2dd/ffffff",
+  "orders": [
+    {
+      "id": 5,
+      "date": "2022-09-11",
+      "total_order": "5082.7",
+      "status": "pending",
+      "packages": [
+        {
+          "duration": 10,
+          "name": "Triangulo monumental 10 días desde Barcelona",
+          "description": "descripción.",
+          "main_image": "https://demos.maperez.es/pfhenry/Triangulo%20monumental%2010%20días%20desde%20Barcelona%20-%20main.jpg",
+          "start_date": "2022-11-10",
+          "end_date": "2022-11-20",
+          "seasson": "Otoño",
+          "type": "Multidestino",
+          "featured": false,
+          "on_sale": 0,
+          "order_item": {
+            "quantity": 2,
+            "orderId": 5,
+            "packageId": 14
+          }
+        }
+      ]
+    },
+    {
+      /* ... */
+    },
+    {
+      /* ... */
+    }
+    /* ... */
+  ]
+}
+```
+
+- _GET **"/user/status/:id"** => para verificar si un usuario es admin o no_
+
+incluye propiedad "includeDeleted" por query (opcional) para realizar peticiones o no a usuarios eliminados
+
+respuesta:
+
+```json
+{
+  "email": "oekkel0@tuttocitta.it",
+  "is_admin": false
+}
+```
+
+- _GET **"/packages/orderQuantity/:id"** => para traer la cantidad de total ordenes de un paquete "orderQuantity" (tiene el id del paquete)_
+
+respuesta:
+
+```json
+{
+  "id": 3,
+  "orderQuantity": 5
+}
+```
+
+- _PATCH **"/packages/:id"** => para modificar "available", "featured" y "on_sale"_
+
+Los input por body son opcionales (para mayor flexibilidad al cambiar uno o varios).
+
+```js
+const id = req.params.id;
+const { featured, available, on_sale } = req.body;
+// "featured" y "available" son BOOLEAN.
+// "on_sale" es INTEGER.
+```
+
+- _GET **"/packages/featured"** = array con paquetes destacados, 3 por defecto, la ruta se puede modificar con un query: "/packages/featured?limit=Numero"_
+
+- _GET **"/types"** = array con los tipos de Packages_
+
+- _GET **"/on_sale"** => array de 3 paquetes aleatorios con la propiedad 'on_sale' > 0 (paquetes con descuentos)_
+
+- _GET **"/destinations"** = array con los destinos_
+
+- _GET **"/activities"** = array con actividades_
+
+- _GET **"/classifications"** = array con clasificaciones_
+
+- _GET **"/packages/:id"** = array con el detalle de un paquete y paquetes recomendados (ver abajo)_
+
+post "/packages" = crea paquetes, actividades, destinos y clasificaciones. Tambien acepta todos estos datos preexistentes.
+
+post "/activities" = crea actividades.
+IMPORTANTE: Al crear por separado elegir clasifación preexistente
+
+```json
+{
+  "name": "jsalkdija",
+  "description": "hjjbkhbjhbj",
+  "image": "https://demos.maperez.es/pfhenry/Tour%20de%20Highlights.jpg",
+  "price": 100,
+  "classification": "Familiar"
+}
+```
+
+post "/classification" = crea clasificaciones.
+
+```json
+{
+  "name": "jsalkdija",
+  "image": "https://demos.maperez.es/pfhenry/Tour%20de%20Highlights.jpg"
+}
+```
+
+post "/destinations" = crea destinos.
+
+```json
+{
+  "name": "jsalkdija",
+  "image": "https://demos.maperez.es/pfhenry/Tour%20de%20Highlights.jpg",
+  "region": "Europa Occidental"
+}
+```
+
+put "/packages/id" = puede modificar todas las propiedades de un paquete, con caracteristicas preexistentes o nuevas, si no cambia un atributo, dejar el valor previo. Si se modifica un destino/clasificacion o actividad creando una nueva, esa se guardara para poder ser asignada posteriormente.
+
+put "/destinations/id"
+
+put "/activities/id"
+
+put "/classifications/id"
 
 Get activities: Se ejecuta en la ruta '/activities', se obtiene un objeto con la siguiente estructura:, un array de objetos, en el que cada objeto cuenta con las propiedades: id, name, image, description, price, classificationId, y classification, que a su vez tendra un objeto con el "name" de la clasificación. [ {"id":1, "name":"Tour de Monumentos", "description":"Hola soy una actividad", "image":"https://demos.maperez.es/pfhenry/Tour%20de%20Monumentos.jpg", "price":100, "classificationId":1, "classification":{"name":"Familiar"} }, {"id":3, "name":"Tour de Highlights", "description":"Hola soy una actividad", "image":"https://demos.maperez.es/pfhenry/Tour%20de%20Highlights.jpg", "price":100, "classificationId":1, "classification":{"name":"Familiar"} }, {"id":5, "name":"Tour Gastronomía Nacional", "description":"Hola soy una actividad", "image":"https://demos.maperez.es/pfhenry/Tour%20Gastronomía%20Nacional.jpg", "price":150, "classificationId":1, "classification":{"name":"Familiar"} }]
+
+- _GET **"/deletedPackages"** = retorna un arreglo con los paquetes "Borrados" o en caso de no existir ningun paquete borrado retorna 'No deleted packages found'_
+
+- _DELETE **"/packages"** = ¡¡RECIBE UN 'id' por query (/packages?id=n)!! Borra un paquete y retorna un mensaje 'Package deleted successfully' o en caso de que el paquete que se intente borrar ya haya sido borrado retorna un mensaje 'The package was already deleted'_
+
+GET activities: Se ejecuta en la ruta '/activities', se obtiene un objeto con la siguiente estructura:, un array de objetos, en el que cada objeto cuenta con las propiedades: id, name, image, description, price, classificationId, y classification, que a su vez tendra un objeto con el "name" de la clasificación. [ {"id":1, "name":"Tour de Monumentos", "description":"Hola soy una actividad", "image":"https://demos.maperez.es/pfhenry/Tour%20de%20Monumentos.jpg", "price":100, "classificationId":1, "classification":{"name":"Familiar"} }, {"id":3, "name":"Tour de Highlights", "description":"Hola soy una actividad", "image":"https://demos.maperez.es/pfhenry/Tour%20de%20Highlights.jpg", "price":100, "classificationId":1, "classification":{"name":"Familiar"} }, {"id":5, "name":"Tour Gastronomía Nacional", "description":"Hola soy una actividad", "image":"https://demos.maperez.es/pfhenry/Tour%20Gastronomía%20Nacional.jpg", "price":150, "classificationId":1, "classification":{"name":"Familiar"} }]
+
+> > > > > > > develop
 
 GET Detalle y Get Recomendados, se ejecuetan ambos en la ruta '/packages/:id', se obtiene un array con DOS (2) elementos, en los cuales el primer elemento es el paquete requerido por ID (DETALLE), y el segundo elemento es un array con TRES (3) objetos, en el que cada objeto es un paquete recomendado con relación al paquete mostrado en detalle.
 
@@ -29,6 +290,7 @@ IMPORTANTE: La estructura en la que deben enviar el paquete por body, la cual se
 Post Paquete/actividad/clasificación/destino:
 La estructura en la que deben enviar los datos es un objeto con todas las propiedades del paquete (name, type, etc), teniendo en cuenta que la propiedad destino es un array de objetos, cada objeto del array con las propiedades (name, image). La propiedad activities que es un array de objetos, cada objeto con las propiedades de la actividad (name, description, price, etc), teniendo en cuenta que la propiedad classification es un objeto con las propiedades (name, image).
 
+```JSON
 {
 "name": "Japón, Corea del Sur y China, un viaje al antiguo oriente",
 "price": 3000,
@@ -65,7 +327,8 @@ La estructura en la que deben enviar los datos es un objeto con todas las propie
 "image": "https://demos.maperez.es/pfhenry/Tour%20de%20Highlights.jpg",
 "classification": {"name":"Nichos",
 "image": "https://www.pngitem.com/pimgs/m/411-4110616_spirited-away-hd-png-download.png"
-}}]
+}}]}
+```
 
 Get featured: Se ejecuta en la ruta /, se obtiene un array de objetos, estos objetos son paquetes cuya propiedad 'featured' es true.
 [
@@ -353,3 +616,68 @@ GET packages (ordenamiento por precio, default los muestra por precio descendien
 GET packages (ordenamiento por precio, default los muestra por precio descendiente), se encuentra en la ruta '/packages', para ordenar ascendente el precio '/packages?price=ASC', para ordenar descendente el precio '/packages?price=DESC'.
 
 Devuelve un array con todos los paquetes, cada paquete posee la estructura siguiente: { "id": 1, "name": "Grecia Peninsular 7 días desde Atenas", "description": "Viaje de 7 días por la región continental de Grecia con guías en español. Salimos hacia la región de Tesalia en el norte de Grecia, para visitar los Monasterios de Meteora. El siguiente destino es Delfos, sede del oráculo más importante de la antigüedad. Continuamos con la visita de la mítica Atenas, emblema universal del mundo clásico. Continuamos dirección sur por el Peloponeso para conocer Corinto, Micenas, luego Olimpia, cuna de los Juegos Olímpicos y el espléndido Teatro de Epidauro.", "main_image": "https://demos.maperez.es/pfhenry/Grecia%20Peninsular%207%20días%20desde%20Atenas%20-%20main.jpg", "images": [ "https://demos.maperez.es/pfhenry/Grecia%20Peninsular%207%20días%20desde%20Atenas%20-%201.jpg", "https://demos.maperez.es/pfhenry/Grecia%20Peninsular%207%20días%20desde%20Atenas%20-%202.jpg", "https://demos.maperez.es/pfhenry/Grecia%20Peninsular%207%20días%20desde%20Atenas%20-%203.jpg" ], "price": 1000, "start_date": "2022-08-15", "end_date": "2022-08-22", "region": "Europa Central", "seasson": "Verano", "type": "Pack Large", "featured": false, "available": true, "on_sale": 10, "activities": [ { "name": "Tour de Highlights", "classification": { "name": "Familiar" }, "Package_Activity": { "createdAt": "2022-07-24T13:00:50.887Z", "updatedAt": "2022-07-24T13:00:50.887Z", "packageId": 1, "activityId": 1 } }, { "name": "Tour de Museos", "classification": { "name": "Familiar" }, "Package_Activity": { "createdAt": "2022-07-24T13:00:52.342Z", "updatedAt": "2022-07-24T13:00:52.342Z", "packageId": 1, "activityId": 3 } } ], "destinations": [ { "name": "Grecia", "Package_Destination": { "createdAt": "2022-07-24T13:00:50.008Z", "updatedAt": "2022-07-24T13:00:50.008Z", "packageId": 1, "destinationId": 8 } } ] },
+
+- *GET **'/deletedUsers'** = Devuelve un arreglo con los usuarios que fueron 'eliminados' *
+
+- *PATCH **'/restoreUser/:id'** = Restaura el usuario indicado mediante el 'id' *
+
+- *PUT **'/user/:id'** = Actualiza propiedades del usuario indicado mediante el 'id'
+  ```json
+  {
+    "first_name": "Olia",
+    "last_name": "Ekkel",
+    "nickname": null,
+    "email": "oekkel0@tuttocitta.it",
+    "phone": "310-214-9951",
+    "city": "Los Angeles",
+    "state": "California",
+    "postal_code": "90045",
+    "photo": "http://dummyimage.com/162x100.png/5fa2dd/ffffff"
+  }
+  ```
+  En el Json de arriba se muestran todas las propiedades que pueden modificarse (ASI ES COMO DEBEN ENVIAR LA INFO DESDE EL FRONT).*
+
+- *PATCH **'/user/:id'** = Actualiza la propiedad 'is_admin 'del usuario indicado mediante el 'id'
+  ```json
+  {
+	  "is_admin": true
+	}
+  ```
+  En el Json de arriba se muestra la forma en que se debe enviar la info desde el FRONT.
+ *
+
+- *DELETE **'/user/:id'** = Elimina el usuario indicado mediante el 'id' *
+
+- *POST **'/favourites/:id'** = Añade un paquete a los favoritos de un usuario.
+  Cómo uso esta ruta? --> Es necesario enviar el 'id' del packete en el endPoint (/user/'idPackete'). Tambien es necesario que envien en el token del usuario mediante 'headers' --> Ejemplo con sintaxis diferente a la usada en el bootcamp: 
+  ```js
+  axios({
+    method: '', // <--- aqui insertan el tipo de peticion 'get', 'delete', 'post', 'patch'
+    url: '', // <--- aqui la url: /favourites/${idDelPackete}
+    data: {}, // <--- aqui envian la info por body
+    headers: {'authorization': `Bearer ${token}`} //<--- aqui es donde envian la info por header y debeser enviadade esa forma ({'authorization': `Bearer ${token}`})
+    //Esta exlicacion se debe a que en la peticiones de tipo post/put/patch puede ocurrir una confucion y en vez de enviar el token por 'headers' la envien por body y asi explota todo.
+  })
+  ```
+- *GET **'/favourites'** = retorna un array con todos los packetes favoritos de un usuario.
+  Cómo uso esta ruta? --> Es necesario enviar el token del usuario mediante 'headers' --> Ejemplo:
+  ```js
+  //FORMA 1
+  axios.get('/favourites', {headers: {'authorization': `Bearer ${token}`}})
+  //FORMA 2
+  axios({
+    method: '',
+    url: '',
+    headers: {'authorization': `Bearer ${token}`}
+  })
+  ```
+*
+- * DELETE **'/favourites/:id'** = Elimina de favoritos el packete indicado mediante el 'id'.
+  Cómo uso esta ruta? --> ¡¡VER EJEMPLO DE LA RUTA DE POST '/favourites/:id'!!
+*
+- * POST **'/rating/:id'** = Agrega rating a un paquete. Para usar esta ruta es necesario enviar el id del paquete y el rating mediante query! --> Ejemplo (/rating/3?rating=5)
+*
+- * GET **'/rating/:id'** = Devuelve el rating de un paquete. Para usar esta ruta es necesario enviar el id del paquete.
+*
+- * DELETE **/rating/:id** = Elimina el rating de un paquete. Para usar esta ruta es necesario enviar el id del paquete.
+*

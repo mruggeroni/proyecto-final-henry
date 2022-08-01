@@ -36,7 +36,8 @@ img {
 }
 
 .hide {
-  display: none;
+  display: inline-block;
+  visibility: hidden;
   z-index: 1000;
 }
 
@@ -45,6 +46,7 @@ img {
   margin-right: 2vw;
   z-index: 1;
   /* color: black; */
+  margin-top: 2vw;
 }
 
 .price h3 {
@@ -73,6 +75,12 @@ img {
   z-index: 1;
 }
 
+.date h3{
+  /* display: flex;
+  flex-direction: row; */
+  font-size: 1.5vw;
+}
+
 .card:hover .rectangle {
   width: 16vw;
   position: absolute;
@@ -83,7 +91,8 @@ img {
 }
 
 .card:hover .hide {
-  display: inline-block;
+  /* display: inline-block; */
+  visibility: visible;
   color: #fafafa;
   z-index: 4;
   margin-top: 2vw;
@@ -96,6 +105,11 @@ img {
   display: initial;
   margin-top: 2vw;
   animation: fade_in_show 2s;
+}
+
+.card:hover::after .price{
+  animation: fade_in_show 10s;
+  transition: color .3s ease-in-out, box-shadow .3s ease-in-out;
 }
 
 .textDeco:link {
@@ -126,7 +140,7 @@ img {
 
 @media (max-width: 1100px) {
   .card h3 {
-    font-size: 3vw;
+    font-size: 2.5vw;
     margin: 0;
   }
   .card h5 {
@@ -139,8 +153,8 @@ img {
     margin: auto;
     margin-left: 0;
     margin-right: 0;
-    width: 30vw;
-    height: 25vw;
+    /* width: 30vw;
+    height: 25vw; */
   }
 
   .cardBody {
@@ -172,9 +186,10 @@ img {
   }
 }
 
-@media (max-width: 865px) {
+@media (max-width: 925px) {
   .card h3 {
     font-size: 3vw;
+    margin-bottom: 0.5vw;
   }
   .cardBody h5 {
     display: none;
