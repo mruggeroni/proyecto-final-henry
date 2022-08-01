@@ -6,8 +6,9 @@ import UserEdit from "../UserEdit/UserEdit";
 import { NavLink } from "react-router-dom";
 import { createUser } from "../../redux/actions/index";
 import { useDispatch, useSelector } from "react-redux";
+import s from "./PopUps.module.css";
 
-export default function UserPopOut() {
+export default function UserPopOut({ showProfile, setShowProfile }) {
   const dispatch = useDispatch();
   const {
     isAuthenticated,
@@ -27,57 +28,49 @@ export default function UserPopOut() {
     // .classList.toggle(`${style.open_profile}`);
   }
 
-  const handleLogin = async () => {
-    await loginWithPopup();
-    const token = await getAccessTokenSilently();
-    await dispatch(createUser(token));
-  };
+  // const handleLogin = async () => {
+  //   await loginWithPopup();
+  //   const token = await getAccessTokenSilently();
+  //   await dispatch(createUser(token));
+  // };
 
-  return !isAuthenticated ? (
-    <div onClick={handleLogin} className={style.nav_item}>
-      <BsPersonPlusFill />
-    </div>
-  ) : (
-    <div className={style.profile_container}>
-      <button id="menuProfile" onClick={handleClick} className={style.userIcon}>
-        <img
-          id="user_popout"
-          src={
-            user.photo
-              ? user.photo
-              : "https://img.wattpad.com/8f19b412f2223afe4288ed0904120a48b7a38ce1/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f776174747061642d6d656469612d736572766963652f53746f7279496d6167652f5650722d38464e2d744a515349673d3d2d3234323931353831302e313434336539633161633764383437652e6a7067?s=fit&w=720&h=720"
-          }
-          alt={`Hi ${user.name}`}
-          className={
-            user.photo ? style.nav_item_profile : style.nav_item_profileError
-          }
-        />
-      </button>
+  function handleClickUser(e){
+    setShowProfile(false);
+  }
+
+  return (
+    !showProfile ? null :
+    <div className={s.popUpInside}>
       <div
         id="profile_container"
-        className={`${style.user_profile_container} ${
-          showUser ? style.open_profile : null
-        }`}
+        className={`${s.open_favorite} ${s.user_container}`}
       >
-        <img src={user.photo} alt={user.name} />
-        <p>{user.name}</p>
-        <hr className={style.create_line} />
-        <div className={style.user_profile_menu}>
-          <div>
+      <div>
+        <img src={ user.photo
+                    ? user.photo
+                    : "https://imgur.com/PabChcV.jpg"
+                } className={s.user_image} alt={user.full_name} />
+        <h3 className={s.favTitle}>{user.full_name}</h3>
+        <hr className={s.user_line} />
+        <div className={s.user_profile_link}>
+          {/* <div> */}
+          <div className={s.user_btn}>
             <UserEdit />
-            <NavLink to="/dashboard" className={style.user_btn}>
-              Dashboard
-            </NavLink>
-            <NavLink to="./" className={style.user_btn}>
-              Servicio al Cliente
-            </NavLink>
-            {/* <p></p> */}
           </div>
+          <NavLink to="/dashboard" className={s.user_btn} onClick={handleClickUser}>
+            Dashboard
+          </NavLink>
+          <NavLink to="./" className={s.user_btn} onClick={handleClickUser}>
+            Servicio al Cliente
+          </NavLink>
+            {/* <p></p> */}
+          {/* </div> */}
         </div>
         <hr />
-        <button className={style.user_profile_btn} onClick={logout}>
+        <button className={s.user_profile_btn} onClick={logout}>
           Logout
         </button>
+      </div>
       </div>
     </div>
   );

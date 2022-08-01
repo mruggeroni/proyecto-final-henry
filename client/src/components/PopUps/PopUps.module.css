@@ -1,68 +1,80 @@
-.tabNav {
-    width: 20%;
-}
-
-/* .popUpContainer {
-  width: 50%;
-  background-color: #000;
-  border-bottom: none;
-  position: fixed;
-  right: 0;
-  top: 1.5vw;
-  flex-direction: row;
-  justify-content: space-between;
-  color: #fff;
-  font-size: 2rem;
-  text-decoration: none;
-  cursor: pointer;
-  z-index: 1000;
-} */
 .popUpContainer {
   display: flex;
+  flex-direction: row;
   justify-content: flex-end;
   position: fixed;
-  width: 100%;
-  align-items: center;
-  /* background-color: #000; */
-  /* border-bottom: none; */
-  /* right: 100; */
-  left: 80px;
-  top: 1.5vw;
-  /* flex-direction: row; */
-  /* justify-content: space-between; */
+  width: auto;
+  top: 22px;
   color: #fff;
-  font-size: 2rem;
+  font-size: 2.3vw;
   text-decoration: none;
   cursor: pointer;
   z-index: 1000;
+  right: 10px;
 }
+
+.eachIcon{
+  margin-right: 70px;
+  margin-top: 0;
+  margin-bottom: 0;
+  position: static;
+}
+
+.eachIcon_img_container {
+  width: 35px;
+  height: 35px;
+  margin-right: 70px;
+  margin-top: 0;
+  margin-bottom: 0;
+  position: static;
+}
+
+.eachIcon_img {
+  width: 35px;
+  height: 35px;
+  border-radius: 100%;
+}
+
 .open_favorite {
   position: absolute;
-  height: 90vh;
-  top: 45px;
-  left: 70vh;
+  top: 49px;
+  right: 30px;
+  width: 28.4vw;
   display: flex;
   flex-direction: column;
-  align-items: center;
   visibility: visible;
   /* margin-right: 1.06vw; */
   margin-top: 1.3vw;
   color: black;
   font-size: 1.5vw;
   background-color: #e4eaea;
-  overflow-y: auto;
+  text-align: center;
+  box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24),
+    0 17px 50px 0 rgba(0, 0, 0, 0.19);
 }
 
 .allFavorite_btn {
   z-index: 988;
   border: none;
   width: 90%;
-  background-color: #e4eaea;
+  background-color: #fafafa;
   font-size: 1.3vw;
   padding: 2%;
   text-decoration: none;
-  margin: auto;
-  margin-bottom: 2vw;
+  margin-bottom: 1vw;
+}
+
+.userIcon img{
+  background-color: transparent;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  z-index: 999;
+  border-radius: 100%;
+}
+
+.userIcon{
+  margin-left: 5vw;
 }
 
 .allFavorite_btn:hover {
@@ -70,42 +82,26 @@
   color: #fafafa;
 }
 
-/* .user_profile_container {
-  position: absolute;
-  top: 90px;
-  right: 20px;
-  box-shadow: 0 2px 2px #161616;
-  width: 28.4vw;
-  /* height: 50vh; */
-/* display: none;
-  padding: 15px 0;
-  visibility: hidden;
-  background-color: #fafafa;
-  margin-right: 9vw;
-
-} */
-
-.profile_container {
-  position: relative;
-}
 
 .user_profile_container {
   z-index: 990;
   position: absolute;
-  top: 90px;
+  /* top: 90px; */
+  top: 45px;
   right: 20px;
   box-shadow: 0 2px 2px #161616;
   width: 28.4vw;
-  display: none;
   padding: 15px 0;
-  visibility: hidden;
+  /* visibility: hidden; */
   background-color: #fafafa;
   margin-right: 9vw;
+  margin-top: 1.3vw;
 }
 
 .favTitle {
   font-size: 1.5vw;
   color: black;
+  margin-top: 1vw;
 }
 
 .favIcon {
@@ -114,19 +110,76 @@
   cursor: pointer;
 }
 
+.user_btn {
+  display: block;
+  text-decoration: none;
+  color: #000;
+  font-size: 22px;
+  /* margin: 10px auto; */
+  margin: 10px;
+  /* margin-bottom: 5px; */
+}
 
-/* .tabNav {
-  top: 0;
-  width: 28.4vw;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  color: black;
-  padding: 1%;
-  
-  visibility: hidden;
+.user_btn:hover {
+  color: #000;
+}
+
+.user_line {
+  width: 95%;
+  border: none;
+  height: 2px;
+  margin: auto;
+  opacity: 100%;
+  background-color: #4a9eaa;
+}
+
+.user_image {
+  z-index: 999;
+  width: 80px;
+  height: 80px;
+  border-radius: 40px;
+  margin-bottom: 10px;
+}
+
+.user_container {
+  /* margin: auto; */
+  padding: 20px 0;
+}
+
+.user_profile_btn {
+  z-index: 988;
+  border: none;
+  display: block;
+  width: 100%;
   background-color: #e4eaea;
-  box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24),
-  0 17px 50px 0 rgba(0, 0, 0, 0.19);
-margin-right: 1.06vw;
-} */
+  font-size: 1.7vw;
+  margin-top: 1vw;
+  padding: 2%;
+}
+
+.user_profile_btn:hover {
+  background-color: #949797;
+}
+
+.noPaq{
+  width: 90%;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  height: 13vw;
+  text-decoration: none;
+}
+
+.sadFace{
+  font-size: 5vw;
+}
+
+.vacioPaq{
+  margin-top: 1vw;
+  font-size: 1.3vw;
+  text-decoration: none;
+}
+
+.noPaq:hover{
+  color: black;
+}

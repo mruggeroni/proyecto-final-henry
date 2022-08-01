@@ -81,52 +81,58 @@ export default function Detail() {
   }, []);
 
   
-  useEffect(() => {
-    console.log(favorites);
-    console.log(id);
-    console.log(checkeado);
+  // useEffect(() => {
+    // console.log(favorites);
+    // console.log(id);
+    // console.log(checkeado);
     // favorites?.forEach((f) => f.id === parseInt(id) && setCheckeado(true));
 
-    for (let i = 0; i < favorites.length; i++) {
-      if(favorites[i].id === parseInt(id)){
-        setCheckeado(true); 
-        break;
-      }
-    }
+    // for (let i = 0; i < favorites.length; i++) {
+    //   if(favorites[i].id === parseInt(id)){
+    //     setCheckeado(true); 
+    //     break;
+    //   }
+    // }
 
-    console.log(checkeado + ' sofi crack')
-    console.log('estoy aqui y seguiree')
+    // console.log(checkeado + ' sofi crack')
+    // console.log('estoy aqui y seguiree')
+  // }, [favorites]);
+  useEffect(() => {
+    favorites?.forEach((f) => f.id === id && setCheckeado(true));
   }, [favorites]);
 
   function handleFavorite(e) {
+    setCheckeado(!checkeado);
+
     if(!checkeado){
       if(!localStorage.getItem('favorites')) {
         let favorites = [];
         favorites.push(packageDetail);
         localStorage.setItem('favorites', JSON.stringify(favorites));
         setCheckeado(true);
-    if (!checked) {
+      }
+    if (!checkeado) {
       if (!localStorage.getItem("favorites")) {
         let favorites = [];
         favorites.push(packageDetail);
         localStorage.setItem("favorites", JSON.stringify(favorites));
       } else {
         let favorites = JSON.parse(localStorage.getItem("favorites"));
-        if (favorites?.filter((f) => f.id !== packageDetail.id)) {
           favorites.unshift(packageDetail);
           localStorage.setItem('favorites', JSON.stringify(favorites));
           setCheckeado(true);
-        }
       }
     } else {
       let favorites = JSON.parse(localStorage.getItem("favorites"));
+      console.log(checkeado)
       let remFav = favorites.filter((f) => {
+        console.log(f.id, packageDetail.id)
         return f.id !== packageDetail.id;
       });
       localStorage.setItem("favorites", JSON.stringify(remFav));
     }
     dispatch(getFavoritesLocalStorage());
-  }
+  }}
 
   const handleSelectCantidad = (e) => {
     let totalPaquete = price * e.target.value;
@@ -168,11 +174,13 @@ export default function Detail() {
   }
 
   const navigate = useNavigate();
+  
   const handleBotonRegresar = (e) => {
     e.preventDefault();
     // scrollToTop();
-    navigate("/");
+    navigate('/');
     dispatch(getAllPackage());
+    // dispatch(getPackageById(id)); TENDRIAMOS QUE VER SI CON LOCAL STORAGE SE PUEDE ENCONREAR EK ID  
   };
 
   const handleBotonComprar = (e) => {
@@ -211,7 +219,7 @@ export default function Detail() {
       }, 10000);
     };
   }, [dispatch, setCheckboxEstado, setInput]);
-
+  console.log('se repite')
   return (
     <div
       style={{
@@ -349,11 +357,10 @@ export default function Detail() {
             <div className={s.tituloDestacados}>
               Quizas tambien te interesen estos paquetes!!
             </div>
-            {/* <CardGenericContainer listCards={relationatedPackage} /> */}
+            <CardGenericContainer listCards={relationatedPackage} />
           </div>
         )}
       </div>
     </div>
   );
 }
-

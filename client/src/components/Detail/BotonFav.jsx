@@ -18,7 +18,7 @@ export default function BotonFav({ setChecked, checked, id, componente }) {
         return checked;
         } else return true;
       }
-
+      console.log(checked)
     return (
         <div>
             <label className={s.heart_switch}>

@@ -19,8 +19,7 @@ export default function UserEdit() {
   };
 
   const handleShow = () => setShow(true);
-  const [showProfile, setShowProfile] = useState(true);
-  const [showSettings, setShowSettings] = useState(false);
+
   const [render, setRender] = useState('');
 
   const handleShowProfile = () => {

@@ -27,10 +27,10 @@ export default function Dashboard() {
   return (
     <div className={style.dashboard_container}>
       <div className={style.dashboard_panel}>
-        <div className={style.dashboard_panel_title}>
-          <h1>Dashboard</h1>
-          <hr className={style.create_line} />
-        </div>
+      {/* <div className={style.dashboard_panel_title}>
+        <h1>Dashboard</h1>
+        <hr className={style.dashboard_line} />
+      </div> */}
         <NavLink to="/dashboard/packages" className={style.links_item}>
           Crear paquete
         </NavLink>
