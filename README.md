@@ -634,3 +634,37 @@ Devuelve un array con todos los paquetes, cada paquete posee la estructura sigui
  *
 
 - *DELETE **'/user/:id'** = Elimina el usuario indicado mediante el 'id' *
+
+- *POST **'/favourites/:id'** = Añade un paquete a los favoritos de un usuario.
+  Cómo uso esta ruta? --> Es necesario enviar el 'id' del packete en el endPoint (/user/'idPackete'). Tambien es necesario que envien en el token del usuario mediante 'headers' --> Ejemplo con sintaxis diferente a la usada en el bootcamp: 
+  ```js
+  axios({
+    method: '', // <--- aqui insertan el tipo de peticion 'get', 'delete', 'post', 'patch'
+    url: '', // <--- aqui la url: /favourites/${idDelPackete}
+    data: {}, // <--- aqui envian la info por body
+    headers: {'authorization': `Bearer ${token}`} //<--- aqui es donde envian la info por header y debeser enviadade esa forma ({'authorization': `Bearer ${token}`})
+    //Esta exlicacion se debe a que en la peticiones de tipo post/put/patch puede ocurrir una confucion y en vez de enviar el token por 'headers' la envien por body y asi explota todo.
+  })
+  ```
+- *GET **'/favourites'** = retorna un array con todos los packetes favoritos de un usuario.
+  Cómo uso esta ruta? --> Es necesario enviar el token del usuario mediante 'headers' --> Ejemplo:
+  ```js
+  //FORMA 1
+  axios.get('/favourites', {headers: {'authorization': `Bearer ${token}`}})
+  //FORMA 2
+  axios({
+    method: '',
+    url: '',
+    headers: {'authorization': `Bearer ${token}`}
+  })
+  ```
+*
+- * DELETE **'/favourites/:id'** = Elimina de favoritos el packete indicado mediante el 'id'.
+  Cómo uso esta ruta? --> ¡¡VER EJEMPLO DE LA RUTA DE POST '/favourites/:id'!!
+*
+- * POST **'/rating/:id'** = Agrega rating a un paquete. Para usar esta ruta es necesario enviar el id del paquete y el rating mediante query! --> Ejemplo (/rating/3?rating=5)
+*
+- * GET **'/rating/:id'** = Devuelve el rating de un paquete. Para usar esta ruta es necesario enviar el id del paquete.
+*
+- * DELETE **/rating/:id** = Elimina el rating de un paquete. Para usar esta ruta es necesario enviar el id del paquete.
+*

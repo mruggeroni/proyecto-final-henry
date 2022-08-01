@@ -4,16 +4,29 @@ import { OrderItem } from "../models/OrderItems.js";
 import { Package } from '../models/Packages.js';
 import { Op } from "sequelize";
 
-
 export const getOrders = async (req, res) => {
-	const { userId, status } = req.query;
+
+	const {user, status} = req.query;
+
+	let filter = {status: {[Op.not]: 'shopping cart'}}
+
+	if (status && !user) filter = {
+		status: {
+			[Op.and]: [{
+				[Op.not]: 'shopping cart',
+				[Op.eq]: status
+			}]
+		}
+	};
+
+	if (!status && user) filter = {
+		status: {
+			[Op.not]: 'shopping cart',
+		},
+		userId: user,
+	};
 	
-	let filter = { status: { [Op.not]: 'shopping cart', } };
-	let statusFilter = status;
-	if (statusFilter === 'shopping cart') statusFilter = null;
-	if (statusFilter && !userId) filter = { status: statusFilter };
-	if (!statusFilter && userId) filter = { status: { [Op.not]: 'shopping cart' }, userId };
-	if (statusFilter && userId) filter = { status: statusFilter, userId };
+	if (status && user) filter = {status: status, userId: user};
 	
 	try {
 		const page = parseInt(req.query.page) || 1;
