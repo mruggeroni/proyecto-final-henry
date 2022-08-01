@@ -1,15 +1,14 @@
 .paginado {
+  width: 100%;
   display: flex;
-  flex-direction: row;
-  list-style-type: none;
   justify-content: center;
-  justify-content: space-evenly;
-  margin-right: 2vw;
-  margin-left: 1vw;
+  align-items: center;
+  margin-bottom: 20px;
+  list-style: none;
 }
 
 .container {
-  background-color: #e4eaea;
+  /* background-color: #e4eaea; */
   backdrop-filter: blur(10px);
   height: 3.5vw;
   padding: 0;
@@ -17,39 +16,45 @@
 }
 
 .number {
+  list-style: none;
   text-align: center;
-  margin: 0.8vw;
-  transition: all 0.5s;
+  padding: 3px;
+  margin: 0.8vw 1.2vw;
+  color: #000;
+  cursor: pointer;
+  background-color: #e4eaea;
+  border-radius: 100px;
+  width: 2vw;
+  height: 100%;
+  border: none;
+  cursor: pointer;
 }
 
 .selectedNum {
   text-align: center;
+  padding: 3px;
   margin: 0.8vw;
   color: ivory;
   cursor: pointer;
-  transition: 0.5s;
   background-color: #4a9eab;
   border-radius: 100px;
+  border: none;
   width: 2vw;
   height: 100%;
 }
 
 .number:hover {
-  color: #4a9eab;
-  cursor: pointer;
-}
-
-.number a {
-  transition: background-color 0.3s;
-  border-radius: 100%;
-  padding: 0.5vw;
+  background-color: #b4b6b6;
+  list-style: none;
+  /* transition: background-color 0.3s; */
 }
 
 /*.number a:hover:not(.active) {background-color: #826b676e;}
 */
-.number a {
-  border-radius: 100%;
-}
+/* .paginado_btn, */
+/* .number a { */
+  /* border-radius: 100%; */
+/* } */
 
 /*.number a.active {
   border-radius: 100%;

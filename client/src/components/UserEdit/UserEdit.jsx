@@ -19,6 +19,9 @@ export default function UserEdit() {
   };
 
   const handleShow = () => setShow(true);
+
+  const [render, setRender] = useState('');
+
   const handleShowProfile = () => {
     setShowProfile(true);
     setShowSettings(false);
@@ -56,7 +59,7 @@ export default function UserEdit() {
                 </div>
             </div>
             <div className={s.profile_menu_item}>
-                <MyProfile user={user} showProfile={showProfile} setShowProfile={setShowProfile} />
+                <MyProfile user={user} setRender={setRender} showProfile={showProfile} setShowProfile={setShowProfile} />
                 <Settings user={user} showSettings={showSettings} setShowSettings={setShowSettings} />
             </div>
         </div>
