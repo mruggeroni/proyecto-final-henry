@@ -18,7 +18,8 @@ import {
 } from "./../../redux/actions/index";
 import Paginado from "../Paginado/paginado";
 import s from "./Search.module.css";
-import style from "./Select.module.css";
+import { BsArrowBarDown, BsArrowBarUp } from "react-icons/bs";
+import { VscChevronDown, VscChevronUp } from "react-icons/vsc";
 
 export default function FilteredSearch() {
   const dispatch = useDispatch();
@@ -124,6 +125,8 @@ export default function FilteredSearch() {
 
   const [loading, setLoading] = useState(false);
 
+  const [mostrar, setMostrar] = useState(false);
+
   useEffect(async () => {
     setLoading(true);
     await dispatch(getAllPackage(10000));
@@ -157,21 +160,19 @@ export default function FilteredSearch() {
       ) : (
         <div>
           <div className={s.view}>
-            <SortPrice setOrder={setOrder} setCurrentPage={setCurrentPage} />
-            <div>
+            <div
+              className={
+                mostrar ? s.contenedorFiltros : s.contenedorFiltrosEsconder
+              }
+            >
               <label>
-                Filtrados
-                <select
-                  id="searchDestinations"
-                  className={style.select}
-                  onChange={(e) => handleChange(e)}
-                >
+                <select id="searchDestinations" className={s.create_input}>
                   <option
                     value=""
                     selected={estadoDestino === "" ? true : false}
                     disabled="disabled"
                   >
-                    Filtrar por destino
+                    Destinos
                   </option>
                   <option
                     selected={estadoDestino === "all" ? true : false}
@@ -192,16 +193,16 @@ export default function FilteredSearch() {
               </label>
               <label>
                 <select
+                  className={s.create_input}
                   id="searchType"
-                  className={style.select}
                   onChange={(e) => handleChange(e)}
                 >
                   <option
-                    selected={filtradoType === "" ? false : true}
+                    selected={filtradoType === "" ? true : false}
                     value="all"
                     disabled
                   >
-                    Filtrado por tipo
+                    Tipo
                   </option>
                   <option
                     selected={filtradoType === "all" ? false : true}
@@ -220,35 +221,37 @@ export default function FilteredSearch() {
                   ))}
                 </select>
               </label>
-              <input
-                type="date"
-                id="from"
-                value={fechaDesde}
-                min={dataNow}
-                // disabled={destination === "x"}
-                onChange={(e) => handleChange(e)}
-                className={style.form_date}
-              />
-              <input
-                type="date"
-                id="until"
-                value={untilDate}
-                min={fechaDesde ? fechaDesde : dataNow}
-                // disabled={destination === "x"}
-                onChange={(e) => handleChange(e)}
-                className={style.form_date}
-              />
-
-              <label htmlFor="">
-                Precio minimo
+              <div className={s.create_input_date}>
+                <input
+                  type="date"
+                  id="from"
+                  value={fechaDesde}
+                  min={dataNow}
+                  // disabled={destination === "x"}
+                  onChange={(e) => handleChange(e)}
+                  className={s.create_input}
+                />
+              </div>
+              <div className={s.create_input_date}>
+                <input
+                  type="date"
+                  id="until"
+                  value={untilDate}
+                  min={fechaDesde ? fechaDesde : dataNow}
+                  // disabled={destination === "x"}
+                  onChange={(e) => handleChange(e)}
+                  className={s.create_input}
+                />
+              </div>
+              <label>
                 <select
                   id="precioDesde"
-                  className={style.select}
+                  className={s.create_input}
                   onChange={(e) => handleChange(e)}
                 >
                   <option
                     value=""
-                    selected={estadoPrecioMin === 0 ? true : false}
+                    selected={estadoPrecioMin === "" ? true : false}
                     disabled="disabled"
                   >
                     Precio minimo
@@ -292,12 +295,11 @@ export default function FilteredSearch() {
                   </option>
                 </select>
               </label>
-              <label htmlFor="">
-                Precio maximo:
+              <label>
                 <select
                   id="precioHasta"
-                  className={style.select}
                   onChange={(e) => handleChange(e)}
+                  className={s.create_input}
                 >
                   <option
                     value=""
@@ -341,9 +343,27 @@ export default function FilteredSearch() {
                   </option>
                 </select>
               </label>
-              <button id="reset" onClick={(e) => handleChange(e)}>
+              <button
+                className={s.create_btn}
+                id="reset"
+                onClick={(e) => handleChange(e)}
+              >
                 Reiniciar Filtros
               </button>
+            </div>
+          </div>
+          <div className={s.contenedorOrdenar}>
+            <SortPrice setOrder={setOrder} setCurrentPage={setCurrentPage} />
+            <div onClick={() => setMostrar(!mostrar)}>
+              filtros
+              <VscChevronDown
+                className={s.flechaFiltros}
+                display={mostrar ? "none" : true}
+              />
+              <VscChevronUp
+                className={s.flechaFiltros}
+                display={mostrar ? true : "none"}
+              />
             </div>
             <View
               currentPackage={currentPackage}

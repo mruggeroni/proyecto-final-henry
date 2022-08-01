@@ -22,7 +22,7 @@ import {
   ORDENAR,
   DELETE_USER,
   UPDATE_USER,
-  GET_USER_BY_ID
+  GET_USER_BY_ID,
 } from "./../actions/index.js";
 
 import {
@@ -63,7 +63,7 @@ const initialState = {
   filtradoDestino: "",
   filtradoDateMin: "",
   filtradoDateMax: "",
-  priceFilterMin: 0,
+  priceFilterMin: "",
   priceFilterMax: 1000000,
 };
 
@@ -73,7 +73,7 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         allPackages: action.payload,
-        filteredPackages: action.payload,
+        // filteredPackages: action.payload,
       };
 
     case GET_ALL_DESTINATIONS:
