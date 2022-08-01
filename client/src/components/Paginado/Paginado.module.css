@@ -3,6 +3,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-wrap: wrap;
   margin-bottom: 20px;
   list-style: none;
 }
@@ -61,3 +62,26 @@
   background-color: #826b676e;
 /*}
 /*como hago para que quede current page seleccionada??*/
+
+@media (max-width: 1200px) {
+  .selectedNum,
+  .number {
+    width: 3vw;
+  }
+  .container {
+    height: 5vw;
+  }
+}
+
+@media (max-width: 760px) {
+  .selectedNum,
+  .number {
+    width: 5vw;
+  }
+  .paginado {
+    justify-content: flex-start;
+  }
+  .container {
+    height: 5vw;
+  }
+}
