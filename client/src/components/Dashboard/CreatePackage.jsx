@@ -14,11 +14,13 @@ import Dashboard from "./Dashboard";
 import validationPackage from "./validationPackage.js";
 import ModalActividades from "./ModalActividades";
 import ModalDestinos from "./ModalDestinos";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export default function CreatePackage({
   showCreatePackage,
   setShowCreatePackage,
 }) {
+  const { getAccessTokenSilently} = useAuth0();
   const dispatch = useDispatch();
   const [aux, setAux] = useState(false);
   useEffect(() => {
@@ -188,8 +190,10 @@ export default function CreatePackage({
     });
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const token = await getAccessTokenSilently();
+    console.log(token)
     input.images = [input.images0, input.images1, input.images2];
     input.price = parseInt(input.price);
     input.on_sale = parseInt(input.on_sale);
@@ -217,7 +221,8 @@ export default function CreatePackage({
         "Presta mas atencion al completar el formulario y volve a intentar ;)"
       );
     } else {
-      dispatch(createPackage(input));
+      
+      dispatch(createPackage(input, token));
       alert("Nuevo paquete creado..");
       setInput({
         name: "",

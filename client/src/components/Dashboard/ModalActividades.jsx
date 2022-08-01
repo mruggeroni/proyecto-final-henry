@@ -3,6 +3,7 @@ import Modal from "react-bootstrap/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import validateActivity from "./validationActivity";
 import { Formik } from "formik";
+import { useAuth0 } from "@auth0/auth0-react";
 import * as yup from "yup";
 import { Button, Col, Form, InputGroup, Row } from "react-bootstrap";
 import {
@@ -11,7 +12,6 @@ import {
   getAllDestinations,
   getCategories,
 } from "../../redux/actions";
-
 const schema = yup.object().shape({
   name: yup
     .string()
@@ -34,7 +34,7 @@ const schema = yup.object().shape({
 
 export default function ModalActividades({ show, setShow, setInput, input }) {
   const dispatch = useDispatch();
-
+  const { getAccessTokenSilently} = useAuth0();
   const handleClose = () => {
     setShow(false);
     // setInputModal({
@@ -52,7 +52,8 @@ export default function ModalActividades({ show, setShow, setInput, input }) {
 
   const handleCrearActividad = async (e) => {
     e.price = parseInt(e.price);
-    const respuesta = await dispatch(crearActividad(e));
+    const token = await getAccessTokenSilently();
+    const respuesta = await dispatch(crearActividad(e, token));
     await dispatch(getAllDestinations());
     await dispatch(getAllActivities());
     setShow(false);
