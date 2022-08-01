@@ -63,7 +63,17 @@
 /*}
 /*como hago para que quede current page seleccionada??*/
 
-@media (max-width: 1200px) {
+@media (max-width: 1300px) {
+  .selectedNum,
+  .number {
+    width: 2.5vw;
+  }
+  .container {
+    height: 5vw;
+  }
+}
+
+@media (max-width: 1050px) {
   .selectedNum,
   .number {
     width: 3vw;
@@ -73,10 +83,10 @@
   }
 }
 
-@media (max-width: 760px) {
+@media (max-width: 780px) {
   .selectedNum,
   .number {
-    width: 5vw;
+    width: 4vw;
   }
   .paginado {
     justify-content: flex-start;

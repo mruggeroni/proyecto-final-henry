@@ -4,30 +4,15 @@ import s from './MyProfile.module.css';
 import { validations } from "./validations";
 import axios from 'axios';
 import { getUserById, updateUser } from "../../../../redux/actions";
-export default function MyProfile({ setRender, showProfile, setShowProfile }) {
+export default function MyProfile({ showProfile, setShowProfile }) {
 
     const dispatch = useDispatch();
     const user = useSelector( (state) => state.user );
-   /*  const user = {
-        first_name: 'Ezequiel',
-        last_name: 'Bamio',
-        phone: 1136457522,
-        address_line1: '',
-        city: 'Buenos Aires',
-        state: '',
-        postal_code: 2200,
-        country: 'Argentina',
-        email: 'eze@gmail.com',
-        photo: 'https://www.avesdeuruguay.com/cres.jpg'
-    } */
     const [errors, setErrors] = useState({})
     const [input, setInput] = useState({...user});
     const [imagen, setImagen] = useState("");
     const [loading, setLoading] = useState(false);
     const [archivo, setArchivo] = useState("");
-  
-    // useEffect( () => {
-    // const [archivo, setArchivo] = useState("");
 
     useEffect( async () => {
         await dispatch(getUserById(user.id))

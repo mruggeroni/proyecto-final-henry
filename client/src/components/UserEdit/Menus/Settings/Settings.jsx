@@ -4,23 +4,9 @@ import { MdBuild } from 'react-icons/md';
 import { useSelector } from "react-redux";
 import s from './Settings.module.css';
 
-export default function Settings({ user, showSettings, setShowSettings }) {
-  // const user = useSelector( (state) => state.user );
-  // console.log(user)
-  /* const user = {
-    first_name: 'Ezequiel',
-    last_name: 'Bamio',
-    phone: 1136457522,
-    address_line1: '',
-    city: 'Buenos Aires',
-    state: '',
-    postal_code: 2200,
-    country: 'Argentina',
-    email: 'eze@gmail.com',
-    image: ''
-  } */
+export default function Settings({ showSettings, setShowSettings }) {
 
-
+  const user = useSelector( (state) => state.user );
   const [input, setInput] = useState({
     email: '',
     currentPassword: '',
