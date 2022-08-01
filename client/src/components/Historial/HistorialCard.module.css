@@ -1,0 +1,32 @@
+.cardHistorial {
+    position: relative;
+    margin: auto;
+    margin-top: 4vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    color: black;
+    width: 90%;
+    border: none;
+    background-color: #fafafa;
+    box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24),
+      0 17px 50px 0 rgba(0, 0, 0, 0.19);
+  }
+
+  .cardBodyHistorial {
+    margin: auto;
+    margin-left: 3vw;
+    width: 50%;
+    z-index: 1;
+    word-wrap: break-word;
+    color: black;
+  }
+  
+  .cardBodyHistorial h3 {
+    font-size: 2vw;
+    color: black;
+  }
+  
+  .cardBodyHistorial h5 {
+    font-size: 1.2vw;
+  }

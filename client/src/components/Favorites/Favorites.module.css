@@ -3,8 +3,14 @@
   margin-top: 10vw;
 }
 
+.favTitle{
+  text-align: center;
+  margin-bottom: 3vw;
+}
+
 .sort{
-  margin-left: 6vw;
+  margin: 5vw;
+  margin-top: 3vw;
 }
 
 .eachCard > * {
@@ -12,7 +18,9 @@
 }
 
 .eachCard{
-  width: 50%;
+  width: 40%;
+  margin: auto;
+  margin-top: 4vw;
 }
 
 .cardContainer{
@@ -21,6 +29,11 @@
   flex-wrap: wrap;
   text-align: center;
   margin-bottom: 5vw;
+}
+
+.noHay{
+  margin: auto;
+  margin-top: 5vw;
 }
 
 @media (max-width: 1000px) {

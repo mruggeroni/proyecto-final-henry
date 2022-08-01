@@ -75,7 +75,7 @@ export const getUserDetail = async (req, res) => {
 		const idUser = parseInt(id);
 
 		const user = await User.findByPk(idUser, {
-			include: {
+			/* include: {
 				model: Order,
 				attributes: {
 					exclude: ['userId'],
@@ -102,7 +102,7 @@ export const getUserDetail = async (req, res) => {
 						attributes: ['quantity'],
 					},
 				},
-			},
+			}, */
 			attributes: {
 				exclude: [
 					'password', 
