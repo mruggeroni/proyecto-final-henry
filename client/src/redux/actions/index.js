@@ -120,13 +120,12 @@ export const createPackage = (payload, token) => {
 export const createUser = (payload) => {
   return async function (dispatch) {
     try {
-      
       const res = await axios.post("/user", {
         headers: {
           authorization: `Bearer ${payload}`,
         },
       });
-      return dispatch({ type: POST_USER, payload: res.data[0] });
+      return dispatch({ type: POST_USER, payload: res.data });
     } catch (e) {
       alert(e.message);
     }

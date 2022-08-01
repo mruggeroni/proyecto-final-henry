@@ -14,9 +14,8 @@ export default function ListUsers() {
     // console.log(e);
     if (prompt(`Para borrar el paquete escribe '${nombre}'`) === nombre) {
       const token = await getAccessTokenSilently()
-      dispatch(borrarUsuario(id, token))
+      dispatch(deleteUser(id, token))
       dispatch(getUsers(token));
-      console.log(res)
       alert("El paquete se borro");
     } else {
       alert("El paquete no se borro");
@@ -24,12 +23,17 @@ export default function ListUsers() {
   };
 
   useEffect(() => {
-     const token = await getAccessTokenSilently()
-      if(!users.length) {
-    
-          dispatch(getUsers(token))
-      }
-  }, [dispatch]);
+    // declare the data fetching function
+    const fetchData = async () => {
+      const token = await getAccessTokenSilently()
+      dispatch(getUsers(token))
+    }
+  
+    // call the function
+    fetchData()
+      // make sure to catch any error
+      .catch(console.error);
+  }, [dispatch])
 
   return (
     <div>

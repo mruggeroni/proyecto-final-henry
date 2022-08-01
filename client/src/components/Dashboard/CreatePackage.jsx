@@ -439,7 +439,7 @@ export default function CreatePackage({
           />
 
           {input.destinations
-            .sort(function (a, b) {
+            ?.sort(function (a, b) {
               if (a > b) {
                 return 1;
               }
