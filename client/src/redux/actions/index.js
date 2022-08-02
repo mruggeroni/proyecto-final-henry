@@ -146,10 +146,13 @@ export const getUsers = (token) => {
   };
 };
 
-export const getUserById = (id) => {
+export const getUserById = (id, token) => {
   return async function (dispatch) {
     try {
-      const res = await axios.get("/user/" + id);
+      const res = await axios.get("/user/" + id, {
+        headers: {
+          authorization: `Bearer ${token}`,
+        }});
       return dispatch({ type: GET_USERS, payload: res.data });
     } catch (error) {
       console.log(error);
