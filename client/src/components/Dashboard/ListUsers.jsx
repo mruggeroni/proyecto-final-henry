@@ -2,8 +2,9 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteUser, getUsers } from "../../redux/actions";
 import Dashboard from "./Dashboard";
-import s from "./Table.module.css";
+import { MdDelete } from 'react-icons/md';
 import { useAuth0 } from "@auth0/auth0-react";
+import s from "./Table.module.css";
 
 export default function ListUsers() {
   const dispatch = useDispatch();
@@ -79,7 +80,7 @@ export default function ListUsers() {
                           )}
                         </td>
                         <td>
-                          <button onClick={(e) => handleDelete(e, u.id, u.first_name) } className={s.fl_table_btn}>Delete</button>
+                          <button onClick={(e) => handleDelete(e, u.id, u.first_name) } className={s.fl_table_btn}><MdDelete /></button>
                         </td>
                       </tr>
                     );

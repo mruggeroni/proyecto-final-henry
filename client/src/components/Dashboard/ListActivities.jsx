@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { getAllActivities } from "../../redux/actions";
+import { AiFillEdit } from 'react-icons/ai';
 import Dashboard from "./Dashboard";
 import s from "./Table.module.css";
 
@@ -47,7 +48,7 @@ export default function ListActivities() {
                             to={`/dashboard/modifyActivities/${a.id}`}
                             className={s.fl_table_btn}
                           >
-                            Editar
+                            <AiFillEdit />
                           </NavLink>
                           {/* <button className={s.fl_table_btn}>Delete</button> */}
                         </td>

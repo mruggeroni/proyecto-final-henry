@@ -23,6 +23,7 @@ import {
   DELETE_USER,
   UPDATE_USER,
   GET_USER_BY_ID,
+  GET_FAVORITES
 } from "./../actions/index.js";
 
 import {
@@ -135,31 +136,37 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
       };
+
     case POST_USER:
       return {
         ...state,
         user: action.payload,
       };
+
     case GET_USERS:
       return {
         ...state,
         users: action.payload,
       };
+
     case DELETE_USER:
       return {
         ...state,
         users: {},
       };
+
     case UPDATE_USER:
       return {
         ...state,
         user: action.payload,
       };
+
     case GET_USER_BY_ID:
       return {
         ...state,
         user: action.payload,
       };
+
     case ORDER_BY_PRICE:
       let sortPrice =
         action.payload === "minPrice"
@@ -206,6 +213,7 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         filteredPackages: aux,
       };
+
     case FILTER_PACKAGES_BY_DATE:
       let filteredPackagesDate = [];
       state.filteredPackages.forEach((p) =>
@@ -217,6 +225,7 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         filteredPackages: filteredPackagesDate,
       };
+
     case GET_ALL_CATEGORIES:
       let sortCategories = action.payload.sort(function (a, b) {
         if (a.name > b.name) return 1;
@@ -228,17 +237,26 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         categories: sortCategories,
       };
+
     case GET_PK_REGION:
       return {
         ...state,
         filteredPackages: action.payload,
       };
+
     case GET_LOCAL_STORAGE_FAVORITES:
       let localStorageFav = JSON.parse(localStorage.getItem("favorites"));
       return {
         ...state,
         favorites: localStorageFav,
       };
+
+    case GET_FAVORITES:
+      return {
+        ...state,
+        favorites: action.payload
+      };
+
     case GET_LOCAL_STORAGE_CART:
       let localStorageCart = JSON.parse(localStorage.getItem("cart"));
       return {

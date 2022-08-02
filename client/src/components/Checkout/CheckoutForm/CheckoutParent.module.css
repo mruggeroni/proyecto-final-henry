@@ -52,7 +52,7 @@
     opacity: 100%;
     margin: 20px 5px;
     background-color: #000;
-    transition: 1s;
+    transition: 0.1s;
 }
 
 .icons_line_complete {

@@ -6,18 +6,18 @@ export const validations = (input) => {
     if(!input.last_name) {
         errors.last_name = 'El campo del apellido no puede estar vacio';
     }
-    if(!input.phone) {
-        errors.phone = 'El campo del telefono no puede estar vacio';
-    }
-    if(!input.city) {
-        errors.city = 'El campo de la ciudad no puede estar vacio';
-    }
-    if(!input.state) {
-        errors.state = 'El campo del estado no puede estar vacio';
-    }
-    if(!input.postal_code) {
-        errors.postal_code = 'El campo del codigo postal no puede estar vacio';
-    }
+    // if(!input.phone) {
+    //     errors.phone = 'El campo del telefono no puede estar vacio';
+    // }
+    // if(!input.city) {
+    //     errors.city = 'El campo de la ciudad no puede estar vacio';
+    // }
+    // if(!input.state) {
+    //     errors.state = 'El campo del estado no puede estar vacio';
+    // }
+    // if(!input.postal_code) {
+    //     errors.postal_code = 'El campo del codigo postal no puede estar vacio';
+    // }
 
     return errors;
 }

@@ -6,6 +6,7 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import { Button, Col, Form, InputGroup, Row } from "react-bootstrap";
 import { getCategories, modificarCategoria } from "../../redux/actions";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const schema = yup.object().shape({
   name: yup
@@ -23,6 +24,7 @@ export default function ModalCategoriaModificar({
   id,
 }) {
   const dispatch = useDispatch();
+  const { getAccessTokenSilently} = useAuth0();
 
   const handleClose = () => {
     setShowModificar(false);
@@ -35,9 +37,10 @@ export default function ModalCategoriaModificar({
   const categorias = useSelector((state) => state.categories);
 
   const handleSubmit = async (e) => {
+    const token = await getAccessTokenSilently()
     // const respuesta = await dispatch(createCategories(e));
     // await dispatch(getAllDestinations());
-    const respuesta = await dispatch(modificarCategoria(id, e));
+    const respuesta = await dispatch(modificarCategoria(id, e, token));
     await dispatch(getCategories());
 
     setShowModificar(false);
