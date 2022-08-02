@@ -57,10 +57,10 @@ export default function UserPopOut({ showProfile, setShowProfile }) {
           <div className={s.user_btn}>
             <UserEdit />
           </div>
-          <NavLink to="/dashboard" className={s.user_btn} onClick={handleClickUser}>
+          <NavLink to="/dashboard" className={s.user_btn} onClick={ () => handleClickUser() }>
             Dashboard
           </NavLink>
-          <NavLink to="./" className={s.user_btn} onClick={handleClickUser}>
+          <NavLink to="./" className={s.user_btn} onClick={ () => handleClickUser() }>
             Servicio al Cliente
           </NavLink>
             {/* <p></p> */}
