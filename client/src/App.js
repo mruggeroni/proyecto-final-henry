@@ -20,6 +20,10 @@ import CheckoutParent from './components/Checkout/CheckoutForm/CheckoutParent.js
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import ListCategories from "./components/Dashboard/ListCategories.jsx";
+import Privacy from "./components/Information/Privacy.jsx";
+import Terms from "./components/Information/Terms.jsx";
+import Faq from "./components/Information/Faq.jsx";
+import Error404 from "./components/Error404/Error404.jsx";
 
 function App() {
   return (
@@ -43,6 +47,9 @@ function App() {
           path="/dashboard/modifyActivities/:id"
           element={<ModifyActivity />}
         />
+        <Route path="/terms-and-conditions" element={<Terms />} />
+        <Route path="/faq" element={<Faq />} />
+        <Route path="/privacy" element={<Privacy />} />
         <Route path="/search" element={<Search />} />
         <Route path="/profile" element={<Home />} />
         <Route path="/detail/:id" element={<Detail />} />
@@ -53,7 +60,7 @@ function App() {
         <Route path="/faq" element={<Home />} />
         <Route path="/contact" element={<Home />} />
         <Route path='/createaccount' element={<CreateAccountModal />} />
-        <Route path="*" element={<Home />} />
+        <Route path="*" element={<Error404 />} />
       </Routes>
     </BrowserRouter>
   );
