@@ -70,7 +70,6 @@ export const getOrders = async (req, res) => {
 	};
 };
 
-
 export const getOrderDetail = async (req, res) => {
 	const orderId = parseInt(req.params.id);
 
@@ -93,6 +92,84 @@ export const getOrderDetail = async (req, res) => {
 		return res.status(400).json({ message: error.message });
 	};
 };
+
+export const createOrder = async (req, res) => {
+
+	const { userId, packagesId, quantitiesPackages, total_order } = req.body;
+
+	try {
+		const user = await User.findByPk(userId, {
+			include: [{
+				model: Order,
+				include: {
+					model: OrderItem,
+				},
+				include: {
+					model: Package,
+				},
+			}],
+		});
+
+		const order = await Order.create({
+			total_order,
+		});
+
+		const paquetes = await Package.findAll({
+			where: {
+				id: packagesId,
+			}
+		});
+
+		order.setPackages(paquetes, {
+			through: OrderItem,
+		});
+
+		user.addOrders(order);
+
+		await Order.findByPk(order.id);
+
+		await Promise.all(packagesId.map((packageId, index) => {
+			return OrderItem.update({
+				quantity: quantitiesPackages[index],
+			}, {
+				where: {
+					[Op.and]: [{
+						orderId: order?.id,
+					}, {
+						packageId,
+					}],
+				},
+			}).catch(err => console.log(err.message));
+		}));
+
+		return res.status(201).json({ message: 'Cart created successfully' });
+	} catch (error) {
+		return res.status(500).json({ error: error.message });
+	}
+}
+
+export const getCart = async (req, res) => {
+	const orderId = parseInt(req.params.id);
+
+	try {
+		const cart = await Order.findOne({
+			where: {
+				id: orderId,
+				status: 'shopping cart',
+			},
+			include: [
+				{ model: User },
+				{ model: Package },
+			]
+		});
+
+		! cart 
+		? res.status(404).json({ message: 'Cart not found' })
+		: res.status(200).json(cart)
+	} catch (error) {
+		return res.status(500).json({ error: error.message });
+	}
+}
 
 export const patchStatusOrder = async (req, res) => {
 	const orderId = parseInt(req.params.orderId);

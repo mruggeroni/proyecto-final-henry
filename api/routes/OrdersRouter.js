@@ -8,7 +8,9 @@ import {
 	createCart,
 	updateCart,
 	patchStatusCart,
-	deleteCart
+	deleteCart,
+	getCart,
+	createOrder
 } from '../controllers/OrdersController.js';
 
 const router = Router();
@@ -17,6 +19,9 @@ const router = Router();
 router.get('/orders', getOrders);
 router.get('/orders/:id', getOrderDetail);
 router.patch('/order/:orderId', patchStatusOrder);
+
+router.get('/cart/:id', getCart); // Devuelve una orden solo si su status es 'shopping cart0
+router.post('/order', createOrder); // para sustituir a createCart
 
 router.get('/carts/:userId', getCarts);
 router.post('/cart/:userId', createCart);
