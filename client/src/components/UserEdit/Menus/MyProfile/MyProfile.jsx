@@ -4,6 +4,8 @@ import s from './MyProfile.module.css';
 import { validations } from "./validations";
 import axios from 'axios';
 import { getUserById, updateUser } from "../../../../redux/actions";
+import { useAuth0 } from "@auth0/auth0-react";
+
 export default function MyProfile({ showProfile, setShowProfile }) {
 
     const dispatch = useDispatch();
