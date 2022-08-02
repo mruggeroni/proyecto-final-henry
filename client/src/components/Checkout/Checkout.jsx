@@ -58,7 +58,7 @@ export default function CheckoutCart(){
                     <CreateAccount showSettings={showCreateAccount} setShowSettings={setShowCreateAccount} />
                 </div>
             </div>
-            : cart.length ?
+            : cart?.length ?
             <div className={s.carrouselTravel}>
                <Carousel
                 main_image={cart.length && cart[0].paquete.main_image}

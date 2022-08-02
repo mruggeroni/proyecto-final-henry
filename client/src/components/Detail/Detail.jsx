@@ -120,6 +120,7 @@ export default function Detail() {
     //     localStorage.setItem('favorites', JSON.stringify(favorites));
     //     setCheckeado(true);
     //   }
+    packageDetail.image = packageDetail.main_image;
           
     if(checkeado){
       let favorites = JSON.parse(localStorage.getItem("favorites"));

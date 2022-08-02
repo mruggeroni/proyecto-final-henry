@@ -4,6 +4,7 @@ import s from './PaymentDetails.module.css';
 import { validations } from "./validations";
 import axios from 'axios';
 import { getUserById } from "../../../../redux/actions";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export default function PaymentDetails({ showPaymentDetails, setShowPaymentDetails }) {
 
@@ -11,20 +12,38 @@ export default function PaymentDetails({ showPaymentDetails, setShowPaymentDetai
     const user = useSelector( (state) => state.user );
     const [errors, setErrors] = useState({})
     const [input, setInput] = useState({...user});
-  
-    useEffect( async () => {
-        await dispatch(getUserById(user.id))
-        setInput({...user})
-    }, [user])
 
-    const handleChange = (e) => {
-        e.preventDefault();
+    const {
+        getAccessTokenSilently,
+      } = useAuth0();
+  
+
+    // useEffect(() => {
+    //     // declare the data fetching function
+    //     const fetchData = async () => {
+    //         const token = getAccessTokenSilently();
+    //         console.log(input)
+    //         console.log(user)
+    //         dispatch(getUserById(user.id, token))
+    //         setInput({...user})
+    //     }
+    //       // call the function
+    //     fetchData()
+    //       // make sure to catch any error
+    //       .catch(console.error);
+    //   }, [])
+
+    // const handleChange = (e) => {
+    //     e.preventDefault();
         
-    };
+    // };
+
+    const handleChange = async (e) => {
+        e.preventDefault();
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-               
     }
   
   return (

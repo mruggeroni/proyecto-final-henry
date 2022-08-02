@@ -20,10 +20,11 @@ img {
 .cardBody {
   margin: auto;
   margin-left: 3vw;
-  width: 50%;
-  z-index: 1;
-  word-wrap: break-word;
+  z-index: 5;
+  /* word-wrap: break-word; */
+  width: 40vw;
   color: black;
+  background-color: #fafafa;
 }
 
 .cardBody h3 {
@@ -35,18 +36,23 @@ img {
   font-size: 1.2vw;
 }
 
-.hide {
-  display: inline-block;
-  visibility: hidden;
+.both{
+  display: flex;
+  flex-direction: row;
   z-index: 1000;
 }
 
+.hide {
+  visibility: hidden;
+  width: 50%;
+}
+
 .price {
-  /* display: none; */
-  margin-right: 2vw;
+  visibility: visible;
+  margin-right: 4vw;
   z-index: 1;
-  /* color: black; */
   margin-top: 2vw;
+  width: 50%;
 }
 
 .price h3 {
@@ -65,8 +71,10 @@ img {
   border: none;
   z-index: 0;
   transform: translate(0, 0);
-  transition: all 1s ease-in-out 250ms;
+  transition: all 1s cubic-bezier(1, 0.96, 0, 0.01) 250ms;
   text-align: right;
+  position: absolute;
+  right: 0;
 }
 
 .rightGroup {
@@ -76,14 +84,11 @@ img {
 }
 
 .date h3{
-  /* display: flex;
-  flex-direction: row; */
   font-size: 1.5vw;
 }
 
 .card:hover .rectangle {
   width: 16vw;
-  position: absolute;
   top: 0;
   right: 0;
   text-align: right;
@@ -104,12 +109,9 @@ img {
   color: #fafafa;
   display: initial;
   margin-top: 2vw;
-  animation: fade_in_show 2s;
-}
-
-.card:hover::after .price{
-  animation: fade_in_show 10s;
-  transition: color .3s ease-in-out, box-shadow .3s ease-in-out;
+  margin-right: 2vw;
+  /* animation: fade_in_show 2s;
+  animation-delay: 5s; */
 }
 
 .textDeco:link {
@@ -175,6 +177,12 @@ img {
   }
 
   .rightGroup {
+    flex-direction: column-reverse;
+    justify-content: space-around;
+    text-align: center;
+  }
+
+  .both{
     flex-direction: column-reverse;
     justify-content: space-around;
     text-align: center;

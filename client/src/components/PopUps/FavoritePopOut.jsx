@@ -40,7 +40,7 @@ export default function FavoritesPopOut({ showProfile, setShowProfile }) {
     <div className={s.popUpInside}>
       <div id="favorite_container" className={s.open_favorite}>
         <div>
-          <h3 className={s.favTitle}>Mis Favoritos ({favorites && favorites?.length})</h3>
+          <h3 className={s.favTitle}>Mis Favoritos ({favorites ? favorites.length : '0'})</h3>
           <hr />
           <div className={style.user_profile_link}>
             {favorites?.length ?

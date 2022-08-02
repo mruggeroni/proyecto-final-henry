@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BsPersonPlusFill } from "react-icons/bs";
 import style from "./User.module.css";
 import { useAuth0 } from "@auth0/auth0-react";
 import UserEdit from "../UserEdit/UserEdit";
 import { NavLink } from "react-router-dom";
-import { createUser } from "../../redux/actions/index";
+import { createUser, getAllFavorites, postFavorites } from "../../redux/actions/index";
 import { useDispatch, useSelector } from "react-redux";
 import s from "./PopUps.module.css";
 
@@ -17,25 +17,27 @@ export default function UserPopOut({ showProfile, setShowProfile }) {
     getAccessTokenSilently,
   } = useAuth0();
   const user = useSelector( (state) => state.user )
+  const favorites = useSelector( (state) => state.favorites )
   const [showUser, setShowUser] = useState(false);
 
-  function handleClick(e) {
-    e.preventDefault();
-    setShowUser(!showUser);
-    // if (e.target.id === "menuProfile") {
-    // document
-    // .getElementById("profile_container")
-    // .classList.toggle(`${style.open_profile}`);
-  }
-
-  // const handleLogin = async () => {
-  //   await loginWithPopup();
-  //   const token = await getAccessTokenSilently();
-  //   await dispatch(createUser(token));
-  // };
+  useEffect(async () => {
+    const token = await getAccessTokenSilently();
+    // dispatch(getAllFavorites(token));
+    console.log(isAuthenticated);
+    if(isAuthenticated){
+      console.log('hellouuu')
+      favorites.forEach((f) => dispatch(postFavorites(f.id, token)))
+      console.log('baiiiii')
+      dispatch(getAllFavorites(token));
+      localStorage.removeItem('favorites');
+    }else{
+      favorites.forEach((f) => dispatch(postFavorites(f.id, token)));
+      localStorage.removeItem('favorites');
+    }
+}, [dispatch])
 
   function handleClickUser(e){
-    setShowProfile(false);
+    setShowProfile(!showProfile);
   }
 
   return (

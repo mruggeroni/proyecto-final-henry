@@ -4,6 +4,11 @@ import s from './MyProfile.module.css';
 import { validations } from "./validations";
 import axios from 'axios';
 import { getUserById, updateUser } from "../../../../redux/actions";
+import Swal from 'sweetalert2'
+import { useAuth0 } from "@auth0/auth0-react";
+
+    
+
 export default function MyProfile({ showProfile, setShowProfile }) {
 
     const dispatch = useDispatch();
@@ -13,11 +18,24 @@ export default function MyProfile({ showProfile, setShowProfile }) {
     const [imagen, setImagen] = useState("");
     const [loading, setLoading] = useState(false);
     const [archivo, setArchivo] = useState("");
+    const {
+        getAccessTokenSilently,
+      } = useAuth0();
 
-    useEffect( async () => {
-        await dispatch(getUserById(user.id))
-        setInput({...user})
-    }, [user])
+    useEffect(() => {
+        // declare the data fetching function
+        const fetchData = async () => {
+            const token = await getAccessTokenSilently();
+            // console.log(user.id)
+            await dispatch(getUserById(user.id, token))
+            setInput({...user})
+        }
+      
+        // call the function
+        fetchData()
+          // make sure to catch any error
+          .catch(console.error);
+      }, [dispatch])
 
     useEffect( () => {
         return () => {
@@ -48,28 +66,51 @@ export default function MyProfile({ showProfile, setShowProfile }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if(window.confirm('Seguro desea modificar los datos?')) {
-            let resUpdated;
-            if(archivo[0]) {
-                const files = e.target.files;
-                const data = new FormData();
-                data.append("file", archivo[0]);
-                data.append("upload_preset", "emhwd5ue");
-                const res = await axios.post(
-                  "https://api.cloudinary.com/v1_1/duie0xk67/image/upload",
-                  data
-                );
-                resUpdated = await dispatch(updateUser(user.id, {...input, photo: res.data.secure_url}));
-            } else {
-                resUpdated = await dispatch(updateUser(user.id, input));
+        if(input.first_name !== user.first_name || input.last_name !== user.last_name){
+
+            Swal.fire({
+                title: 'Estas seguro que desea modificar sus datos?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Guardar'
+              }).then(async (result) => {
+                if (result.isConfirmed) {
+                    let resUpdated;
+                    if (archivo[0]) {
+                        const files = e.target.files;
+                        const data = new FormData();
+                        data.append("file", archivo[0]);
+                        data.append("upload_preset", "emhwd5ue");
+                        const res = await axios.post(
+                            "https://api.cloudinary.com/v1_1/duie0xk67/image/upload",
+                            data );
+                        resUpdated = await dispatch(updateUser(user.id, { ...input, photo: res.data.secure_url }));
+                    } else {
+                        resUpdated = await dispatch(updateUser(user.id, input));
+                    }
+                Swal.fire(
+                    'Datos actualizados!',
+                    'Se actualizaron tus datos correctamente!',
+                    'success'
+                )
+                setTimeout(() => {
+                    // reset page
+                    console.log(input.id)
+                    dispatch(getUserById(user.id))
+                    setShowProfile(true)
+                }, 0);
+                setShowProfile(false)
             }
-            setTimeout(() => {
-                // reset page
-                dispatch(getUserById(user.id))
-                setShowProfile(true)
-            }, 0);
-            setShowProfile(false)            
+            })
+        } else {
+            Swal.fire({
+                title: 'Ingresa datos diferentes',
+                confirmButtonColor: '#4a9eab'
+            })
         }
+    }
 
     const handleClickImage = async (e) => {
         e.preventDefault();
@@ -89,8 +130,6 @@ export default function MyProfile({ showProfile, setShowProfile }) {
         }
         alert('Debes seleccionar una imagen');
     }
-
-    };
   
   return (
     !showProfile ? null
@@ -181,7 +220,7 @@ export default function MyProfile({ showProfile, setShowProfile }) {
         }
         </div>
         
-        <button onClick={handleSubmit} disabled={Object.keys(errors).length} className={s.profile_btn_save}>Guardar cambios</button>
+        <button onClick={handleSubmit} className={s.profile_btn_save}>Guardar cambios</button>
         </div>
         </form>
     </div>
