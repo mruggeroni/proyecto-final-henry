@@ -1,15 +1,17 @@
 import React from "react";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { AiOutlineHeart } from "react-icons/ai";
 import style from "./User.module.css";
 import s from "./PopUps.module.css";
 import Card from "../Favorites/FavoriteCard.jsx";
 import { HiOutlineEmojiSad } from "react-icons/hi";
+import { getPackageById } from "../../redux/actions";
 
 export default function FavoritesPopOut({ showProfile, setShowProfile }) {
   const favorites = useSelector((state) => state.favorites);
+  const dispatch = useDispatch();
   const [isActive, setIsActive] = useState(false);
 
   function handleFavClick(e) {
@@ -41,7 +43,7 @@ export default function FavoritesPopOut({ showProfile, setShowProfile }) {
           <h3 className={s.favTitle}>Mis Favoritos ({favorites && favorites?.length})</h3>
           <hr />
           <div className={style.user_profile_link}>
-            {favorites.length ?
+            {favorites?.length ?
               favorites?.map((p) => {
                 return (
                   <div key={p.id}>
