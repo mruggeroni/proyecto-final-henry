@@ -14,21 +14,19 @@ export default function ListUsers() {
     // console.log(e);
     if (prompt(`Para borrar el paquete escribe '${nombre}'`) === nombre) {
       const token = await getAccessTokenSilently()
-      dispatch(borrarUsuario(id, token))
+      dispatch(deleteUser(id, token))
       dispatch(getUsers(token));
-      console.log(res)
       alert("El paquete se borro");
     } else {
       alert("El paquete no se borro");
     }
   };
 
-  useEffect(() => {
-     const token = await getAccessTokenSilently()
-      if(!users.length) {
-    
-          dispatch(getUsers(token))
-      }
+  useEffect(async () => {
+    const token = await getAccessTokenSilently() 
+    if(!users.length) {
+        dispatch(getUsers(token))
+    }
   }, [dispatch]);
 
   return (

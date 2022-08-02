@@ -1,8 +1,9 @@
+import { Op } from "sequelize";
 import { User } from "../models/Users.js";
 import { Order } from "../models/Orders.js";
 import { OrderItem } from "../models/OrderItems.js";
 import { Package } from '../models/Packages.js';
-import { Op } from "sequelize";
+import { Activity } from "../models/Activities.js";
 
 export const getOrders = async (req, res) => {
 
@@ -125,17 +126,16 @@ export const patchStatusOrder = async (req, res) => {
 	};
 };
 
-export const getCarts = async (req, res) => {
+export const getCart = async (req, res) => {
 	const userId = parseInt(req.params.userId);
-	const cartNumber = parseInt(req.query.cartNumber);
 
 	try {
 		const user = await User.findByPk(userId, {
 			include: {
 				model: Order,
-				attributes: {
-					exclude: ['userId'],
-				},
+				// attributes: {
+				// 	exclude: ['userId'],
+				// },
 				where: {
 					status: {
 						[Op.eq]: 'shopping cart',
@@ -145,6 +145,12 @@ export const getCarts = async (req, res) => {
 					model: OrderItem,
 					through: {
 						attributes: ['quantity'],
+					},
+					include: {
+						model: Activity,
+						through: {
+							attributes: [],
+						},
 					},
 				},
 				include: {
@@ -165,18 +171,11 @@ export const getCarts = async (req, res) => {
 				},
 			},
 		});
-		const carts = (user && user.orders.length) ? user.orders : null;
-		const cart = carts ? carts[cartNumber - 1] : null;
-		const response = cartNumber ? 
-			cart : 
-			{ 
-				carts_quantity: carts ? carts.length : 0, 
-				carts,
-			};
+		const cart = user ? user.orders : null;
 
-		((!cartNumber && carts) || (cartNumber && cart)) ? 
-		res.status(200).json(response) : 
-		res.status(404).json({ message: `${cartNumber ? 'Cart' : 'Carts'} not found` });
+		cart ? 
+		res.status(200).json(cart) : 
+		res.status(404).json({ message: 'Cart not found' });
 	} catch (error) {
 		return res.status(400).json({ message: error.message });
 	};
@@ -184,52 +183,80 @@ export const getCarts = async (req, res) => {
 
 export const createCart = async (req, res) => {
 	const { userId } = req.params;
-	const { packagesId, quantitiesPackages, total_order } = req.body;
+	const cartPackages = req.body;
 
 	try {
+		const packagesId = [],
+			arrayActivitiesId = [],
+			quantitiesPackages = [],
+			total_packages = [];
+		let total_order = 0;
+
+		cartPackages.forEach(pack => {
+			packagesId.push(pack.paquete.id);
+
+			const activitiesId = [];
+			pack.actividades.forEach(act => {
+				activitiesId.push(act.Package_Activity.activityId);
+			});
+			arrayActivitiesId.push(activitiesId);
+
+			quantitiesPackages.push(pack.cantidad);
+			total_packages.push(pack.total);
+		});
+		total_order = total_packages.reduce((total, price) => total + price, 0);
+
 		const user = await User.findOne({
 			where: {
 				id: userId,
 			},
-			include: [{
-				model: Order,
-				include: {
-					model: OrderItem,
-				},
-				include: {
-					model: Package,
-				},
-			}],
+			// include: [{
+			// 	model: Order,
+			// 	include: {
+			// 		model: OrderItem,
+			// 	},
+			// 	include: {
+			// 		model: Package,
+			// 	},
+			// }],
 		});
 		const cart = await Order.create({
 			total_order,
 		});
-		const paquetes = await Package.findAll({
+		const packs = await Package.findAll({
 			where: {
 				id: packagesId,
 			},
 		});
 
-		cart.setPackages(paquetes, { 
+		await cart.setPackages(packs, { 
 			through: OrderItem, 
 		});
-		user.addOrders(cart);
+		await user.addOrders(cart);
 
-		await Order.findByPk(cart.id);
 		await Promise.all(packagesId.map((packageId, index) => {
 			return OrderItem.update({
 				quantity: quantitiesPackages[index],
+				// total_package: total_packages[index],
+				// activities: [{
+				// 	id: arrayActivitiesId[index],
+				// }],
 			}, {
 				where: {
 					[Op.and]: [{
-						orderId: cart?.id,
+						orderId: cart.id,
 					}, {
 						packageId,
 					}],
 				},
+				// include: [Activity],
 			})
 			.catch(err => console.log(err.message));
 		}));
+		// await Promise.all(packagesId.map((packageId, index) => {
+		// 	return OrderItem.update()
+		// 	.catch(err => console.log(err.message));
+		// }));
 		return res.status(201).json({ message: 'Cart created successfully' });
 	} catch (error) {
 		return res.status(400).json({ error: error.message });

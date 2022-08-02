@@ -11,7 +11,6 @@ export const getUsers = async (req, res) => {
 	//console.log('HERE')
 	//console.log(req)
 	try {
-
 		//console.log(respuesta)
 		const limitRend = parseInt(limitRender) || 30,
             pag = parseInt(page) || 1,
@@ -70,12 +69,12 @@ export const getUserDetail = async (req, res) => {
 		// 	}
 		// );
 		
-		const userInfo = respuesta.data;
+		// const userInfo = respuesta.data;
 		
 		const idUser = parseInt(id);
 
 		const user = await User.findByPk(idUser, {
-			/* include: {
+			include: {
 				model: Order,
 				attributes: {
 					exclude: ['userId'],
@@ -102,7 +101,7 @@ export const getUserDetail = async (req, res) => {
 						attributes: ['quantity'],
 					},
 				},
-			}, */
+			},
 			attributes: {
 				exclude: [
 					'password', 
@@ -114,7 +113,7 @@ export const getUserDetail = async (req, res) => {
 			},
 		});
 		const userCopy = JSON.parse(JSON.stringify(user));
-		userCopy.carts = userCopy.orders.filter(order => order.status === 'shopping cart');
+		userCopy.cart = userCopy.orders.filter(order => order.status === 'shopping cart')[0];
 		userCopy.orders = userCopy.orders.filter(order => order.status !== 'shopping cart');
 		userCopy.orders_pending = userCopy.orders.filter(order => order.status === 'pending');
 		userCopy.orders_paid = userCopy.orders.filter(order => order.status === 'paid');

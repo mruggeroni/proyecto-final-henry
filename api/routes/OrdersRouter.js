@@ -4,7 +4,7 @@ import {
 	getOrders,
     getOrderDetail,
     patchStatusOrder,
-    getCarts,
+    getCart,
 	createCart,
     updateCart,
     patchStatusCart,
@@ -18,7 +18,7 @@ router.get('/orders', getOrders);
 router.get('/order/:orderId', getOrderDetail);
 router.patch('/order/:orderId', patchStatusOrder);
 
-router.get('/carts/:userId', getCarts);
+router.get('/cart/:userId', getCart);
 router.post('/cart/:userId', createCart);
 router.put('/cart/:cartId', updateCart);
 router.patch('/cart/:cartId', patchStatusCart);

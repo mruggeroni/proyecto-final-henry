@@ -126,7 +126,7 @@ export const createUser = (payload) => {
           authorization: `Bearer ${payload}`,
         },
       });
-      return dispatch({ type: POST_USER, payload: res.data[0] });
+      return dispatch({ type: POST_USER, payload: res.data });
     } catch (e) {
       alert(e.message);
     }
