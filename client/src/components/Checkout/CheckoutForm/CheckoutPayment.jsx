@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { BsFillEyeFill, BsFillEyeSlashFill } from "react-icons/bs";
 import s from '../Login.module.css';
 
-export default function CheckoutPayment({ showCheckoutPayment, setShowCheckoutPayment, handleCheckoutPassengers, handleCheckoutConfirmation }) {
+export default function CheckoutPayment({ showCheckoutPayment, setShowCheckoutPayment,  handleCheckoutConfirmation }) {
 
     let [ showPassword, setShowPassword ] = useState(false);
   const handlePassword = (e) => {
@@ -10,16 +10,10 @@ export default function CheckoutPayment({ showCheckoutPayment, setShowCheckoutPa
     setShowPassword(!showPassword)
   }
 
-  function handleClick(e) {
-    e.preventDefault()
-    handleCheckoutPassengers();
-  }
-
   return (
     !showCheckoutPayment ? null
     :   
     <div className={s.profile_container}>
-      <button onClick={handleCheckoutPassengers} >Atras</button>
       <button onClick={handleCheckoutConfirmation} >Siguiente</button>
         {/* <div className={s.profile_input_container}>
             <label className={s.profile_label}>Email</label>

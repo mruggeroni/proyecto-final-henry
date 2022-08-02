@@ -3,7 +3,7 @@ import { FaPlane } from "react-icons/fa";
 import s from './CheckoutPassengers.module.css';
 import PassengerInfo from './PassengerInfo.jsx'
 
-export default function CheckoutPassengers({ showCheckoutPassengers, setShowCheckoutPassengers, handleCheckoutPayment, cart }) {
+export default function CheckoutPassengers({ showCheckoutPassengers, handleCheckoutPayment, cart }) {
     // cart.forEach()
   
     return (

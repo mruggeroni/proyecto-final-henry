@@ -82,13 +82,11 @@ export default function CheckoutSteps() {
           <CheckoutPayment
             showCheckoutPayment={showCheckoutPayment}
             setShowCheckoutPayment={setShowCheckoutPayment}
-            handleCheckoutPassengers={handleCheckoutPassengers}
             handleCheckoutConfirmation={handleCheckoutConfirmation}
           />
           <CheckoutConfirmation
             showCheckoutConfirmation={showCheckoutConfirmation}
             setShowCheckoutConfirmation={setShowCheckoutConfirmation}
-            handleCheckoutPayment={handleCheckoutPayment}
           />
         </div>
       </div>
