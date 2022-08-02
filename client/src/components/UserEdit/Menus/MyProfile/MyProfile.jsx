@@ -112,9 +112,6 @@ export default function MyProfile({ showProfile, setShowProfile }) {
                     className={s.profile_input_image} 
                 />
             </div>
-            {
-                errors.photo && <h4 className={s.profile_error}>{errors.photo}</h4>
-            }
         </div>
         <div className={s.profile_input_container}>
             <label className={s.profile_label}>Nombre</label>

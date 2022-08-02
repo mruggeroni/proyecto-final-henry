@@ -18,12 +18,6 @@ export const validations = (input) => {
     if(!input.postal_code) {
         errors.postal_code = 'El campo del codigo postal no puede estar vacio';
     }
-    if(!input.email) {
-        errors.email = 'El campo del email no puede estar vacio';
-    }
-    if(!input.photo) {
-        errors.photo = 'El campo del la foto no puede estar vacio';
-    }
-    
+
     return errors;
 }
