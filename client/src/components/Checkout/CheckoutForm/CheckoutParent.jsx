@@ -74,18 +74,21 @@ export default function CheckoutSteps() {
             </div>
           </div>
           <CheckoutPassengers
-            showProfile={showCheckoutPassengers}
-            setShowProfile={setShowCheckoutPassengers}
+            showCheckoutPassengers={showCheckoutPassengers}
+            setShowCheckoutPassengers={setShowCheckoutPassengers}
+            handleCheckoutPayment={handleCheckoutPayment}
             cart={cart}
-            FaPlane={FaPlane}
           />
           <CheckoutPayment
-            showSettings={showCheckoutPayment}
-            setShowSettings={setShowCheckoutPayment}
+            showCheckoutPayment={showCheckoutPayment}
+            setShowCheckoutPayment={setShowCheckoutPayment}
+            handleCheckoutPassengers={handleCheckoutPassengers}
+            handleCheckoutConfirmation={handleCheckoutConfirmation}
           />
           <CheckoutConfirmation
-            showSettings={showCheckoutConfirmation}
-            setShowSettings={setShowCheckoutConfirmation}
+            showCheckoutConfirmation={showCheckoutConfirmation}
+            setShowCheckoutConfirmation={setShowCheckoutConfirmation}
+            handleCheckoutPayment={handleCheckoutPayment}
           />
         </div>
       </div>

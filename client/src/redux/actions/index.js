@@ -152,8 +152,6 @@ export const getUserById = (id, token) => {
           authorization: `Bearer ${token}`,
         },
       });
-      return dispatch({ type: GET_USERS, res: res.data });
-        }});
       return dispatch({ type: GET_USERS, payload: res.data });
     } catch (error) {
       console.log(id, token)
