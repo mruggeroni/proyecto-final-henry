@@ -1,15 +1,19 @@
-import axios from 'axios';
-import { Op } from 'sequelize';
 import { User } from '../models/Users.js';
+import { Op } from 'sequelize';
+import axios from 'axios';
 import { Order } from '../models/Orders.js';
 import { OrderItem } from '../models/OrderItems.js';
 import { Package } from '../models/Packages.js';
 
 export const getUsers = async (req, res) => {
 	const { limitRender, page, destroyTime, is_admin } = req.query;
-
+	//console.log(token)
+	//console.log('HERE')
+	//console.log(req)
 	try {
-		const limitRend = parseInt(limitRender) || 30,
+
+		//console.log(respuesta)
+		const limitRend = parseInt(limitRender) || 1000,
             pag = parseInt(page) || 1,
 			is_ad = is_admin === 'true' ? 
 				true : 
@@ -54,6 +58,20 @@ export const getUserDetail = async (req, res) => {
 	const { id } = req.params;
 
 	try {
+		// const permissions = req.auth.permissions[0]
+		// const accessToken = req.headers.authorization.split(" ")[1];
+		// console.log("token: ", accessToken);
+		// const respuesta = await axios.get(
+		// 	"https://dev-33fzkaw8.us.auth0.com/userinfo",
+		// 	{
+		// 		headers: {
+		// 			authorization: `Bearer ${accessToken}`,
+		// 		},
+		// 	}
+		// );
+		
+		const userInfo = respuesta.data;
+		
 		const idUser = parseInt(id);
 
 		const user = await User.findByPk(idUser, {
@@ -86,6 +104,12 @@ export const getUserDetail = async (req, res) => {
 			},
 		});
 		res.status(200).json(user);
+		// if(permissions === 'SuperAdmin' || permissions === 'Admin' || user.email === userInfo.email){
+			
+		// }
+		// else{
+		// 	res.status(401).json({ message: 'You dont have permissions to see this information'})
+		// }
 	} catch (error) {
 		return res.status(404).json({ message: error.message });
 	};
@@ -110,9 +134,7 @@ export const getUserStatus = async (req, res) => {
 
 export const createUser = async (req, res) =>{
 	try {
-		//console.log(req.body)
 		const accessToken = req.body.headers.authorization.split(" ")[1];
-		console.log("token: ", accessToken);
 		const respuesta = await axios.get(
 			"https://dev-33fzkaw8.us.auth0.com/userinfo",
 			{
@@ -121,25 +143,19 @@ export const createUser = async (req, res) =>{
 				},
 			}
 		);
-		console.log(respuesta)
+		
 		const userInfo = respuesta.data;
-		console.log("back: ", userInfo);
 		const usuarioDB = await User.findOrCreate({where: {email: userInfo.email},
 		defaults: {first_name: userInfo.given_name || userInfo.nickname,
 			last_name: userInfo.family_name || "missing",
 			photo: userInfo.picture,
 			is_admin: false,
-		}})
-		console.log(usuarioDB)
-
-		console.log('HERE')
-
-		const role = usuarioDB[0].dataValues.is_admin === true? 'Admin': 'Client'
-		console.log(role)
-		let usuario = usuarioDB[1] === false? "login": "register"
-		const currentUsuario = [usuario, role]
-		console.log(currentUsuario)
-		res.status(201).json(usuarioDB);
+	}})
+	const role = usuarioDB[0].dataValues.is_admin === true? 'Admin': 'Client'
+	let usuario = usuarioDB[1] === false? "login": "register"
+	const currentUsuario = [usuario, role]
+	console.log(usuarioDB[0])
+	res.status(200).json(usuarioDB[0]);
 	} catch (error) {
 		return res.status(400).json({ message: error.message });
 	}

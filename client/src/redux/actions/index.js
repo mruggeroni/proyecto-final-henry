@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 export const GET_PACKAGE_BY_ID = "GET_PACKAGE_BY_ID";
 export const GET_RELATIONATED = "GET_RELATIONATED";
@@ -19,6 +19,10 @@ export const GET_PK_REGION = "GET_PK_REGION";
 export const GET_LOCAL_STORAGE_CART = "GET_LOCAL_STORAGE_CART";
 export const GET_LOCAL_STORAGE_FAVORITES = "GET_LOCAL_STORAGE_FAVORITES";
 export const GET_DESTINATIONS_WITH_PACKAGES = "GET_DESTINATIONS_WITH_PACKAGES";
+
+export const FILTRAR = "FILTRAR";
+export const ORDENAR = "ORDENAR";
+
 export const UPDATE_USER = 'UPDATE_USER';
 export const DELETE_USER = 'DELETE_USER';
 export const GET_USER_BY_ID = 'GET_USER_BY_ID';
@@ -36,6 +40,7 @@ export const deleteUser = (id) => {
     return dispatch({ type: DELETE_USER, payload: res.data })
   }
 }
+
 
 export const getAllPackage = (limitRender) => {
   return async function (dispatch) {
@@ -82,6 +87,7 @@ export const getOnSale = () => {
 };
 
 export const getAllActivities = () => {
+
   return async function (dispatch) {
     let res = await axios.get("/activities");
     return dispatch({ type: GET_ACTIVITIES, payload: res.data });
@@ -95,10 +101,15 @@ export const getTypes = () => {
   };
 };
 
-export const createPackage = (payload) => {
+export const createPackage = (payload, token) => {
   return async function (dispatch) {
     try {
-      const respuesta = await axios.post("/packages", payload);
+      const respuesta = await axios.post("/packages", payload, 
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
       return respuesta;
     } catch (e) {
       alert(e.message);
@@ -114,17 +125,20 @@ export const createUser = (payload) => {
           authorization: `Bearer ${payload}`,
         },
       });
-      return dispatch({ type: POST_USER, payload: res.data[0] });
+      return dispatch({ type: POST_USER, payload: res.data });
     } catch (e) {
       alert(e.message);
     }
   };
 };
 
-export const getUsers = (limitRender) => {
+export const getUsers = (token) => {
   return async function (dispatch) {
     try {
-      const res = await axios.get("/user?limitRender=" + limitRender);
+      const res = await axios.get('/user',{
+        headers: {
+          authorization: `Bearer ${token}`,
+        }});
       return dispatch({ type: GET_USERS, payload: res.data });
     } catch (error) {
       console.log(error);
@@ -181,10 +195,16 @@ export function filterPackagesByDate(value) {
   };
 }
 
-export const crearDestino = (payload) => {
-  return async function () {
+export const crearDestino = (payload, token) => {
+  return async function (dispatch) {
     try {
-      const respuesta = await axios.post("/destinations", payload);
+      const respuesta = await axios.post("/destinations", payload,
+       
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
       return respuesta;
     } catch (e) {
       alert(e.message);
@@ -192,10 +212,17 @@ export const crearDestino = (payload) => {
   };
 };
 
-export const crearActividad = (payload) => {
-  return async function () {
+export const crearActividad = (payload, token) => {
+  return async function (dispatch) {
     try {
-      const respuesta = await axios.post("/activities", payload);
+      console.log('HERE')
+      console.log(JSON.stringify(token,null,2))
+      const respuesta = await axios.post("/activities", payload,
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
       return respuesta;
     } catch (e) {
       alert(e.message);
@@ -203,13 +230,23 @@ export const crearActividad = (payload) => {
   };
 };
 
-export function modificarPaquete(payload, id) {
+export function modificarPaquete(payload, id, token) {
   return async function (dispatch) {
     try {
       console.log("payload 0: ", payload[0]);
-      const respuesta = await axios.put("/packages/" + id, payload[0]);
+      const respuesta = await axios.put("/packages/" + id, payload[0],
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
       console.log("respuesta : ", respuesta);
-      const respuesta2 = await axios.patch("/packages/" + id, payload[1]);
+      const respuesta2 = await axios.patch("/packages/" + id, payload[1],
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
       console.log("respuesta2 : ", respuesta2);
       return respuesta2; // como no necesitamos hacer nada podemos no dispachar nada
     } catch (e) {
@@ -225,10 +262,15 @@ export const getCategories = () => {
   };
 };
 
-export const createCategories = (payload) => {
-  return async function () {
+export const createCategories = (payload, token) => {
+  return async function (dispatch) {
     try {
-      const respuesta = await axios.post("/classification", payload);
+      const respuesta = await axios.post("/classification", payload,
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
       return respuesta;
     } catch (e) {
       alert(e.message);
@@ -236,10 +278,15 @@ export const createCategories = (payload) => {
   };
 };
 
-export const createActivities = (payload) => {
-  return async function () {
+export const createActivities = (payload, token) => {
+  return async function (dispatch) {
     try {
-      const respuesta = await axios.post("/activities", payload);
+      const respuesta = await axios.post("/activities", payload,
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
       return respuesta;
     } catch (e) {
       alert(e.message);
@@ -247,10 +294,17 @@ export const createActivities = (payload) => {
   };
 };
 
-export function modificarActividad(payload, id) {
-  return async function () {
+export function modificarActividad(payload, id, token) {
+  console.log("payload: ", payload.price);
+  console.log("id: ", id);
+  return async function (dispatch) {
     try {
-      const respuesta = await axios.put("activities/" + id, payload);
+      const respuesta = await axios.put("activities/" + id, payload,
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
       return respuesta;
     } catch (e) {
       alert(e.message);
@@ -258,12 +312,34 @@ export function modificarActividad(payload, id) {
   };
 }
 
-export function borrarPaquete(payload) {
+export function borrarPaquete(payload, token) {
   return async function (dispatch) {
     console.log(payload);
     try {
-      var json = await axios.delete("/packages?id=" + payload);
+      var json = await axios.delete("/packages?id=" + payload,
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
       dispatch(getAllPackage(1000));
+      return json;
+    } catch (e) {
+      alert("No pudimos borrar el paquete!");
+    }
+  };
+}
+export function borrarUsuario(payload, token) {
+  return async function (dispatch) {
+    console.log(payload);
+    try {
+      var json = await axios.delete("/user/" + payload,
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
+      dispatch(getUsers);
       return json;
     } catch (e) {
       alert("No pudimos borrar el paquete!");
@@ -296,4 +372,20 @@ export function modificarCategoria(id, payload) {
       alert("No pudimos modificar la categoria!");
     }
   };
+}
+
+export function filtrar(target, id) {
+  return async function (dispatch) {
+    const paquetes = await axios.get("/packages/10000");
+    return dispatch({ type: FILTRAR, payload: paquetes.data, target, id });
+  };
+  // return { type: FILTRAR, target, id };
+}
+
+export function ordenar(target) {
+  // return async function (dispatch) {
+  //   const paquetes = await axios.get("/packages/10000");
+  //   return dispatch({ type: ORDENAR, payload: paquetes.data, target: payload });
+  // };
+  return { type: ORDENAR, target };
 }

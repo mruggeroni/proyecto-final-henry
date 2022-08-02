@@ -9,6 +9,7 @@ import {
   getAllActivities,
 } from "../../redux/actions";
 import ModalCategorias from "./ModalCategoria";
+import { useAuth0 } from "@auth0/auth0-react";
 
 function validate(input) {
   let error = {};
@@ -59,6 +60,9 @@ export default function ActivityCreate({
   setShowCreateActivity,
 }) {
   const dispatch = useDispatch();
+  const { getAccessTokenSilently} = useAuth0();
+  // const activities = useSelector((state) => state.activities);
+  // const countries = useSelector((state) => state.allCountries);
   const [error, setError] = useState({});
   const [input, setInput] = useState({
     name: "",
@@ -101,8 +105,11 @@ export default function ActivityCreate({
     }
   };
 
-  function handleSubmit(e) {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const token = await getAccessTokenSilently();
+    console.log('HERE')
+    console.log(token)
     e.price = parseInt(e.price);
     if (!Object.keys(error).length) {
       setInput({
@@ -112,8 +119,9 @@ export default function ActivityCreate({
         image: "",
         classification: "",
       });
-      dispatch(createActivities(input));
       dispatch(getAllActivities());
+      dispatch(createActivities(input, token));
+      // Alert bootstrap
       alert("Actividad creada!");
     } else {
       alert(

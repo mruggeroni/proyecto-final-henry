@@ -16,14 +16,14 @@ import { verifySuperAdminPermission, verifyAdminOrSuperAdminPermission } from '.
 
 const router = Router();
 
-router.get('/user'/* ,verifyJwt, verifyAdminOrSuperAdminPermission  */, getUsers);
-router.get('/deletedUsers'/* , verifyJwt, verifyAdminOrSuperAdminPermission */, getDeletedUsers)
+router.get('/user',verifyJwt, verifySuperAdminPermission , getUsers);
+router.get('/deletedUsers', verifyJwt, verifySuperAdminPermission, getDeletedUsers)
 router.get('/user/status/:id', getUserStatus);
 router.get('/user/:id', getUserDetail);
 router.post('/user', createUser)
-router.put('/user/:id', putUser)
-router.patch('/restoreUser/:id'/* s */, restoreUser)
-router.patch('/user/:id'/* ,verifyJwt, verifySuperAdminPermission */, patchIs_adminProperty)
-router.delete('/user/:id'/* ,verifyAdminOrSuperAdminPermission */, deleteUser)
+router.put('/user/:id',  putUser)
+router.patch('/restoreUser/:id',verifyJwt, verifySuperAdminPermission, restoreUser)
+router.patch('/user/:id',verifyJwt,verifySuperAdminPermission, patchIs_adminProperty)
+router.delete('/user/:id',verifyJwt, deleteUser)
 
 export default router;

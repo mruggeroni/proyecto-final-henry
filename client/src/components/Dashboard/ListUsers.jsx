@@ -3,17 +3,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { deleteUser, getUsers } from "../../redux/actions";
 import Dashboard from "./Dashboard";
 import s from "./Table.module.css";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export default function ListUsers() {
   const dispatch = useDispatch();
   const users = useSelector((state) => state.users);
+  const { getAccessTokenSilently} = useAuth0();
 
   const handleDelete = async (e, id, nombre) => {
     // console.log(e);
     if (prompt(`Para borrar el paquete escribe '${nombre}'`) === nombre) {
-      let res = await dispatch(deleteUser(id));
-      dispatch(getUsers(1000));
-      console.log(res)
+      const token = await getAccessTokenSilently()
+      dispatch(deleteUser(id, token))
+      dispatch(getUsers(token));
       alert("El paquete se borro");
     } else {
       alert("El paquete no se borro");
@@ -21,10 +23,17 @@ export default function ListUsers() {
   };
 
   useEffect(() => {
-    if (!users.length) {
-      dispatch(getUsers(1000));
+    // declare the data fetching function
+    const fetchData = async () => {
+      const token = await getAccessTokenSilently()
+      dispatch(getUsers(token))
     }
-  }, [dispatch]);
+  
+    // call the function
+    fetchData()
+      // make sure to catch any error
+      .catch(console.error);
+  }, [dispatch])
 
   return (
     <div>

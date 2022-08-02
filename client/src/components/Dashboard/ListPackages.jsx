@@ -5,16 +5,19 @@ import { NavLink } from "react-router-dom";
 import { borrarPaquete, getAllPackage } from "../../redux/actions";
 import Dashboard from "./Dashboard";
 import s from "./Table.module.css";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export default function ListPackages() {
   const dispatch = useDispatch();
   const allPackages = useSelector((state) => state.allPackages);
-
+  const { getAccessTokenSilently} = useAuth0();
+  
   const handleBorrar = async (id, nombre) => {
     // console.log(e);
     if (prompt(`Para borrar el paquete escribe '${nombre}'`) === nombre) {
-      await dispatch(borrarPaquete(id));
       await dispatch(getAllPackage(10000));
+      const token = await getAccessTokenSilently()
+      dispatch(borrarPaquete(id, token))
       alert("El paquete se borro");
     } else {
       alert("El paquete no se borro");
