@@ -153,6 +153,8 @@ export const getUserById = (id, token) => {
         },
       });
       return dispatch({ type: GET_USERS, res: res.data });
+        }});
+      return dispatch({ type: GET_USERS, payload: res.data });
     } catch (error) {
       console.log(id, token)
       console.log(error);
