@@ -26,9 +26,7 @@ export default function CheckoutCart(){
     } = useAuth0();
 
     useEffect(() => {
-      console.log(cart);
-      console.log(cart[0]);
-      dispatch(getAllPackage(1));
+      dispatch(getAllPackage());
       dispatch(getCartLocalStorage());
     },[dispatch])
 
@@ -69,8 +67,8 @@ export default function CheckoutCart(){
               :
               <div className={s.carrouselTravel}>
               <Carousel
-                main_image={allPackage.length && allPackage[0].main_image}
-                images={allPackage.length && allPackage[0].images}
+                main_image={allPackage?.length && allPackage[0].main_image}
+                images={allPackage?.length && allPackage[0].images}
                 componente={'checkout'}
               />
               </div>

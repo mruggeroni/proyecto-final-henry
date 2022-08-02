@@ -12,11 +12,15 @@ import {
   getCartLocalStorage,
   getFavoritesLocalStorage,
   getAllPackage,
+  postFavorites
 } from "../../redux/actions/index";
+import { useAuth0 } from "@auth0/auth0-react";
+
 
 export default function Detail() {
   const dispatch = useDispatch();
   const { id } = useParams();
+  const { getAccessTokenSilently} = useAuth0();
 
   const packageDetail = useSelector((state) => state.detailPackage);
   const relationatedPackage = useSelector((state) => state.relationated);
@@ -36,7 +40,7 @@ export default function Detail() {
   
   useEffect(() => {
     dispatch(getFavoritesLocalStorage());
-    if(favorites.length){
+    if(favorites?.length){
     for (let i = 0; i < favorites.length; i++) {
       if(favorites[i].id === parseInt(id)){
         return setCheckeado(true); 
@@ -205,6 +209,10 @@ export default function Detail() {
     e.preventDefault();
     input.paquete = packageDetail;
 
+    let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+    favorites = favorites?.filter( (f) => f.id !== parseInt(id) )
+    localStorage.setItem('favorites', JSON.stringify(favorites));
+    console.log('antes de agregar');
     if (!localStorage.getItem("cart")) {
       let cart = [];
       cart.unshift(input);
@@ -228,9 +236,10 @@ export default function Detail() {
           return
         }
       }
-
-      
     }
+    console.log('despues de agregar');
+   
+
     scrollToTop();
     dispatch(getCartLocalStorage());
     setInput({
@@ -254,6 +263,17 @@ export default function Detail() {
       }, 10000);
     };
   }, [dispatch, setCheckboxEstado, setInput]);
+
+
+
+const handleFavorito = async (e) => {
+  e.preventDefault()
+  const token = await getAccessTokenSilently()
+  dispatch(postFavorites(id, token))
+}
+
+
+
   console.log('se repite')
   return (
     <div
@@ -279,6 +299,7 @@ export default function Detail() {
 
               </div>
             </div>
+            <div><button onClick={(e) => handleFavorito(e)}>postear favorito</button></div>
             <div className={s.contenedorDetalles}>
               <h1>{name}</h1>
               <ControlledCarousel

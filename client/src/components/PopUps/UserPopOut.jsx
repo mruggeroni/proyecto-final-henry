@@ -17,7 +17,7 @@ export default function UserPopOut({ showProfile, setShowProfile }) {
     getAccessTokenSilently,
   } = useAuth0();
   const user = useSelector( (state) => state.user )
-  const favorites = useSelector( (state) => state.favorites )
+  const favorites = useSelector( (state) => state.favorites)
   const [showUser, setShowUser] = useState(false);
 
   useEffect(async () => {

@@ -370,7 +370,7 @@ export const getAllFavorites = (token) => {
 
 export const postFavorites = (id, token) => {
   return async function(dispatch){
-    let res = await axios.get('/favourites/' + id, {
+    let res = await axios.post('/favourites/' + id, {
       headers: {
         authorization: `Bearer ${token}`,
       },
@@ -380,7 +380,7 @@ export const postFavorites = (id, token) => {
 }
 
 export const deleteFavorites = (id, token) => {
-  return async function (dispatch) {
+  return async function () {
     let res = await axios.get("/favourites" + id, {
       headers: {
         authorization: `Bearer ${token}`,

@@ -13,7 +13,7 @@ export default function ControlledCarousel({ name, main_image, images, component
 
   return (
     <Carousel activeIndex={index} onSelect={handleSelect}>
-      <Carousel.Item interval={1000}>
+      <Carousel.Item interval={2000}>
         <div className={componente === 'checkout' ? s.carouselForCheckout : s.item}>
           <img className="d-block w-100" src={main_image} alt="First slide" />
         </div>
@@ -21,7 +21,7 @@ export default function ControlledCarousel({ name, main_image, images, component
 
       {images?.map((i) => {
         return (
-          <Carousel.Item key={'asdasd'+i} interval={500}>
+          <Carousel.Item key={'asdasd'+i} interval={2000}>
             <div className={componente === 'checkout' ? s.carouselForCheckout : s.item}>
               <img className="d-block w-100" src={i} alt="Second slide" />
             </div>
