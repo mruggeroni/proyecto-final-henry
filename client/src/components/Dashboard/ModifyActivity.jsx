@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
+import Swal from 'sweetalert2'
 import { useDispatch, useSelector } from "react-redux";
 // import validate from "./validationActivity.js";
 import Dashboard from "./Dashboard";
@@ -45,10 +46,10 @@ function validate(input) {
     error.classification = "La clasificación es requerida";
   }
 
-  if (!Object.keys(error).length) {
-    let createBtn = document.getElementById("create");
-    createBtn.removeAttribute("disabled");
-  }
+  // if (!Object.keys(error).length) {
+  //   let createBtn = document.getElementById("create");
+  //   createBtn.removeAttribute("disabled");
+  // }
   return error;
 }
 
@@ -132,11 +133,16 @@ export default function ModifyActivity() {
       console.log(input.classification);
       dispatch(modificarActividad(input, id, token));
       // Alert bootstrap
-      alert("Actividad modificada!");
+      Swal.fire({
+        icon: 'success',
+        title: 'Actividad modificada!',
+      })
     } else {
-      alert(
-        "El formulario no esta completado correctamente, intenta de nuevo!"
-      );
+      Swal.fire({
+        icon: 'error',
+        title: 'Error...',
+        text: 'El formulario no esta completado correctamente, intenta de nuevo!',
+      })
     }
   }
 
@@ -286,9 +292,10 @@ export default function ModifyActivity() {
           </div>
           <button
             type="submit"
+            onClick={handleSubmit}
             className={style.create_btn}
             id="create"
-            disabled={true}
+            disabled={Object.keys(error).length !== 0}
           >
             Modificar actividad
           </button>

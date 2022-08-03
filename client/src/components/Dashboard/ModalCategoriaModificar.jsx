@@ -7,6 +7,7 @@ import * as yup from "yup";
 import { Button, Col, Form, InputGroup, Row } from "react-bootstrap";
 import { getCategories, modificarCategoria } from "../../redux/actions";
 import { useAuth0 } from "@auth0/auth0-react";
+import Swal from 'sweetalert2'
 
 const schema = yup.object().shape({
   name: yup
@@ -42,9 +43,18 @@ export default function ModalCategoriaModificar({
     // await dispatch(getAllDestinations());
     const respuesta = await dispatch(modificarCategoria(id, e, token));
     await dispatch(getCategories());
-
+    if(respuesta.data.message === 'Classification updated') {
+      Swal.fire({
+        icon: 'success',
+        title: 'Categoria modificada!',
+      })
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'No pudimos modificar la categoria!',
+      })
+    }
     setShowModificar(false);
-    alert(respuesta.data.message);
   };
 
   return (

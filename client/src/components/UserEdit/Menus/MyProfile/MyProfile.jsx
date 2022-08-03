@@ -13,9 +13,8 @@ export default function MyProfile({ showProfile, setShowProfile }) {
     const user = useSelector((state) => state.user);
     const [errors, setErrors] = useState({})
     const [input, setInput] = useState({ ...user });
-    const [imagen, setImagen] = useState("");
-    const [loading, setLoading] = useState(false);
     const [archivo, setArchivo] = useState("");
+    const [isChange, setIsChange] = useState(true);
     const { getAccessTokenSilently } = useAuth0();
 
     useEffect(() => {
@@ -40,6 +39,7 @@ export default function MyProfile({ showProfile, setShowProfile }) {
 
     const handleChange = (e) => {
         e.preventDefault();
+        setIsChange(false);
         if (e.target.name === 'file') {
             setArchivo(e.target.files);
         } else {
@@ -56,7 +56,7 @@ export default function MyProfile({ showProfile, setShowProfile }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if(input.first_name !== user.first_name || input.last_name !== user.last_name){
+        // if(input.first_name !== user.first_name || input.last_name !== user.last_name){
 
             Swal.fire({
                 title: 'Estas seguro que desea modificar sus datos?',
@@ -87,19 +87,23 @@ export default function MyProfile({ showProfile, setShowProfile }) {
                 )
                 setTimeout(() => {
                     // reset page
-                    console.log(input.id)
-                    dispatch(getUserById(user.id))
+                    const fetchData = async () => {
+                        const token = await getAccessTokenSilently()
+                        dispatch(getUserById(user.id, token))
+                        setInput({ ...user })
+                    }
+                    fetchData().catch(console.error);
                     setShowProfile(true)
                 }, 0);
                 setShowProfile(false)
             }
             })
-        } else {
-            Swal.fire({
-                title: 'Ingresa datos diferentes',
-                confirmButtonColor: '#4a9eab'
-            })
-        }
+        // } else {
+        //     Swal.fire({
+        //         title: 'Ingresa datos diferentes',
+        //         confirmButtonColor: '#4a9eab'
+        //     })
+        // }
     }
         
   
@@ -192,7 +196,7 @@ export default function MyProfile({ showProfile, setShowProfile }) {
         }
         </div>
         
-        <button onClick={handleSubmit} className={s.profile_btn_save}>Guardar cambios</button>
+        <button onClick={handleSubmit} disabled={isChange || Object.keys(errors).length > 0} className={s.profile_btn_save}>Guardar cambios</button>
         </div>
         </form>
     </div>

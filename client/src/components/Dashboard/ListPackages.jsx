@@ -8,6 +8,7 @@ import { MdDelete } from 'react-icons/md';
 import { AiFillEdit } from 'react-icons/ai';
 import s from "./Table.module.css";
 import { useAuth0 } from "@auth0/auth0-react";
+import Swal from 'sweetalert2'
 
 export default function ListPackages() {
   const dispatch = useDispatch();
@@ -16,15 +17,25 @@ export default function ListPackages() {
   
   const handleBorrar = async (id, nombre) => {
     // console.log(e);
-    if (prompt(`Para borrar el paquete escribe '${nombre}'`) === nombre) {
-      await dispatch(getAllPackage(10000));
-      const token = await getAccessTokenSilently()
-      dispatch(borrarPaquete(id, token))
-      alert("El paquete se borro");
-    } else {
-      alert("El paquete no se borro");
-      console.log("gola");
-    }
+    Swal.fire({
+      title: `Esta seguro que desea eliminar el paquete ${nombre}?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Eliminar'
+    }).then( async (result) => {
+      if (result.isConfirmed) {
+        await dispatch(getAllPackage(10000));
+        const token = await getAccessTokenSilently()
+        dispatch(borrarPaquete(id, token))
+        Swal.fire(
+          `Paquete: ${id} | ${nombre}.`,
+          'Eliminado exitosamente!',
+          'success'
+        )
+      }
+    })
   };
 
   useEffect(() => {

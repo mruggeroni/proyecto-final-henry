@@ -15,6 +15,7 @@ import Dashboard from "./Dashboard";
 import validationModifyPackage from "./validationModifyPackage.js";
 import ModalActividades from "./ModalActividades";
 import ModalDestinos from "./ModalDestinos";
+import Swal from 'sweetalert2'
 
 export default function ModifyPackages() {
   const { id } = useParams();
@@ -62,8 +63,8 @@ export default function ModifyPackages() {
         images1: paquete.images[1],
         images2: paquete.images[2],
         images: paquete.images,
-        destinations: paquete.destinations.map((i) => i.name),
-        activities: paquete.activities.map((i) => i.name),
+        destinations: paquete.destinations?.map((i) => i.name),
+        activities: paquete.activities?.map((i) => i.name),
         start_date: paquete.start_date,
         end_date: paquete.end_date,
         region: paquete.region,
@@ -143,7 +144,6 @@ export default function ModifyPackages() {
 
   const handleSelectDestinations = (e) => {
     if (e.target.value === "otro") {
-      console.log("soy otro");
       e.target.value = "default";
       handleShowDestinos();
     } else {
@@ -258,10 +258,11 @@ export default function ModifyPackages() {
       valida.seasson ||
       valida.destinations
     ) {
-      console.log(valida);
-      alert(
-        "Presta mas atencion al completar el formulario y volve a intentar ;)"
-      );
+      Swal.fire({
+        icon: 'error',
+        title: 'Error...',
+        text: 'Hubo un error en uno de los campos, intente nuevamente!',
+      })
     } else {
       const patch = {};
       patch.featured = input.featured;
@@ -281,7 +282,10 @@ export default function ModifyPackages() {
       put.destinations = input.destinations;
       const modificar = [put, patch];
       dispatch(modificarPaquete(modificar, id, token));
-      alert("Nuevo paquete creado..");
+      Swal.fire({
+        icon: 'success',
+        title: 'El paquete fue modificado!',
+      })      
       setInput({
         name: "",
         price: "",
@@ -577,7 +581,7 @@ export default function ModifyPackages() {
               }
               return 0;
             })
-            .map((i, o) => (
+            ?.map((i, o) => (
               <div
                 key={"destinations" + o}
                 id="input_destinations"
@@ -744,7 +748,7 @@ export default function ModifyPackages() {
               )}
             </div>
 
-            {input.images?.map((i, index) => {
+            { input.images && input.images?.map((i, index) => {
               return (
                 <div key={i + index} className={style.create_input_images}>
                   <label className={style.create_label}>

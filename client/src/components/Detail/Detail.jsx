@@ -208,11 +208,11 @@ export default function Detail() {
   const handleBotonComprar = (e) => {
     e.preventDefault();
     input.paquete = packageDetail;
-
-    let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
-    favorites = favorites?.filter( (f) => f.id !== parseInt(id) )
-    localStorage.setItem('favorites', JSON.stringify(favorites));
-    console.log('antes de agregar');
+    // let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+    // favorites = favorites?.filter( (f) => f.id !== parseInt(id) )
+    // localStorage.setItem('favorites', JSON.stringify(favorites));
+    // console.log('antes de agregar');
+    
     if (!localStorage.getItem("cart")) {
       let cart = [];
       cart.unshift(input);
@@ -232,16 +232,16 @@ export default function Detail() {
           cart.unshift(input);
           localStorage.setItem("cart", JSON.stringify(cart));
           scrollToTop();
-          dispatch(getCartLocalStorage());
+          dispatch(getCartLocalStorage(input, id));
           return
         }
       }
     }
-    console.log('despues de agregar');
+    // console.log('despues de agregar');
    
 
     scrollToTop();
-    dispatch(getCartLocalStorage());
+    dispatch(getCartLocalStorage(input, id));
     setInput({
       ...input,
       actividades: [],
