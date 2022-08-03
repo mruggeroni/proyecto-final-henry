@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Swal from 'sweetalert2'
 import { useDispatch, useSelector } from "react-redux";
 // import validate from "./validationActivity.js";
