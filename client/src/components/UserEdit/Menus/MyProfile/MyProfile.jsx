@@ -13,9 +13,8 @@ export default function MyProfile({ showProfile, setShowProfile }) {
     const user = useSelector((state) => state.user);
     const [errors, setErrors] = useState({})
     const [input, setInput] = useState({ ...user });
-    const [imagen, setImagen] = useState("");
-    const [loading, setLoading] = useState(false);
     const [archivo, setArchivo] = useState("");
+    const [isChange, setIsChange] = useState(true);
     const { getAccessTokenSilently } = useAuth0();
 
     useEffect(() => {
@@ -40,6 +39,7 @@ export default function MyProfile({ showProfile, setShowProfile }) {
 
     const handleChange = (e) => {
         e.preventDefault();
+        setIsChange(false);
         if (e.target.name === 'file') {
             setArchivo(e.target.files);
         } else {
@@ -56,7 +56,7 @@ export default function MyProfile({ showProfile, setShowProfile }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (input.first_name !== user.first_name || input.last_name !== user.last_name) {
+        // if(input.first_name !== user.first_name || input.last_name !== user.last_name){
 
             Swal.fire({
                 title: 'Estas seguro que desea modificar sus datos?',
@@ -80,30 +80,30 @@ export default function MyProfile({ showProfile, setShowProfile }) {
                     } else {
                         resUpdated = await dispatch(updateUser(user.id, input));
                     }
-                    Swal.fire(
-                        'Datos actualizados!',
-                        'Se actualizaron tus datos correctamente!',
-                        'success'
-                    )
-                    setTimeout(() => {
-                        // reset page
-                        const fetchData = async () => {
-                            const token = await getAccessTokenSilently()
-                            dispatch(getUserById(user.id, token))
-                            setInput({ ...user })
-                        }
-                        fetchData().catch(console.error);
-                        setShowProfile(true)
-                    }, 0);
-                    setShowProfile(false)
-                }
+                Swal.fire(
+                    'Datos actualizados!',
+                    'Se actualizaron tus datos correctamente!',
+                    'success'
+                )
+                setTimeout(() => {
+                    // reset page
+                    const fetchData = async () => {
+                        const token = await getAccessTokenSilently()
+                        dispatch(getUserById(user.id, token))
+                        setInput({ ...user })
+                    }
+                    fetchData().catch(console.error);
+                    setShowProfile(true)
+                }, 0);
+                setShowProfile(false)
+            }
             })
-        } else {
-            Swal.fire({
-                title: 'Ingresa datos diferentes',
-                confirmButtonColor: '#4a9eab'
-            })
-        }
+        // } else {
+        //     Swal.fire({
+        //         title: 'Ingresa datos diferentes',
+        //         confirmButtonColor: '#4a9eab'
+        //     })
+        // }
     }
 
 
@@ -201,7 +201,81 @@ export default function MyProfile({ showProfile, setShowProfile }) {
                 </form>
             </div>
     );
-}
+//         </div>
+//         <div className={s.profile_input_container}>
+//             <label className={s.profile_label}>Nombre</label>
+//             <input type='text' 
+//                     name='first_name' 
+//                     value={input.first_name} 
+//                     onChange={handleChange} 
+//                     className={s.profile_input} />
+//                     <div></div>
+//         {
+//             errors.first_name && <h4 className={s.profile_error}>{errors.first_name}</h4>
+//         }
+//         </div>
+//         <div className={s.profile_input_container}>
+//             <label className={s.profile_label}>Apellido</label>
+//             <input type='text' 
+//                     name='last_name' 
+//                     value={input.last_name} 
+//                     onChange={handleChange} 
+//                     className={s.profile_input} />
+//         {
+//             errors.last_name && <h4 className={s.profile_error}>{errors.last_name}</h4>
+//         }
+//         </div>
+//         <div className={s.profile_input_container}>
+//             <label className={s.profile_label}>Numero de telefono</label>
+//             <input type='text' 
+//                     name='phone' 
+//                     value={input.phone} 
+//                     onChange={handleChange} 
+//                     className={s.profile_input} />
+//         {
+//             errors.phone && <h4 className={s.profile_error}>{errors.phone}</h4>
+//         }
+//         </div>
+//         <div className={s.profile_input_container}>
+//             <label className={s.profile_label}>Ciudad</label>
+//             <input type='text' 
+//                     name='city' 
+//                     value={input.city} 
+//                     onChange={handleChange} 
+//                     className={s.profile_input} />
+//         {
+//             errors.city && <h4 className={s.profile_error}>{errors.city}</h4>
+//         }
+//         </div>
+//         <div className={s.profile_input_container}>
+//             <label className={s.profile_label}>Estado</label>
+//             <input type='text' 
+//                     name='state' 
+//                     value={input.state} 
+//                     onChange={handleChange} 
+//                     className={s.profile_input} />
+//         {
+//             errors.state && <h4 className={s.profile_error}>{errors.state}</h4>
+//         }
+//         </div>
+//         <div className={s.profile_input_container}>
+//             <label className={s.profile_label}>Codigo postal</label>
+//             <input type='text' 
+//                     name='postal_code' 
+//                     value={input.postal_code} 
+//                     onChange={handleChange} 
+//                     className={s.profile_input} />
+//         {
+//             errors.postal_code && <h4 className={s.profile_error}>{errors.postal_code}</h4>
+//         }
+//         </div>
+        
+//         <button onClick={handleSubmit} disabled={isChange || Object.keys(errors).length > 0} className={s.profile_btn_save}>Guardar cambios</button>
+//         </div>
+//         </form>
+//     </div>
+//   );
+// }
 
 /* 
 const handleClickImage = async (e) => {
@@ -223,5 +297,4 @@ const handleClickImage = async (e) => {
             alert('Debes seleccionar una imagen');
         }
         alert('Debes seleccionar una imagen');
-        }
-*/
+        } */

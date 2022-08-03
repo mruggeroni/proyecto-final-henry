@@ -409,7 +409,7 @@ export function modificarCategoria(id, payload, token) {
       dispatch(getCategories());
       return json;
     } catch (e) {
-      alert("No pudimos modificar la categoria!");
+      console.log("No pudimos modificar la categoria!");
     }
   };
 }

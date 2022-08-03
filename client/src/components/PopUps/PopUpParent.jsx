@@ -32,14 +32,14 @@ export default function PopUpsComponent() {
     }, [dispatch])
 
     const handleFavoritePopUp = () => {
-        document.getElementById("nav_menu").classList?.add(`${s.is_active}`);
+        // document.getElementById("nav_menu").classList?.add(`${s.is_active}`);
         setShowFavoritePopUp(!showFavoritePopUp);
         setShowUserPopUp(false);
         setShowCartPopUp(false);
     }
 
     const handleUserPopUp = async () => { 
-        document.getElementById("popUpBackground").classList?.add(`${s.is_active}`);
+        // document.getElementById("popUpBackground").classList?.add(`${s.is_active}`);
         await loginWithPopup();
         const token = await getAccessTokenSilently();
         await dispatch(createUser(token));
@@ -48,14 +48,14 @@ export default function PopUpsComponent() {
     }
 
     const handleCartPopUp = () => {
-        document.getElementById("popUpBackground").classList?.add(`${s.is_active}`);
+        // document.getElementById("popUpBackground").classList?.add(`${s.is_active}`);
         setShowFavoritePopUp(false);
         setShowUserPopUp(false);
         setShowCartPopUp(!showCartPopUp);
       }
     
     const handleUserPopUpMenu = () => {
-        document.getElementById("popUpBackground").classList?.add(`${s.is_active}`);
+        // document.getElementById("popUpBackground").classList?.add(`${s.is_active}`);
         setShowFavoritePopUp(false);
         setShowUserPopUp(!showUserPopUp);
         setShowCartPopUp(false);
@@ -98,7 +98,7 @@ export default function PopUpsComponent() {
             <FavoritePopUp showProfile={showFavoritePopUp} setShowProfile={setShowFavoritePopUp} />
             <UserPopOut showProfile={showUserPopUp} setShowProfile={setShowUserPopUp} />
             <CartPopUp showProfile={showCartPopUp} setShowProfile={setShowCartPopUp} />
-            <div id="popUpBackground" onClick={() => handleClose()} className={`${s.nav_menu_container}`} ></div>
+            {/* <div id="popUpBackground" onClick={() => handleClose()} className={`${s.nav_menu_container}`} ></div> */}
         </div>
     </div>
   );

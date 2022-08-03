@@ -63,8 +63,8 @@ export default function ModifyPackages() {
         images1: paquete.images[1],
         images2: paquete.images[2],
         images: paquete.images,
-        destinations: paquete.destinations.map((i) => i.name),
-        activities: paquete.activities.map((i) => i.name),
+        destinations: paquete.destinations?.map((i) => i.name),
+        activities: paquete.activities?.map((i) => i.name),
         start_date: paquete.start_date,
         end_date: paquete.end_date,
         region: paquete.region,
@@ -144,7 +144,6 @@ export default function ModifyPackages() {
 
   const handleSelectDestinations = (e) => {
     if (e.target.value === "otro") {
-
       e.target.value = "default";
       handleShowDestinos();
     } else {
@@ -771,7 +770,7 @@ export default function ModifyPackages() {
               )}
             </div>
 
-            {input.images?.map((i, index) => {
+            {input.images && input.images?.map((i, index) => {
               return (
                 <div key={i + index} className={style.create_input_images}>
                   <label className={style.create_label}>
