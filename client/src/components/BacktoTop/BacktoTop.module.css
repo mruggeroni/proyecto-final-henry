@@ -1,0 +1,16 @@
+.backtoTop_container {
+    width: 100%;
+    height: 100vh;
+}
+
+.backtoTop_btn {
+    position: absolute;
+    background-color: transparent;
+    color: #fff;
+    border: thin solid #fff;
+    right: 20px;
+    top: 10px;
+    font-size: 26px;
+    padding: 5px 15px;
+    border-radius: 20px;
+}

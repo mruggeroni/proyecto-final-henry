@@ -29,7 +29,6 @@ export default function ModifyPackages() {
   const paquete = useSelector((state) => state.detailPackage);
   const dataNow = new Date().toISOString().split("T")[0];
   const categorias = useSelector((state) => state.categories);
-  console.log(categorias);
 
   const [input, setInput] = useState({
     name: "",
@@ -51,7 +50,7 @@ export default function ModifyPackages() {
     available: "true",
     on_sale: 0,
   });
-  console.log(input.destinations);
+
   useEffect(() => {
     if (Object.keys(paquete)?.length) {
       setInput({
@@ -78,12 +77,12 @@ export default function ModifyPackages() {
   }, [paquete]);
 
   useEffect(async () => {
-    if (!allActivities.length) {
-      dispatch(getAllActivities());
-    }
-    if (!allDestinations.length) {
-      dispatch(getAllDestinations());
-    }
+    // if (!allActivities.length) {
+    //   dispatch(getAllActivities());
+    // }
+    // if (!allDestinations.length) {
+    //   dispatch(getAllDestinations());
+    // }
     dispatch(getTypes());
     dispatch(getPackageById(id));
   }, [dispatch, id]);
@@ -267,7 +266,7 @@ export default function ModifyPackages() {
       const patch = {};
       patch.featured = input.featured;
       patch.available = input.available;
-      patch.available = input.available;
+      patch.on_sale = input.on_sale;
       const put = {};
       put.name = input.name;
       put.description = input.description;
@@ -281,7 +280,6 @@ export default function ModifyPackages() {
       put.activities = input.activities;
       put.destinations = input.destinations;
       const modificar = [put, patch];
-
       dispatch(modificarPaquete(modificar, id, token));
       alert("Nuevo paquete creado..");
       setInput({
@@ -303,7 +301,7 @@ export default function ModifyPackages() {
         seasson: "",
         type: "",
       });
-      // navigate("/dashboard");
+      navigate("/dashboard");
     }
   };
 

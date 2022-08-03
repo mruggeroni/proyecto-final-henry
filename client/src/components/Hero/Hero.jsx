@@ -1,8 +1,6 @@
 import React, { useEffect } from "react";
 import style from "./Hero.module.css";
 import FilterSearch from "./FilterSearch/FilterSearch.jsx";
-import { useDispatch, useSelector } from "react-redux";
-import { getAllDestinations } from "../../redux/actions";
 
 export default function Hero({ destinations }) {
   return (
