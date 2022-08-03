@@ -28,14 +28,23 @@
     align-items: center;
 }
 
+.icons_item_incomplete,
+.icons_item_complete,
 .icons_item {
     font-size: 2vw;
+    transition: 1s;
 }
 
-.icons_complete {
+.icons_item_incomplete {
+    color: #e4eaea;
+}
+
+.icons_item_complete {
     color: #10af1d;
 }
 
+.icons_line_complete,
+.icons_line_incomplete,
 .icons_line {
     width: 10vw;
     border: none;
@@ -43,12 +52,13 @@
     opacity: 100%;
     margin: 20px 5px;
     background-color: #000;
+    transition: 0.1s;
+}
+
+.icons_line_complete {
+    background-color: #10af1d;
 }
 
 .icons_line_incomplete {
     background-color: #e4eaea;
-}
-
-.icons_incomplete {
-    color: #e4eaea;
 }

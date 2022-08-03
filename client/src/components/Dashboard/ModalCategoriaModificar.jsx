@@ -6,6 +6,8 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import { Button, Col, Form, InputGroup, Row } from "react-bootstrap";
 import { getCategories, modificarCategoria } from "../../redux/actions";
+import { useAuth0 } from "@auth0/auth0-react";
+import Swal from 'sweetalert2'
 
 const schema = yup.object().shape({
   name: yup
@@ -23,27 +25,37 @@ export default function ModalCategoriaModificar({
   id,
 }) {
   const dispatch = useDispatch();
+  const { getAccessTokenSilently } = useAuth0();
 
   const handleClose = () => {
     setShowModificar(false);
   };
 
-  // useEffect(async () => {
-  //   await dispatch(getCategories());
-  // }, [dispatch]);
-
   const categorias = useSelector((state) => state.categories);
+  const detalleCategoria = categorias.filter(i => i.id === id)
+  console.log(categorias)
+
 
   const handleSubmit = async (e) => {
-    // const respuesta = await dispatch(createCategories(e));
-    // await dispatch(getAllDestinations());
-    const respuesta = await dispatch(modificarCategoria(id, e));
-    await dispatch(getCategories());
-
-    setShowModificar(false);
-    alert(respuesta.data.message);
-  };
-
+    try {
+      const token = await getAccessTokenSilently()
+      // const respuesta = await dispatch(createCategories(e));
+      // await dispatch(getAllDestinations());
+      const respuesta = await dispatch(modificarCategoria(id, e, token));
+      await dispatch(getCategories());
+      setShowModificar(false);
+      Swal.fire({
+        icon: 'success',
+        title: respuesta.data.message,
+      })
+    } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops algo fallo...',
+        text: error.message,
+      })
+    };
+  }
   return (
     <>
       <Modal show={showModificar} onHide={handleClose}>

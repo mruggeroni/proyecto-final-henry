@@ -33,6 +33,7 @@
     background-color: transparent;
     text-decoration: none;
     border: none;
+    font-size: 20px;
     margin: 0 5px;
     color: #000;
 }
@@ -45,14 +46,14 @@
 }
 
 .fl_table_false {
-    background-color: #ff0000;
+    background-color:#ff0000;
     color: #fff;
     padding: 3px 5px;
     border-radius: 20px;
 }
 
 .fl_table_btn:hover {
-    color: #4a9eab;
+    color: #4fc3a1;
 }
 
 .fl_table td,

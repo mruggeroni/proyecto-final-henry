@@ -19,10 +19,9 @@ export const GET_PK_REGION = "GET_PK_REGION";
 export const GET_LOCAL_STORAGE_CART = "GET_LOCAL_STORAGE_CART";
 export const GET_LOCAL_STORAGE_FAVORITES = "GET_LOCAL_STORAGE_FAVORITES";
 export const GET_DESTINATIONS_WITH_PACKAGES = "GET_DESTINATIONS_WITH_PACKAGES";
-
+export const GET_FAVORITES = 'GET_FAVORITES';
 export const FILTRAR = "FILTRAR";
 export const ORDENAR = "ORDENAR";
-
 export const UPDATE_USER = 'UPDATE_USER';
 export const DELETE_USER = 'DELETE_USER';
 export const GET_USER_BY_ID = 'GET_USER_BY_ID';
@@ -40,7 +39,6 @@ export const deleteUser = (id) => {
     return dispatch({ type: DELETE_USER, payload: res.data })
   }
 }
-
 
 export const getAllPackage = (limitRender) => {
   return async function (dispatch) {
@@ -120,13 +118,12 @@ export const createPackage = (payload, token) => {
 export const createUser = (payload) => {
   return async function (dispatch) {
     try {
-      
       const res = await axios.post("/user", {
         headers: {
           authorization: `Bearer ${payload}`,
         },
       });
-      return dispatch({ type: POST_USER, payload: res.data[0] });
+      return dispatch({ type: POST_USER, payload: res.data });
     } catch (e) {
       alert(e.message);
     }
@@ -147,12 +144,17 @@ export const getUsers = (token) => {
   };
 };
 
-export const getUserById = (id) => {
+export const getUserById = (id, token) => {
   return async function (dispatch) {
     try {
-      const res = await axios.get("/user/" + id);
+      const res = await axios.get("/user/" + id, {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
       return dispatch({ type: GET_USERS, payload: res.data });
     } catch (error) {
+      console.log(id, token)
       console.log(error);
     }
   };
@@ -355,6 +357,39 @@ export function getFavoritesLocalStorage(payload, id) {
   };
 }
 
+export const getAllFavorites = (token) => {
+  return async function (dispatch) {
+    let res = await axios.get("/favourites", {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
+    return dispatch({ type: GET_FAVORITES, payload: res.data });
+  };
+};
+
+export const postFavorites = (id, token) => {
+  return async function(dispatch){
+    let res = await axios.post('/favourites/' + id, {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
+    return res
+  }
+}
+
+export const deleteFavorites = (id, token) => {
+  return async function () {
+    let res = await axios.get("/favourites" + id, {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
+    return res
+  };
+};
+
 export function getCartLocalStorage(payload, id) {
   return {
     type: GET_LOCAL_STORAGE_CART,
@@ -362,15 +397,19 @@ export function getCartLocalStorage(payload, id) {
   };
 }
 
-export function modificarCategoria(id, payload) {
+export function modificarCategoria(id, payload, token) {
   return async function (dispatch) {
     console.log(payload);
     try {
-      var json = await axios.put("/classification/" + id, payload);
+      var json = await axios.put("/classification/" + id, payload, {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
       dispatch(getCategories());
       return json;
     } catch (e) {
-      alert("No pudimos modificar la categoria!");
+      console.log("No pudimos modificar la categoria!");
     }
   };
 }

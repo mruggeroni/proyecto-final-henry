@@ -30,10 +30,10 @@ export default function Footer() {
         </a>
       </div>
       <div className={s.footer_links}>
-        <NavLink to='/' className={s.footer_link}>Nosotros</NavLink> 
-        |<NavLink to='/' className={s.footer_link}>Politica de privacidad</NavLink> 
-        |<NavLink to='/' className={s.footer_link}>Terminos y condiciones</NavLink> 
-        |<NavLink to='/' className={s.footer_link}>Preguntas frecuentes</NavLink> 
+        <NavLink to='/about' className={s.footer_link}>Nosotros</NavLink> 
+        |<NavLink to='/privacy' className={s.footer_link}>Politica de privacidad</NavLink> 
+        |<NavLink to='/terms-and-conditions' className={s.footer_link}>Terminos y condiciones</NavLink> 
+        |<NavLink to='/faq' className={s.footer_link}>Preguntas frecuentes</NavLink> 
       </div>
       <hr className={s.footer_line} />
       <div className={s.footer_copyright}>

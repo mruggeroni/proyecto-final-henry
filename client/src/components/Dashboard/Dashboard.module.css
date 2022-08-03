@@ -84,12 +84,14 @@
         height: 10%;
         width: 100%;
         flex-direction: row;
+        padding-top: 0;
     }
     .links_item {
         height: 100%;
         border: none;
         font-size: 16px;
         z-index: 999;
+        padding: 10px 5px;
     }
     .dashboard_panel_title {
         display: none;

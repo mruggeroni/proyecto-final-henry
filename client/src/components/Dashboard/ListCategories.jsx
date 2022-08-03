@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { getAllPackage, getCategories } from "../../redux/actions";
+import { AiFillEdit } from 'react-icons/ai';
 import Dashboard from "./Dashboard";
 import s from "./Table.module.css";
 import ModalCategoriaModificar from "./ModalCategoriaModificar";
@@ -53,7 +54,7 @@ export default function ListPackages() {
                             className={s.fl_table_btn}
                             onClick={(e) => handleModificar(p.id)}
                           >
-                            Editar
+                            <AiFillEdit />
                           </button>
                         </td>
                       </tr>
