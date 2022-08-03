@@ -13,6 +13,8 @@ import {
   getAllDestinations,
   getCategories,
 } from "../../redux/actions";
+import Swal from 'sweetalert2'
+import { useNavigate } from "react-router-dom";
 
 const schema = yup.object().shape({
   name: yup
@@ -26,7 +28,7 @@ const schema = yup.object().shape({
 
 export default function ModalCategoria({ show, setShow, setInput, input }) {
   const dispatch = useDispatch();
-  const { getAccessTokenSilently} = useAuth0();
+  const { getAccessTokenSilently } = useAuth0();
   const handleClose = () => {
     setShow(false);
     // setInputModal({
@@ -36,24 +38,39 @@ export default function ModalCategoria({ show, setShow, setInput, input }) {
     //   price: 0,
     // });
   };
-  useEffect(async () => {
-    await dispatch(getCategories());
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    dispatch(getCategories());
   }, [dispatch]);
 
   const categorias = useSelector((state) => state.categories);
 
   const handleCrearCategoria = async (e) => {
-    const token = await getAccessTokenSilently()
-    const respuesta = await dispatch(createCategories(e, token));
-    await dispatch(getAllDestinations());
-    await dispatch(getAllActivities());
-    await dispatch(getCategories());
-    setShow(false);
-    setInput({
-      ...input,
-      classification: e.name,
-    });
-    alert(respuesta.data.message);
+    try {
+      const token = await getAccessTokenSilently()
+      const respuesta = await dispatch(createCategories(e, token));
+      await dispatch(getAllDestinations());
+      await dispatch(getAllActivities());
+      await dispatch(getCategories());
+      setShow(false);
+      setInput({
+        ...input,
+        classification: e.name,
+      });
+      Swal.fire({
+        icon: 'success',
+        title: respuesta.data.message,
+      })
+      navigate("/dashboard/listActivities")
+    } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops algo fallo...',
+        text: error.message,
+      })
+    }
+
   };
 
   return (
