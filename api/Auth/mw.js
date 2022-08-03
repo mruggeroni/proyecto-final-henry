@@ -8,7 +8,7 @@ export const verifyJwt = expressJwt({
 		cache: true,
 		rateLimit: true,
 		jwksRequestsPerMinute: 5,
-		jwksUri: process.env.JWKSURI
+		jwksUri: 'https://dev-33fzkaw8.us.auth0.com/.well-known/jwks.json'
 	}),
 	audience: process.env.AUDIENCE,
 	issuer: process.env.ISSUER,

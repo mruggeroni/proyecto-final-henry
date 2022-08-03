@@ -20,6 +20,7 @@ export default  function ListUsers() {
             dispatch(getUsers(token))
         }
     }, [dispatch]);
+    
    const handleDelete = async (id) =>{
     const token = await getAccessTokenSilently()
     dispatch(borrarUsuario(id, token))

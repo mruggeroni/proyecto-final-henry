@@ -80,6 +80,7 @@ export const getTypes = () => {
 export const createPackage = (payload, token) => {
   return async function (dispatch) {
     try {
+      console.log(token)
       const respuesta = await axios.post("/packages", payload, 
       {
         headers: {
@@ -103,12 +104,25 @@ export const createUser = (payload) => {
         },
       });
       console.log(res.data);
-      return dispatch({ type: POST_USER, payload: res.data.message });
+      return dispatch({ type: POST_USER, payload: res.data});
     } catch (e) {
       alert(e.message);
     }
   };
 };
+export const ModifyUser = (payload, token) => {
+  return async function (dispatch){
+    try {
+      const res = await axios.put('/user?email='+ payload, payload,
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+        }})
+    } catch (error) {
+      
+    }
+  }
+}
 
 export const getUsers = (token) => {
   return async function (dispatch) {
