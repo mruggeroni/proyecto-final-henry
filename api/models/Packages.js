@@ -5,6 +5,8 @@ import { Activity } from './Activities.js';
 import { Order } from './Orders.js';
 import { OrderItem } from './OrderItems.js';
 import { User } from './Users.js';
+import { RatingAndFavourite } from './RatingAndFavourite.js';
+
 
 export const Package = sequelize.define('package', {
 	name: {
@@ -79,13 +81,10 @@ export const Package = sequelize.define('package', {
 		defaultValue: 0,
 	},
 }, {
-	timestamps: true,
-	createdAt: false,
-	updatedAt: false,
+	timestamps: false,
 	paranoid: true,
-	deletedAt: 'destroyTime'
+	deletedAt: 'destroyTime',
 });
-
 
 Package.belongsToMany(Order, {through: OrderItem})
 Order.belongsToMany(Package, {through: OrderItem})
@@ -96,5 +95,5 @@ Destination.belongsToMany(Package, {through: 'Package_Destination'})
 Package.belongsToMany(Activity, {through: 'Package_Activity'})
 Activity.belongsToMany(Package, {through: 'Package_Activity'})
 
-User.belongsToMany(Package, {through: 'Favourites'})
-Package.belongsToMany(User, {through: 'Favourites'})
+User.belongsToMany(Package, {through: RatingAndFavourite})
+Package.belongsToMany(User, {through: RatingAndFavourite})

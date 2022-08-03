@@ -10,6 +10,7 @@
   transform: scale(var(--s, 1)) translateZ(0);
   transition: transform 0.2s;
   -webkit-tap-highlight-color: transparent;
+  padding: auto;
 }
 .heart_switch:active {
   --s: 0.95;
@@ -52,6 +53,27 @@
   --fill: var(--fill-active);
   --stroke: var(--stroke-active);
 }
+
+.favoriteHeart{
+  --duration: 0.45s;
+  --stroke: #d1d6ee;
+  --stroke-active: #f51d1d;
+  --fill: #fff;
+  --fill-active: #f51d1d;
+  --shadow: rgba(0, 9, 61, 0.45);
+  cursor: pointer;
+  position: relative;
+  transform: scale(var(--s, 1)) translateZ(0);
+  transition: transform 0.2s;
+  -webkit-tap-highlight-color: transparent;
+  height: 100%;
+}
+
+.favoriteHeart input + svg {
+  --fill: var(--fill-active);
+  --stroke: var(--stroke-active);
+}
+
 @keyframes uncheck {
   0% {
     transform: rotate(-30deg) translateX(13.5px) translateY(8px);

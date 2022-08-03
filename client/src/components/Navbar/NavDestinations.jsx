@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { BsFillCaretLeftFill } from "react-icons/bs";
 import {
   getAllDestinations,
@@ -11,7 +11,7 @@ import style from "./Navbar.module.css";
 export default function NavDestinations({ handleClose }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  // const params = props.match.params; 
   const allDestinations = useSelector((state) => state.destinations);
 
   useEffect(() => {
@@ -21,6 +21,8 @@ export default function NavDestinations({ handleClose }) {
   function handleClick(e) {
     e.preventDefault();
     dispatch(filterPackagesByDestination(e.target.innerText));
+    // console.log(params)
+
     navigate("/search");
     // navigate(`/search/${e.target.innerText}`);
     handleClose();

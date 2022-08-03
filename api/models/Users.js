@@ -53,8 +53,8 @@ export const User = sequelize.define('user', {
 	},
 }, {
 	timestamps: true,
-	createdAt: "created_date",
-	updatedAt: "update_date",
-	paranoid:true,
+	createdAt: 'created_date',
+	updatedAt: 'update_date',
+	paranoid: true,
 	deletedAt: 'destroyTime',
 });

@@ -49,7 +49,6 @@ export default function ModalActividades({ show, setShow, setInput, input }) {
   }, [dispatch]);
 
   const categorias = useSelector((state) => state.categories);
-  console.log(categorias);
 
   const handleCrearActividad = async (e) => {
     e.price = parseInt(e.price);

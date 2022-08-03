@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 // import validate from "./validationActivity.js";
 import Dashboard from "./Dashboard";
 import style from "./CreatePackage.module.css";
-import { createActivities, getCategories } from "../../redux/actions";
+import {
+  createActivities,
+  getCategories,
+  getAllActivities,
+} from "../../redux/actions";
 import ModalCategorias from "./ModalCategoria";
 import { useAuth0 } from "@auth0/auth0-react";
 
 function validate(input) {
   let error = {};
-  let regName = /^[a-zA-Z]*$/;
-  let regInteger = /^\d+$/;
-  let checkboxes = document.getElementsByName("check");
 
   if (!input.name) {
     error.name = "El nombre es requerido";
@@ -55,13 +55,15 @@ function firstCap(name) {
   return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
 }
 
-export default function ActivityCreate({ showCreateActivity, setShowCreateActivity }) {
+export default function ActivityCreate({
+  showCreateActivity,
+  setShowCreateActivity,
+}) {
   const dispatch = useDispatch();
   const { getAccessTokenSilently} = useAuth0();
   // const activities = useSelector((state) => state.activities);
   // const countries = useSelector((state) => state.allCountries);
   const [error, setError] = useState({});
-  const createBtn = document.getElementById("create");
   const [input, setInput] = useState({
     name: "",
     description: "",
@@ -83,8 +85,6 @@ export default function ActivityCreate({ showCreateActivity, setShowCreateActivi
         [e.target.name]: e.target.value,
       })
     );
-    console.log("input: ", input);
-    console.log("error: ", error);
   };
 
   const handleSelectCategorias = (e) => {
@@ -119,6 +119,7 @@ export default function ActivityCreate({ showCreateActivity, setShowCreateActivi
         image: "",
         classification: "",
       });
+      dispatch(getAllActivities());
       dispatch(createActivities(input, token));
       // Alert bootstrap
       alert("Actividad creada!");
@@ -135,8 +136,6 @@ export default function ActivityCreate({ showCreateActivity, setShowCreateActivi
   }, []);
 
   return (
-    // !showCreateActivity ? null
-    // :
     <div>
       <Dashboard />
       <div className={style.create_container}>
