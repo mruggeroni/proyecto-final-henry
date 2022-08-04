@@ -9,7 +9,7 @@ import { WebAuth } from 'auth0-js';
 export const getUsers = async (req, res) => {
 	const { limitRender, page, destroyTime, is_admin } = req.query;
 	//console.log(token)
-	//console.log('HERE')
+	console.log('HERE')
 	//console.log(req)
 	try {
 
@@ -71,7 +71,7 @@ export const getUserDetail = async (req, res) => {
 		// 	}
 		// );
 		
-		const userInfo = respuesta.data;
+		//const userInfo = respuesta.data;
 		
 		const idUser = parseInt(id);
 
@@ -144,7 +144,7 @@ export const createUser = async (req, res) =>{
 				},
 			}
 		);
-		console.log(respuesta)
+		//console.log(respuesta)
 		const userInfo = respuesta.data;
 		const usuarioDB = await User.findOrCreate({where: {email: userInfo.email},
 		defaults: {first_name: userInfo.given_name || userInfo.nickname,
@@ -155,9 +155,10 @@ export const createUser = async (req, res) =>{
 	const role = usuarioDB[0].dataValues.is_admin === true? 'Admin': 'Client'
 	let usuario = usuarioDB[1] === false? "login": "register"
 	const currentUsuario = [usuario, role]
-	console.log(usuarioDB[0])
+	//console.log(usuarioDB[0])
 	res.status(200).json(usuarioDB[0]);
 	} catch (error) {
+		console.log(error)
 		return res.status(400).json({ message: error.message });
 	}
 }
@@ -181,7 +182,7 @@ export const LoginLocal = async (req, res) => {
 	const email = req.body.email
 	const password = req.body.password
 	const usuario= User.findOne({where:{email: email}})
-	usuario.password === password?  res.status(200).json(usuario): res.status(400).json({ message: 'Denied'})
+	usuario.password === password?  res.status(200).json(usuario): res.status(401).json({ message: 'Denied'})
 		
 	} catch (error) {
 		return res.status(400).json({ message: error.message });

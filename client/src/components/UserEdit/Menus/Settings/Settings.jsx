@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { BsFillEyeFill, BsFillEyeSlashFill } from 'react-icons/bs';
+import {MdBuild} from 'react-icons/md'
 import s from './Settings.module.css';
 import {useDispatch, useSelector } from "react-redux";
 import { WebAuth } from 'auth0-js';
@@ -39,13 +40,9 @@ export default function Settings({ showSettings, setShowSettings }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(input)
+   
     setShowSettings(false);
-    setInput({
-      email: user.email,
-      currentPassword: '',
-      newPassword: ''
-    });
+   
     setTimeout(() => {
       setShowSettings(true)
       console.log('reset')
@@ -55,17 +52,13 @@ export default function Settings({ showSettings, setShowSettings }) {
 
   const handleChange = (e) => {
     e.preventDefault(); 
-    setInput({
-      ...input,
-      [e.target.name]: e.target.value 
-    });
+   
 
   };
 
   const handleDelete = (e) => {
     e.preventDefault();
     if(window.alert('Seguro desea eliminar esta cuenta?')) {
-        console.log(input);
     }
   };
 
@@ -79,7 +72,7 @@ export default function Settings({ showSettings, setShowSettings }) {
         <div className={s.settings_email_container}>
           <h3 className={s.settings_email}>Email</h3>
             <input type='email' value={user.email} className={s.settings_input}/>
-          //<button onClick={(e) => handleChangeEmail(e, user)} className={s.settings_email_btn}>Cambiar</button>
+          //<button className={s.settings_email_btn}>Cambiar</button>
         </div>
         <form className={s.settings_password_container}>
           <button onClick={(e) => handlePassword(e, user)} className={s.settings_btn_save}>Cambiar Contraseña</button>

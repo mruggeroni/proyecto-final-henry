@@ -41,7 +41,7 @@ export default function CartPopOut({ showProfile, setShowProfile }) {
           <h3 className={s.favTitle}>Mi Carrito ({cart && cart.length})</h3>
           <hr />
           <div className={style.user_profile_link}>
-            {cart.length ?
+            {cart.length?
               cart.map((p) => {
                 return (
                   <div key={p.paquete.id}>
