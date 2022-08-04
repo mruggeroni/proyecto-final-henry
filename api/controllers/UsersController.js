@@ -14,7 +14,7 @@ export const getUsers = async (req, res) => {
 	try {
 
 		//console.log(respuesta)
-		const limitRend = parseInt(limitRender) || 30,
+		const limitRend = parseInt(limitRender) || 1000,
             pag = parseInt(page) || 1,
 			is_ad = is_admin === 'true' ? 
 				true : 

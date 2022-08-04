@@ -31,7 +31,23 @@ export default function ListUsers() {
     }
   };
 
+<<<<<<< .merge_file_91R8vs
   
+=======
+  useEffect(() => {
+    // declare the data fetching function
+    const fetchData = async () => {
+      const token = await getAccessTokenSilently()
+      dispatch(getUsers(token))
+    }
+  
+    // call the function
+    fetchData()
+      // make sure to catch any error
+      .catch(console.error);
+  }, [dispatch])
+
+>>>>>>> .merge_file_ZJ7kkz
   return (
     <div>
       <Dashboard />
