@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Swal from 'sweetalert2'
 import { useDispatch, useSelector } from "react-redux";
 // import validate from "./validationActivity.js";
@@ -60,8 +60,9 @@ function firstCap(name) {
 export default function ModifyActivity() {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const { getAccessTokenSilently} = useAuth0();
+  const { getAccessTokenSilently } = useAuth0();
   const actividadesTodas = useSelector((state) => state.activities);
+  const navigate = useNavigate()
 
   const [error, setError] = useState({});
   const createBtn = document.getElementById("create");
@@ -117,51 +118,62 @@ export default function ModifyActivity() {
     }
   };
 
-  const handleSubmit = async (e) =>{
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const token = await getAccessTokenSilently()
     e.price = parseInt(e.price);
-    if (!Object.keys(error).length) {
-      setInput({
-        name: "",
-        description: "",
-        price: "",
-        image: "",
-        classification: "",
-      });
-      console.log(input);
-      console.log(input.classification);
-      dispatch(modificarActividad(input, id, token));
-      // Alert bootstrap
-      Swal.fire({
-        icon: 'success',
-        title: 'Actividad modificada!',
-      })
-    } else {
+    try {
+
+      if (!Object.keys(error).length) {
+        setInput({
+          name: "",
+          description: "",
+          price: "",
+          image: "",
+          classification: "",
+        });
+        dispatch(modificarActividad(input, id, token));
+        Swal.fire({
+          icon: 'success',
+          title: 'Actividad modificada!',
+        })
+        navigate("/dashboard/listActivities")
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops algo fallo...',
+          text: error.message,
+        })
+      }
+    } catch (error) {
       Swal.fire({
         icon: 'error',
-        title: 'Error...',
-        text: 'El formulario no esta completado correctamente, intenta de nuevo!',
+        title: 'Oops algo fallo...',
+        text: error.message,
       })
     }
   }
 
-  useEffect(async () => {
-    const categorias = await dispatch(getCategories());
-    const actividades = await dispatch(getAllActivities());
-    const actividad = actividades.payload.filter(
-      (i) => parseInt(i.id) === parseInt(id)
-    );
-    if (Object.keys(actividad)?.length) {
-      setInput({
-        id: actividad[0].id,
-        name: actividad[0].name,
-        description: actividad[0].description,
-        image: actividad[0].image,
-        classification: actividad[0].classification.name,
-        price: actividad[0].price,
-      });
+  useEffect(() => {
+
+    const fetch = async () => {
+      const categorias = await dispatch(getCategories());
+      const actividades = await dispatch(getAllActivities());
+      const actividad = actividades.payload.filter(
+        (i) => parseInt(i.id) === parseInt(id)
+      );
+      if (Object.keys(actividad)?.length) {
+        setInput({
+          id: actividad[0].id,
+          name: actividad[0].name,
+          description: actividad[0].description,
+          image: actividad[0].image,
+          classification: actividad[0].classification.name,
+          price: actividad[0].price,
+        });
+      }
     }
+    fetch()
   }, []);
   const categorias = useSelector((state) => state.categories);
 
@@ -242,7 +254,7 @@ export default function ModifyActivity() {
                 value="default"
                 selected={
                   input.classification === "default" ||
-                  input.classification === ""
+                    input.classification === ""
                     ? true
                     : false
                 }

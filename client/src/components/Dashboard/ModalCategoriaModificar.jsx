@@ -25,38 +25,37 @@ export default function ModalCategoriaModificar({
   id,
 }) {
   const dispatch = useDispatch();
-  const { getAccessTokenSilently} = useAuth0();
+  const { getAccessTokenSilently } = useAuth0();
 
   const handleClose = () => {
     setShowModificar(false);
   };
 
-  // useEffect(async () => {
-  //   await dispatch(getCategories());
-  // }, [dispatch]);
-
   const categorias = useSelector((state) => state.categories);
+  const detalleCategoria = categorias.filter(i => i.id === id)
+  console.log(categorias)
+
 
   const handleSubmit = async (e) => {
-    const token = await getAccessTokenSilently()
-    // const respuesta = await dispatch(createCategories(e));
-    // await dispatch(getAllDestinations());
-    const respuesta = await dispatch(modificarCategoria(id, e, token));
-    await dispatch(getCategories());
-    if(respuesta.data.message === 'Classification updated') {
+    try {
+      const token = await getAccessTokenSilently()
+      // const respuesta = await dispatch(createCategories(e));
+      // await dispatch(getAllDestinations());
+      const respuesta = await dispatch(modificarCategoria(id, e, token));
+      await dispatch(getCategories());
+      setShowModificar(false);
       Swal.fire({
         icon: 'success',
-        title: 'Categoria modificada!',
+        title: respuesta.data.message,
       })
-    } else {
+    } catch (error) {
       Swal.fire({
         icon: 'error',
-        title: 'No pudimos modificar la categoria!',
+        title: 'Oops algo fallo...',
+        text: error.message,
       })
-    }
-    setShowModificar(false);
-  };
-
+    };
+  }
   return (
     <>
       <Modal show={showModificar} onHide={handleClose}>
