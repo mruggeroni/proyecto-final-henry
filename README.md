@@ -1,14 +1,13 @@
-Variables de entorno:
-DB= "Nombre de la DB"
-DB_USER= "Usuario de Postgres"
-DB_PASSWORD= "Pass de Postgres"
-DB_HOST= "(por defecto es 'localhost')"
-DB_DIALECT= "(por defecto es 'postgres')"
+Variables de entorno: 
+DB= "Nombre de la DB" 
+DB_USER= "Usuario de Postgres" 
+DB_PASSWORD= "Pass de Postgres" 
+DB_HOST= "(por defecto es 'localhost')" 
+DB_DIALECT= "(por defecto es 'postgres')" 
 PORT= "(por defecto es '3001')"
 
 Usuarios de prueba que se encuentran en la database y en Auth0 para pruebas en front: Solo se debe entrar en la pagina desde front, ingresando el correo y la contraseña de cualquiera que de los dos usuarios. El primero es administrador, el segundo es cliente.
-
-````json
+```json
     {
         "first_name": "Administrador",
         "last_name": "Prueba",
@@ -60,14 +59,14 @@ propiedad duration habilitada.
 const { limitRender } = req.params;
 // controla cuantos paquetes trae por pagina.
 // en caso de no ser número, por defecto se setea en 12.
-const { page, priceSort, durationSort, type, region, destination, dateMin, dateMax, available } = req.query;
+const { page, priceSort, durationSort, type, region, destination, dateMin, dateMax, available } = req.query; 
 // "priceSort" y "durationSort" esperan (asc: para orden ascendente y desc: para orden descendente).
 // "type", "region" y"destination" son sensibles a mayúscula o minúscula (además de las tildes). La busqueda debe ser LITERAL.
 // "dateMin" y "dateMax" forman el rango de busqueda para "start_date" (son string en formato fecha americana: "yyyy-mm-dd").
 // "available" espera true (para paquetes en stock) o false (para paquetes fuera de stock). Por defecto trae ambos.
 const { priceFilterMin, priceFilterMax, durationFilterMin, durationFilterMax } = req.body;
 // son pares que forman un rango de busqueda (en los dos casos son números enteros).
-````
+```
 
 ```json
 [
@@ -104,28 +103,25 @@ const { priceFilterMin, priceFilterMax, durationFilterMin, durationFilterMax } =
   }
 ]
 ```
+- *POST **"/user"** => Verifica si el usuario ingresado por el pop(Auth0) es nuevo (se esta registrando) o si ya existe (se esta logeando), en base a eso lo guarda en la Database local con el rol default de client (si es nuevo) o identifica su rol si se esta logeando. Esta ruta responde con un array de dos posiciones ['accion', 'rol'], el primer elemento es un string que indica register o login, si es nuevo usuario saldra 'register' indicando que si bien ya esta registrado, debería brindar información adicional (ver modelo user), de lo contrario saldra 'login', indicando que esto no es necesario. El segundo campo muestra el rol, Admin o Client, que es siempre Client si el primer elemento es register.
+IMPORTANTE: No probar esta ruta en postman, solo con el login del front ¿Por qué? porque para crear el usuario se esta requiriendo info de Auth0, por lo que se necesita primero que Auth0 verifique al usuario. Esto ya esta conectado (ver component UserPopOut, la función handleLogin, ver actions createUser)
 
-- \*POST **"/user"** => Verifica si el usuario ingresado por el pop(Auth0) es nuevo (se esta registrando) o si ya existe (se esta logeando), en base a eso lo guarda en la Database local con el rol default de client (si es nuevo) o identifica su rol si se esta logeando. Esta ruta responde con un array de dos posiciones ['accion', 'rol'], el primer elemento es un string que indica register o login, si es nuevo usuario saldra 'register' indicando que si bien ya esta registrado, debería brindar información adicional (ver modelo user), de lo contrario saldra 'login', indicando que esto no es necesario. El segundo campo muestra el rol, Admin o Client, que es siempre Client si el primer elemento es register.
-  IMPORTANTE: No probar esta ruta en postman, solo con el login del front ¿Por qué? porque para crear el usuario se esta requiriendo info de Auth0, por lo que se necesita primero que Auth0 verifique al usuario. Esto ya esta conectado (ver component UserPopOut, la función handleLogin, ver actions createUser)
-
-- _GET **"/users"** => para modificar "available", "featured" y "on_sale"_
+- *GET **"/users"** => para modificar "available", "featured" y "on_sale"*
 
 recibe por query props. opcionales:
-
 ```js
-const { limitRender, page, destroyTime, is_admin } = req.query;
-// "limitRender" y "page" controlan la cantidad de usuarios renderizados y la pagina respectivamente.
-// "destroyTime" puede recibir "active" para filtrar por usuarios activos, "deleted" para borrados, una fecha para filtrar los eliminados desde entonces (por defecto devuelve todos los casos)
-// "is_admin" recibe un true o false para filtrar la lista (en caso contrario devuelve ambos tipos de usuarios)
+	const { limitRender, page, destroyTime, is_admin } = req.query;
+  // "limitRender" y "page" controlan la cantidad de usuarios renderizados y la pagina respectivamente.
+  // "destroyTime" puede recibir "active" para filtrar por usuarios activos, "deleted" para borrados, una fecha para filtrar los eliminados desde entonces (por defecto devuelve todos los casos)
+  // "is_admin" recibe un true o false para filtrar la lista (en caso contrario devuelve ambos tipos de usuarios)
 ```
 
 respuesta:
-
 ```json
 
 ```
 
-- _GET **"/user/:id"** => para traer detalles de un usuario (pensado como pensado usuario)_
+- *GET **"/user/:id"** => para traer detalles de un usuario (pensado como pensado usuario)*
 
 incluye el deslose de ordenes de compra del usuario
 
@@ -170,18 +166,14 @@ respuesta:
         }
       ]
     },
-    {
-      /* ... */
-    },
-    {
-      /* ... */
-    }
+    {/* ... */},
+    {/* ... */},
     /* ... */
   ]
 }
 ```
 
-- _GET **"/user/status/:id"** => para verificar si un usuario es admin o no_
+- *GET **"/user/status/:id"** => para verificar si un usuario es admin o no*
 
 incluye propiedad "includeDeleted" por query (opcional) para realizar peticiones o no a usuarios eliminados
 
@@ -194,7 +186,7 @@ respuesta:
 }
 ```
 
-- _GET **"/packages/orderQuantity/:id"** => para traer la cantidad de total ordenes de un paquete "orderQuantity" (tiene el id del paquete)_
+- *GET **"/packages/orderQuantity/:id"** => para traer la cantidad de total ordenes de un paquete "orderQuantity" (tiene el id del paquete)*
 
 respuesta:
 
@@ -205,36 +197,37 @@ respuesta:
 }
 ```
 
-- _PATCH **"/packages/:id"** => para modificar "available", "featured" y "on_sale"_
+- *PATCH **"/packages/:id"** => para modificar "available", "featured" y "on_sale"*
 
 Los input por body son opcionales (para mayor flexibilidad al cambiar uno o varios).
 
 ```js
 const id = req.params.id;
 const { featured, available, on_sale } = req.body;
-// "featured" y "available" son BOOLEAN.
+// "featured" y "available" son BOOLEAN. 
 // "on_sale" es INTEGER.
 ```
 
-- _GET **"/packages/featured"** = array con paquetes destacados, 3 por defecto, la ruta se puede modificar con un query: "/packages/featured?limit=Numero"_
+- *GET **"/packages/featured"** = array con paquetes destacados, 3 por defecto, la ruta se puede modificar con un query: "/packages/featured?limit=Numero"*
 
-- _GET **"/types"** = array con los tipos de Packages_
+- *GET **"/types"** = array con los tipos de Packages*
 
-- _GET **"/on_sale"** => array de 3 paquetes aleatorios con la propiedad 'on_sale' > 0 (paquetes con descuentos)_
+- *GET **"/on_sale"** => array de 3 paquetes aleatorios con la propiedad 'on_sale' > 0 (paquetes con descuentos)*
 
-- _GET **"/destinations"** = array con los destinos_
+- *GET **"/destinations"** = array con los destinos*
 
-- _GET **"/activities"** = array con actividades_
+- *GET **"/activities"** = array con actividades*
 
-- _GET **"/classifications"** = array con clasificaciones_
 
-- _GET **"/packages/:id"** = array con el detalle de un paquete y paquetes recomendados (ver abajo)_
+- *GET **"/classifications"** = array con clasificaciones*
+
+
+- *GET **"/packages/:id"** = array con el detalle de un paquete y paquetes recomendados (ver abajo)*
 
 post "/packages" = crea paquetes, actividades, destinos y clasificaciones. Tambien acepta todos estos datos preexistentes.
 
 post "/activities" = crea actividades.
 IMPORTANTE: Al crear por separado elegir clasifación preexistente
-
 ```json
 {
   "name": "jsalkdija",
@@ -246,16 +239,13 @@ IMPORTANTE: Al crear por separado elegir clasifación preexistente
 ```
 
 post "/classification" = crea clasificaciones.
-
 ```json
 {
   "name": "jsalkdija",
   "image": "https://demos.maperez.es/pfhenry/Tour%20de%20Highlights.jpg"
 }
 ```
-
 post "/destinations" = crea destinos.
-
 ```json
 {
   "name": "jsalkdija",
@@ -263,7 +253,6 @@ post "/destinations" = crea destinos.
   "region": "Europa Occidental"
 }
 ```
-
 put "/packages/id" = puede modificar todas las propiedades de un paquete, con caracteristicas preexistentes o nuevas, si no cambia un atributo, dejar el valor previo. Si se modifica un destino/clasificacion o actividad creando una nueva, esa se guardara para poder ser asignada posteriormente.
 
 put "/destinations/id"
@@ -273,14 +262,12 @@ put "/activities/id"
 put "/classifications/id"
 
 Get activities: Se ejecuta en la ruta '/activities', se obtiene un objeto con la siguiente estructura:, un array de objetos, en el que cada objeto cuenta con las propiedades: id, name, image, description, price, classificationId, y classification, que a su vez tendra un objeto con el "name" de la clasificación. [ {"id":1, "name":"Tour de Monumentos", "description":"Hola soy una actividad", "image":"https://demos.maperez.es/pfhenry/Tour%20de%20Monumentos.jpg", "price":100, "classificationId":1, "classification":{"name":"Familiar"} }, {"id":3, "name":"Tour de Highlights", "description":"Hola soy una actividad", "image":"https://demos.maperez.es/pfhenry/Tour%20de%20Highlights.jpg", "price":100, "classificationId":1, "classification":{"name":"Familiar"} }, {"id":5, "name":"Tour Gastronomía Nacional", "description":"Hola soy una actividad", "image":"https://demos.maperez.es/pfhenry/Tour%20Gastronomía%20Nacional.jpg", "price":150, "classificationId":1, "classification":{"name":"Familiar"} }]
+- *GET **"/deletedPackages"** = retorna un arreglo con los paquetes "Borrados" o en caso de no existir ningun paquete borrado retorna 'No deleted packages found'*
 
-- _GET **"/deletedPackages"** = retorna un arreglo con los paquetes "Borrados" o en caso de no existir ningun paquete borrado retorna 'No deleted packages found'_
-
-- _DELETE **"/packages"** = ¡¡RECIBE UN 'id' por query (/packages?id=n)!! Borra un paquete y retorna un mensaje 'Package deleted successfully' o en caso de que el paquete que se intente borrar ya haya sido borrado retorna un mensaje 'The package was already deleted'_
+- *DELETE **"/packages"** = ¡¡RECIBE UN 'id' por query (/packages?id=n)!! Borra un paquete y retorna un mensaje 'Package deleted successfully' o en caso de que el paquete que se intente borrar ya haya sido borrado retorna un mensaje 'The package was already deleted'*
 
 GET activities: Se ejecuta en la ruta '/activities', se obtiene un objeto con la siguiente estructura:, un array de objetos, en el que cada objeto cuenta con las propiedades: id, name, image, description, price, classificationId, y classification, que a su vez tendra un objeto con el "name" de la clasificación. [ {"id":1, "name":"Tour de Monumentos", "description":"Hola soy una actividad", "image":"https://demos.maperez.es/pfhenry/Tour%20de%20Monumentos.jpg", "price":100, "classificationId":1, "classification":{"name":"Familiar"} }, {"id":3, "name":"Tour de Highlights", "description":"Hola soy una actividad", "image":"https://demos.maperez.es/pfhenry/Tour%20de%20Highlights.jpg", "price":100, "classificationId":1, "classification":{"name":"Familiar"} }, {"id":5, "name":"Tour Gastronomía Nacional", "description":"Hola soy una actividad", "image":"https://demos.maperez.es/pfhenry/Tour%20Gastronomía%20Nacional.jpg", "price":150, "classificationId":1, "classification":{"name":"Familiar"} }]
-
-> > > > > > > develop
+>>>>>>> develop
 
 GET Detalle y Get Recomendados, se ejecuetan ambos en la ruta '/packages/:id', se obtiene un array con DOS (2) elementos, en los cuales el primer elemento es el paquete requerido por ID (DETALLE), y el segundo elemento es un array con TRES (3) objetos, en el que cada objeto es un paquete recomendado con relación al paquete mostrado en detalle.
 
@@ -674,10 +661,4 @@ Devuelve un array con todos los paquetes, cada paquete posee la estructura sigui
 *
 - * DELETE **'/favourites/:id'** = Elimina de favoritos el packete indicado mediante el 'id'.
   Cómo uso esta ruta? --> ¡¡VER EJEMPLO DE LA RUTA DE POST '/favourites/:id'!!
-*
-- * POST **'/rating/:id'** = Agrega rating a un paquete. Para usar esta ruta es necesario enviar el id del paquete y el rating mediante query! --> Ejemplo (/rating/3?rating=5)
-*
-- * GET **'/rating/:id'** = Devuelve el rating de un paquete. Para usar esta ruta es necesario enviar el id del paquete.
-*
-- * DELETE **/rating/:id** = Elimina el rating de un paquete. Para usar esta ruta es necesario enviar el id del paquete.
 *
