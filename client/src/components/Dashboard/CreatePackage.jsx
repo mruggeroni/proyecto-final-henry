@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { BsPlusLg, BsDashLg, BsDash } from "react-icons/bs";
+import React, { Fragment, useEffect, useState } from "react";
+import { BsPlusLg, BsDashLg } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
   createPackage,
   getAllActivities,
   getAllDestinations,
-  getCategories,
+  // getCategories,
   getTypes,
 } from "../../redux/actions";
 import style from "./CreatePackage.module.css";
@@ -15,12 +15,13 @@ import validationPackage from "./validationPackage.js";
 import ModalActividades from "./ModalActividades";
 import ModalDestinos from "./ModalDestinos";
 import { useAuth0 } from "@auth0/auth0-react";
+import Swal from 'sweetalert2'
 
 export default function CreatePackage({
   showCreatePackage,
   setShowCreatePackage,
 }) {
-  const { getAccessTokenSilently} = useAuth0();
+  const { getAccessTokenSilently } = useAuth0();
   const dispatch = useDispatch();
   const [aux, setAux] = useState(false);
   useEffect(() => {
@@ -53,7 +54,7 @@ export default function CreatePackage({
 
   const [input, setInput] = useState({
     name: "",
-    price: 0,
+    price: "",
     description: "",
     main_image: "",
     images0: "",
@@ -69,7 +70,7 @@ export default function CreatePackage({
     type: "",
     featured: "false",
     available: "true",
-    on_sale: 0,
+    on_sale: "",
   });
 
   const [error, setError] = useState({
@@ -116,7 +117,6 @@ export default function CreatePackage({
 
   const handleSelectDestinations = (e) => {
     if (e.target.value === "otro") {
-      console.log("soy otro");
       e.target.value = "default";
       handleShowDestinos();
     } else {
@@ -129,14 +129,17 @@ export default function CreatePackage({
           e.target.value = "default";
         } else {
           e.target.value = "default";
-          return alert("Ese país ya fue seleccionado!");
+          return Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'El pais ya fue agregado!',
+          })
         }
       }
     }
   };
   const handleSelectActividades = (e) => {
     if (e.target.value === "otro") {
-      console.log("soy otro");
       e.target.value = "default";
       handleShow();
     } else {
@@ -149,7 +152,11 @@ export default function CreatePackage({
           e.target.value = "default";
         } else {
           e.target.value = "default";
-          return alert("Esa actividad ya fue seleccionada!");
+          return Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'La actividad ya fue agregada!',
+          })
         }
       }
     }
@@ -176,24 +183,25 @@ export default function CreatePackage({
     }
   };
 
-  function handleBorrarDestinations(e) {
+  function handleBorrarDestinations(e, nombre) {
+
+
     setInput({
       ...input,
-      destinations: input.destinations.filter((i) => i !== e.target.innerText),
+      destinations: input.destinations.filter((i) => i !== nombre),
     });
   }
 
-  function handleBorrarActividades(e) {
+  function handleBorrarActividades(e, nombre) {
     setInput({
       ...input,
-      activities: input.activities.filter((i) => i !== e.target.innerText),
+      activities: input.activities.filter((i) => i !== nombre),
     });
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = await getAccessTokenSilently();
-    console.log(token)
     input.images = [input.images0, input.images1, input.images2];
     input.price = parseInt(input.price);
     input.on_sale = parseInt(input.on_sale);
@@ -215,34 +223,44 @@ export default function CreatePackage({
       valida.seasson ||
       valida.destinations
     ) {
-      console.log(input);
-      console.log(valida);
-      alert(
-        "Presta mas atencion al completar el formulario y volve a intentar ;)"
-      );
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops algo fallo...',
+        text: 'Presta mas atencion al completar!',
+      })
     } else {
-      
-      dispatch(createPackage(input, token));
-      alert("Nuevo paquete creado..");
-      setInput({
-        name: "",
-        price: "",
-        description: "",
-        main_image: "",
-        images0: "",
-        images1: "",
-        images2: "",
-        featured: "",
-        destinations: [],
-        start_date: "",
-        end_date: "",
-        available: "",
-        on_sale: "",
-        // region: "",
-        seasson: "",
-        type: "",
-      });
-      navigate("/dashboard");
+      try {
+        dispatch(createPackage(input, token));
+        Swal.fire({
+          icon: 'success',
+          title: 'Paquete creado!',
+        })
+        setInput({
+          name: "",
+          price: "",
+          description: "",
+          main_image: "",
+          images0: "",
+          images1: "",
+          images2: "",
+          featured: "",
+          destinations: [],
+          start_date: "",
+          end_date: "",
+          available: "",
+          on_sale: "",
+          // region: "",
+          seasson: "",
+          type: "",
+        });
+        navigate("/dashboard");
+      } catch (error) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops algo fallo...',
+          text: error.message,
+        })
+      }
     }
   };
 
@@ -253,8 +271,6 @@ export default function CreatePackage({
   const handleShowDestinos = () => setShowDestinos(true);
 
   return (
-    // !showCreatePackage ? null
-    // :
     <div>
       <Dashboard />
       <div className={style.create_container}>
@@ -441,7 +457,7 @@ export default function CreatePackage({
           />
 
           {input.destinations
-            .sort(function (a, b) {
+            ?.sort(function (a, b) {
               if (a > b) {
                 return 1;
               }
@@ -451,14 +467,17 @@ export default function CreatePackage({
               return 0;
             })
             .map((i, o) => (
-              <div
-                key={"destinations" + o}
-                id="input_destinations"
-                className={style.create_destinations_items}
-                onClick={(e) => handleBorrarDestinations(e)}
-                value={i.name}
-              >
-                {i}
+              <div className={style.create_destinations_contenedor} key={"destinations" + o}>
+                <div
+                  key={"destination" + o}
+                  id="input_destinations"
+                  className={style.create_destinations_items}
+                  onClick={(e) => handleBorrarDestinations(e, i)}
+                  value={i}
+                >
+                  {i}
+                </div>
+                <div className={style.create_destinations_X} onClick={(e) => handleBorrarDestinations(e, i)}>X</div>
               </div>
             ))}
 
@@ -500,7 +519,7 @@ export default function CreatePackage({
           />
 
           {input.activities
-            .sort(function (a, b) {
+            ?.sort(function (a, b) {
               if (a > b) {
                 return 1;
               }
@@ -510,16 +529,23 @@ export default function CreatePackage({
               return 0;
             })
             .map((i, o) => (
-              <div
-                key={"activities" + o}
-                id="input_activities"
-                className={style.create_destinations_items}
-                onClick={(e) => handleBorrarActividades(e)}
-                value={i.name}
-              >
-                {i}
+              <div className={style.create_destinations_contenedor} key={"activities" + o}>
+                <div
+                  key={"activitie" + o}
+                  id="input_activities"
+                  className={style.create_destinations_items}
+                  onClick={(e) => handleBorrarActividades(e, i)}
+                  value={i}
+                >
+                  {i}
+                </div>
+                <div className={style.create_destinations_X} onClick={(e) => handleBorrarActividades(e, i)}>X</div>
               </div>
             ))}
+
+
+
+
 
           {/* Final actividades */}
 
@@ -586,12 +612,14 @@ export default function CreatePackage({
               >
                 <BsDashLg />
               </button>
+              {error.main_image && (
+                <span className={style.error}>{error.main_image}</span>
+              )}
             </div>
-            {error.main_image && (
-              <span className={style.error}>{error.main_image}</span>
-            )}
+
             {input.images?.map((i, index) => {
               return (
+
                 <div key={i + index} className={style.create_input_images}>
                   <label className={style.create_label}>
                     Imágen {index + 1}
@@ -610,6 +638,7 @@ export default function CreatePackage({
                     </span>
                   )}
                 </div>
+
               );
             })}
           </div>
@@ -618,16 +647,11 @@ export default function CreatePackage({
             <button
               type="submit"
               disabled={
-                !input.name.length &&
-                !input.price.length &&
-                !input.description.length &&
-                !input.main_image.length &&
-                !input.images0.length &&
-                !input.images1.length &&
-                !input.images2.length &&
-                !input.destinations.length
-                  ? true
-                  : false
+                !input.name ||
+                !input.price ||
+                !input.description ||
+                !input.main_image ||
+                !input.destinations
               }
               className={style.create_btn}
               id="create"

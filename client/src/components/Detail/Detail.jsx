@@ -9,42 +9,62 @@ import {
   getAllActivities,
   getPackageById,
   getRelationated,
+  getCartLocalStorage,
+  getFavoritesLocalStorage,
+  getAllPackage,
+  cleanPackageById,
+  postFavorites,
+  deleteFavorites,
+  crearRating,
+  eliminarRating
 } from "../../redux/actions/index";
+import { useAuth0 } from "@auth0/auth0-react";
+import Loading from "../Loading/Loading";
 
 export default function Detail() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { id } = useParams();
-
+  const { getAccessTokenSilently } = useAuth0();
   const packageDetail = useSelector((state) => state.detailPackage);
   const relationatedPackage = useSelector((state) => state.relationated);
   const allActivities = useSelector((state) => state.activities);
+  const favorites = useSelector((state) => state.favorites);
+  const [checkeado, setCheckeado] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [checkboxEstado, setCheckboxEstado] = useState(new Array(10).fill(false));
+  const [input, setInput] = useState({
+    cantidad: 1,
+    total: 0,
+    actividades: [],
+  });
 
-  useEffect(async () => {
+  useEffect( () => {
     setLoading(true);
-    await dispatch(getPackageById(id));
-    await dispatch(getRelationated(id));
-    await dispatch(getAllActivities());
-    setLoading(false);
-  }, [dispatch]);
-  const [loading, setLoading] = useState(false);
-  const [checkboxEstado, setCheckboxEstado] = useState([]);
-  const {
-    name,
-    description,
-    main_image,
-    images,
-    price,
-    start_date,
-    end_date,
-    region,
-    seasson,
-    type,
-    featured,
-    available,
-    on_sale,
-    activities,
-    destinations,
-  } = packageDetail;
+    
+    if(Object.keys(packageDetail).length && relationatedPackage.length && allActivities.length) {
+      setLoading(false);
+      if(document.getElementsByName('selectCantidad').length) {
+        setInput({
+          cantidad: 1,
+          total: 0,
+          actividades: [],
+        });
+        document.getElementsByName('selectCantidad')[0].value = '1';
+      }
+      setCheckeado(false)
+      let favorites = JSON.parse(localStorage.getItem("favorites"));
+      favorites?.forEach((f) => f.id === parseInt(id) && setCheckeado(true));
+    }
+  }, [packageDetail, relationatedPackage, allActivities])
+
+  useEffect( () => {
+    dispatch(cleanPackageById());
+    dispatch(getPackageById(id));
+    dispatch(getRelationated(id));
+    dispatch(getAllActivities());
+    dispatch(getFavoritesLocalStorage());
+  }, [dispatch])
 
   function scrollToTop() {
     window.scrollTo({
@@ -53,34 +73,62 @@ export default function Detail() {
     });
   }
 
-  const [input, setInput] = useState({
-    cantidad: 1,
-    total: 0,
-    actividades: [],
-  });
+  const checkPackageInCart = (id) => {
+    let cart = JSON.parse(localStorage.getItem("cart"));
+    let match = false;
+    cart?.forEach( (p) => p.paquete.id === parseInt(id) && (match = true) );
+    return match;
+  }
 
-  useEffect(() => {
-    (async () => {
-      await dispatch(getPackageById(id));
-      await dispatch(getRelationated(id));
-      await dispatch(getAllActivities());
+  function handleFavorite(e) {
+    e.preventDefault();
+    packageDetail.image = packageDetail.main_image;
+    if(checkPackageInCart(id)) { return alert('ya esta en el carrito') }
 
-      setInput({
-        cantidad: 1,
-        total: 0,
-        actividades: [],
-      });
-      setCheckboxEstado(new Array(10).fill(false));
-    })();
-  }, []);
+    if(checkeado){
+      let favorites = JSON.parse(localStorage.getItem("favorites"));
+      let remFav = favorites.filter((f) => {return f.id !== parseInt(id)});
+      setCheckeado(false);
+      localStorage.setItem("favorites", JSON.stringify(remFav));
+      dispatch(getFavoritesLocalStorage());
+    } else {
+      if (!localStorage.getItem("favorites")) {
+        let favorites = [];
+        favorites.push(packageDetail);
+        localStorage.setItem("favorites", JSON.stringify(favorites));
+      } else {
+        let favorites = JSON.parse(localStorage.getItem("favorites"));
+        let remFav = favorites?.filter( (p) => p.id !== packageDetail.id )
+        remFav.push(packageDetail);
+        localStorage.setItem("favorites", JSON.stringify(remFav));
+        /* 
+         let cart = JSON.parse(localStorage.getItem("cart"));
+      let match = false;
+      cart?.forEach( (p) => p.paquete.id === parseInt(id) && (match = true) );
+      if(!match) {
+        cart.unshift(input);
+        localStorage.setItem('cart', JSON.stringify(cart)); 
+      }
+        */
+        /* for (let i = 0; i < favorites.length; i++) {
+          if(favorites[i].id === parseInt(id)){
+            // let favorites = JSON.parse(localStorage.getItem("favorites"));
+            // console.log('estoy en el bucle FOR')
+            let remFav = favorites.filter( (f) => f.id !== packageDetail.id );
+            localStorage.setItem("favorites", JSON.stringify(remFav));
+            dispatch(getFavoritesLocalStorage());
+          }
+        } */
+      }
+      setCheckeado(true)
+    }
+    dispatch(getFavoritesLocalStorage());
+  }
 
   const handleSelectCantidad = (e) => {
-    console.log(e.target.value);
-    let totalPaquete = price * e.target.value;
-    let actividadesSeleccionadas = [];
+    let totalPaquete = packageDetail.price * e.target.value;
     checkboxEstado.forEach((i, index) => {
       if (i === true) {
-        console.log(parseInt(packageDetail.activities[index].price));
         totalPaquete +=
           parseInt(packageDetail.activities[index].price) * e.target.value;
       }
@@ -97,13 +145,13 @@ export default function Detail() {
     const checkboxSeleccionados = checkboxEstado.map((item, index) =>
       index === posicion ? !item : item
     );
-    let totalPaquete = price * input.cantidad;
+    let totalPaquete = packageDetail.price * input.cantidad;
     let actividadesSeleccionadas = [];
     checkboxSeleccionados.forEach((i, index) => {
       if (i === true) {
         totalPaquete +=
           parseInt(packageDetail.activities[index].price) * input.cantidad;
-        actividadesSeleccionadas.push(activities[index]);
+        actividadesSeleccionadas.push(packageDetail.activities[index]);
       }
     });
     setCheckboxEstado(checkboxSeleccionados);
@@ -115,73 +163,136 @@ export default function Detail() {
     });
   }
 
-  const navigate = useNavigate();
   const handleBotonRegresar = (e) => {
-    e.preventDefault();
-    scrollToTop();
+    // e.preventDefault();
+    dispatch(cleanPackageById());
+    setTimeout(() => {
+      dispatch(getPackageById(id));
+    }, 1);
     navigate(-1);
+    // dispatch(cleanPackageById());
+    // dispatch(getPackageById(id)); // TENDRIAMOS QUE VER SI CON LOCAL STORAGE SE PUEDE ENCONREAR EK ID  
+    // dispatch(getAllPackage());
   };
+
+  const handleFavorito = async (e) => {
+    e.preventDefault()
+    try {
+      const token = await getAccessTokenSilently()
+      dispatch(postFavorites(id, token))
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const handleFavoritoBorrar = async (e) => {
+    e.preventDefault()
+    try {
+      const token = await getAccessTokenSilently()
+      dispatch(deleteFavorites(id, token))
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const handlePuntuar = async (e) => {
+    try {
+      const token = await getAccessTokenSilently()
+      console.log(e.target.value);
+      dispatch(crearRating(id, token, e.target.value))
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  const handleBorrarRating = async (e) => {
+    try {
+      const token = await getAccessTokenSilently()
+      dispatch(eliminarRating(id, token))
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   const handleBotonComprar = (e) => {
     e.preventDefault();
     input.paquete = packageDetail;
-    console.log(input);
-    console.log(input.actividades);
-    console.log(input.paquete);
+    if(!localStorage.getItem('cart')) {
+      let cart = [];
+      cart.unshift(input);
+      localStorage.setItem('cart', JSON.stringify(cart));
+    } else {
+      let cart = JSON.parse(localStorage.getItem("cart"));
+      let match = false;
+      cart?.forEach( (p) => p.paquete.id === parseInt(id) && (match = true) );
+      if(!match) {
+        cart.unshift(input);
+        localStorage.setItem('cart', JSON.stringify(cart)); 
+      }
+      else { alert('ya esta en el carrito') }
+    }
+    let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+    favorites = favorites?.filter( (f) => f.id !== parseInt(id) )
+    localStorage.setItem('favorites', JSON.stringify(favorites));
+    setCheckeado(false)
+    dispatch(cleanPackageById());
+    setLoading(true)
+    scrollToTop();
+    setInput({
+      cantidad: 1,
+      total: 0,
+      actividades: [],
+    });
+    /* 
+    setCheckboxEstado(new Array(10).fill(false));
+    */
+   setTimeout(() => {
+     dispatch(getPackageById(id)); 
+   }, 1);
+   dispatch(getCartLocalStorage());
   };
-
-  // para el desmonte del componente
-  useEffect(() => {
-    (() => {
-      return async () => {
-        setLoading(true);
-        setInput({});
-        setCheckboxEstado(new Array(10).fill(false));
-        await dispatch(getPackageById(id));
-        await dispatch(getRelationated(id));
-        setTimeout(function () {
-          setLoading(false);
-        }, 10000);
-      };
-    })();
-  }, [dispatch, setCheckboxEstado, setInput]);
-
+  
   return (
-    <div
-      style={{
-        backgroundImage: `url(${main_image})`,
-        backgroundSize: "cover",
-        backgroundRepeat: "no-repeat",
-        backgroundPosition: "center",
-      }}
-    >
-      <div className={s.body}>
-        {/* si loading esta activo mostramos el spinner */}
-        {loading ? (
-          <div className={s.contenedorSpinner}>
-            <div className={s.spinner}></div>
-          </div>
-        ) : (
+    loading ? <Loading />
+     : <div style={{
+       backgroundImage: `url(${packageDetail.main_image})`,
+       backgroundSize: "cover",
+       backgroundRepeat: "no-repeat",
+       backgroundPosition: "center",
+     }}>
+      <div className={s.body}>        
           <div className={s.contenedor}>
             <div className={s.contenedorBarraSuperior}>
-              <div onClick={(e) => handleBotonRegresar(e)}>Regresar</div>
-              <BotonFav />
+              <div onClick={(e) => handleBotonRegresar(e)}>Volver</div>
+              <div onClick={(e) => handleFavorite(e)}>
+                <BotonFav setChecked={setCheckeado} checked={checkeado} id={ parseInt(id) } componente={'detail'} />
+              </div>
             </div>
+            <div><button onClick={(e) => handleFavorito(e)}>postear favorito</button></div>
+            <div><button onClick={(e) => handleFavoritoBorrar(e)}>borrar favorito</button></div>
+            <div>
+              <select onChange={(e) => handlePuntuar(e)} name="rating" id="rating">
+                <option selected disabled value="">puntua</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+              </select></div>
+            <div><button onClick={(e) => { handleBorrarRating(e) }}>eliminar rating</button></div>
             <div className={s.contenedorDetalles}>
-              <h1>{name}</h1>
+              <h1>{packageDetail.name}</h1>
               <ControlledCarousel
-                name={name}
-                main_image={main_image}
-                images={images}
-              />
+                name={packageDetail.name}
+                main_image={packageDetail.main_image}
+                images={packageDetail.images} />
               <div className={s.resto}>
                 <h3>
-                  {start_date} / {end_date}
+                  {packageDetail.start_date?.split('-').reverse().join('-')} / {packageDetail.end_date?.split('-').reverse().join('-')}
                 </h3>
-                <h3>U$S {price}</h3>
+                <h3>U$S {packageDetail.price}</h3>
                 <h3>
                   Destinos:{" "}
-                  {destinations?.map((i, o) => {
+                  {packageDetail.destinations?.map((i, o) => {
                     return (
                       <span key={o}>
                         {i.name}
@@ -193,22 +304,17 @@ export default function Detail() {
               </div>
 
               <div className={s.resto}>
-                <h3 className={s.description}>{description}</h3>
+                <h3 className={s.description}>{packageDetail.description}</h3>
               </div>
             </div>
             <div>
               <label className={s.cantidad} htmlFor="selectCantidad">
                 Cantidad {"    "}
                 <select
-                  onChange={(e) => {
-                    handleSelectCantidad(e);
-                  }}
+                  onChange={ (e) => handleSelectCantidad(e) }
                   name="selectCantidad"
-                  id="selectCantidad"
-                >
-                  <option selected={true} value="1">
-                    1
-                  </option>
+                  id="selectCantidad" >
+                  <option selected={true} value="1">1</option>
                   <option value="2">2</option>
                   <option value="3">3</option>
                   <option value="4">4</option>
@@ -219,8 +325,9 @@ export default function Detail() {
                 </select>
               </label>
             </div>
+            
             <div className={s.contenedorActividades}>
-              {activities?.map((i, index) => {
+              {packageDetail.activities?.map((i, index) => {
                 return (
                   <div className={s.actividad} key={i.name}>
                     <div className={s.nombreActividad}>
@@ -235,9 +342,7 @@ export default function Detail() {
                         />
                         <label htmlFor={i.name}>
                           U$S{" "}
-                          {allActivities?.map(
-                            (el) => el.name === i.name && el.price
-                          )}
+                          {i.price}
                           {"       "}
                         </label>
                       </div>
@@ -249,15 +354,11 @@ export default function Detail() {
                           currentTarget.src =
                             "http://marcianosmx.com/wp-content/uploads/2015/10/Rascal-Deux.jpg";
                         }}
-                        src={allActivities?.map(
-                          (el) => el.name === i.name && el.image
-                        )}
+                        src={i.image}
                         alt="Image not found"
                       />
                       <div>
-                        {allActivities?.map(
-                          (el) => el.name === i.name && el.description
-                        )}
+                        {i.description}
                       </div>
                     </div>
                   </div>
@@ -266,15 +367,14 @@ export default function Detail() {
               <div className={s.total}>
                 {" "}
                 <span>TOTAL U$S </span>
-                {input.total ? input.total : price}
+                {input.total ? input.total : packageDetail.price}
               </div>
             </div>
+
             <div className={s.contenedorBotonComprar}>
-              <button
-                onClick={(e) => handleBotonComprar(e)}
-                className={s.botonComprar}
-              >
-                COMPRAR
+              <button onClick={(e) => handleBotonComprar(e)}
+                className={s.botonComprar} >
+                Agregar al carrito
               </button>
             </div>
             <div className={s.tituloDestacados}>
@@ -282,8 +382,7 @@ export default function Detail() {
             </div>
             <CardGenericContainer listCards={relationatedPackage} />
           </div>
-        )}
       </div>
     </div>
-  );
+  )
 }

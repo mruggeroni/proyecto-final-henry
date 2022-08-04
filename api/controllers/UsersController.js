@@ -4,7 +4,11 @@ import axios from 'axios';
 import { Order } from '../models/Orders.js';
 import { OrderItem } from '../models/OrderItems.js';
 import { Package } from '../models/Packages.js';
+<<<<<<< HEAD
 import { WebAuth } from 'auth0-js';
+=======
+import { Activity } from '../models/Activities.js';
+>>>>>>> c5b3c1a7eb1de123eae93d5f4ee5fbc7ded1a8da
 
 export const getUsers = async (req, res) => {
 	const { limitRender, page, destroyTime, is_admin } = req.query;
@@ -12,27 +16,26 @@ export const getUsers = async (req, res) => {
 	//console.log('HERE')
 	//console.log(req)
 	try {
-
 		//console.log(respuesta)
-		const limitRend = parseInt(limitRender) || 30,
-            pag = parseInt(page) || 1,
-			is_ad = is_admin === 'true' ? 
-				true : 
-					is_admin === 'false' ?
+		const limitRend = parseInt(limitRender) || 1000,
+			pag = parseInt(page) || 1,
+			is_ad = is_admin === 'true' ?
+				true :
+				is_admin === 'false' ?
 					false :
 					null;
-		
+
 		const users = await User.findAll({
 			paranoid: false,
 			where: {
-				destroyTime: destroyTime === 'deleted' ? { 
-					[Op.not]: null, 
-				} : 
-					destroyTime === 'active' ? 
-					null : 
-						destroyTime ? { 
-							[Op.gte]: destroyTime, 
-						} : { 
+				destroyTime: destroyTime === 'deleted' ? {
+					[Op.not]: null,
+				} :
+					destroyTime === 'active' ?
+						null :
+						destroyTime ? {
+							[Op.gte]: destroyTime,
+						} : {
 							[Op.or]: [{
 								[Op.not]: null,
 							}, {
@@ -60,19 +63,19 @@ export const getUserDetail = async (req, res) => {
 
 	try {
 		// const permissions = req.auth.permissions[0]
-		// const accessToken = req.headers.authorization.split(" ")[1];
+		const accessToken = req.headers.authorization.split(" ")[1];
 		// console.log("token: ", accessToken);
-		// const respuesta = await axios.get(
-		// 	"https://dev-33fzkaw8.us.auth0.com/userinfo",
-		// 	{
-		// 		headers: {
-		// 			authorization: `Bearer ${accessToken}`,
-		// 		},
-		// 	}
-		// );
-		
+		const respuesta = await axios.get(
+			"https://dev-33fzkaw8.us.auth0.com/userinfo",
+			{
+				headers: {
+					authorization: `Bearer ${accessToken}`,
+				},
+			}
+		);
+
 		const userInfo = respuesta.data;
-		
+
 		const idUser = parseInt(id);
 
 		const user = await User.findByPk(idUser, {
@@ -82,31 +85,53 @@ export const getUserDetail = async (req, res) => {
 					exclude: ['userId'],
 				},
 				include: {
-					model: OrderItem,
-					attributes: {
-						exclude: ['orderId', 'packageId'],
-					},
-				},
-				include: {
 					model: Package,
 					attributes: {
-						exclude: ['id', 'available', 'destroyTime', 'images', 'price' ],
+						exclude: [
+							'main_image',
+							'description', 
+							'images', 
+							'seasson',
+							'type',
+							'featured', 
+							'available', 
+							'on_sale', 
+							'destroyTime'
+						],
+					},
+					through: {
+						attributes: ['quantity'],
 					},
 				},
 			},
 			attributes: {
 				exclude: [
-					'password', 
-					"is_admin", 
-					'created_date', 
-					'update_date', 
-					'destroyTime', 
+					'password',
+					"is_admin",
+					'created_date',
+					'update_date',
+					'destroyTime',
 				],
 			},
 		});
-		res.status(200).json(user);
+		if (!user) return res.status(404).json({ message: 'User not found' });
+
+		const userCopy = JSON.parse(JSON.stringify(user));
+		userCopy.orders.forEach(order => {
+			order.packages.forEach(p => {
+				p.quantity = p.order_item.quantity;
+				delete p.order_item;
+			});
+		});
+		userCopy.cart = userCopy.orders.filter(order => order.status === 'shopping cart')[0];
+		userCopy.orders = userCopy.orders.filter(order => order.status !== 'shopping cart');
+		userCopy.orders_pending = userCopy.orders.filter(order => order.status === 'pending');
+		userCopy.orders_paid = userCopy.orders.filter(order => order.status === 'paid');
+		userCopy.orders_cancel = userCopy.orders.filter(order => order.status === 'cancel');
+
+		return res.status(200).json(userCopy);
 		// if(permissions === 'SuperAdmin' || permissions === 'Admin' || user.email === userInfo.email){
-			
+
 		// }
 		// else{
 		// 	res.status(401).json({ message: 'You dont have permissions to see this information'})
@@ -133,7 +158,7 @@ export const getUserStatus = async (req, res) => {
 	};
 };
 
-export const createUser = async (req, res) =>{
+export const createUser = async (req, res) => {
 	try {
 		const accessToken = req.body.headers.authorization.split(" ")[1];
 		const respuesta = await axios.get(
@@ -144,19 +169,26 @@ export const createUser = async (req, res) =>{
 				},
 			}
 		);
+<<<<<<< HEAD
 		console.log(respuesta)
+=======
+
+>>>>>>> c5b3c1a7eb1de123eae93d5f4ee5fbc7ded1a8da
 		const userInfo = respuesta.data;
-		const usuarioDB = await User.findOrCreate({where: {email: userInfo.email},
-		defaults: {first_name: userInfo.given_name || userInfo.nickname,
-			last_name: userInfo.family_name || "missing",
-			photo: userInfo.picture,
-			is_admin: false,
-	}})
-	const role = usuarioDB[0].dataValues.is_admin === true? 'Admin': 'Client'
-	let usuario = usuarioDB[1] === false? "login": "register"
-	const currentUsuario = [usuario, role]
-	console.log(usuarioDB[0])
-	res.status(200).json(usuarioDB[0]);
+		const usuarioDB = await User.findOrCreate({
+			where: { email: userInfo.email },
+			defaults: {
+				first_name: userInfo.given_name || userInfo.nickname,
+				last_name: userInfo.family_name || "missing",
+				photo: userInfo.picture,
+				is_admin: false,
+			}
+		})
+		const role = usuarioDB[0].dataValues.is_admin === true ? 'Admin' : 'Client'
+		let usuario = usuarioDB[1] === false ? "login" : "register"
+		const currentUsuario = [usuario, role]
+		console.log(usuarioDB[0])
+		res.status(200).json(usuarioDB[0]);
 	} catch (error) {
 		return res.status(400).json({ message: error.message });
 	}
@@ -262,9 +294,9 @@ export const deleteUser = async (req, res) => {
 				id
 			}
 		})
-		deleted? res.status(200).send('User deleted successfully') 
-		: res.status(200).send('The User was already deleted'); 
-		
+		deleted ? res.status(200).send('User deleted successfully')
+			: res.status(200).send('The User was already deleted');
+
 	} catch (error) {
 		res.status(400).send({ data: error.message })
 	}
@@ -273,15 +305,15 @@ export const deleteUser = async (req, res) => {
 export const getDeletedUsers = async (req, res) => {
 	try {
 		const deleted = await User.findAll({
-			where:{
-				destroyTime:{
+			where: {
+				destroyTime: {
 					[Op.ne]: null,
 				}
 			},
 			paranoid: false
 		})
-		deleted.length? res.status(200).send(deleted)
-		: res.status(200).send('No deleted users found')
+		deleted.length ? res.status(200).send(deleted)
+			: res.status(200).send('No deleted users found')
 	} catch (error) {
 		res.status(400).send({ data: error.message })
 	}
@@ -296,7 +328,7 @@ export const restoreUser = async (req, res) => {
 			}
 		})
 		const restoredUser = await User.findByPk(id)
-		res.status(200).send({'User restored successfully': restoredUser})
+		res.status(200).send({ 'User restored successfully': restoredUser })
 	} catch (error) {
 		res.status(400).send({ data: error.message })
 	}

@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-// import validate from "./validationActivity.js";
 import Dashboard from "./Dashboard";
 import style from "./CreatePackage.module.css";
-import { createActivities, getCategories } from "../../redux/actions";
+import {
+  createActivities,
+  getCategories,
+  getAllActivities,
+} from "../../redux/actions";
 import ModalCategorias from "./ModalCategoria";
 import { useAuth0 } from "@auth0/auth0-react";
+import Swal from 'sweetalert2'
 
 function validate(input) {
   let error = {};
-  let regName = /^[a-zA-Z]*$/;
-  let regInteger = /^\d+$/;
-  let checkboxes = document.getElementsByName("check");
 
   if (!input.name) {
     error.name = "El nombre es requerido";
@@ -26,7 +26,7 @@ function validate(input) {
     error.description = "El nombre debe tener menos de 280 caracteres";
   }
 
-  if (!input.price) {
+  if (!input.price || isNaN(input.price)) {
     error.price = "El precio es requerido";
   } else if (input.price <= 0) {
     error.price = "El precio es inválido";
@@ -36,17 +36,10 @@ function validate(input) {
 
   if (!input.image) {
     error.image = "La imagen es requerida";
-  } else if (input.image.length >= 1000) {
-    error.price = "La actividad no puede costar más de U$S1000";
   }
 
   if (!input.classification) {
     error.classification = "La clasificación es requerida";
-  }
-
-  if (!Object.keys(error).length) {
-    let createBtn = document.getElementById("create");
-    createBtn.removeAttribute("disabled");
   }
   return error;
 }
@@ -55,13 +48,15 @@ function firstCap(name) {
   return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
 }
 
-export default function ActivityCreate({ showCreateActivity, setShowCreateActivity }) {
+export default function ActivityCreate({
+  showCreateActivity,
+  setShowCreateActivity,
+}) {
   const dispatch = useDispatch();
-  const { getAccessTokenSilently} = useAuth0();
+  const { getAccessTokenSilently } = useAuth0();
   // const activities = useSelector((state) => state.activities);
   // const countries = useSelector((state) => state.allCountries);
   const [error, setError] = useState({});
-  const createBtn = document.getElementById("create");
   const [input, setInput] = useState({
     name: "",
     description: "",
@@ -77,14 +72,6 @@ export default function ActivityCreate({ showCreateActivity, setShowCreateActivi
       ...input,
       [e.target.name]: firstCap(e.target.value),
     });
-    setError(
-      validate({
-        ...input,
-        [e.target.name]: e.target.value,
-      })
-    );
-    console.log("input: ", input);
-    console.log("error: ", error);
   };
 
   const handleSelectCategorias = (e) => {
@@ -96,12 +83,6 @@ export default function ActivityCreate({ showCreateActivity, setShowCreateActivi
         ...input,
         classification: e.target.value,
       });
-      setError(
-        validate({
-          ...input,
-          classification: e.target.value,
-        })
-      );
     }
   };
 
@@ -111,6 +92,10 @@ export default function ActivityCreate({ showCreateActivity, setShowCreateActivi
     console.log('HERE')
     console.log(token)
     e.price = parseInt(e.price);
+    const valida = validate({ ...input });
+    setError(valida)
+    console.log(valida)
+    console.log(error)
     if (!Object.keys(error).length) {
       setInput({
         name: "",
@@ -119,24 +104,37 @@ export default function ActivityCreate({ showCreateActivity, setShowCreateActivi
         image: "",
         classification: "",
       });
-      dispatch(createActivities(input, token));
-      // Alert bootstrap
-      alert("Actividad creada!");
+
+      try {
+        dispatch(getAllActivities());
+        dispatch(createActivities(input, token));
+        // Alert bootstrap
+        Swal.fire({
+          icon: 'success',
+          title: 'Actividad creada!',
+        })
+      } catch (error) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops algo fallo...',
+          text: error.message,
+        })
+      }
     } else {
-      alert(
-        "El formulario no esta completado correctamente, intenta de nuevo!"
-      );
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops algo fallo...',
+        text: 'Presta mas atencion al completar!',
+      })
     }
   }
 
   const categorias = useSelector((state) => state.categories);
-  useEffect(async () => {
-    const categorias = await dispatch(getCategories());
-  }, []);
+  useEffect(() => {
+    dispatch(getCategories());
+  }, [dispatch]);
 
   return (
-    // !showCreateActivity ? null
-    // :
     <div>
       <Dashboard />
       <div className={style.create_container}>
@@ -157,6 +155,7 @@ export default function ActivityCreate({ showCreateActivity, setShowCreateActivi
               name="name"
               onChange={(e) => handleInputChange(e)}
             />
+            {/* {error.name && <span className={style.error}>{error.name}</span> } */}
             {error.name ? (
               <div className={style.error}>{error.name}</div>
             ) : (
@@ -210,7 +209,7 @@ export default function ActivityCreate({ showCreateActivity, setShowCreateActivi
                 value="default"
                 selected={
                   input.classification === "default" ||
-                  input.classification === ""
+                    input.classification === ""
                     ? true
                     : false
                 }
@@ -262,7 +261,7 @@ export default function ActivityCreate({ showCreateActivity, setShowCreateActivi
             type="submit"
             className={style.create_btn}
             id="create"
-            disabled={true}
+            disabled={!input.name || !input.price || !input.description || !input.classification || !input.image}
           >
             Crear actividad
           </button>

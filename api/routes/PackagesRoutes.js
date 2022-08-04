@@ -25,7 +25,7 @@ router.get('/packages/:limitRender', getPackages);
 router.get('/on_sale', getOn_sale);
 router.get('/types', getTypes);
 router.get('/deletedPackages', verifyJwt, verifyAdminOrSuperAdminPermission, getDeletedPackages);
-router.post('/packages', verifyJwt, verifyAdminOrSuperAdminPermission, createPackage);
+router.post('/packages', /* verifyJwt, verifyAdminOrSuperAdminPermission, */ createPackage);
 router.put('/packages/:id', verifyJwt, verifyAdminOrSuperAdminPermission, putPackage);
 router.patch('/packages/:id', verifyJwt, verifyAdminOrSuperAdminPermission, patchPackage);
 router.delete('/packages', verifyJwt, verifyAdminOrSuperAdminPermission, deletePackage);
