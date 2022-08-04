@@ -126,12 +126,7 @@ export const createUser = (payload) => {
           authorization: `Bearer ${payload}`,
         },
       });
-<<<<<<< .merge_file_qXEUfi
-      console.log(res.data);
-      return dispatch({ type: POST_USER, payload: res.data});
-=======
       return dispatch({ type: POST_USER, payload: res.data });
->>>>>>> .merge_file_A5idkl
     } catch (e) {
       alert(e.message);
     }

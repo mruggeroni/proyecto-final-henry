@@ -31,9 +31,7 @@ export default function ListUsers() {
     }
   };
 
-<<<<<<< .merge_file_91R8vs
   
-=======
   useEffect(() => {
     // declare the data fetching function
     const fetchData = async () => {
@@ -47,7 +45,6 @@ export default function ListUsers() {
       .catch(console.error);
   }, [dispatch])
 
->>>>>>> .merge_file_ZJ7kkz
   return (
     <div>
       <Dashboard />

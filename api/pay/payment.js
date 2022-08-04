@@ -14,7 +14,7 @@ export const PaymentCreate = async (req, res) => {
            line_items: req.body.body.items.map(item => {
                const storeItem = itemsCart.get(item.id)
                return {
-                   price_data: {
+                    price_data: {
                        currency: 'usd',
                        product_data: {
                            name: storeItem.name
