@@ -1,13 +1,19 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import s from './MyProfile.module.css';
-
+import { useAuth0 } from "@auth0/auth0-react";
+import { ModifyUser } from "../../../../redux/actions";
 export default function MyProfile({ showProfile, setShowProfile }) {
 
     const user = useSelector( (state) => state.user );
+    const dispatch = useDispatch();
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        // const email = user.email
+        // const token = await getAccessTokenSilently()
+        // dispatch(ModifyUser(email,payload, token))
+
     };
   
   return (

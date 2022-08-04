@@ -11,7 +11,7 @@ import CreateActivity from "./components/Dashboard/CreateActivity";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import ModifyPackages from "./components/Dashboard/ModifyPackage";
-import Checkout from "./components/Checkout/Checkout.jsx";
+import Checkout from "./components/Checkout/Checkout2.jsx";
 import Historial from "./components/Historial/Historial.jsx";
 import ListPackages from "./components/Dashboard/ListPackages.jsx";
 import ModifyActivity from "./components/Dashboard/ModifyActivity.jsx";
