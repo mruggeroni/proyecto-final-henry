@@ -25,7 +25,29 @@ export const ORDENAR = "ORDENAR";
 export const UPDATE_USER = 'UPDATE_USER';
 export const DELETE_USER = 'DELETE_USER';
 export const GET_USER_BY_ID = 'GET_USER_BY_ID';
+export const GET_CART = 'GET_CART';
+export const PATCH_PACKAGE = 'PATCH_PACKAGE';
 export const CLEAN_PACKAGE_BY_ID = 'CLEAN_PACKAGE_BY_ID';
+export const CLEAN_ALL_PACKAGE = 'CLEAN_ALL_PACKAGE';
+
+export const patchPackage = (id, token, value) => {
+  try {
+    return async function (dispatch) {
+      let res = await axios.patch('/packages/' + id, value, {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
+      return dispatch({ type: PATCH_PACKAGE, payload: res.data })
+    }  
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export const cleanAllPackage = () => {
+  return { type: CLEAN_PACKAGE_BY_ID }
+}
 
 export const cleanPackageById = () => {
   return { type: CLEAN_PACKAGE_BY_ID }
@@ -411,12 +433,12 @@ export function getCartLocalStorage(payload, id) {
   };
 }
 
-export function getAllCart(){
+export function getAllCart(id){
   return async function(dispatch){
     let res = await axios.get("/cart/" + id, {
-      headers: {
-        authorization: `Bearer ${token}`,
-      },
+      // headers: {
+      //   authorization: `Bearer ${token}`,
+      // },
     });
     return dispatch({ type: GET_CART, payload: res.data });
   };

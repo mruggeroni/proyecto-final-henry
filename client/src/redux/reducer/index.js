@@ -24,7 +24,10 @@ import {
   UPDATE_USER,
   GET_USER_BY_ID,
   GET_FAVORITES,
-  CLEAN_PACKAGE_BY_ID
+  CLEAN_PACKAGE_BY_ID,
+  PATCH_PACKAGE,
+  GET_CART,
+  CLEAN_ALL_PACKAGE
 } from "./../actions/index.js";
 
 import {
@@ -77,6 +80,15 @@ const rootReducer = (state = initialState, action) => {
         allPackages: action.payload,
         // filteredPackages: action.payload,
       };
+    case PATCH_PACKAGE:
+      return {
+        ...state
+      }
+    case CLEAN_ALL_PACKAGE:
+      return {
+        ...state,
+        allPackages: {}
+      }
     case CLEAN_PACKAGE_BY_ID:
       return {
         ...state,
@@ -253,7 +265,7 @@ const rootReducer = (state = initialState, action) => {
       let localStorageFav = JSON.parse(localStorage.getItem("favorites"));
       return {
         ...state,
-        favorites: localStorageFav,
+        favorites: localStorageFav?.length ? localStorageFav : [],
       };
 
     case GET_FAVORITES:
@@ -266,8 +278,14 @@ const rootReducer = (state = initialState, action) => {
       let localStorageCart = JSON.parse(localStorage.getItem("cart"));
       return {
         ...state,
-        cart: localStorageCart,
+        cart: localStorageCart
       };
+
+      case GET_CART:
+        return{
+          ...state,
+          cart: action.payload
+        }
 
     case FILTRAR:
       console.log("filtrar", action);

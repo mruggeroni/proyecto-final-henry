@@ -4,7 +4,7 @@ import CartPopUp from './CartPopUp.jsx';
 import FavoritePopUp from './FavoritePopOut.jsx';
 import UserPopOut from './UserPopOut';
 import { useDispatch, useSelector } from "react-redux";
-import { getFavoritesLocalStorage, getCartLocalStorage } from "../../redux/actions/index.js";
+import { getFavoritesLocalStorage, getCartLocalStorage, getAllFavorites } from "../../redux/actions/index.js";
 import { AiOutlineHeart } from "react-icons/ai";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { BsPersonPlusFill } from "react-icons/bs";
@@ -28,47 +28,52 @@ export default function PopUpsComponent() {
       } = useAuth0();
       
     useEffect(() => {
-        dispatch(getCartLocalStorage());
-        dispatch(getFavoritesLocalStorage())
+        if(!isAuthenticated){
+            dispatch(getCartLocalStorage());
+            dispatch(getFavoritesLocalStorage());
+        }else{
+            dispatch(getAllFavorites());
+        }
+        showFavoritePopUp === true || showUserPopUp === true || showCartPopUp === true ? document.getElementById("popUpBackground").classList?.add(`${s.is_active}`) : document.getElementById("popUpBackground")?.classList?.remove(`${s.is_active}`);
     }, [dispatch])
 
     useEffect(() => {
         // setShowFavoritePopUp(true);
-        console.log('yeay')
-        console.log(favorites?.length)
         setShowFavoritePopUp(false);
         setShowUserPopUp(false);
         setShowCartPopUp(false);
     }, [favorites])
 
     const handleFavoritePopUp = () => {
-        document.getElementById("popUpBackground").classList?.add(`${s.is_active}`);
         setShowFavoritePopUp(!showFavoritePopUp);
+        showFavoritePopUp === false ? document.getElementById("popUpBackground").classList?.add(`${s.is_active}`) : document.getElementById("popUpBackground")?.classList?.remove(`${s.is_active}`);
         setShowUserPopUp(false);
         setShowCartPopUp(false);
     }
 
     const handleUserPopUp = async () => { 
-        document.getElementById("popUpBackground").classList?.add(`${s.is_active}`);
         await loginWithPopup();
         const token = await getAccessTokenSilently();
         await dispatch(createUser(token));
         setShowFavoritePopUp(false);
         setShowCartPopUp(false);
+        // showFavoritePopUp === false ? document.getElementById("popUpBackground").classList?.add(`${s.is_active}`) : document.getElementById("popUpBackground")?.classList?.remove(`${s.is_active}`);
     }
 
     const handleCartPopUp = () => {
-        document.getElementById("popUpBackground").classList?.add(`${s.is_active}`);
+        // document.getElementById("popUpBackground").classList?.add(`${s.is_active}`);
+        setShowCartPopUp(!showCartPopUp);
+        showCartPopUp === false ? document.getElementById("popUpBackground").classList?.add(`${s.is_active}`) : document.getElementById("popUpBackground")?.classList?.remove(`${s.is_active}`);
         setShowFavoritePopUp(false);
         setShowUserPopUp(false);
-        setShowCartPopUp(!showCartPopUp);
       }
     
     const handleUserPopUpMenu = () => {
-        document.getElementById("popUpBackground").classList?.add(`${s.is_active}`);
+        // document.getElementById("popUpBackground").classList?.add(`${s.is_active}`);
         setShowFavoritePopUp(false);
         setShowUserPopUp(!showUserPopUp);
         setShowCartPopUp(false);
+        showUserPopUp === false ? document.getElementById("popUpBackground").classList?.add(`${s.is_active}`) : document.getElementById("popUpBackground")?.classList?.remove(`${s.is_active}`);
     }
 
     function handleClose() {

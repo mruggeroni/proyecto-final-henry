@@ -15,19 +15,24 @@ import {
   getFavoritesLocalStorage,
   filtrar,
   getTypes,
+  getAllFavorites
 } from "./../../redux/actions/index";
 import Paginado from "../Paginado/paginado";
 import s from "./Search.module.css";
 import { BsArrowBarDown, BsArrowBarUp } from "react-icons/bs";
 import { VscChevronDown, VscChevronUp } from "react-icons/vsc";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export default function FilteredSearch() {
   const dispatch = useDispatch();
+  const {
+    isAuthenticated,
+    getAccessTokenSilently,
+  } = useAuth0();
+
   const allPackages = useSelector((state) => state.allPackages);
   const filteredPackages = useSelector((s) => s.filteredPackages);
-  const allDestinations = useSelector(
-    (state) => state.destinationsWithPackages
-  );
+  const allDestinations = useSelector((state) => state.destinationsWithPackages);
   const destinosFiltrados = [];
   filteredPackages &&
     filteredPackages.forEach((i) => {
@@ -132,8 +137,13 @@ export default function FilteredSearch() {
     await dispatch(getOnSale());
     await dispatch(getAllActivities());
     await dispatch(getDestinationsWithPackages());
-    await dispatch(getFavoritesLocalStorage());
     await dispatch(getTypes());
+    const token = await getAccessTokenSilently();
+    if(!isAuthenticated) {
+      dispatch(getFavoritesLocalStorage());
+    } else{
+      dispatch(getAllFavorites(token))
+    }
     setLoading(false);
   }, []);
 

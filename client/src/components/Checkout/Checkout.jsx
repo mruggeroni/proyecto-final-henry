@@ -117,11 +117,12 @@ export default function CheckoutCart(){
                   </div>
                 </div>
                 )}
-                <div className={s.buttonContainer}>
+                {cart?.length > 0 &&
+                  <div className={s.buttonContainer}>
                   <Link to={'/checkout'}>
                     <button className={s.comprarBtn}>Comprar</button>
                   </Link>
-                </div>
+                </div>}
             </div>
        </div>
     )

@@ -16,7 +16,8 @@ import {
   postFavorites,
   deleteFavorites,
   crearRating,
-  eliminarRating
+  eliminarRating,
+  getAllFavorites
 } from "../../redux/actions/index";
 import { useAuth0 } from "@auth0/auth0-react";
 import Loading from "../Loading/Loading";
@@ -25,7 +26,6 @@ export default function Detail() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { id } = useParams();
-  const { getAccessTokenSilently } = useAuth0();
   const packageDetail = useSelector((state) => state.detailPackage);
   const relationatedPackage = useSelector((state) => state.relationated);
   const allActivities = useSelector((state) => state.activities);
@@ -38,6 +38,10 @@ export default function Detail() {
     total: 0,
     actividades: [],
   });
+  const {
+		isAuthenticated,
+		getAccessTokenSilently,
+	  } = useAuth0();
 
   useEffect( () => {
     setLoading(true);
@@ -58,12 +62,17 @@ export default function Detail() {
     }
   }, [packageDetail, relationatedPackage, allActivities])
 
-  useEffect( () => {
+  useEffect(async () => {
     dispatch(cleanPackageById());
     dispatch(getPackageById(id));
     dispatch(getRelationated(id));
     dispatch(getAllActivities());
-    dispatch(getFavoritesLocalStorage());
+    const token = await getAccessTokenSilently();
+    if(!isAuthenticated) {
+      dispatch(getFavoritesLocalStorage());
+    } else{
+      dispatch(getAllFavorites(token))
+    }
   }, [dispatch])
 
   function scrollToTop() {

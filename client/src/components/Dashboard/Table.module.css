@@ -13,6 +13,7 @@
 /* Table Styles */
 
 .table_wrapper {
+    border-top: thin solid #000;
     /* margin: 10px 70px 70px; */
 }
 
@@ -43,6 +44,7 @@
     color: #fff;
     padding: 3px 5px;
     border-radius: 20px;
+    cursor: pointer;
 }
 
 .fl_table_false {
@@ -50,6 +52,7 @@
     color: #fff;
     padding: 3px 5px;
     border-radius: 20px;
+    cursor: pointer;
 }
 
 .fl_table_btn:hover {
@@ -69,7 +72,7 @@
 
 .fl_table thead th {
     color: #ffffff;
-    background: #4fc3a1;
+    background: #4a9eab;
 }
 
 .fl_table thead th:nth-child(odd) {
