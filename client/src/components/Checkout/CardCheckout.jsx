@@ -37,7 +37,7 @@ export default function Card({ name, image, qty, price, total, id, activities })
              <div className={s.price}>
                 <hr />
                 <div className={s.totalPaq}>
-                    <h3>Total: </h3><h3>${total}</h3>
+                    <h3>Total: </h3><h3>${total === 0 ? (price*qty) : total}</h3>
                 </div>
             </div> 
         </div>

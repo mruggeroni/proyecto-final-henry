@@ -109,11 +109,6 @@
   margin-top: 1vw;
 }
 
-.favIcon {
-  color: #fff;
-  text-decoration: none;
-  cursor: pointer;
-}
 
 .user_btn {
   display: block;
@@ -206,11 +201,55 @@
   right: 0;
   background-color: #0000004d;
   visibility: hidden;
-  transition: all 1s ease-in-out 250ms;
+  transition: translate 1s ease-in-out 250ms;
 }
 
 .is_active {
   transform: translate(0, 0);
   visibility: visible;
   z-index: 100;
+}
+
+.totalCartPrice{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 90%;
+  margin: auto;
+  margin-bottom: 1vw;
+}
+
+.badgeFav{
+  background-color: #e4eaea;
+  color: black;
+  font-size: 1vw;
+  border-radius: 100%;
+  /* position: absolute; */
+  z-index: 1000;
+  padding: 1px;
+  cursor: pointer;
+  /* border-radius: 100px; */
+  width: 1.5vw;
+  height: 40%;
+  text-align: center;
+  position: relative
+}
+
+.favoritesLength{
+  /* position: absolute; */
+  display: flex;
+  flex-direction: row;
+  z-index: 100;
+  height: 100%;
+  width: 100%;
+  margin: auto;
+  margin-top: 0;
+}
+
+.favIcon {
+  color: #fff;
+  text-decoration: none;
+  cursor: pointer;
+  width: 80%;
+  position: absolute
 }

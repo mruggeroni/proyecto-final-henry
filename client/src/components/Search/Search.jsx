@@ -36,8 +36,6 @@ export default function FilteredSearch() {
       });
     });
 
-  console.log(destinosFiltrados);
-  console.log(filteredPackages);
   const fechaDesde = useSelector((s) => s.filtradoDateMin);
   const fechaHasta = useSelector((s) => s.filtradoDateMax);
   const estadoDestino = useSelector((s) => s.filtradoDestino);

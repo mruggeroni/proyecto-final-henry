@@ -59,16 +59,16 @@ export const getUserDetail = async (req, res) => {
 
 	try {
 		// const permissions = req.auth.permissions[0]
-		// const accessToken = req.headers.authorization.split(" ")[1];
+		const accessToken = req.headers.authorization.split(" ")[1];
 		// console.log("token: ", accessToken);
-		// const respuesta = await axios.get(
-		// 	"https://dev-33fzkaw8.us.auth0.com/userinfo",
-		// 	{
-		// 		headers: {
-		// 			authorization: `Bearer ${accessToken}`,
-		// 		},
-		// 	}
-		// );
+		const respuesta = await axios.get(
+			"https://dev-33fzkaw8.us.auth0.com/userinfo",
+			{
+				headers: {
+					authorization: `Bearer ${accessToken}`,
+				},
+			}
+		);
 		
 		const userInfo = respuesta.data;
 		
