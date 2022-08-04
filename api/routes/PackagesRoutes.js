@@ -12,7 +12,7 @@ import {
 } from '../controllers/PackagesController.js';
 import { getPackagesDetail } from '../controllers/PackagesDetailController.js';
 import { getPackages } from '../controllers/getPackagesAllFiltersAndSortsController.js';
-import { verifyAdminOrSuperAdminPermission, verifyJwt, verifySuperAdminPermission } from '/home/sadnena/pf/proyecto-final-henry/api/Auth/mw.js';
+import { verifyAdminOrSuperAdminPermission, verifyJwt, verifySuperAdminPermission } from '../Auth/mw.js';
 
 const router = Router();
 
