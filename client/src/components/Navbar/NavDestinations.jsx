@@ -1,26 +1,31 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { BsFillCaretLeftFill } from "react-icons/bs";
 import {
   getAllDestinations,
   filterPackagesByDestination,
+  getDestinationsWithPackages
 } from "../../redux/actions/index";
 import style from "./Navbar.module.css";
 
 export default function NavDestinations({ handleClose }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const allDestinations = useSelector((state) => state.destinations);
+  // const params = props.match.params; 
+  // const allDestinations = useSelector((state) => state.destinations);
+  const allDestinations = useSelector((state) => state.destinationsWithPackages);
 
   useEffect(() => {
     dispatch(getAllDestinations());
+    dispatch(getDestinationsWithPackages());
   }, [dispatch]);
 
   function handleClick(e) {
     e.preventDefault();
     dispatch(filterPackagesByDestination(e.target.innerText));
+    // console.log(params)
+
     navigate("/search");
     // navigate(`/search/${e.target.innerText}`);
     handleClose();
@@ -49,11 +54,11 @@ export default function NavDestinations({ handleClose }) {
         // Click en el name, filtra y te lleva a search
         <NavLink
           to={`/search`}
-          key={el.name + "destinations"}
+          key={el + "destinations"}
           onClick={(e) => handleClick(e)}
           className={style.nav_menu_item}
         >
-          {el.name}
+          {el}
         </NavLink>
       ))}
     </nav>

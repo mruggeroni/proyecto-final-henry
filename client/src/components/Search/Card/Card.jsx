@@ -1,15 +1,50 @@
-import React from "react";
+import React, { useEffect } from "react";
 import BotonFav from "../../Detail/BotonFav";
 import { useState } from "react";
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllPackage, getFavoritesLocalStorage } from "../../../redux/actions/index";
 import s from "./Cards.module.css";
-import { Link, useNavigate } from "react-router-dom";
 
-export default function Card({ name, image, description, price }) {
+export default function Card({ name, image, description, price, id }) {
   const [checked, setChecked] = useState(false);
+  const favPackage = { name, image, description, price, id };
+  const dispatch = useDispatch();
+  const favorites = useSelector((state) => state.favorites);
+
+  useEffect(() => {
+    favorites?.forEach((f) => f.id === id && setChecked(true));
+  }, [favorites]);
+
+  const checkPackageInCart = (id) => {
+    let cart = JSON.parse(localStorage.getItem("cart"));
+    let match = false;
+    cart?.forEach( (p) => p.paquete.id === parseInt(id) && (match = true) );
+    return match;
+  }
 
   function handleFavorite(e) {
     e.preventDefault();
+    if(checkPackageInCart(id)) { return alert('ya esta en el carrito') }
     setChecked(!checked);
+
+    if(!checked){
+      if(!localStorage.getItem('favorites')) {
+        let favorites = [];
+        favorites.push(favPackage);
+        localStorage.setItem('favorites', JSON.stringify(favorites));
+      } else {
+        let favorites = JSON.parse(localStorage.getItem('favorites'));
+        if(favorites?.filter((f) => f.id !== id)){
+          favorites.unshift(favPackage);
+          localStorage.setItem('favorites', JSON.stringify(favorites));
+        }
+      }
+    }else{
+      let favorites = JSON.parse(localStorage.getItem('favorites'));
+      let remFav = favorites.filter((f) => {return f.id !== id});
+      localStorage.setItem('favorites', JSON.stringify(remFav));
+    }
+    dispatch(getFavoritesLocalStorage());
   }
 
   return (
@@ -25,20 +60,20 @@ export default function Card({ name, image, description, price }) {
         </h5>
       </div>
       <div className={s.rightGroup}>
-
+        <div className={s.both}>
         <div className={s.price}>
           <h3>${price}</h3>
           <h5>per Person</h5>
         </div>
-
-       
         <div className={s.hide} onClick={(e) => handleFavorite(e)}>
-          <BotonFav checked={checked} />
+          <BotonFav setChecked={setChecked} checked={checked} id={id} favPackage={favPackage} componente={'search'}/>
         </div>
-      </div>
-      <div>
+        </div>
+        
         <button className={s.rectangle}>&gt;</button>
       </div>
+      {/* <div>
+      </div> */}
     </div>
   );
 }

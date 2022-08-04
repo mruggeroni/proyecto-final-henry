@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import CardGeneric from "./CardGeneric.jsx";
 import style from "./CardGenericContainer.module.css";
 
 export default function CardGenericContainer({ listCards }) {
+
   return (
     <div className={style.cards_container}>
-      {listCards &&
+      {listCards.length &&
         listCards?.map((i, idx) => (
           <CardGeneric
             key={idx}

@@ -10,3 +10,16 @@
   object-fit: cover;
   background-position: center;
 }
+
+.carouselForCheckout{
+  width: 100%;
+  height: 100vh;
+  object-fit: contain;
+  background-size: cover;
+  object-fit: cover;
+}
+
+.carouselForCheckout img{
+  width: 100%; 
+  height: 100%; 
+}

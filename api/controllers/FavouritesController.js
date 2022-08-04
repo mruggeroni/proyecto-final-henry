@@ -35,6 +35,7 @@ export const findOneUserFromDataBase = async (data) => {
 export const addFavourite = async (req, res) => {
   try {
 		const id = req.params.id
+		console.log(req)
     const userInfo = await getUserInfoByToken(req);
 		const packages = await Package.findByPk(id)
 		const user = await findOneUserFromDataBase(userInfo.email)

@@ -4,7 +4,20 @@
   flex-direction: column;
   justify-content: space-between;
   color: #000 !important;
-  overflow-y: auto;
+}
+
+.setting_title h2 {
+  display: inline;
+}
+
+.settings_title {
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.setting_build {
+  color: #d80707;
 }
 
 .settings_email_container {
@@ -34,6 +47,8 @@
 
 .settings_password_container {
   position: relative;
+  text-align: center;
+  margin-top: 15px;
 }
 
 .settings_input_container {
@@ -58,10 +73,11 @@
 
 .settings_label {
   position: absolute;
-  top: 0px;
+  top: -8px;
   left: 10px;
+  font-weight: bold;
   z-index: 966;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .settings_btn_save {
