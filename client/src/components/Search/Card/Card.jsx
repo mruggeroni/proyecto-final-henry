@@ -52,7 +52,7 @@ export default function Card({ name, image, description, price, id }) {
         </h5>
       </div>
       <div className={s.rightGroup}>
-
+        <div className={s.both}>
         <div className={s.price}>
           <h3>${price}</h3>
           <h5>per Person</h5>
@@ -60,10 +60,12 @@ export default function Card({ name, image, description, price, id }) {
         <div className={s.hide} onClick={(e) => handleFavorite(e)}>
           <BotonFav setChecked={setChecked} checked={checked} id={id} favPackage={favPackage} componente={'search'}/>
         </div>
-      </div>
-      <div>
+        </div>
+        
         <button className={s.rectangle}>&gt;</button>
       </div>
+      {/* <div>
+      </div> */}
     </div>
   );
 }

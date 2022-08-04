@@ -37,8 +37,8 @@ export default function Navbar() {
       <div
         id="nav_menu"
         onClick={() => handleClose()}
-        className={`${style.nav_menu_container}`}
-      ></div>
+        className={`${style.nav_menu_container}`} >
+      </div>
       <nav id="nav_menu_items" className={`${style.nav_menu}`}>
         <div className={style.nav_menu_container_close}>
           <button
@@ -81,7 +81,7 @@ export default function Navbar() {
           FAQ
         </NavLink>
         <NavLink
-          to="/contact"
+          to="/about"
           onClick={() => handleClose()}
           className={style.nav_menu_item}
         >

@@ -12,11 +12,15 @@ import {
   getCartLocalStorage,
   getFavoritesLocalStorage,
   getAllPackage,
+  postFavorites
 } from "../../redux/actions/index";
+import { useAuth0 } from "@auth0/auth0-react";
+
 
 export default function Detail() {
   const dispatch = useDispatch();
   const { id } = useParams();
+  const { getAccessTokenSilently} = useAuth0();
 
   const packageDetail = useSelector((state) => state.detailPackage);
   const relationatedPackage = useSelector((state) => state.relationated);
@@ -24,14 +28,27 @@ export default function Detail() {
   const favorites = useSelector((state) => state.favorites);
   const [checkeado, setCheckeado] = useState(false);
 
-  useEffect(async () => {
+  useEffect(() => {
     setLoading(true);
-    await dispatch(getPackageById(id));
-    await dispatch(getRelationated(id));
-    await dispatch(getAllActivities());
-    await dispatch(getFavoritesLocalStorage());
+    dispatch(getPackageById(id));
+    dispatch(getRelationated(id));
+    dispatch(getAllActivities());
+    dispatch(getFavoritesLocalStorage());
+    favorites?.forEach((f) => f.id === parseInt(id) && setCheckeado(true));
     setLoading(false);
   }, [dispatch]);
+  
+  useEffect(() => {
+    dispatch(getFavoritesLocalStorage());
+    if(favorites?.length){
+    for (let i = 0; i < favorites.length; i++) {
+      if(favorites[i].id === parseInt(id)){
+        return setCheckeado(true); 
+      }
+      return
+    }}
+  }, [dispatch]);
+
   const [loading, setLoading] = useState(false);
   const [checkboxEstado, setCheckboxEstado] = useState([]);
   const {
@@ -82,57 +99,62 @@ export default function Detail() {
 
   
   // useEffect(() => {
-    // console.log(favorites);
-    // console.log(id);
-    // console.log(checkeado);
-    // favorites?.forEach((f) => f.id === parseInt(id) && setCheckeado(true));
+  //   favorites?.forEach((f) => f.id === parseInt(id) && setCheckeado(true));
 
-    // for (let i = 0; i < favorites.length; i++) {
-    //   if(favorites[i].id === parseInt(id)){
-    //     setCheckeado(true); 
-    //     break;
-    //   }
-    // }
-
-    // console.log(checkeado + ' sofi crack')
-    // console.log('estoy aqui y seguiree')
+  //   // for (let i = 0; i < favorites.length; i++) {
+  //   //   if(favorites[i].id === parseInt(id)){
+  //   //     setCheckeado(true); 
+  //   //     break;
+  //   //   }
+  //   // }
   // }, [favorites]);
-  useEffect(() => {
-    favorites?.forEach((f) => f.id === id && setCheckeado(true));
-  }, [favorites]);
+
+  // useEffect(() => {
+  //   favorites?.forEach((f) => f.id === parseInt(id) && setCheckeado(true));
+  //   console.log(checkeado)
+  // }, [favorites]);
 
   function handleFavorite(e) {
-    setCheckeado(!checkeado);
-
+    e.preventDefault();
+    // setCheckeado(!checkeado);
+    // if(!checkeado){
+    //   if(!localStorage.getItem('favorites')) {
+    //     let favorites = [];
+    //     favorites.push(packageDetail);
+    //     localStorage.setItem('favorites', JSON.stringify(favorites));
+    //     setCheckeado(true);
+    //   }
+    packageDetail.image = packageDetail.main_image;
+          
+    if(checkeado){
+      let favorites = JSON.parse(localStorage.getItem("favorites"));
+      let remFav = favorites.filter((f) => {return f.id !== parseInt(id)});
+      setCheckeado(false);
+      localStorage.setItem("favorites", JSON.stringify(remFav));
+      dispatch(getFavoritesLocalStorage());
+    }
+    
     if(!checkeado){
-      if(!localStorage.getItem('favorites')) {
-        let favorites = [];
-        favorites.push(packageDetail);
-        localStorage.setItem('favorites', JSON.stringify(favorites));
-        setCheckeado(true);
-      }
-    if (!checkeado) {
       if (!localStorage.getItem("favorites")) {
         let favorites = [];
         favorites.push(packageDetail);
         localStorage.setItem("favorites", JSON.stringify(favorites));
+        setCheckeado(true)
       } else {
         let favorites = JSON.parse(localStorage.getItem("favorites"));
-          favorites.unshift(packageDetail);
-          localStorage.setItem('favorites', JSON.stringify(favorites));
-          setCheckeado(true);
-      }
-    } else {
-      let favorites = JSON.parse(localStorage.getItem("favorites"));
-      console.log(checkeado)
-      let remFav = favorites.filter((f) => {
-        console.log(f.id, packageDetail.id)
-        return f.id !== packageDetail.id;
-      });
-      localStorage.setItem("favorites", JSON.stringify(remFav));
-    }
-    dispatch(getFavoritesLocalStorage());
-  }}
+        for (let i = 0; i < favorites.length; i++) {
+          if(favorites[i].id === parseInt(id)){
+            let favorites = JSON.parse(localStorage.getItem("favorites"));
+            console.log('estoy en el bucle FOR')
+            let remFav = favorites.filter((f) => {
+            return f.id !== packageDetail.id;
+          });
+          localStorage.setItem("favorites", JSON.stringify(remFav));
+          setCheckeado(true)
+          dispatch(getFavoritesLocalStorage());
+      }}
+  }
+}}
 
   const handleSelectCantidad = (e) => {
     let totalPaquete = price * e.target.value;
@@ -186,18 +208,40 @@ export default function Detail() {
   const handleBotonComprar = (e) => {
     e.preventDefault();
     input.paquete = packageDetail;
-
+    // let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+    // favorites = favorites?.filter( (f) => f.id !== parseInt(id) )
+    // localStorage.setItem('favorites', JSON.stringify(favorites));
+    // console.log('antes de agregar');
+    
     if (!localStorage.getItem("cart")) {
       let cart = [];
       cart.unshift(input);
       localStorage.setItem("cart", JSON.stringify(cart));
     } else {
       let cart = JSON.parse(localStorage.getItem("cart"));
-      cart.unshift(input);
-      localStorage.setItem("cart", JSON.stringify(cart));
+      // console.log(parseInt(id))
+      // console.log(cart[0].paquete.id)
+      // console.log( cart[0].paquete.id === parseInt(id) ? true : false)
+      // console.log( cart[0].paquete.id === 8 ? true : false)
+      for (let i = 0; i < cart.length; i++) {
+        if(cart[i].paquete.id === parseInt(id)){
+          alert ('Ya está ese paquete en tu carrito')
+          scrollToTop();
+          return
+        } else {
+          cart.unshift(input);
+          localStorage.setItem("cart", JSON.stringify(cart));
+          scrollToTop();
+          dispatch(getCartLocalStorage(input, id));
+          return
+        }
+      }
     }
+    // console.log('despues de agregar');
+   
+
     scrollToTop();
-    dispatch(getCartLocalStorage());
+    dispatch(getCartLocalStorage(input, id));
     setInput({
       ...input,
       actividades: [],
@@ -219,6 +263,17 @@ export default function Detail() {
       }, 10000);
     };
   }, [dispatch, setCheckboxEstado, setInput]);
+
+
+
+const handleFavorito = async (e) => {
+  e.preventDefault()
+  const token = await getAccessTokenSilently()
+  dispatch(postFavorites(id, token))
+}
+
+
+
   console.log('se repite')
   return (
     <div
@@ -244,6 +299,7 @@ export default function Detail() {
 
               </div>
             </div>
+            <div><button onClick={(e) => handleFavorito(e)}>postear favorito</button></div>
             <div className={s.contenedorDetalles}>
               <h1>{name}</h1>
               <ControlledCarousel

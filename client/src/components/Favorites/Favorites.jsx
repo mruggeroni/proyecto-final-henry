@@ -17,7 +17,7 @@ export default function Favorites() {
 
   return (
     <div className={s.fullContainer}>
-      <h1 className={s.favTitle}>Favoritos({favorites?.length})</h1>
+      <h1 className={s.favTitle}>Favoritos({favorites ? favorites.length : '0'})</h1>
       <hr />
       {/* <div className={s.sort} onChange={(e) => handleSort(e)}>
 				<SortPrice componente={'favoritesList'}/>

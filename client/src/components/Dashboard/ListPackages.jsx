@@ -4,8 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { borrarPaquete, getAllPackage } from "../../redux/actions";
 import Dashboard from "./Dashboard";
+import { MdDelete } from 'react-icons/md';
+import { AiFillEdit } from 'react-icons/ai';
 import s from "./Table.module.css";
 import { useAuth0 } from "@auth0/auth0-react";
+import Swal from 'sweetalert2'
 
 export default function ListPackages() {
   const dispatch = useDispatch();
@@ -14,15 +17,25 @@ export default function ListPackages() {
   
   const handleBorrar = async (id, nombre) => {
     // console.log(e);
-    if (prompt(`Para borrar el paquete escribe '${nombre}'`) === nombre) {
-      await dispatch(getAllPackage(10000));
-      const token = await getAccessTokenSilently()
-      dispatch(borrarPaquete(id, token))
-      alert("El paquete se borro");
-    } else {
-      alert("El paquete no se borro");
-      console.log("gola");
-    }
+    Swal.fire({
+      title: `Esta seguro que desea eliminar el paquete ${nombre}?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Eliminar'
+    }).then( async (result) => {
+      if (result.isConfirmed) {
+        await dispatch(getAllPackage(10000));
+        const token = await getAccessTokenSilently()
+        dispatch(borrarPaquete(id, token))
+        Swal.fire(
+          `Paquete: ${id} | ${nombre}.`,
+          'Eliminado exitosamente!',
+          'success'
+        )
+      }
+    })
   };
 
   useEffect(() => {
@@ -46,7 +59,8 @@ export default function ListPackages() {
                   <th>Destacado</th>
                   <th>Disponible</th>
                   <th>Promoción</th>
-                  <th>Editar/Eliminar</th>
+                  <th>Editar</th>
+                  <th>Eliminar</th>
                 </tr>
               </thead>
               <tbody>
@@ -77,13 +91,16 @@ export default function ListPackages() {
                             to={`/dashboard/modifyPackage/${p.id}`}
                             className={s.fl_table_btn}
                           >
-                            Editar
+                            <AiFillEdit />
                           </NavLink>
+                        </td>
+                        <td>
+                          
                           <button
                             onClick={(e) => handleBorrar(p.id, p.name)}
                             className={s.fl_table_btn}
                           >
-                            Delete
+                            <MdDelete />
                           </button>
                         </td>
                       </tr>
