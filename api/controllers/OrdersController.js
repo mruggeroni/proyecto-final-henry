@@ -101,6 +101,8 @@ export const getOrderDetail = async (req, res) => {
 			],
 		});
 
+		if (!orderDetail) return res.status(404).json({ message: 'Order not found' });
+
 
 		const order = JSON.parse(JSON.stringify([orderDetail]));
 		const ids = order[0].packages.map(p => p.order_item.id);
