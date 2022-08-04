@@ -44,6 +44,11 @@ export default function Home() {
     //   console.log(token);
     // }
     setLoading(false);
+    const fetch = async () => {
+      const token = await getAccessTokenSilently()
+      dispatch(createUser(token))
+    }
+    fetch()
   }, [dispatch]);
 
   return (

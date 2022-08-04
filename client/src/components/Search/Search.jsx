@@ -15,13 +15,16 @@ import {
   getFavoritesLocalStorage,
   filtrar,
   getTypes,
+  createUser,
 } from "./../../redux/actions/index";
 import Paginado from "../Paginado/paginado";
 import s from "./Search.module.css";
 import { BsArrowBarDown, BsArrowBarUp } from "react-icons/bs";
 import { VscChevronDown, VscChevronUp } from "react-icons/vsc";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export default function FilteredSearch() {
+  const { getAccessTokenSilently } = useAuth0();
   const dispatch = useDispatch();
   const allPackages = useSelector((state) => state.allPackages);
   const filteredPackages = useSelector((s) => s.filteredPackages);
@@ -135,6 +138,11 @@ export default function FilteredSearch() {
     await dispatch(getFavoritesLocalStorage());
     await dispatch(getTypes());
     setLoading(false);
+    const fetch = async () => {
+      const token = await getAccessTokenSilently()
+      dispatch(createUser(token))
+    }
+    fetch()
   }, []);
 
   useEffect(() => {

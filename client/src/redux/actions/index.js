@@ -411,16 +411,16 @@ export function getCartLocalStorage(payload, id) {
   };
 }
 
-export function getAllCart(){
-  return async function(dispatch){
-    let res = await axios.get("/cart/" + id, {
-      headers: {
-        authorization: `Bearer ${token}`,
-      },
-    });
-    return dispatch({ type: GET_CART, payload: res.data });
-  };
-}
+// export function getAllCart(){
+//   return async function(dispatch){
+//     let res = await axios.get("/cart/" + id, {
+//       headers: {
+//         authorization: `Bearer ${token}`,
+//       },
+//     });
+//     return dispatch({ type: GET_CART, payload: res.data });
+//   };
+// }
 
 export function modificarCategoria(id, payload, token) {
   return async function (dispatch) {
