@@ -10,6 +10,7 @@ import {
   getAllActivities,
   getAllDestinations,
 } from "../../redux/actions";
+import Swal from 'sweetalert2'
 
 const schema = yup.object().shape({
   name: yup
@@ -28,23 +29,35 @@ export default function ModalDestinos({
   input,
 }) {
   const dispatch = useDispatch();
-  const { getAccessTokenSilently} = useAuth0();
+  const { getAccessTokenSilently } = useAuth0();
   const handleClose = () => {
     setShowDestinos(false);
   };
 
   const handleCrearDestino = async (e) => {
-    console.log(e);
     const token = await getAccessTokenSilently()
     const respuesta = await dispatch(crearDestino(e, token));
-    await dispatch(getAllDestinations());
-    await dispatch(getAllActivities());
-    setShowDestinos(false);
-    setInput({
-      ...input,
-      destinations: [...input.destinations, e.name],
-    });
-    alert(respuesta.data.message);
+    try {
+
+      await dispatch(getAllDestinations());
+      await dispatch(getAllActivities());
+      setShowDestinos(false);
+      setInput({
+        ...input,
+        destinations: [...input.destinations, e.name],
+      });
+      Swal.fire({
+        icon: 'success',
+        title: respuesta.data.message,
+      })
+    } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops algo fallo...',
+        text: error.message,
+      })
+    }
+
   };
 
   return (
