@@ -10,7 +10,8 @@ import { HiOutlineEmojiSad } from "react-icons/hi";
 import { getPackageById } from "../../redux/actions";
 
 export default function FavoritesPopOut({ showProfile, setShowProfile }) {
-  const favorites = useSelector((state) => state.favorites);
+  // const favorites = useSelector((state) => state.favorites);
+  const favorites = JSON.parse(localStorage.getItem("favorites"));
   const dispatch = useDispatch();
   const [isActive, setIsActive] = useState(false);
 

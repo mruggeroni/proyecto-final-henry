@@ -155,6 +155,7 @@ export default function ActivityCreate({
               name="name"
               onChange={(e) => handleInputChange(e)}
             />
+            {/* {error.name && <span className={style.error}>{error.name}</span> } */}
             {error.name ? (
               <div className={style.error}>{error.name}</div>
             ) : (

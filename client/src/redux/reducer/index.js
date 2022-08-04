@@ -23,7 +23,8 @@ import {
   DELETE_USER,
   UPDATE_USER,
   GET_USER_BY_ID,
-  GET_FAVORITES
+  GET_FAVORITES,
+  CLEAN_PACKAGE_BY_ID
 } from "./../actions/index.js";
 
 import {
@@ -76,7 +77,11 @@ const rootReducer = (state = initialState, action) => {
         allPackages: action.payload,
         // filteredPackages: action.payload,
       };
-
+    case CLEAN_PACKAGE_BY_ID:
+      return {
+        ...state,
+        detailPackage: {}
+      }
     case GET_ALL_DESTINATIONS:
       return {
         ...state,
