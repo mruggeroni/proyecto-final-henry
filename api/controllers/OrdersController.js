@@ -72,7 +72,7 @@ export const getOrders = async (req, res) => {
 };
 
 export const getOrderDetail = async (req, res) => {
-	const orderId = parseInt(req.params.id);
+	const orderId = parseInt(req.params.orderId);
 
 	try {
 		const orderDetail = await Order.findByPk(orderId, {
@@ -87,13 +87,47 @@ export const getOrderDetail = async (req, res) => {
 				},
 				{
 					model: Package,
+					attributes: {
+						exclude: [
+							'description',
+							'images',
+							'featured',
+							'available',
+							'on_sale',
+							'destroyTime'
+						]
+					}
 				},
 			],
 		});
 
-		! orderDetail
-		? res.status(404).json({ message: "Order not found" })
-		: res.status(200).json(orderDetail);
+		if (!orderDetail) return res.status(404).json({ message: 'Order not found' });
+
+
+		const order = JSON.parse(JSON.stringify([orderDetail]));
+		const ids = order[0].packages.map(p => p.order_item.id);
+		const orderItems = await OrderItem.findAll({
+			where: {
+				id: ids,
+			},
+			include: {
+				model: Activity,
+				attributes: ['id', 'name', 'price'],
+				through: {
+					attributes: [],
+				},
+			},
+		});
+
+		order[0].packages.forEach(packg => {
+			packg.quantity = packg.order_item.quantity;
+			const activities = orderItems.find(orderItem => orderItem.id === packg.order_item.id);
+			packg.activities = activities.activities;
+			delete packg.order_item;
+		});
+
+
+		return res.status(200).json(order[0]);
 	} catch (error) {
 		return res.status(400).json({ message: error.message });
 	};
@@ -105,7 +139,7 @@ export const patchStatusOrder = async (req, res) => {
 
 	try {
 		const status = newStatus.toLowerCase();
-		if (!(status !== 'paid') || !(status !== 'cancel')) return res.status(400).json({ message: "Status order must be 'paid' or 'cancel'" });
+		if ((status !== 'paid') && (status !== 'cancel')) return res.status(400).json({ message: "Status order must be 'paid' or 'cancel'" });
 		const existOrder = await Order.findByPk(orderId);
 		if (!existOrder) return res.status(404).json({ message: "Order not found" });
 		if (existOrder.status === 'shopping cart') return res.status(400).json({ message: "The id entered is not from a order" });
@@ -184,7 +218,7 @@ export const getCart = async (req, res) => {
 			delete packg.order_item;
 		});
 
-		return res.status(200).json(cart);
+		return res.status(200).json(cart[0]);
 	} catch (error) {
 		return res.status(400).json({ message: error.message });
 	};
