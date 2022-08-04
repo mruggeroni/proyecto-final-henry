@@ -12,15 +12,17 @@ import {
   getCartLocalStorage,
   getFavoritesLocalStorage,
   getAllPackage,
-  postFavorites
+  postFavorites,
+  deleteFavorites,
+  crearRating,
+  eliminarRating
 } from "../../redux/actions/index";
 import { useAuth0 } from "@auth0/auth0-react";
-
 
 export default function Detail() {
   const dispatch = useDispatch();
   const { id } = useParams();
-  const { getAccessTokenSilently} = useAuth0();
+  const { getAccessTokenSilently } = useAuth0();
 
   const packageDetail = useSelector((state) => state.detailPackage);
   const relationatedPackage = useSelector((state) => state.relationated);
@@ -37,16 +39,17 @@ export default function Detail() {
     favorites?.forEach((f) => f.id === parseInt(id) && setCheckeado(true));
     setLoading(false);
   }, [dispatch]);
-  
+
   useEffect(() => {
     dispatch(getFavoritesLocalStorage());
-    if(favorites?.length){
-    for (let i = 0; i < favorites.length; i++) {
-      if(favorites[i].id === parseInt(id)){
-        return setCheckeado(true); 
+    if (favorites?.length) {
+      for (let i = 0; i < favorites.length; i++) {
+        if (favorites[i].id === parseInt(id)) {
+          return setCheckeado(true);
+        }
+        return
       }
-      return
-    }}
+    }
   }, [dispatch]);
 
   const [loading, setLoading] = useState(false);
@@ -97,7 +100,7 @@ export default function Detail() {
     })();
   }, []);
 
-  
+
   // useEffect(() => {
   //   favorites?.forEach((f) => f.id === parseInt(id) && setCheckeado(true));
 
@@ -125,16 +128,16 @@ export default function Detail() {
     //     setCheckeado(true);
     //   }
     packageDetail.image = packageDetail.main_image;
-          
-    if(checkeado){
+
+    if (checkeado) {
       let favorites = JSON.parse(localStorage.getItem("favorites"));
-      let remFav = favorites.filter((f) => {return f.id !== parseInt(id)});
+      let remFav = favorites.filter((f) => { return f.id !== parseInt(id) });
       setCheckeado(false);
       localStorage.setItem("favorites", JSON.stringify(remFav));
       dispatch(getFavoritesLocalStorage());
     }
-    
-    if(!checkeado){
+
+    if (!checkeado) {
       if (!localStorage.getItem("favorites")) {
         let favorites = [];
         favorites.push(packageDetail);
@@ -143,18 +146,20 @@ export default function Detail() {
       } else {
         let favorites = JSON.parse(localStorage.getItem("favorites"));
         for (let i = 0; i < favorites.length; i++) {
-          if(favorites[i].id === parseInt(id)){
+          if (favorites[i].id === parseInt(id)) {
             let favorites = JSON.parse(localStorage.getItem("favorites"));
             console.log('estoy en el bucle FOR')
             let remFav = favorites.filter((f) => {
-            return f.id !== packageDetail.id;
-          });
-          localStorage.setItem("favorites", JSON.stringify(remFav));
-          setCheckeado(true)
-          dispatch(getFavoritesLocalStorage());
-      }}
+              return f.id !== packageDetail.id;
+            });
+            localStorage.setItem("favorites", JSON.stringify(remFav));
+            setCheckeado(true)
+            dispatch(getFavoritesLocalStorage());
+          }
+        }
+      }
+    }
   }
-}}
 
   const handleSelectCantidad = (e) => {
     let totalPaquete = price * e.target.value;
@@ -196,7 +201,7 @@ export default function Detail() {
   }
 
   const navigate = useNavigate();
-  
+
   const handleBotonRegresar = (e) => {
     e.preventDefault();
     // scrollToTop();
@@ -208,11 +213,13 @@ export default function Detail() {
   const handleBotonComprar = (e) => {
     e.preventDefault();
     input.paquete = packageDetail;
+    input.total = input.total !== 0 ? input.total : price
+    console.log(input);
     // let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
     // favorites = favorites?.filter( (f) => f.id !== parseInt(id) )
     // localStorage.setItem('favorites', JSON.stringify(favorites));
     // console.log('antes de agregar');
-    
+
     if (!localStorage.getItem("cart")) {
       let cart = [];
       cart.unshift(input);
@@ -224,8 +231,8 @@ export default function Detail() {
       // console.log( cart[0].paquete.id === parseInt(id) ? true : false)
       // console.log( cart[0].paquete.id === 8 ? true : false)
       for (let i = 0; i < cart.length; i++) {
-        if(cart[i].paquete.id === parseInt(id)){
-          alert ('Ya está ese paquete en tu carrito')
+        if (cart[i].paquete.id === parseInt(id)) {
+          alert('Ya está ese paquete en tu carrito')
           scrollToTop();
           return
         } else {
@@ -238,7 +245,7 @@ export default function Detail() {
       }
     }
     // console.log('despues de agregar');
-   
+
 
     scrollToTop();
     dispatch(getCartLocalStorage(input, id));
@@ -266,12 +273,43 @@ export default function Detail() {
 
 
 
-const handleFavorito = async (e) => {
-  e.preventDefault()
-  const token = await getAccessTokenSilently()
-  dispatch(postFavorites(id, token))
-}
+  const handleFavorito = async (e) => {
+    e.preventDefault()
+    try {
+      const token = await getAccessTokenSilently()
+      dispatch(postFavorites(id, token))
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
+  const handleFavoritoBorrar = async (e) => {
+    e.preventDefault()
+    try {
+      const token = await getAccessTokenSilently()
+      dispatch(deleteFavorites(id, token))
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const handlePuntuar = async (e) => {
+    try {
+      const token = await getAccessTokenSilently()
+      console.log(e.target.value);
+      dispatch(crearRating(id, token, e.target.value))
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  const handleBorrarRating = async (e) => {
+    try {
+      const token = await getAccessTokenSilently()
+      dispatch(eliminarRating(id, token))
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
 
   console.log('se repite')
@@ -285,7 +323,6 @@ const handleFavorito = async (e) => {
       }}
     >
       <div className={s.body}>
-        {/* si loading esta activo mostramos el spinner */}
         {loading ? (
           <div className={s.contenedorSpinner}>
             <div className={s.spinner}></div>
@@ -294,12 +331,24 @@ const handleFavorito = async (e) => {
           <div className={s.contenedor}>
             <div className={s.contenedorBarraSuperior}>
               <div onClick={(e) => handleBotonRegresar(e)}>Home</div>
+
               <div onClick={(e) => handleFavorite(e)}>
-                <BotonFav setChecked={setCheckeado} checked={checkeado} id={ parseInt(id) } componente={'detail'} />
+                <BotonFav setChecked={setCheckeado} checked={checkeado} id={parseInt(id)} componente={'detail'} />
 
               </div>
             </div>
             <div><button onClick={(e) => handleFavorito(e)}>postear favorito</button></div>
+            <div><button onClick={(e) => handleFavoritoBorrar(e)}>borrar favorito</button></div>
+            <div>
+              <select onChange={(e) => handlePuntuar(e)} name="rating" id="rating">
+                <option selected disabled value="">puntua</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+              </select></div>
+            <div><button onClick={(e) => { handleBorrarRating(e) }}>eliminar rating</button></div>
             <div className={s.contenedorDetalles}>
               <h1>{name}</h1>
               <ControlledCarousel
