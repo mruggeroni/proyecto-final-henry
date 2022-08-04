@@ -24,29 +24,29 @@ import Privacy from "./components/Information/Privacy.jsx";
 import Terms from "./components/Information/Terms.jsx";
 import Faq from "./components/Information/Faq.jsx";
 import Error404 from "./components/Error404/Error404.jsx";
+import { useSelector } from "react-redux";
 
 function App() {
+  const user = useSelector( (state) => state.user )
+
   return (
     <BrowserRouter>
       <Navbar />
       <PopUpParent />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/dashboard" element={<CreatePackage />} />
-        <Route path="/dashboard/listPackages" element={<ListPackages />} />
-        <Route path="/dashboard/listActivities" element={<ListActivities />} />
-        <Route path="/dashboard/listCategories" element={<ListCategories />} />
-        <Route path="/dashboard/listUsers" element={<ListUsers />} />
-        <Route path="/dashboard/packages" element={<CreatePackage />} />
-        <Route path="/dashboard/activities" element={<CreateActivity />} />
-        <Route
-          path="/dashboard/modifyPackage/:id"
-          element={<ModifyPackages />}
-        />
-        <Route
-          path="/dashboard/modifyActivities/:id"
-          element={<ModifyActivity />}
-        />
+        <Route path="/dashboard" element={ user.is_admin ? <CreatePackage /> : <Navigate to='/' /> } />
+        <Route path="/dashboard/listPackages" element={ user.is_admin ? <ListPackages /> : <Navigate to='/' />} />
+        <Route path="/dashboard/listActivities" element={ user.is_admin ? <ListActivities /> : <Navigate to='/' />} />
+        <Route path="/dashboard/listCategories" element={ user.is_admin ? <ListCategories /> : <Navigate to='/' />} />
+        <Route path="/dashboard/listUsers" element={ user.is_admin ? <ListUsers /> : <Navigate to='/' />} />
+        <Route path="/dashboard/packages" element={ user.is_admin ? <CreatePackage /> : <Navigate to='/' />} />
+        <Route path="/dashboard/activities" element={ user.is_admin ? <CreateActivity /> : <Navigate to='/' />} />
+        <Route path="/dashboard/modifyPackage/:id" element={ user.is_admin ? <ModifyPackages /> : <Navigate to='/' />} />
+        <Route path="/dashboard/modifyActivities/:id" element={ user.is_admin ? <ModifyActivity /> : <Navigate to='/' />} />
+        <Route path="/checkout" element={ Object.keys(user).length ? <CheckoutParent /> : <Navigate to='/' />} />
+        <Route path="/historial" element={ Object.keys(user).length ? <Historial /> : <Navigate to='/' />} />
+        <Route path='/createaccount' element={ Object.keys(user).length ? <CreateAccountModal /> : <Navigate to='/' />} />
         <Route path="/terms-and-conditions" element={<Terms />} />
         <Route path="/faq" element={<Faq />} />
         <Route path="/privacy" element={<Privacy />} />
@@ -55,11 +55,8 @@ function App() {
         <Route path="/detail/:id" element={<Detail />} />
         <Route path="/favorites" element={<Favorites />} />
         <Route path="/cart" element={<Checkout />} />
-        <Route path="/checkout" element={<CheckoutParent />} />
-        <Route path="/historial" element={<Historial />} />
         <Route path="/faq" element={<Home />} />
         <Route path="/contact" element={<Home />} />
-        <Route path='/createaccount' element={<CreateAccountModal />} />
         <Route path="*" element={<Error404 />} />
       </Routes>
     </BrowserRouter>

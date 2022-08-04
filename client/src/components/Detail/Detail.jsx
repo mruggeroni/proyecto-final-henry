@@ -93,7 +93,6 @@ export default function Detail() {
       dispatch(getFavoritesLocalStorage());
     } else {
       if (!localStorage.getItem("favorites")) {
-        console.log('if')
         let favorites = [];
         favorites.push(packageDetail);
         localStorage.setItem("favorites", JSON.stringify(favorites));
