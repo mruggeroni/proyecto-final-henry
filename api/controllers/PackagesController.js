@@ -166,22 +166,88 @@ export const createPackage = async (req, res)=>{
 	}
 }
 
-export const putPackage = async (req, res) => {
-	try {
-		console.log(req.body)
-	  let nuevopaquete = req.body
-	  let FindId = req.params.id
-	  const updateado = await Package.update(nuevopaquete, {
-		where: {
-		  id: FindId
-		}})
-		res.status(200).json({message:'Package updated'})
-	} catch (error) {
-	  return res.status(500).json({ message: error.message });
-	}
+// export const putPackage = async (req, res) => {
+// 	try {
+// 		console.log(req.body)
+// 	  let nuevopaquete = req.body
+// 	  let FindId = req.params.id
+// 	  const updateado = await Package.update(nuevopaquete, {
+// 		where: {
+// 		  id: FindId
+// 		}})
+// 		res.status(200).json({message:'Package updated'})
+// 	} catch (error) {
+// 	  return res.status(500).json({ message: error.message });
+// 	}
   
 	  
-  }
+//   }
+
+export const putPackage = async (req, res) => {
+	try {
+	  const nuevopaquete = req.body;
+	  const { activities, destinations } = req.body;
+	  let id = req.params.id;
+	  const updateado = await Package.update(nuevopaquete, {
+		where: {
+		  id,
+		},
+	  });
+	  const encontrado = await Package.findOne({
+		where: { id },
+	  });
+	  if (destinations) {
+		console.log(encontrado);
+		let destinationUpdate = [];
+		for (let i = 0; i < destinations.length; i++) {
+		  const destino = await Destination.findOrCreate({
+			where: {
+			  name: destinations[i],
+			},
+		  });
+		  destinationUpdate.push(destino[0]);
+		  console.log(destino);
+		}
+		await encontrado.setDestinations(destinationUpdate);
+	  }
+	  if (activities) {
+		let actividadUpdate = [];
+		for (let i = 0; i < activities.length; i++) {
+		  const actividad = await Activity.findOrCreate({
+			where: {
+			  name: activities[i],
+			},
+		  });
+		  actividadUpdate.push(actividad[0]);
+		  console.log(actividad);
+		  if (activities[i].classification) {
+			const clasificacion = await Classification.findOrCreate({
+			  where: {
+				name: activities[i].classification.name,
+			  },
+			  defaults: {
+				image: activities[i].classification.image,
+			  },
+			});
+			const actividadEncontrada = await Activity.findOne({
+			  where: {
+				name: activities[i].name,
+			  },
+			});
+			await clasificacion[0].setActivities(actividadEncontrada);
+			console.log("HERE");
+			console.log(clasificacion);
+		  }
+		}
+		await encontrado.setActivities(actividadUpdate);
+	  }
+	  console.log(updateado);
+	  res.status(200).json({ message: "Package updated successfully" });
+	} catch (error) {
+	  console.log(error);
+	  res.status(400).json({ message: error.message });
+	}
+  };
 
 // export const putPackage = async (req, res) => {
 //   try {

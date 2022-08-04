@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Order } from '../models/Orders.js';
 import { OrderItem } from '../models/OrderItems.js';
 import { Package } from '../models/Packages.js';
+import { Activity } from '../models/Activities.js';
 
 export const getUsers = async (req, res) => {
 	const { limitRender, page, destroyTime, is_admin } = req.query;
@@ -11,7 +12,6 @@ export const getUsers = async (req, res) => {
 	//console.log('HERE')
 	//console.log(req)
 	try {
-
 		//console.log(respuesta)
 		const limitRend = parseInt(limitRender) || 1000,
 			pag = parseInt(page) || 1,
@@ -75,24 +75,31 @@ export const getUserDetail = async (req, res) => {
 		const idUser = parseInt(id);
 
 		const user = await User.findByPk(idUser, {
-			/* include: {
+			include: {
 				model: Order,
 				attributes: {
 					exclude: ['userId'],
 				},
 				include: {
-					model: OrderItem,
-					attributes: {
-						exclude: ['orderId', 'packageId'],
-					},
-				},
-				include: {
 					model: Package,
 					attributes: {
-						exclude: ['id', 'available', 'destroyTime', 'images', 'price' ],
+						exclude: [
+							'main_image',
+							'description', 
+							'images', 
+							'seasson',
+							'type',
+							'featured', 
+							'available', 
+							'on_sale', 
+							'destroyTime'
+						],
+					},
+					through: {
+						attributes: ['quantity'],
 					},
 				},
-			}, */
+			},
 			attributes: {
 				exclude: [
 					'password',
@@ -103,7 +110,22 @@ export const getUserDetail = async (req, res) => {
 				],
 			},
 		});
-		res.status(200).json(user);
+		if (!user) return res.status(404).json({ message: 'User not found' });
+
+		const userCopy = JSON.parse(JSON.stringify(user));
+		userCopy.orders.forEach(order => {
+			order.packages.forEach(p => {
+				p.quantity = p.order_item.quantity;
+				delete p.order_item;
+			});
+		});
+		userCopy.cart = userCopy.orders.filter(order => order.status === 'shopping cart')[0];
+		userCopy.orders = userCopy.orders.filter(order => order.status !== 'shopping cart');
+		userCopy.orders_pending = userCopy.orders.filter(order => order.status === 'pending');
+		userCopy.orders_paid = userCopy.orders.filter(order => order.status === 'paid');
+		userCopy.orders_cancel = userCopy.orders.filter(order => order.status === 'cancel');
+
+		return res.status(200).json(userCopy);
 		// if(permissions === 'SuperAdmin' || permissions === 'Admin' || user.email === userInfo.email){
 
 		// }
