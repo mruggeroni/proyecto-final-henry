@@ -15,7 +15,8 @@ import {
   getFavoritesLocalStorage,
   filtrar,
   getTypes,
-  getAllFavorites
+  getAllFavorites,
+  createUser,
 } from "./../../redux/actions/index";
 import Paginado from "../Paginado/paginado";
 import s from "./Search.module.css";
@@ -145,6 +146,11 @@ export default function FilteredSearch() {
       dispatch(getAllFavorites(token))
     }
     setLoading(false);
+    const fetch = async () => {
+      const token = await getAccessTokenSilently()
+      dispatch(createUser(token))
+    }
+    fetch()
   }, []);
 
   useEffect(() => {

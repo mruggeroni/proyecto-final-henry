@@ -52,6 +52,11 @@ export default function Home() {
       dispatch(getAllFavorites(token))
     }
     setLoading(false);
+    const fetch = async () => {
+      const token = await getAccessTokenSilently()
+      dispatch(createUser(token))
+    }
+    fetch()
   }, [dispatch]);
 
   return (
