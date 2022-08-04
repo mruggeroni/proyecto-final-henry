@@ -5,15 +5,11 @@ import { Link } from "react-router-dom";
 
 import {
   filterPackagesByDestination,
-  getAllActivities,
-  getAllDestinations,
   getAllPackage,
-  getDestinationsWithPackages,
-  getOnSale,
 } from "./../../redux/actions/index";
-import s from '../Search/Search.module.css'
+import s from './Historial.module.css'
 import style from "../Search/Select.module.css";
-import Card from "../Search/Card/Card";
+import HistorialCard from "./HistorialCard";
 import SortPrice from "../Search/SortPrice.jsx";
 import View from "../Search/View";
 import Paginado from "../Paginado/paginado";
@@ -21,12 +17,8 @@ import Paginado from "../Paginado/paginado";
 export default function Historial() {
 
   const dispatch = useDispatch();
-  const allPackages = useSelector((state) =>
-    state.filteredPackages.length ? state.filteredPackages : state.allPackages
-  );
-  const allDestinations = useSelector(
-    (state) => state.destinationsWithPackages
-  );
+  const allPackages = useSelector((state) => state.allPackages);
+  const allDestinations = useSelector((state) => state.allDestinations);
   const [order, setOrder] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [packagesPerPage, setPackagesPerPage] = useState(10);
@@ -47,35 +39,12 @@ export default function Historial() {
     setCurrentPage(1);
   };
 
-  const [loading, setLoading] = useState(false);
-
-  useEffect(async () => {
-    setLoading(true);
-    await dispatch(getAllPackage());
-    await dispatch(getAllDestinations());
-    await dispatch(getOnSale());
-    await dispatch(getAllActivities());
-    await dispatch(getDestinationsWithPackages());
-    setLoading(false);
-  }, []);
-
   useEffect(() => {
-    return async () => {
-      await dispatch(getAllPackage());
-      await dispatch(getAllDestinations());
-      await dispatch(getOnSale());
-      await dispatch(getAllActivities());
-      await dispatch(getDestinationsWithPackages());
-    };
-  }, [dispatch]);
+		dispatch(getAllPackage());
+	},[dispatch])
 
   return (
     <div className={s.container}>
-      {loading ? (
-        <div className={s.contenedorSpinner}>
-          <div className={s.spinner}></div>
-        </div>
-      ) : (
         <div>
           <div className={s.view}>
             <SortPrice setOrder={setOrder} setCurrentPage={setCurrentPage} />
@@ -113,17 +82,19 @@ export default function Historial() {
             paginado={paginado}
             currentPage={currentPage}
           />
-          <div className={s.cards}>
+          <div className={s.cardsHistorial}>
             {currentPackage &&
               currentPackage?.map((p) => {
                 return (
                   <div className={s.eachcard} key={p.id}>
                     <Link to={"/detail/" + p.id} key={p.id}>
-                      <Card
+                      <HistorialCard
                         name={p.name}
                         image={p.main_image}
                         description={p.description}
                         price={p.price}
+                        start_date={p.start_date}
+                        end_date={p.end_date}
                         key={p.id}
                       />
                     </Link>
@@ -132,7 +103,6 @@ export default function Historial() {
               })}
           </div>
         </div>
-      )}
     </div>
   );
 }

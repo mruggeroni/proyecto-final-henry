@@ -24,7 +24,7 @@ const schema = yup.object().shape({
   image: yup.string().max(150, "Maximo 150").required("Requerido"),
 });
 
-export default function ModalActividades({ show, setShow, setInput, input }) {
+export default function ModalCategoria({ show, setShow, setInput, input }) {
   const dispatch = useDispatch();
   const { getAccessTokenSilently} = useAuth0();
   const handleClose = () => {
@@ -47,6 +47,7 @@ export default function ModalActividades({ show, setShow, setInput, input }) {
     const respuesta = await dispatch(createCategories(e, token));
     await dispatch(getAllDestinations());
     await dispatch(getAllActivities());
+    await dispatch(getCategories());
     setShow(false);
     setInput({
       ...input,
@@ -98,7 +99,6 @@ export default function ModalActividades({ show, setShow, setInput, input }) {
                     </Form.Control.Feedback>
                   </Form.Group>
                 </Row>
-
                 <Row className="mb-3">
                   <Form.Group as={Col} md="12">
                     <Form.Label>Imagen</Form.Label>

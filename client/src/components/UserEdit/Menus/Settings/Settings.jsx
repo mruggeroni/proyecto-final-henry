@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BsFillEyeFill, BsFillEyeSlashFill } from 'react-icons/bs';
 import s from './Settings.module.css';
 import {useDispatch, useSelector } from "react-redux";
@@ -18,53 +18,74 @@ export default function Settings({ showSettings, setShowSettings }) {
 
   const handlePassword = async (e, user) => {
     e.preventDefault()
-var options = { domain: "dev-33fzkaw8.us.auth0.com", clientID: "x5cL1uiTL2R0BR0VXYS0dIeqkA5gSdDm"};
-var webAuth = new WebAuth(options);
-console.log('HERE')
-console.log(user.email)
-
-const change = await webAuth.changePassword({
-  connection: 'Username-Password-Authentication',
-  email: user.email
-}, function (err, resp){
-  if(err){
-    console.log('ERROR')
-    console.log(err);
-  }else{
-    console.log(resp);
-  }});
-  console.log('HERE FUNCTION')
-  console.log(change)
-  }
+    var options = { domain: "dev-33fzkaw8.us.auth0.com", clientID: "x5cL1uiTL2R0BR0VXYS0dIeqkA5gSdDm"};
+    var webAuth = new WebAuth(options);
+      console.log('HERE')
+      console.log(user.email)
+    const change = await webAuth.changePassword({
+       connection: 'Username-Password-Authentication',
+        email: user.email
+        }, function (err, resp){
+             if(err){
+               console.log('ERROR')
+               console.log(err);
+            }else{
+               console.log(resp);
+      }});
+      console.log('HERE FUNCTION')
+      console.log(change)
+    }
   const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(input)
+    setShowSettings(false);
+    setInput({
+      email: user.email,
+      currentPassword: '',
+      newPassword: ''
+    });
+    setTimeout(() => {
+      setShowSettings(true)
+      console.log('reset')
+    }, 0);
+    setShowSettings(false) 
   };
 
-  const handleChangeEmail = async (e) => {
-    e.preventDefault();
- 
+  const handleChange = (e) => {
+    e.preventDefault(); 
+    setInput({
+      ...input,
+      [e.target.name]: e.target.value 
+    });
+
   };
 
   const handleDelete = (e) => {
     e.preventDefault();
+    if(window.alert('Seguro desea eliminar esta cuenta?')) {
+        console.log(input);
+    }
   };
 
   return (
     !showSettings ? null
     : <div className={s.settings_container}>
-        <h2>Configuracion de la Cuenta</h2>
+        <div className={s.title}>
+          <h2 className={s.settings_title}>Configuracion de la Cuenta <MdBuild className={s.setting_build} /> </h2>
+        </div>
         <hr />
         <div className={s.settings_email_container}>
           <h3 className={s.settings_email}>Email</h3>
             <input type='email' value={user.email} className={s.settings_input}/>
-          <button onClick={(e) => handleChangeEmail(e, user)} className={s.settings_email_btn}>Cambiar</button>
+          //<button onClick={(e) => handleChangeEmail(e, user)} className={s.settings_email_btn}>Cambiar</button>
         </div>
         <form className={s.settings_password_container}>
           <button onClick={(e) => handlePassword(e, user)} className={s.settings_btn_save}>Cambiar Contraseña</button>
+
         </form>
-        <button onClick={handleDelete} className={s.settings_btn_delete}>Eliminar cuenta</button>
+        <button onClick={handleDelete} disabled={true} className={s.settings_btn_delete}>Eliminar cuenta</button>
         
     </div>
   );

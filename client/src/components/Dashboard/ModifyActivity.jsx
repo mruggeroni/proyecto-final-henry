@@ -132,7 +132,7 @@ export default function ModifyActivity() {
       console.log(input.classification);
       dispatch(modificarActividad(input, id, token));
       // Alert bootstrap
-      alert("Actividad creada!");
+      alert("Actividad modificada!");
     } else {
       alert(
         "El formulario no esta completado correctamente, intenta de nuevo!"
@@ -163,9 +163,6 @@ export default function ModifyActivity() {
     <div>
       <Dashboard />
       <div className={style.create_container}>
-        {
-          console.log(input)
-        }
         <h2>Modificar Actividad</h2>
         <hr className={style.create_line} />
         <form
