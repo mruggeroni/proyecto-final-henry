@@ -114,10 +114,7 @@ export default function ListPackages() {
                       <tr key={"packagesList" + p.name}>
                         <td>{p.id}</td>
                         <td>
-                        <Link
-                            to={`/detail/${p.id}`}
-                            className={s.fl_table_btn}
-                          >
+                        <Link to={`/detail/${p.id}`} className={s.fl_table_link} >
                             {p.name}
                           </Link>
                           </td>

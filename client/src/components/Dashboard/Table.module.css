@@ -39,6 +39,16 @@
     color: #000;
 }
 
+.fl_table_link {
+    text-decoration: none;
+    margin: 0 5px;
+    color: #000;
+}
+
+.fl_table_link:hover {
+    color: #4a9eab;
+}
+
 .fl_table_true {
     background-color: #008000;
     color: #fff;

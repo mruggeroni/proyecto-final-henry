@@ -30,9 +30,8 @@ export default function UserPopOut({ showProfile, setShowProfile }) {
       console.log('baiiiii')
       dispatch(getAllFavorites(token));
       localStorage.removeItem('favorites');
-    }else{
-      favorites.forEach((f) => dispatch(postFavorites(f.id, token)));
-      localStorage.removeItem('favorites');
+      // favorites.forEach((f) => dispatch(postFavorites(f.id, token)));
+      // localStorage.removeItem('favorites');
     }
 }, [dispatch])
 

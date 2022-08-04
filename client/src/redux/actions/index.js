@@ -400,7 +400,6 @@ export const getAllFavorites = (token) => {
 };
 
 export const postFavorites = (id, token) => {
-  console.log(id, token)
   return async function (dispatch) {
     try {
       let res = await axios.post('/favourites/' + id, "", {
@@ -408,6 +407,7 @@ export const postFavorites = (id, token) => {
           authorization: `Bearer ${token}`,
         },
       });
+      dispatch(getAllFavorites(token))
       return res
     } catch (error) {
       console.log(error.message);
@@ -417,12 +417,17 @@ export const postFavorites = (id, token) => {
 
 export const deleteFavorites = (id, token) => {
   return async function () {
-    let res = await axios.delete("/favourites/" + id, {
-      headers: {
-        authorization: `Bearer ${token}`,
-      },
-    });
-    return res
+    try {
+      let res = await axios.delete("/favourites/" + id, {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
+      dispatch(getAllFavorites(token))
+      return res
+    } catch (error) {
+      console.log(error)
+    }
   };
 };
 

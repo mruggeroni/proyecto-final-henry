@@ -10,15 +10,18 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 export default function Favorites() {
   const dispatch = useDispatch();
-  const favorites = useSelector((state) => state.favorites);
   const {
-		isAuthenticated,
-		getAccessTokenSilently,
-	  } = useAuth0();
+    isAuthenticated,
+    getAccessTokenSilently,
+    } = useAuth0();
+  let favorites = useSelector((state) => state.favorites);
+  // if(!isAuthenticated) {
+  //   favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+  // }
 
   useEffect(async () => {
     if(!isAuthenticated){
-      dispatch(getFavoritesLocalStorage());
+        dispatch(getFavoritesLocalStorage());
     } else{
       const token = await getAccessTokenSilently();
       dispatch(getAllFavorites(token));
@@ -35,20 +38,8 @@ export default function Favorites() {
       <div className={s.cardContainer}>
         {favorites?.length ? (
           favorites.map((p) => {
-            isAuthenticated ? 
+          return isAuthenticated ? 
            ( <div className={s.eachCard} key={p.id}>
-                <Link to={"/detail/" + p.id} key={p.id}>
-                  <FavoriteCard
-                    name={p.name}
-                    image={p.main_image}
-                    price={p.price}
-                    id={p.id}
-                    key={p.id}
-                    componente={"favoriteList"}
-                  />
-                </Link>
-              </div> )
-            : (<div className={s.eachCard} key={p.id}>
                 <Link to={"/detail/" + p.id} key={p.id}>
                   <FavoriteCard
                     name={p.name}
@@ -60,6 +51,18 @@ export default function Favorites() {
                   />
                 </Link>
               </div> )
+            : <div className={s.eachCard} key={p.id}>
+                <Link to={"/detail/" + p.id} key={p.id}>
+                  <FavoriteCard
+                    name={p.name}
+                    image={p.image}
+                    price={p.price}
+                    id={p.id}
+                    key={p.id}
+                    componente={"favoriteList"}
+                  />
+                </Link>
+              </div> 
               })
             ) : (
           <p className={s.noHay}>No hay Paquetes Favoritos!</p>
