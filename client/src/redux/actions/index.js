@@ -25,6 +25,11 @@ export const ORDENAR = "ORDENAR";
 export const UPDATE_USER = 'UPDATE_USER';
 export const DELETE_USER = 'DELETE_USER';
 export const GET_USER_BY_ID = 'GET_USER_BY_ID';
+export const CLEAN_PACKAGE_BY_ID = 'CLEAN_PACKAGE_BY_ID';
+
+export const cleanPackageById = () => {
+  return { type: CLEAN_PACKAGE_BY_ID }
+}
 
 export const updateUser = (id, newUser) => {
   return async function (dispatch) {
@@ -48,16 +53,19 @@ export const getAllPackage = (limitRender) => {
 };
 
 export const getPackageById = (id) => {
-  return async function (dispatch) {
-    let res = await axios.get("/packages/detail/" + id);
-    return dispatch({ type: GET_PACKAGE_BY_ID, payload: res.data[0] });
-  };
-};
+  if (id !== "reset") {
+    return async function (dispatch) {
+      let res = await axios.get("/packages/detail/" + id);
+      return dispatch({ type: GET_PACKAGE_BY_ID, payload: res.data[0] });
+    };
+  } else {
+    return { type: GET_PACKAGE_BY_ID, payload: {} };
+  }
+}
 
 export const getRelationated = (id) => {
   return async function (dispatch) {
     let res = await axios.get("/packages/detail/" + id);
-    console.log(res.data);
     return dispatch({ type: GET_RELATIONATED, payload: res.data[1] });
   };
 };

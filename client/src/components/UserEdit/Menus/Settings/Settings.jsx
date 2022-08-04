@@ -64,7 +64,7 @@ export default function Settings({ showSettings, setShowSettings }) {
           <h2 className={s.settings_title}>Configuracion de la Cuenta <MdBuild className={s.setting_build} /> </h2>
         </div>
         <hr />
-        <div className={s.settings_email_container}>
+        {/* <div className={s.settings_email_container}>
           <h3 className={s.settings_email}>Email</h3>
             <input type='email' 
                     name='email'
@@ -73,7 +73,7 @@ export default function Settings({ showSettings, setShowSettings }) {
                     value={input.email}
                     className={s.settings_input}/>
           <button onClick={handleSubmit} disabled={true} className={s.settings_email_btn}>Cambiar</button>
-        </div>
+        </div> */}
         <form className={s.settings_password_container}>
         <h3>Contraseña</h3>
           <div className={s.settings_input_container}>
