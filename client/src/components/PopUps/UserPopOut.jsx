@@ -4,7 +4,7 @@ import style from "./User.module.css";
 import { useAuth0 } from "@auth0/auth0-react";
 import UserEdit from "../UserEdit/UserEdit";
 import { NavLink } from "react-router-dom";
-import { createUser, getAllFavorites, postFavorites } from "../../redux/actions/index";
+import { createUser, getAllFavorites, postFavorites, getAllCart, postCartPackage } from "../../redux/actions/index";
 import { useDispatch, useSelector } from "react-redux";
 import s from "./PopUps.module.css";
 
@@ -18,6 +18,7 @@ export default function UserPopOut({ showProfile, setShowProfile }) {
   } = useAuth0();
   const user = useSelector( (state) => state.user )
   const favorites = useSelector( (state) => state.favorites)
+  const cart = useSelector( (state) => state.cart );
   const [showUser, setShowUser] = useState(false);
 
   useEffect(async () => {
@@ -25,14 +26,12 @@ export default function UserPopOut({ showProfile, setShowProfile }) {
     // dispatch(getAllFavorites(token));
     console.log(isAuthenticated);
     if(isAuthenticated){
-      console.log('hellouuu')
       favorites.forEach((f) => dispatch(postFavorites(f.id, token)))
-      console.log('baiiiii')
       dispatch(getAllFavorites(token));
       localStorage.removeItem('favorites');
-    }else{
-      favorites.forEach((f) => dispatch(postFavorites(f.id, token)));
-      localStorage.removeItem('favorites');
+      cart.forEach((c) => dispatch(postCartPackage(user.id)))
+      dispatch(getAllCart(user.id));
+      localStorage.removeItem('cart');
     }
 }, [dispatch])
 
@@ -59,9 +58,11 @@ export default function UserPopOut({ showProfile, setShowProfile }) {
           <div className={s.user_btn}>
             <UserEdit />
           </div>
-          <NavLink to="/dashboard" className={s.user_btn} onClick={ () => handleClickUser() }>
-            Dashboard
-          </NavLink>
+          {
+            user.is_admin && <NavLink to="/dashboard" className={s.user_btn} onClick={ () => handleClickUser() }>
+              Dashboard
+            </NavLink>
+          }
           <NavLink to="./" className={s.user_btn} onClick={ () => handleClickUser() }>
             Servicio al Cliente
           </NavLink>

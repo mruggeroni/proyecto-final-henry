@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -8,13 +8,21 @@ import s from "./PopUps.module.css";
 import Card from "../Favorites/FavoriteCard.jsx";
 import { HiOutlineEmojiSad } from "react-icons/hi";
 import { getPackageById } from "../../redux/actions";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export default function FavoritesPopOut({ showProfile, setShowProfile }) {
-  // const favorites = useSelector((state) => state.favorites);
-  const favorites = JSON.parse(localStorage.getItem("favorites"));
   const dispatch = useDispatch();
   const [isActive, setIsActive] = useState(false);
-
+  const { isAuthenticated, getAccessTokenSilently, } = useAuth0();
+  let favorites = [];
+  let stateFavorites = useSelector((state) => state.favorites);
+  if(!isAuthenticated) {
+    favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+  } else {
+    favorites = [...stateFavorites];
+  }
+  
+  
   function handleFavClick(e) {
     e.preventDefault();
     if(document.getElementById('cart_container').classList.contains(`${s.open_favorite}`)) {
@@ -50,7 +58,7 @@ export default function FavoritesPopOut({ showProfile, setShowProfile }) {
                   <div key={p.id}>
                     <Card
                       name={p.name}
-                      image={p.image}
+                      image={p.image || p.main_image}
                       price={p.price}
                       id={p.id}
                       key={p.id}

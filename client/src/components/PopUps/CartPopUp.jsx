@@ -13,7 +13,7 @@ export default function CartPopOut({ showProfile, setShowProfile }) {
   const cart = JSON.parse(localStorage.getItem("cart"));
   const [isVisible, setIsVisible] = useState(false);
   let sum = 0; 
-  cart.forEach((p) => p.total === 0 ? sum +=(p.paquete.price*p.cantidad) : sum += p.total);
+  cart?.forEach((p) => p.total === 0 ? sum +=(p.paquete.price*p.cantidad) : sum += p.total);
 
   // function handleCartClick(e) {
   //   e.preventDefault();
