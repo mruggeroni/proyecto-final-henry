@@ -121,6 +121,7 @@ export default function Detail() {
 
   async function handleFavorite(e) {
     e.preventDefault();
+
     if (!isAuthenticated) {
       packageDetail.image = packageDetail.main_image;
       if (checkPackageInCart(id)) {
@@ -199,9 +200,10 @@ export default function Detail() {
   }
 
   const handleBotonRegresar = async (e) => {
-    // e.preventDefault();
+    e.preventDefault();
+    navigate('/');
+    /* setLoading(true);
     setCheckeado(false);
-    setLoading(true);
     scrollToTop();
     setInput({
       cantidad: 1,
@@ -209,12 +211,12 @@ export default function Detail() {
       actividades: [],
     });
     // await dispatch(cleanPackageById());
-    navigate(-1);
+    await dispatch(cleanPackageById());
     setTimeout(async () => {
-      await dispatch(cleanPackageById());
       await dispatch(getPackageById(id));
       console.log(id)
-      }, 0);
+      setLoading(false);
+    }, 1); */
     // dispatch(cleanPackageById());
     // dispatch(getPackageById(id)); // TENDRIAMOS QUE VER SI CON LOCAL STORAGE SE PUEDE ENCONREAR EK ID
     // dispatch(getAllPackage());
@@ -340,7 +342,7 @@ export default function Detail() {
       <div className={s.body}>
         <div className={s.contenedor}>
           <div className={s.contenedorBarraSuperior}>
-            <div onClick={(e) => handleBotonRegresar(e)}>Volver</div>
+            <div onClick={(e) => handleBotonRegresar(e)}>Inicio</div>
             <div onClick={(e) => handleFavorite(e)}>
               <BotonFav
                 setChecked={setCheckeado}

@@ -69,10 +69,10 @@ export default function UserEdit() {
                 <hr className={s.create_line} />
                 <div className={s.profile_btn}>
                   <div className={s.profile_main_btn}>
-                    <button className={s.profile_menu_btn} onClick={(handleShowProfile)} >Perfil</button>
-                    <button className={s.profile_menu_btn} onClick={(handleShowPaymentDetails)}>Datos de pago</button>
+                    <button className={s.profile_menu_btn} onClick={(handleShowProfile)} >Configuración</button>
                     <button className={s.profile_menu_btn} onClick={(handleShowUserOrders)}>Lista de ordenes</button>
-                    <button className={s.profile_menu_btn} onClick={(handleShowSettings)}>Configuraciones</button>
+                    <button className={s.profile_menu_btn} onClick={(handleShowPaymentDetails)}>Datos de pago</button>
+                    {/* <button className={s.profile_menu_btn} onClick={(handleShowSettings)}>Configuraciones</button> */}
                   </div>
                   <div>
                     <button className={s.profile_menu_btn} onClick={(logout)}>Finalizar Sesión</button>
@@ -82,7 +82,7 @@ export default function UserEdit() {
             </div>
             <div className={s.profile_menu_item}>
                 <MyProfile showProfile={showProfile} setShowProfile={setShowProfile} />
-                <Settings user={user} showSettings={showSettings} setShowSettings={setShowSettings} />
+                {/* <Settings user={user} showSettings={showSettings} setShowSettings={setShowSettings} /> */}
                 <PaymentDetails showPaymentDetails={showPaymentDetails} setShowPaymentDetails={setShowPaymentDetails} />
                 <UserOrders showUserOrders={showUserOrders} setShowUserOrders={setShowUserOrders} />
             </div>
