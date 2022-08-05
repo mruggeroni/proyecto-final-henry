@@ -1,12 +1,13 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import { cleanPackageById, getCartLocalStorage, getFavoritesLocalStorage, getPackageById, getAllFavorites, deleteFavorites } from '../../redux/actions';
+import { useDispatch, useSelector } from 'react-redux';
+import { cleanPackageById, getCartLocalStorage, getFavoritesLocalStorage, getPackageById, getAllFavorites, deleteFavorites, deleteCartPackage, getAllCart } from '../../redux/actions';
 import s from './Remove.module.css';
 import BotonFav from '../Detail/BotonFav';
 import { useAuth0 } from "@auth0/auth0-react";
 
 export default function RemoveFavorite({ id, popUp, componente }){
 	const dispatch = useDispatch();
+	const user = useSelector((state) => state.user);
 	const {
 		isAuthenticated,
 		loginWithPopup,
@@ -18,10 +19,16 @@ export default function RemoveFavorite({ id, popUp, componente }){
 	 	e.preventDefault();
 		if(!isAuthenticated){
 			if(popUp === 'cart'){
-				let cart = JSON.parse(localStorage.getItem('cart'));
-				let remCart = cart.filter((c) => {return c.paquete.id !== id});
-				  localStorage.setItem('cart', JSON.stringify(remCart));
-				dispatch(getCartLocalStorage());
+				if(!isAuthenticated){
+					let cart = JSON.parse(localStorage.getItem('cart'));
+					let remCart = cart.filter((c) => {return c.paquete.id !== id});
+				  	localStorage.setItem('cart', JSON.stringify(remCart));
+					dispatch(getCartLocalStorage());
+				} else{
+					const token = await getAccessTokenSilently();
+					dispatch(deleteCartPackage(id));
+					dispatch(getAllCart(user.id, token))
+				}
 			} else {		
 				let favorites = JSON.parse(localStorage.getItem('favorites'));
 				let remFav = favorites.filter((f) => f.id !== id );

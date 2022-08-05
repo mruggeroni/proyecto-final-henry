@@ -46,7 +46,7 @@ export default function Home() {
     //   console.log(token);
     // }
     if(!isAuthenticated) {
-      dispatch(getFavoritesLocalStorage());
+      // dispatch(getFavoritesLocalStorage());
     } else{
       const token = await getAccessTokenSilently();
       dispatch(getAllFavorites(token))

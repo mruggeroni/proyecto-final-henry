@@ -139,10 +139,10 @@ export default function FilteredSearch() {
     await dispatch(getAllActivities());
     await dispatch(getDestinationsWithPackages());
     await dispatch(getTypes());
-    const token = await getAccessTokenSilently();
     if(!isAuthenticated) {
-      dispatch(getFavoritesLocalStorage());
+      // dispatch(getFavoritesLocalStorage());
     } else{
+      const token = await getAccessTokenSilently();
       dispatch(getAllFavorites(token))
     }
     setLoading(false);

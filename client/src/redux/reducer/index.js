@@ -27,7 +27,8 @@ import {
   CLEAN_PACKAGE_BY_ID,
   PATCH_PACKAGE,
   GET_CART,
-  CLEAN_ALL_PACKAGE
+  CLEAN_ALL_PACKAGE,
+  GET_ORDERS
 } from "./../actions/index.js";
 
 import {
@@ -51,6 +52,8 @@ const initialState = {
   types: [],
   seasons: [],
   favorites: [],
+  orders: [],
+  order: {},
   featured: [],
   onsale: [],
   detailPackage: {},
@@ -80,6 +83,11 @@ const rootReducer = (state = initialState, action) => {
         allPackages: action.payload,
         // filteredPackages: action.payload,
       };
+    case GET_ORDERS:
+      return {
+        ...state,
+        orders: action.payload
+      }
     case PATCH_PACKAGE:
       return {
         ...state
@@ -262,10 +270,10 @@ const rootReducer = (state = initialState, action) => {
       };
 
     case GET_LOCAL_STORAGE_FAVORITES:
-      let localStorageFav = JSON.parse(localStorage.getItem("favorites"));
+      let localStorageFav = JSON.parse(localStorage.getItem("favorites")) || [];
       return {
         ...state,
-        favorites: localStorageFav?.length ? localStorageFav : [],
+        // favorites: localStorageFav,
       };
 
     case GET_FAVORITES:
@@ -275,7 +283,7 @@ const rootReducer = (state = initialState, action) => {
       };
 
     case GET_LOCAL_STORAGE_CART:
-      let localStorageCart = JSON.parse(localStorage.getItem("cart"));
+      let localStorageCart = JSON.parse(localStorage.getItem("cart")) || [];
       return {
         ...state,
         cart: localStorageCart
@@ -286,7 +294,7 @@ const rootReducer = (state = initialState, action) => {
           ...state,
           cart: action.payload
         }
-
+        
     case FILTRAR:
       console.log("filtrar", action);
       // primero ordenamos

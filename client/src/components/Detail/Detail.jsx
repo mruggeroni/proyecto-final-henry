@@ -19,6 +19,10 @@ import {
   eliminarRating,
   getAllFavorites,
   createUser,
+  deleteCartPackage,
+  postCartPackage,
+  getAllCart
+
 } from "../../redux/actions/index";
 import { useAuth0 } from "@auth0/auth0-react";
 import Loading from "../Loading/Loading";
@@ -31,6 +35,7 @@ export default function Detail() {
   const relationatedPackage = useSelector((state) => state.relationated);
   const allActivities = useSelector((state) => state.activities);
   const favorites = useSelector((state) => state.favorites);
+  const user = useSelector((state) => state.user);
   const [checkeado, setCheckeado] = useState(false);
   const [loading, setLoading] = useState(true);
   const [checkboxEstado, setCheckboxEstado] = useState(
@@ -43,7 +48,7 @@ export default function Detail() {
   });
   const { isAuthenticated, getAccessTokenSilently } = useAuth0();
 
-  useEffect(() => {
+  useEffect( async () => {
     setLoading(true);
 
     if (
@@ -61,26 +66,41 @@ export default function Detail() {
         document.getElementsByName("selectCantidad")[0].value = "1";
       }
       setCheckeado(false);
-      let favorites = JSON.parse(localStorage.getItem("favorites"));
-      favorites?.forEach((f) => f.id === parseInt(id) && setCheckeado(true));
+      if (!isAuthenticated) {
+        let favorites = JSON.parse(localStorage.getItem("favorites"));
+        favorites?.forEach((f) => f.id === parseInt(id) && setCheckeado(true));
+      } else {
+        const fetch = async () => {
+          const token = await getAccessTokenSilently();
+          await dispatch(getAllFavorites(token));
+          favorites.forEach((f) => f.id === parseInt(id) && setCheckeado(true));
+        };
+        fetch();
+      }
     }
   }, [packageDetail, relationatedPackage, allActivities]);
 
-  useEffect(async () => {
+  useEffect( async () => {
     dispatch(cleanPackageById());
     dispatch(getPackageById(id));
     dispatch(getRelationated(id));
     dispatch(getAllActivities());
-    const token = await getAccessTokenSilently();
-    if (!isAuthenticated) {
-      dispatch(getFavoritesLocalStorage());
-    } else {
-      dispatch(getAllFavorites(token));
-    }
+    dispatch(getFavoritesLocalStorage());
     const fetch = async () => {
+      const token = await getAccessTokenSilently();
+      // console.log(token)
       dispatch(createUser(token));
     };
-    fetch();
+    // fetch();
+    // if (!isAuthenticated) {
+    //   dispatch(getFavoritesLocalStorage());
+    // } else {
+    //   const fetch = async () => {
+    //     const token = await getAccessTokenSilently();
+    //     dispatch(getAllFavorites(token));
+    //   };
+    //   fetch();
+    // }
   }, [dispatch]);
 
   function scrollToTop() {
@@ -99,12 +119,11 @@ export default function Detail() {
 
   async function handleFavorite(e) {
     e.preventDefault();
-    packageDetail.image = packageDetail.main_image;
-    if (checkPackageInCart(id)) {
-      return alert("ya esta en el carrito");
-    }
-
     if (!isAuthenticated) {
+      packageDetail.image = packageDetail.main_image;
+      if (checkPackageInCart(id)) {
+        return alert("ya esta en el carrito");
+      }
       if (checkeado) {
         let favorites = JSON.parse(localStorage.getItem("favorites"));
         let remFav = favorites.filter((f) => {
@@ -123,36 +142,17 @@ export default function Detail() {
           let remFav = favorites?.filter((p) => p.id !== packageDetail.id);
           remFav.push(packageDetail);
           localStorage.setItem("favorites", JSON.stringify(remFav));
-          /* 
-           let cart = JSON.parse(localStorage.getItem("cart"));
-        let match = false;
-        cart?.forEach( (p) => p.paquete.id === parseInt(id) && (match = true) );
-        if(!match) {
-          cart.unshift(input);
-          localStorage.setItem('cart', JSON.stringify(cart)); 
-        }
-          */
-          /* for (let i = 0; i < favorites.length; i++) {
-            if(favorites[i].id === parseInt(id)){
-              // let favorites = JSON.parse(localStorage.getItem("favorites"));
-              // console.log('estoy en el bucle FOR')
-              let remFav = favorites.filter( (f) => f.id !== packageDetail.id );
-              localStorage.setItem("favorites", JSON.stringify(remFav));
-              dispatch(getFavoritesLocalStorage());
-            }
-          } */
         }
         setCheckeado(true);
       }
       dispatch(getFavoritesLocalStorage());
     } else {
+      const token = await getAccessTokenSilently();
       if (checkeado) {
-        const token = await getAccessTokenSilently();
-        dispatch(deleteFavorites(id, token));
+        await dispatch(deleteFavorites(id, token));
         setCheckeado(false);
       } else {
-        const token = await getAccessTokenSilently();
-        dispatch(postFavorites(id, token));
+        await dispatch(postFavorites(id, token));
         setCheckeado(true);
       }
     }
@@ -196,13 +196,23 @@ export default function Detail() {
     });
   }
 
-  const handleBotonRegresar = (e) => {
+  const handleBotonRegresar = async (e) => {
     // e.preventDefault();
-    dispatch(cleanPackageById());
-    setTimeout(() => {
-      dispatch(getPackageById(id));
-    }, 1);
+    setCheckeado(false);
+    setLoading(true);
+    scrollToTop();
+    setInput({
+      cantidad: 1,
+      total: 0,
+      actividades: [],
+    });
+    // await dispatch(cleanPackageById());
     navigate(-1);
+    setTimeout(async () => {
+      await dispatch(cleanPackageById());
+      await dispatch(getPackageById(id));
+      console.log(id)
+      }, 0);
     // dispatch(cleanPackageById());
     // dispatch(getPackageById(id)); // TENDRIAMOS QUE VER SI CON LOCAL STORAGE SE PUEDE ENCONREAR EK ID
     // dispatch(getAllPackage());
@@ -246,43 +256,56 @@ export default function Detail() {
     }
   };
 
-  const handleBotonComprar = (e) => {
+  async function handleBotonComprar(e){
     e.preventDefault();
     input.paquete = packageDetail;
-    if (!localStorage.getItem("cart")) {
-      let cart = [];
-      cart.unshift(input);
-      localStorage.setItem("cart", JSON.stringify(cart));
-    } else {
-      let cart = JSON.parse(localStorage.getItem("cart"));
-      let match = false;
-      cart?.forEach((p) => p.paquete.id === parseInt(id) && (match = true));
-      if (!match) {
+    
+    if(!isAuthenticated){
+      if (!localStorage.getItem("cart")) {
+        let cart = [];
         cart.unshift(input);
         localStorage.setItem("cart", JSON.stringify(cart));
       } else {
-        alert("ya esta en el carrito");
+        let cart = JSON.parse(localStorage.getItem("cart"));
+        let match = false;
+        cart?.forEach((p) => p.paquete.id === parseInt(id) && (match = true));
+        if (!match) {
+          cart.unshift(input);
+          localStorage.setItem("cart", JSON.stringify(cart));
+        } else {
+          alert("ya esta en el carrito");
+        }
+      }
+      let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+      favorites = favorites?.filter((f) => f.id !== parseInt(id));
+      localStorage.setItem("favorites", JSON.stringify(favorites));
+      setCheckeado(false);
+      dispatch(cleanPackageById());
+      setLoading(true);
+      scrollToTop();
+      setInput({
+        cantidad: 1,
+        total: 0,
+        actividades: [],
+      });
+      /* 
+      setCheckboxEstado(new Array(10).fill(false));
+      */
+      setTimeout(() => {
+        dispatch(getPackageById(id));
+      }, 1);
+      dispatch(getCartLocalStorage());
+    } else{
+      try{
+      //  console.log(input)
+      //   input = packageDetail;
+      //   console.log([packageDetail])
+        dispatch(postCartPackage(user.id, [input]));
+        dispatch(getAllCart(user.id));
+      } catch (error) {
+        console.log(error.message);
       }
     }
-    let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
-    favorites = favorites?.filter((f) => f.id !== parseInt(id));
-    localStorage.setItem("favorites", JSON.stringify(favorites));
-    setCheckeado(false);
-    dispatch(cleanPackageById());
-    setLoading(true);
-    scrollToTop();
-    setInput({
-      cantidad: 1,
-      total: 0,
-      actividades: [],
-    });
-    /* 
-    setCheckboxEstado(new Array(10).fill(false));
-    */
-    setTimeout(() => {
-      dispatch(getPackageById(id));
-    }, 1);
-    dispatch(getCartLocalStorage());
   };
 
   const handleEstrellas = async (e) => {

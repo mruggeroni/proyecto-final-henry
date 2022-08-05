@@ -49,6 +49,9 @@
     color: #4a9eab;
 }
 
+.fl_table_false,
+.fl_table_pending,
+.fl_table_cancel,
 .fl_table_true {
     background-color: #008000;
     color: #fff;
@@ -59,10 +62,14 @@
 
 .fl_table_false {
     background-color:#ff0000;
-    color: #fff;
-    padding: 3px 5px;
-    border-radius: 20px;
-    cursor: pointer;
+}
+
+.fl_table_pending {
+    background-color: #ffa500;
+}
+
+.fl_table_shoppingcart {
+    background-color: #a9a9a9;
 }
 
 .fl_table_btn:hover {
