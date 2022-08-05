@@ -34,6 +34,8 @@ export const DELETE_CART = 'DELETE_CART';
 export const PATCH_PACKAGE = 'PATCH_PACKAGE';
 export const CLEAN_PACKAGE_BY_ID = 'CLEAN_PACKAGE_BY_ID';
 export const CLEAN_ALL_PACKAGE = 'CLEAN_ALL_PACKAGE';
+export const GET_FEATURED = 'GET_FEATURED';
+
 
 
 /* export const patchOrders = (id) => {
@@ -53,7 +55,7 @@ export const getOrders = () => {
       let res = await axios.get('/orders');
       return dispatch({ type: GET_ORDERS, payload: res.data.results });
     }
-  } catch(error) {
+  } catch (error) {
     console.log(error);
   }
 }
@@ -67,7 +69,7 @@ export const patchPackage = (id, token, value) => {
         },
       });
       return dispatch({ type: PATCH_PACKAGE, payload: res.data })
-    }  
+    }
   } catch (error) {
     console.log(error);
   }
@@ -135,6 +137,13 @@ export function getDestinationsWithPackages(payload) {
   };
 }
 
+export const getFeatured = () => {
+  return async function (dispatch) {
+    let res = await axios.get("/packages/featured");
+    return dispatch({ type: GET_FEATURED, payload: res.data });
+  };
+};
+
 export const getOnSale = () => {
   return async function (dispatch) {
     let res = await axios.get("/on_sale");
@@ -187,33 +196,35 @@ export const createUser = (payload) => {
     }
   };
 };
-export const ModifyUser = (email,payload, token) => {
-  return async function (dispatch){
+export const ModifyUser = (email, payload, token) => {
+  return async function (dispatch) {
     try {
-      const res = await axios.put('/user?email='+ email, payload,
-      {
-        headers: {
-          authorization: `Bearer ${token}`,
-        }})
+      const res = await axios.put('/user?email=' + email, payload,
+        {
+          headers: {
+            authorization: `Bearer ${token}`,
+          }
+        })
     } catch (error) {
-      
+
     }
   }
 }
 export const Payment = (payload, token) => {
-  return async function (dispatch){
+  return async function (dispatch) {
     try {
       console.log(payload)
       const res = await axios.post('/payment',
-      {
-        headers: {
-          authorization: `Bearer ${token}`,
-        },
-      body: payload})
-        if (res){
-          console.log(res.data.url) 
-          window.location = res.data.url
-        }
+        {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+          body: payload
+        })
+      if (res) {
+        console.log(res.data.url)
+        window.location = res.data.url
+      }
     } catch (error) {
       console.log(error)
     }
@@ -498,8 +509,8 @@ export function getCartLocalStorage(payload, id) {
   };
 }
 
-export function getAllCart(id){
-  return async function(dispatch){
+export function getAllCart(id) {
+  return async function (dispatch) {
     let res = await axios.get("/cart/" + id);
     return dispatch({ type: GET_CART, payload: res.data });
   };
@@ -507,7 +518,7 @@ export function getAllCart(id){
 
 export function postCartPackage(id, value) {
   try {
-    return async function(dispatch) {
+    return async function (dispatch) {
       let res = await axios.post('/cart/' + id, value);
       console.log(res.data)
       return dispatch({ type: POST_CART, payload: res.data })
@@ -517,19 +528,19 @@ export function postCartPackage(id, value) {
   }
 }
 
-export function updateCart( id, value){
-  try{ 
-    return async function(dispatch) {
-    let res = await axios.post('/cart/' + id, value);
-    console.log(res.data)
-    return dispatch({ type: UPDATE_CART, payload: res.data })
-  }
+export function updateCart(id, value) {
+  try {
+    return async function (dispatch) {
+      let res = await axios.post('/cart/' + id, value);
+      console.log(res.data)
+      return dispatch({ type: UPDATE_CART, payload: res.data })
+    }
   } catch (error) {
     console.log(error);
   }
 }
 
-export function deleteCartPackage(id){
+export function deleteCartPackage(id) {
   return async function (dispatch) {
     try {
       let res = await axios.delete("/cart/" + id);
