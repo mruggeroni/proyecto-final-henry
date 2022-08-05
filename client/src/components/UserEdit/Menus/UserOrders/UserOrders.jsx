@@ -1,26 +1,19 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { BsFillEyeFill, BsFillEyeSlashFill } from 'react-icons/bs';
+import { MdBuild } from 'react-icons/md';
 import { useDispatch, useSelector } from "react-redux";
-import { deleteUser, getOrders, getUsers } from "../../redux/actions";
-import Dashboard from "./Dashboard";
-import { MdDelete } from 'react-icons/md';
-import { useAuth0 } from "@auth0/auth0-react";
-import Swal from 'sweetalert2'
-import s from "./Table.module.css";
+import { getOrders } from "../../../../redux/actions";
+import s from './UserOrders.module.css';
 
-export default function ListOrders() {
+export default function UserOrders({ showUserOrders, setShowUserOrders }) {
   const dispatch = useDispatch();
-  const orders = useSelector((state) => state.orders);
-  const { getAccessTokenSilently} = useAuth0();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const token = await getAccessTokenSilently()
-      dispatch(getUsers(token))
-      dispatch(getOrders());
-    }
+  const user = useSelector( (state) => state.user );
+  const orders = useSelector( (state) => state.orders );
+  const ordersUser = orders.filter( (o) => o.userId === user.id );
   
-    fetchData().catch(console.error);
-  }, [dispatch])
+    useEffect( () => {
+        dispatch(getOrders());
+    }, [])
 
   const validateStatus = (status) => {
     switch (status) {
@@ -34,10 +27,13 @@ export default function ListOrders() {
   }
 
   return (
-    <div>
-      <Dashboard />
-      <div className={s.dashboard_container}>
-        <div className={s.tbl_container}>
+    !showUserOrders ? null
+    : <div className={s.orders_container}>
+        <div className={s.title}>
+          <h2 className={s.orders_title}>Lista de ordenes</h2>
+        </div>
+        <hr />
+        { ordersUser?.length > 0 ? <div className={s.tbl_container}>
           <div className={s.table_wrapper}>
             <table className={s.fl_table}>
               <thead>
@@ -45,32 +41,29 @@ export default function ListOrders() {
                   <th>Id</th>
                   <th>Fecha</th>
                   <th>Total</th>
-                  <th>Usuario</th>
-                  <th>Nombre completo</th>
                   <th>Estatus</th>
                 </tr>
               </thead>
               <tbody>
-                {orders.length &&
-                  orders.map((o) => {
+                { ordersUser.map((o) => {
                     return (
                       <tr key={"orderList" + o.first_name}>
                         <td>{o.id}</td>
                         <td>{o.date}</td>
                         <td>$ {o.total_order}</td>
-                        <td>{o.user.id}</td>
-                        <td>{o.user.first_name} {o.user.last_name}</td>
                         <td>
                             <div className={s[validateStatus(o.status)]}>{o.status}</div>
                         </td>
                       </tr>
                     );
-                  })}
+                  })
+                }
               </tbody>
             </table>
           </div>
         </div>
-      </div>
+        : <span>No hay ordenes para mostrar</span> 
+        }
     </div>
   );
 }

@@ -13,7 +13,7 @@
 /* Table Styles */
 
 .table_wrapper {
-    border-top: thin solid #000;
+    border-top: thin solid #4a9eabCC;
     /* margin: 10px 70px 70px; */
 }
 
@@ -94,7 +94,7 @@
 
 .fl_table thead th:nth-child(odd) {
     color: #ffffff;
-    background: #324960;
+    background: #4a9eabCC;
 }
 
 .fl_table tr:nth-child(even) {

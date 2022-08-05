@@ -10,17 +10,23 @@ export default function Card({ name, image, description, price, id }) {
   const [checked, setChecked] = useState(false);
   const favPackage = { name, image, description, price, id };
   const dispatch = useDispatch();
-  const favorites = useSelector((state) => state.favorites);
   const {
     isAuthenticated,
-    loginWithPopup,
-    logout,
     getAccessTokenSilently,
   } = useAuth0();
 
+  let favorites = [];
+  let stateFavorites = useSelector((state) => state.favorites);
+  let stateFavoritesLocalStorage = useSelector((state) => state.favoritesLocalStorage);
+  if(!isAuthenticated) {
+    favorites = [...stateFavoritesLocalStorage];
+  } else {
+    favorites = [...stateFavorites];
+  }
+  
   useEffect(() => {
     favorites?.forEach((f) => f.id === id && setChecked(true));
-  }, [favorites]);
+  }, []);
 
   const checkPackageInCart = (id) => {
     let cart = JSON.parse(localStorage.getItem("cart"));
@@ -55,18 +61,12 @@ export default function Card({ name, image, description, price, id }) {
       dispatch(getFavoritesLocalStorage());
     } else{
       const token = await getAccessTokenSilently();
-      if(!checked){
-        try{
-          dispatch(postFavorites(id, token));
-        } catch(e){
-          console.log(e.message);
-        }
-      } else{
-        try{
-          dispatch(deleteFavorites(id, token));
-        }catch (e) {
-          console.log(e.message);
-        }
+      if (checked) {
+        await dispatch(deleteFavorites(id, token));
+        setChecked(false);
+      } else {
+        await dispatch(postFavorites(id, token));
+        setChecked(true);
       }
       dispatch(getAllFavorites(token));
     }

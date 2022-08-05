@@ -28,7 +28,8 @@ import {
   PATCH_PACKAGE,
   GET_CART,
   CLEAN_ALL_PACKAGE,
-  GET_ORDERS
+  GET_ORDERS,
+  UPDATE_CART
 } from "./../actions/index.js";
 
 import {
@@ -51,9 +52,9 @@ const initialState = {
   regions: [],
   types: [],
   seasons: [],
+  favoritesLocalStorage: [],
   favorites: [],
   orders: [],
-  order: {},
   featured: [],
   onsale: [],
   detailPackage: {},
@@ -273,7 +274,7 @@ const rootReducer = (state = initialState, action) => {
       let localStorageFav = JSON.parse(localStorage.getItem("favorites")) || [];
       return {
         ...state,
-        // favorites: localStorageFav,
+        favoritesLocalStorage: localStorageFav,
       };
 
     case GET_FAVORITES:
@@ -293,8 +294,16 @@ const rootReducer = (state = initialState, action) => {
         return{
           ...state,
           cart: action.payload
+      };
+
+      case UPDATE_CART:
+        let newCart = state.cart;
+        newCart.push(action.payload)
+      return{
+          ...state,
+          cart: newCart
         }
-        
+
     case FILTRAR:
       console.log("filtrar", action);
       // primero ordenamos

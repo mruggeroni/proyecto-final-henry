@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import MyProfile from './Menus/MyProfile/MyProfile';
 import PaymentDetails from './Menus/PaymentDetails/PaymentDetails';
 import Settings from './Menus/Settings/Settings';
+import UserOrders from './Menus/UserOrders/UserOrders';
 import s from './UserEdit.module.css';
 
 export default function UserEdit() {
@@ -13,6 +14,7 @@ export default function UserEdit() {
   const [showProfile, setShowProfile] = useState(true);
   const [showSettings, setShowSettings] = useState(false);
   const [showPaymentDetails, setShowPaymentDetails] = useState(false);
+  const [showUserOrders, setShowUserOrders] = useState(false);
   const [show, setShow] = useState(false);
   const handleClose = () => {
     setShowSettings(false)
@@ -28,16 +30,25 @@ export default function UserEdit() {
     setShowProfile(true);
     setShowSettings(false);
     setShowPaymentDetails(false);
+    setShowUserOrders(false);
   }
   const handleShowSettings = () => {
     setShowSettings(true);
     setShowProfile(false);
     setShowPaymentDetails(false);
+    setShowUserOrders(false);
   }
   const handleShowPaymentDetails = () => {
     setShowPaymentDetails(true);
     setShowProfile(false);
     setShowSettings(false);
+    setShowUserOrders(false);
+  }
+  const handleShowUserOrders = () => {
+    setShowUserOrders(true);
+    setShowProfile(false);
+    setShowSettings(false);
+    setShowPaymentDetails(false);
   }
 
   return (
@@ -60,6 +71,7 @@ export default function UserEdit() {
                   <div className={s.profile_main_btn}>
                     <button className={s.profile_menu_btn} onClick={(handleShowProfile)} >Perfil</button>
                     <button className={s.profile_menu_btn} onClick={(handleShowPaymentDetails)}>Datos de pago</button>
+                    <button className={s.profile_menu_btn} onClick={(handleShowUserOrders)}>Lista de ordenes</button>
                     <button className={s.profile_menu_btn} onClick={(handleShowSettings)}>Configuraciones</button>
                   </div>
                   <div>
@@ -72,6 +84,7 @@ export default function UserEdit() {
                 <MyProfile showProfile={showProfile} setShowProfile={setShowProfile} />
                 <Settings user={user} showSettings={showSettings} setShowSettings={setShowSettings} />
                 <PaymentDetails showPaymentDetails={showPaymentDetails} setShowPaymentDetails={setShowPaymentDetails} />
+                <UserOrders showUserOrders={showUserOrders} setShowUserOrders={setShowUserOrders} />
             </div>
         </div>
       </div>

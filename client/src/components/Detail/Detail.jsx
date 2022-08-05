@@ -21,7 +21,8 @@ import {
   createUser,
   deleteCartPackage,
   postCartPackage,
-  getAllCart
+  getAllCart,
+  updateCart
 
 } from "../../redux/actions/index";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -34,6 +35,7 @@ export default function Detail() {
   const packageDetail = useSelector((state) => state.detailPackage);
   const relationatedPackage = useSelector((state) => state.relationated);
   const allActivities = useSelector((state) => state.activities);
+  const cart = useSelector((state) => state.cart);
   const favorites = useSelector((state) => state.favorites);
   const user = useSelector((state) => state.user);
   const [checkeado, setCheckeado] = useState(false);
@@ -300,8 +302,13 @@ export default function Detail() {
       //  console.log(input)
       //   input = packageDetail;
       //   console.log([packageDetail])
-        dispatch(postCartPackage(user.id, [input]));
-        dispatch(getAllCart(user.id));
+        if(cart?.length){
+          dispatch(postCartPackage(user.id, [input]));
+          dispatch(getAllCart(user.id));
+        } else{
+          dispatch(updateCart(cart.id, [input]));
+          dispatch(getAllCart(user.id));
+        }
       } catch (error) {
         console.log(error.message);
       }

@@ -512,11 +512,21 @@ export function postCartPackage(id, value) {
       console.log(res.data)
       return dispatch({ type: POST_CART, payload: res.data })
     }
-  
   } catch (error) {
     console.log(error);
   }
+}
 
+export function updateCart( id, value){
+  try{ 
+    return async function(dispatch) {
+    let res = await axios.post('/cart/' + id, value);
+    console.log(res.data)
+    return dispatch({ type: UPDATE_CART, payload: res.data })
+  }
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 export function deleteCartPackage(id){
