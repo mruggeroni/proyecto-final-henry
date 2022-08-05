@@ -11,8 +11,27 @@ export default function ListUsers() {
   const dispatch = useDispatch();
   const users = useSelector((state) => state.users);
   const { getAccessTokenSilently} = useAuth0();
+ 
+  useEffect(async() => {
+     const token = await getAccessTokenSilently()
+      if(!users.length) {
+    
+          dispatch(getUsers(token))
+      }
+  }, [dispatch]);
+
 
   const handleDelete = async (e, id, nombre) => {
+
+    // console.log(e);
+    if (prompt(`Para borrar el paquete escribe '${nombre}'`) === nombre) {
+      const token = await getAccessTokenSilently()
+      dispatch(deleteUser(id, token))
+      dispatch(getUsers(token));
+      alert("El paquete se borro");
+    } else {
+      alert("El paquete no se borro");
+    }
     Swal.fire({
       title: `Esta seguro que desea eliminar a ${nombre}?`,
       icon: 'warning',
@@ -42,6 +61,7 @@ export default function ListUsers() {
     // }
   };
 
+  
   useEffect(() => {
     // declare the data fetching function
     const fetchData = async () => {
