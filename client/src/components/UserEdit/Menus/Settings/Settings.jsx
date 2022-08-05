@@ -7,7 +7,6 @@ import { WebAuth } from 'auth0-js';
 import { useAuth0 } from "@auth0/auth0-react";
 import { ModifyUser } from "../../../../redux/actions";
 
-
 export default function Settings({ showSettings, setShowSettings }) {
   const { getAccessTokenSilently} = useAuth0();
   const user = useSelector( (state) => state.user );
@@ -69,14 +68,14 @@ export default function Settings({ showSettings, setShowSettings }) {
           <h2 className={s.settings_title}>Configuracion de la Cuenta <MdBuild className={s.setting_build} /> </h2>
         </div>
         <hr />
-        <div className={s.settings_email_container}>
+        {/* <div className={s.settings_email_container}>
           <h3 className={s.settings_email}>Email</h3>
             <input type='email' value={user.email} className={s.settings_input}/>
           //<button className={s.settings_email_btn}>Cambiar</button>
         </div>
+        </div> */}
         <form className={s.settings_password_container}>
           <button onClick={(e) => handlePassword(e, user)} className={s.settings_btn_save}>Cambiar Contraseña</button>
-
         </form>
         <button onClick={handleDelete} disabled={true} className={s.settings_btn_delete}>Eliminar cuenta</button>
         

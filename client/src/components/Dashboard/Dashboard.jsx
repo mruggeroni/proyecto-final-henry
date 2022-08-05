@@ -9,20 +9,30 @@ import {
 import { useDispatch } from "react-redux";
 import ModalCategoria from "./ModalCategoria";
 import ModalCategoriaElimnar from "./ModalCategoriaModificar";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export default function Dashboard() {
   const dispatch = useDispatch();
+  const { getAccessTokenSilently } = useAuth0();
   const [show, setShow] = useState(false);
   const handleShowCrear = () => setShow(true);
 
   const [showEliminar, setShowEliminar] = useState(false);
   const handleShowEliminar = () => setShowEliminar(true);
-
   useEffect(() => {
-    dispatch(getAllActivities());
-    dispatch(getAllPackage(1000));
-    dispatch(getUsers(1000));
-  }, [dispatch]);
+    // declare the data fetching function
+    const fetchData = async () => {
+      const token = await getAccessTokenSilently();
+      await dispatch(getUsers(token));
+      dispatch(getAllActivities());
+      dispatch(getAllPackage(1000));
+    }
+  
+    // call the function
+    fetchData()
+      // make sure to catch any error
+      .catch(console.error);
+  }, [dispatch])
 
   return (
     <div className={style.dashboard_container}>
@@ -37,9 +47,9 @@ export default function Dashboard() {
         <NavLink to="/dashboard/activities" className={style.links_item}>
           Crear actividad
         </NavLink>
-        <div className={style.links_item} onClick={handleShowCrear}>
+        {/* <div className={style.links_item} onClick={handleShowCrear}>
           Crear categoria
-        </div>
+        </div> */}
         <NavLink to="/dashboard/listPackages" className={style.links_item}>
           Lista paquete
         </NavLink>

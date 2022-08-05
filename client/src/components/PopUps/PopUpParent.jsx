@@ -13,8 +13,9 @@ import { createUser } from "../../redux/actions/index";
 
 
 export default function PopUpsComponent() {
-    // const cart = useSelector((state) => state.cart);
-    const user = useSelector( (state) => state.user )
+    const cart = useSelector((state) => state.cart);
+    const user = useSelector( (state) => state.user );
+    const favorites = useSelector((state) => state.favorites);
     const [showFavoritePopUp, setShowFavoritePopUp] = useState(false);
     const [showUserPopUp, setShowUserPopUp] = useState(false);
     const [showCartPopUp, setShowCartPopUp] = useState(false);
@@ -31,14 +32,24 @@ export default function PopUpsComponent() {
         dispatch(getFavoritesLocalStorage())
     }, [dispatch])
 
+    useEffect(() => {
+        // setShowFavoritePopUp(true);
+        console.log('yeay')
+        console.log(favorites?.length)
+        setShowFavoritePopUp(false);
+        setShowUserPopUp(false);
+        setShowCartPopUp(false);
+    }, [favorites])
+
     const handleFavoritePopUp = () => {
+        document.getElementById("popUpBackground").classList?.add(`${s.is_active}`);
         setShowFavoritePopUp(!showFavoritePopUp);
         setShowUserPopUp(false);
         setShowCartPopUp(false);
-        console.log('fav')
     }
 
     const handleUserPopUp = async () => { 
+        document.getElementById("popUpBackground").classList?.add(`${s.is_active}`);
         await loginWithPopup();
         const token = await getAccessTokenSilently();
         await dispatch(createUser(token));
@@ -47,23 +58,35 @@ export default function PopUpsComponent() {
     }
 
     const handleCartPopUp = () => {
+        document.getElementById("popUpBackground").classList?.add(`${s.is_active}`);
         setShowFavoritePopUp(false);
         setShowUserPopUp(false);
         setShowCartPopUp(!showCartPopUp);
-        console.log('cart')
       }
     
     const handleUserPopUpMenu = () => {
+        document.getElementById("popUpBackground").classList?.add(`${s.is_active}`);
         setShowFavoritePopUp(false);
         setShowUserPopUp(!showUserPopUp);
         setShowCartPopUp(false);
-        console.log('hola')
+    }
+
+    function handleClose() {
+        document.getElementById("popUpBackground")?.classList?.remove(`${s.is_active}`);
+        setShowFavoritePopUp(false);
+        setShowUserPopUp(false);
+        setShowCartPopUp(false);
     }
 
   return (
     <div className={s.popUpContainer}>
         <div onClick={(handleFavoritePopUp)} className={s.eachIcon}>
-            <AiOutlineHeart />
+            <div className={s.favoritesLength}>
+                <div className={s.favIcons}>
+                    <AiOutlineHeart />
+                </div>
+                {favorites?.length > 0 && <p className={s.badgeFav}>{favorites.length}</p>}
+            </div>
         </div>
         { !isAuthenticated ?
             <div onClick={handleUserPopUp} className={s.eachIcon}>
@@ -84,12 +107,18 @@ export default function PopUpsComponent() {
             </div> 
         }
         <div onClick={(handleCartPopUp)} className={s.eachIcon}>
-            <AiOutlineShoppingCart/>
+            <div className={s.favoritesLength}>
+                <div className={s.favIcons}>
+                    <AiOutlineShoppingCart/>
+                </div>  
+                {cart?.length > 0 && <p className={s.badgeFav}>{cart.length}</p>}
+            </div>
         </div>
         <div>
             <FavoritePopUp showProfile={showFavoritePopUp} setShowProfile={setShowFavoritePopUp} />
             <UserPopOut showProfile={showUserPopUp} setShowProfile={setShowUserPopUp} />
             <CartPopUp showProfile={showCartPopUp} setShowProfile={setShowCartPopUp} />
+            <div id="popUpBackground" onClick={() => handleClose()} className={`${s.nav_menu_container}`} ></div>
         </div>
     </div>
   );

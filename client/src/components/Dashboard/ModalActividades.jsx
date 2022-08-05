@@ -12,6 +12,8 @@ import {
   getAllDestinations,
   getCategories,
 } from "../../redux/actions";
+import Swal from 'sweetalert2'
+
 const schema = yup.object().shape({
   name: yup
     .string()
@@ -30,11 +32,12 @@ const schema = yup.object().shape({
     .lessThan(1000, "Menor a U$S 1.000")
     .integer()
     .required("Requerido"),
+  classification: yup.string().required("Required").nullable(),
 });
 
 export default function ModalActividades({ show, setShow, setInput, input }) {
   const dispatch = useDispatch();
-  const { getAccessTokenSilently} = useAuth0();
+  const { getAccessTokenSilently } = useAuth0();
   const handleClose = () => {
     setShow(false);
     // setInputModal({
@@ -44,24 +47,35 @@ export default function ModalActividades({ show, setShow, setInput, input }) {
     //   price: 0,
     // });
   };
-  useEffect(async () => {
-    await dispatch(getCategories());
+  useEffect(() => {
+    dispatch(getCategories());
   }, [dispatch]);
 
   const categorias = useSelector((state) => state.categories);
 
   const handleCrearActividad = async (e) => {
     e.price = parseInt(e.price);
-    const token = await getAccessTokenSilently();
-    const respuesta = await dispatch(crearActividad(e, token));
-    await dispatch(getAllDestinations());
-    await dispatch(getAllActivities());
-    setShow(false);
-    setInput({
-      ...input,
-      activities: [...input.activities, e.name],
-    });
-    alert(respuesta.data.message);
+    try {
+      const token = await getAccessTokenSilently();
+      const respuesta = await dispatch(crearActividad(e, token));
+      await dispatch(getAllDestinations());
+      await dispatch(getAllActivities());
+      setShow(false);
+      setInput({
+        ...input,
+        activities: [...input.activities, e.name],
+      });
+      Swal.fire({
+        icon: 'success',
+        title: respuesta.data.message,
+      })
+    } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops algo fallo...',
+        text: error.message,
+      })
+    }
   };
 
   return (
@@ -79,7 +93,9 @@ export default function ModalActividades({ show, setShow, setInput, input }) {
             }}
             initialValues={{
               name: "",
+              description: "",
               image: "",
+              price: "",
             }}
           >
             {({
