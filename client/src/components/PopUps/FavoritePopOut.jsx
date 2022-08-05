@@ -72,7 +72,7 @@ export default function FavoritesPopOut({ showProfile, setShowProfile }) {
                 <div className={s.sadFace}>
                     <HiOutlineEmojiSad />
                   </div>
-                  <p className={s.vacioPaq}>Tus favoritos se encuentra vacío</p>
+                  <p className={s.vacioPaq}>Tu favoritos se encuentra vacío</p>
               </div>
               }
           </div>

@@ -43,15 +43,12 @@ export default function ListUsers() {
   };
 
   useEffect(() => {
-    // declare the data fetching function
     const fetchData = async () => {
       const token = await getAccessTokenSilently()
       dispatch(getUsers(token))
     }
   
-    // call the function
     fetchData()
-      // make sure to catch any error
       .catch(console.error);
   }, [dispatch])
 
