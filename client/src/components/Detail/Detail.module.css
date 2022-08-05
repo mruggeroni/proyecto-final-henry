@@ -87,6 +87,7 @@
 .description {
   text-align: justify;
 }
+
 /* DETALLE PAQUETE FIN */
 
 .cantidad {
@@ -111,6 +112,7 @@
   background-color: #e4eaea;
   color: black;
 }
+
 .contenedorActividades .actividad:nth-of-type(2n) {
   background-color: #a2a6a5;
 }
@@ -124,6 +126,7 @@
 .actividad div {
   margin-left: 3%;
 }
+
 .nombreActividad {
   display: flex;
   flex-direction: row;
@@ -142,6 +145,7 @@
   font-size: 0.6em;
   transition: 1s;
 }
+
 .actividad:hover .descriptionActividad {
   visibility: visible;
   opacity: 1;
@@ -152,23 +156,25 @@
   max-height: 90%;
   max-width: 35%;
 }
+
 .descriptionActividad div {
   text-align: justify;
   margin-right: 4%;
 }
+
 /* ESTILOS PARA EL CHECKBOX */
 .styledcheckbox {
   position: absolute;
   opacity: 0;
 }
 
-.styledcheckbox + label {
+.styledcheckbox+label {
   position: relative;
   cursor: pointer;
   padding: 0;
 }
 
-.styledcheckbox + label:after {
+.styledcheckbox+label:after {
   content: "";
   margin-right: 10px;
   display: inline-block;
@@ -177,19 +183,19 @@
   background: white;
 }
 
-.styledcheckbox:hover + label:after {
+.styledcheckbox:hover+label:after {
   background: #faebe7;
 }
 
-.styledcheckbox:focus + label:after {
+.styledcheckbox:focus+label:after {
   box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.12);
 }
 
-.styledcheckbox:checked + label:after {
+.styledcheckbox:checked+label:after {
   background: green;
 }
 
-.styledcheckbox:checked + label:before {
+.styledcheckbox:checked+label:before {
   content: "";
   position: absolute;
   right: 23px;
@@ -201,6 +207,7 @@
     4px -6px 0 white, 4px -8px 0 white;
   transform: rotate(45deg);
 }
+
 /* ESTILOS PARA EL CHECKBOX FIN */
 
 .total {
@@ -237,56 +244,28 @@
   padding-top: 1%;
 }
 
-/* SPINNER */
-.contenedorSpinner {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  min-width: 100%;
-  min-height: 100vh;
-}
-
-.spinner {
-  border: 4px solid rgba(0, 0, 0, 0.9);
-  border-left-color: transparent;
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-/* SPINNER FIN*/
-
 @media (max-width: 1000px) {
   .contenedorDetalles h1 {
-    color: white;
     font-size: 2.5em;
     font-weight: bold;
   }
+
   .contenedorDetalles h3 {
-    color: white;
     font-size: 1em;
     align-items: flex-start;
     padding-top: 1%;
   }
+
   .contenedorActividades .actividad {
     min-height: 50px;
-    color: white;
     font-size: 1.4em;
     padding: 1%;
   }
-  .styledcheckbox:checked + label:before {
+
+  .styledcheckbox:checked+label:before {
     top: 14px;
   }
+
   .body {
     display: flex;
     justify-content: space-around;
@@ -295,26 +274,46 @@
 
 @media (max-width: 760px) {
   .contenedorDetalles h1 {
-    color: white;
     font-size: 2em;
     font-weight: bold;
   }
+
   .contenedorDetalles h3 {
-    color: white;
     font-size: 0.75em;
     align-items: flex-start;
     padding-top: 1%;
   }
+
   .contenedorActividades .actividad {
     min-height: 50px;
-    color: white;
     font-size: 1.2em;
     padding: 1%;
   }
-  .styledcheckbox:checked + label:before {
+
+  .styledcheckbox:checked+label:before {
     top: 10px;
   }
+
   .descriptionActividad {
     transition: 0s;
   }
+}
+
+
+.card_text {
+  font-size: 1rem;
+  letter-spacing: .1rem;
+  line-height: 1.2;
+  margin: 0.5rem;
+}
+
+.card_rating {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.star_rating {
+  color: rgb(255, 217, 0);
 }

@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import { BsFillEyeFill, BsFillEyeSlashFill } from "react-icons/bs";
+import { FaPlane } from "react-icons/fa";
 import s from './CheckoutPassengers.module.css';
 import PassengerInfo from './PassengerInfo.jsx'
 
-export default function CheckoutPassengers({ showProfile, setShowProfile, cart, FaPlane }) {
+export default function CheckoutPassengers({ showCheckoutPassengers, handleCheckoutPayment, cart }) {
     // cart.forEach()
   
     return (
-    !showProfile ? null :
+    !showCheckoutPassengers ? null :
     <div className={s.passengerContainer}>
         <div className={s.containerDesign}>
             <div className={s.headerPassenger}>
@@ -22,6 +22,7 @@ export default function CheckoutPassengers({ showProfile, setShowProfile, cart, 
             <div>
                 <PassengerInfo cart={cart}/>
             </div>   
+            <button onClick={handleCheckoutPayment} className={s.profile_btn}>Siguiente</button>
         </div> 
     </div>   
   );

@@ -2,6 +2,7 @@ import { DataTypes } from 'sequelize';
 import { sequelize } from '../db.js';
 import { User } from './Users.js'
 
+
 export const Order = sequelize.define('order', {
 	date: {
 		type: DataTypes.DATEONLY,
@@ -18,6 +19,8 @@ export const Order = sequelize.define('order', {
 	},
 }, {
 	timestamps: false,
+	paranoid: true,
+	deletedAt: 'destroyTime',
 });
 
 User.hasMany(Order);

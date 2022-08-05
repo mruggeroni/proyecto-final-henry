@@ -16,8 +16,8 @@ ReactDOM.render(
     <Auth0Provider
       domain={DOMAIN}
       clientId={CLIENT_ID}
-      // redirectUri={window.location.origin}
-      redirectUri={"http://localhost:3000"}
+      redirectUri={window.location.origin}
+      // redirectUri={"http://localhost:3000"}
       //audiencie="identificador unico" //deberia de ser privado -> lo usamos en las rutas tmb
       audience="endpointPF"
       scope="openid profile email"

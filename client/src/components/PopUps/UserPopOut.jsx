@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BsPersonPlusFill } from "react-icons/bs";
 import style from "./User.module.css";
 import { useAuth0 } from "@auth0/auth0-react";
 import UserEdit from "../UserEdit/UserEdit";
 import { NavLink } from "react-router-dom";
-import { createUser } from "../../redux/actions/index";
+import { createUser, getAllFavorites, postFavorites, getAllCart, postCartPackage } from "../../redux/actions/index";
 import { useDispatch, useSelector } from "react-redux";
 import s from "./PopUps.module.css";
 
@@ -17,25 +17,26 @@ export default function UserPopOut({ showProfile, setShowProfile }) {
     getAccessTokenSilently,
   } = useAuth0();
   const user = useSelector( (state) => state.user )
+  const favorites = useSelector( (state) => state.favorites)
+  const cart = useSelector( (state) => state.cart );
   const [showUser, setShowUser] = useState(false);
 
-  function handleClick(e) {
-    e.preventDefault();
-    setShowUser(!showUser);
-    // if (e.target.id === "menuProfile") {
-    // document
-    // .getElementById("profile_container")
-    // .classList.toggle(`${style.open_profile}`);
-  }
-
-  // const handleLogin = async () => {
-  //   await loginWithPopup();
-  //   const token = await getAccessTokenSilently();
-  //   await dispatch(createUser(token));
-  // };
+  useEffect(async () => {
+    const token = await getAccessTokenSilently();
+    // dispatch(getAllFavorites(token));
+    console.log(isAuthenticated);
+    if(isAuthenticated){
+      favorites.forEach((f) => dispatch(postFavorites(f.id, token)))
+      dispatch(getAllFavorites(token));
+      localStorage.removeItem('favorites');
+      cart.forEach((c) => dispatch(postCartPackage(user.id)))
+      dispatch(getAllCart(user.id));
+      localStorage.removeItem('cart');
+    }
+}, [dispatch])
 
   function handleClickUser(e){
-    setShowProfile(false);
+    setShowProfile(!showProfile);
   }
 
   return (
@@ -57,10 +58,12 @@ export default function UserPopOut({ showProfile, setShowProfile }) {
           <div className={s.user_btn}>
             <UserEdit />
           </div>
-          <NavLink to="/dashboard" className={s.user_btn} onClick={handleClickUser}>
-            Dashboard
-          </NavLink>
-          <NavLink to="./" className={s.user_btn} onClick={handleClickUser}>
+          {
+            user.is_admin && <NavLink to="/dashboard" className={s.user_btn} onClick={ () => handleClickUser() }>
+              Dashboard
+            </NavLink>
+          }
+          <NavLink to="./" className={s.user_btn} onClick={ () => handleClickUser() }>
             Servicio al Cliente
           </NavLink>
             {/* <p></p> */}

@@ -9,8 +9,11 @@ import Card from "../Favorites/FavoriteCard.jsx";
 import { HiOutlineEmojiSad } from "react-icons/hi";
 
 export default function CartPopOut({ showProfile, setShowProfile }) {
-  const cart = useSelector((state) => state.cart);
+  // const cart = useSelector((state) => state.cart);
+  const cart = JSON.parse(localStorage.getItem("cart"));
   const [isVisible, setIsVisible] = useState(false);
+  let sum = 0; 
+  cart?.forEach((p) => p.total === 0 ? sum +=(p.paquete.price*p.cantidad) : sum += p.total);
 
   // function handleCartClick(e) {
   //   e.preventDefault();
@@ -38,10 +41,10 @@ export default function CartPopOut({ showProfile, setShowProfile }) {
       <div id="cart_container"
             className={s.open_favorite}>
         <div>
-          <h3 className={s.favTitle}>Mi Carrito ({cart && cart.length})</h3>
+          <h3 className={s.favTitle}>Mi Carrito ({cart ? cart.length : '0'})</h3>
           <hr />
           <div className={style.user_profile_link}>
-            {cart.length ?
+            {cart?.length ?
               cart.map((p) => {
                 return (
                   <div key={p.paquete.id}>
@@ -66,6 +69,12 @@ export default function CartPopOut({ showProfile, setShowProfile }) {
               }
           </div>
           <hr />
+          {cart?.length > 0 && 
+            <div className={s.totalCartPrice}>
+              <h3> Total:</h3>
+              <h3>${sum}</h3>
+            </div>
+          }
           <Link to="/cart">
             <button className={s.allFavorite_btn} onClick={handleClickCart}>Ir al Carrito</button>
           </Link>

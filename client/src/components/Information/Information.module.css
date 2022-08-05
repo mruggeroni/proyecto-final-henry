@@ -1,0 +1,30 @@
+.information_container {
+    width: 100%;
+    margin-top: 100px;
+}
+
+.information_content {
+    width: 80%;
+    margin: 110px auto 50px;
+    margin-top: 110px;
+}
+
+.information_title {
+    color: #396fa5;
+    font-size: 24;
+    margin: 20px 0;
+}
+
+.information_caption {
+    color: #454548;
+    font-size: 18px;
+    margin: 20px 0;
+}
+
+.information_text {
+    font-size: 14px;
+    color: #5a5a5a;
+}
+
+/* -------------- */
+

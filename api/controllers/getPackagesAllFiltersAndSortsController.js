@@ -2,6 +2,7 @@ import { Package } from '../models/Packages.js';
 import { Destination } from '../models/Destinations.js';
 import { Activity } from '../models/Activities.js';
 // import { Classification } from '../models/Classification.js';
+import { User } from '../models/Users.js';
 import sequelize, { Op } from 'sequelize';
 
 
@@ -33,6 +34,13 @@ export const getPackages = async (req, res) => {
                         attributes: [],
                     },
                 },
+                {
+                    model: User,
+                    attributes: ['id'],
+                    through: {
+                        attributes: ['rating']
+                    }
+                }
             ],
             // ['where']: sequelize.where(sequelize.col('destinations', sequelize.col('name')), destination),
             where: {
@@ -147,9 +155,20 @@ export const getPackages = async (req, res) => {
                         order :
                         true;
                 }) : 
-            packagesResult;
-
-		res.status(200).json(packagesResult);
+                packagesResult;
+        const copyPackagesResult = JSON.parse(JSON.stringify(packagesResult))
+        copyPackagesResult.forEach(e => {
+            let pRating = 0;
+            e.users.length &&  e.users.forEach(u => {
+                pRating += u.ratingAndFavourite.rating
+            })
+            pRating? e.rating = Math.ceil(pRating / e.users.length) : e.rating = pRating
+            delete e.users
+        })
+        // copyPackagesResult.forEach(e => {
+        //     delete e.users
+        // })
+		res.status(200).json(copyPackagesResult);
 	} catch (error) {
 		return res.status(404).json({ message: error.message });
 	};

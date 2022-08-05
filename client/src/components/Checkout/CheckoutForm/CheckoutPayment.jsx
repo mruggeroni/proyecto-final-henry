@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { BsFillEyeFill, BsFillEyeSlashFill } from "react-icons/bs";
 import s from '../Login.module.css';
 
-export default function CheckoutPayment({ showProfile, setShowProfile }) {
+export default function CheckoutPayment({ showCheckoutPayment, setShowCheckoutPayment,  handleCheckoutConfirmation }) {
 
     let [ showPassword, setShowPassword ] = useState(false);
   const handlePassword = (e) => {
@@ -11,10 +11,11 @@ export default function CheckoutPayment({ showProfile, setShowProfile }) {
   }
 
   return (
-    !showProfile ? null
+    !showCheckoutPayment ? null
     :   
     <div className={s.profile_container}>
-        <div className={s.profile_input_container}>
+      <button onClick={handleCheckoutConfirmation} >Siguiente</button>
+        {/* <div className={s.profile_input_container}>
             <label className={s.profile_label}>Email</label>
             <input type='text' className={s.profile_input} />
         </div>
@@ -34,7 +35,7 @@ export default function CheckoutPayment({ showProfile, setShowProfile }) {
         </div>
         <div>
         <button type="submit" className={s.profile_btn_save}>Iniciar Sesión</button>
-        </div>
+        </div> */}
     </div>   
   );
 }

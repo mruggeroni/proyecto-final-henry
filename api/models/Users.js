@@ -11,6 +11,10 @@ export const User = sequelize.define('user', {
 		type: DataTypes.STRING,
 		allowNull: false,
 	},
+	password: {
+		type: DataTypes.STRING,
+		allowNull: true,
+	},
 	nickname: {
 		type: DataTypes.STRING,
 		allowNull: true,
@@ -53,8 +57,8 @@ export const User = sequelize.define('user', {
 	},
 }, {
 	timestamps: true,
-	createdAt: "created_date",
-	updatedAt: "update_date",
-	paranoid:true,
+	createdAt: 'created_date',
+	updatedAt: 'update_date',
+	paranoid: true,
 	deletedAt: 'destroyTime',
 });

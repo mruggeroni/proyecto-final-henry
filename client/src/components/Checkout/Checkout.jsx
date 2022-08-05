@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
-import { getAllPackage, getCartLocalStorage } from "../../redux/actions";
+import { getAllPackage, getCartLocalStorage, getAllCart } from "../../redux/actions";
 import CardCheckout from './CardCheckout';
 import Login from './Login.jsx';
 import CreateAccount from './CrateAccount.jsx'
@@ -17,6 +17,8 @@ export default function CheckoutCart(){
     const [showLogin, setShowLogin] = useState(true);
     const [showCreateAccount, setShowCreateAccount] = useState(false);
     const dispatch = useDispatch();
+    let sum = 0; 
+    cart.forEach((p) => p.total === 0 ? sum +=(p.paquete.price*p.cantidad) : sum += p.total);
 
     const {
       isAuthenticated,
@@ -26,10 +28,13 @@ export default function CheckoutCart(){
     } = useAuth0();
 
     useEffect(() => {
-      console.log(cart);
-      console.log(cart[0]);
-      dispatch(getAllPackage(1));
-      dispatch(getCartLocalStorage());
+      dispatch(getAllPackage());
+     
+      if(!isAuthenticated){
+        dispatch(getCartLocalStorage());
+      }else{
+        dispatch(getAllCart());
+      }
     },[dispatch])
 
     const handleShowLogin = () => {
@@ -58,29 +63,40 @@ export default function CheckoutCart(){
                     <CreateAccount showSettings={showCreateAccount} setShowSettings={setShowCreateAccount} />
                 </div>
             </div>
-            : cart.length ?
-            <div className={s.carrouselTravel}>
-               <Carousel
-                main_image={cart.length && cart[0].paquete.main_image}
-                images={cart.length && cart[0].paquete.images}
-                componente={'checkout'}
-              />
-              </div>
-              :
+            : <div className={s.containerCarrousel}>  
+            { cart?.length ? cart.map((p) => {
+              return (
               <div className={s.carrouselTravel}>
-              <Carousel
-                main_image={allPackage.length && allPackage[0].main_image}
-                images={allPackage.length && allPackage[0].images}
+               <Carousel
+                main_image={p.paquete.main_image}
+                images={p.paquete.images}
                 componente={'checkout'}
               />
               </div>
+              );
+            })
+            : (<div className={s.carrouselTravel}>
+              <Carousel
+                main_image={allPackage?.length && allPackage[0].main_image}
+                images={allPackage?.length && allPackage[0].images}
+                componente={'checkout'}
+                />
+              </div>)
             }
+            </div>
+          }
 
             <div className={s.left}>
-                {/* <h1 className={s.resumenCarrito}>Resumen del Carrito</h1> */}
+              <div className={s.headerResumenCheckout}>
+                <h3 className={s.resumenCarrito}>Resumen del Carrito</h3>
+                {cart?.length > 0 && 
+                <div className={s.totalCartPrice}>
+                  <h4> Total: ${sum !== 0 ? sum : ' '}</h4>
+                </div>}
+              </div>
+              <hr />
                 {cart?.length ? cart.map((p) => {
                 return (
-                <div>
                   <div className={s.cardCheckoutContainer} key={p.paquete.id}>
                     <Link to={"/detail/" + p.paquete.id} key={p.paquete.id}>
                       <CardCheckout
@@ -95,16 +111,9 @@ export default function CheckoutCart(){
                       />
                     </Link>
                   </div>
-                  <div className={s.buttonContainer}>
-                    <Link to={'/checkout'}>
-                      <button className={s.comprarBtn}>Comprar</button>
-                    </Link>
-                  </div>
-                </div>
                 );
               }):
               (<div className={s.noPaqCheckout}>
-                <h1 className={s.resumenCarrito}>Resumen del Carrito</h1>
                   <div className={s.noPaq}>
                       <div className={s.sadFace}>
                         <HiOutlineEmojiSad />
@@ -113,7 +122,12 @@ export default function CheckoutCart(){
                   </div>
                 </div>
                 )}
-                {/* </div> */}
+                {cart?.length > 0 &&
+                  <div className={s.buttonContainer}>
+                  <Link to={'/checkout'}>
+                    <button className={s.comprarBtn}>Comprar</button>
+                  </Link>
+                </div>}
             </div>
        </div>
     )

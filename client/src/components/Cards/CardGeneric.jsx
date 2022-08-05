@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
+  cleanPackageById,
   getAllActivities,
   getPackageById,
   getRelationated,
@@ -20,10 +21,13 @@ export default function CardGeneric({ feature }) {
   }
 
   const handleClick = (e) => {
-    e.preventDefault();
-    dispatch(getPackageById(feature.id));
-    dispatch(getRelationated(feature.id));
-    dispatch(getAllActivities());
+    // e.preventDefault();
+    dispatch(cleanPackageById());
+    setTimeout(() => {
+      dispatch(getPackageById(feature.id));
+      dispatch(getRelationated(feature.id));
+      dispatch(getAllActivities());  
+    }, 2);
     navigate(`/detail/${feature.id}`);
     scrollToTop();
   };

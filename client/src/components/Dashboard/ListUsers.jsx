@@ -2,15 +2,27 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteUser, getUsers } from "../../redux/actions";
 import Dashboard from "./Dashboard";
-import s from "./Table.module.css";
+import { MdDelete } from 'react-icons/md';
 import { useAuth0 } from "@auth0/auth0-react";
+import Swal from 'sweetalert2'
+import s from "./Table.module.css";
 
 export default function ListUsers() {
   const dispatch = useDispatch();
   const users = useSelector((state) => state.users);
   const { getAccessTokenSilently} = useAuth0();
+ 
+  useEffect(async() => {
+     const token = await getAccessTokenSilently()
+      if(!users.length) {
+    
+          dispatch(getUsers(token))
+      }
+  }, [dispatch]);
+
 
   const handleDelete = async (e, id, nombre) => {
+
     // console.log(e);
     if (prompt(`Para borrar el paquete escribe '${nombre}'`) === nombre) {
       const token = await getAccessTokenSilently()
@@ -20,8 +32,44 @@ export default function ListUsers() {
     } else {
       alert("El paquete no se borro");
     }
-  };
+    Swal.fire({
+      title: `Esta seguro que desea eliminar a ${nombre}?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Eliminar'
+    }).then( async (result) => {
+      if (result.isConfirmed) {
+        const token = await getAccessTokenSilently()
 
+        if(!users.length) {
+            
+            dispatch(getUsers(token))
+        }
+    } [dispatch]})};
+    
+   const handleDeleteUser = async (id) =>{
+    const token = await getAccessTokenSilently()
+        dispatch(deleteUser(id, token))
+        dispatch(getUsers(token));
+        Swal.fire(
+          `Usuario: ${id} | ${nombre}.`,
+          'Eliminado exitosamente!',
+          'success'
+        )
+      }
+    
+    // if (prompt(`Para borrar el paquete escribe '${nombre}'`) === nombre) {
+    //   const token = await getAccessTokenSilently()
+    //   dispatch(deleteUser(id, token))
+    //   dispatch(getUsers(token));
+    //   alert("El paquete se borro");
+    // } else {
+    //   alert("El paquete no se borro");
+    // }
+
+  
   useEffect(() => {
     // declare the data fetching function
     const fetchData = async () => {
@@ -79,7 +127,7 @@ export default function ListUsers() {
                           )}
                         </td>
                         <td>
-                          <button onClick={(e) => handleDelete(e, u.id, u.first_name) } className={s.fl_table_btn}>Delete</button>
+                          <button onClick={(e) => handleDelete(e, u.id, u.first_name) } className={s.fl_table_btn}><MdDelete /></button>
                         </td>
                       </tr>
                     );
