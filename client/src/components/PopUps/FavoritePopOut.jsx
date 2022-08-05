@@ -7,7 +7,7 @@ import style from "./User.module.css";
 import s from "./PopUps.module.css";
 import Card from "../Favorites/FavoriteCard.jsx";
 import { HiOutlineEmojiSad } from "react-icons/hi";
-import { getPackageById } from "../../redux/actions";
+import { getAllFavorites, getFavoritesLocalStorage, getPackageById } from "../../redux/actions";
 import { useAuth0 } from "@auth0/auth0-react";
 
 export default function FavoritesPopOut({ showProfile, setShowProfile }) {
@@ -16,11 +16,21 @@ export default function FavoritesPopOut({ showProfile, setShowProfile }) {
   const { isAuthenticated, getAccessTokenSilently, } = useAuth0();
   let favorites = [];
   let stateFavorites = useSelector((state) => state.favorites);
+  let stateFavoritesLocalStorage = useSelector((state) => state.favoritesLocalStorage);
   if(!isAuthenticated) {
-    favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+    favorites = [...stateFavoritesLocalStorage];
   } else {
     favorites = [...stateFavorites];
   }
+
+  useEffect( async () => {
+    if(!isAuthenticated) {
+      dispatch(getFavoritesLocalStorage());
+    } else{
+      const token = await getAccessTokenSilently();
+      dispatch(getAllFavorites(token))
+    }
+  }, [dispatch])
   
   
   function handleFavClick(e) {

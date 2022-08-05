@@ -52,6 +52,7 @@ const initialState = {
   regions: [],
   types: [],
   seasons: [],
+  favoritesLocalStorage: [],
   favorites: [],
   orders: [],
   featured: [],
@@ -273,7 +274,7 @@ const rootReducer = (state = initialState, action) => {
       let localStorageFav = JSON.parse(localStorage.getItem("favorites")) || [];
       return {
         ...state,
-        // favorites: localStorageFav,
+        favoritesLocalStorage: localStorageFav,
       };
 
     case GET_FAVORITES:
