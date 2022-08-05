@@ -180,7 +180,7 @@ export default function FilteredSearch() {
               }
             >
               <label>
-                <select id="searchDestinations" className={s.create_input}>
+                <select  onChange={(e) => handleChange(e)} id="searchDestinations" className={s.create_input}>
                   <option
                     value=""
                     selected={estadoDestino === "" ? true : false}

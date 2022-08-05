@@ -11,7 +11,8 @@ import {
   getDestinationsWithPackages,
   createUser,
   getAllFavorites,
-  getFavoritesLocalStorage
+  getFavoritesLocalStorage,
+  getFeatured
 } from "../../redux/actions/index";
 // import BacktoTop from "../BacktoTop/BacktoTop";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -32,6 +33,7 @@ export default function Home() {
     (state) => state.destinationsWithPackages
   );
   const onSale = useSelector((state) => state.onsale);
+  const featured = useSelector((state) => state.featured);
   const sortDestinations = allDestinations.sort();
 
   useEffect(async () => {
@@ -41,6 +43,7 @@ export default function Home() {
     await dispatch(getDestinationsWithPackages());
     await dispatch(getOnSale());
     await dispatch(getAllActivities());
+    await dispatch(getFeatured())
     // if (isAuthenticated) {
     //   const token = await dispatch(createUser(token));
     //   console.log(token);
@@ -70,7 +73,7 @@ export default function Home() {
           <Hero destinations={sortDestinations} />
           <div className={style.feature_container}>
             <h2 className={style.h2}>Destacados</h2>
-            <CardGenericContainer listCards={onSale} />
+            <CardGenericContainer listCards={featured} />
           </div>
           <div className={style.promotions_container}>
             <h2 className={style.h2}>Promociones</h2>
