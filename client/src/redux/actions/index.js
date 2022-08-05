@@ -25,7 +25,57 @@ export const ORDENAR = "ORDENAR";
 export const UPDATE_USER = 'UPDATE_USER';
 export const DELETE_USER = 'DELETE_USER';
 export const GET_USER_BY_ID = 'GET_USER_BY_ID';
+export const GET_ORDERS = 'GET_ORDERS';
+export const PATCH_ORDER = 'PATCH_ORDER';
+export const GET_CART = 'GET_CART';
+export const POST_CART = 'POST_CART';
+export const UPDATE_CART = 'UPDATE_CART';
+export const DELETE_CART = 'DELETE_CART';
+export const PATCH_PACKAGE = 'PATCH_PACKAGE';
 export const CLEAN_PACKAGE_BY_ID = 'CLEAN_PACKAGE_BY_ID';
+export const CLEAN_ALL_PACKAGE = 'CLEAN_ALL_PACKAGE';
+
+
+export const patchOrders = (id) => {
+  try {
+    return async function (dispatch) {
+      let res = await axios.get('/order' + id);
+      return dispatch({ type: GET_ORDERS, payload: res.data });
+    }
+  } catch(error) {
+    console.log(error);
+  }
+}
+
+export const getOrders = () => {
+  try {
+    return async function (dispatch) {
+      let res = await axios.get('/orders');
+      return dispatch({ type: GET_ORDERS, payload: res.data.results });
+    }
+  } catch(error) {
+    console.log(error);
+  }
+}
+
+export const patchPackage = (id, token, value) => {
+  try {
+    return async function (dispatch) {
+      let res = await axios.patch('/packages/' + id, value, {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
+      return dispatch({ type: PATCH_PACKAGE, payload: res.data })
+    }  
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export const cleanAllPackage = () => {
+  return { type: CLEAN_PACKAGE_BY_ID }
+}
 
 export const cleanPackageById = () => {
   return { type: CLEAN_PACKAGE_BY_ID }
@@ -137,16 +187,35 @@ export const createUser = (payload) => {
     }
   };
 };
-export const ModifyUser = (payload, token) => {
+export const ModifyUser = (email,payload, token) => {
   return async function (dispatch){
     try {
-      const res = await axios.put('/user?email='+ payload, payload,
+      const res = await axios.put('/user?email='+ email, payload,
       {
         headers: {
           authorization: `Bearer ${token}`,
         }})
     } catch (error) {
       
+    }
+  }
+}
+export const Payment = (payload, token) => {
+  return async function (dispatch){
+    try {
+      console.log(payload)
+      const res = await axios.post('/payment',
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      body: payload})
+        if (res){
+          console.log(res.data.url) 
+          window.location = res.data.url
+        }
+    } catch (error) {
+      console.log(error)
     }
   }
 }
@@ -391,7 +460,6 @@ export const getAllFavorites = (token) => {
 };
 
 export const postFavorites = (id, token) => {
-  console.log(id, token)
   return async function (dispatch) {
     try {
       let res = await axios.post('/favourites/' + id, "", {
@@ -399,6 +467,7 @@ export const postFavorites = (id, token) => {
           authorization: `Bearer ${token}`,
         },
       });
+      dispatch(getAllFavorites(token))
       return res
     } catch (error) {
       console.log(error.message);
@@ -407,13 +476,18 @@ export const postFavorites = (id, token) => {
 }
 
 export const deleteFavorites = (id, token) => {
-  return async function () {
-    let res = await axios.delete("/favourites/" + id, {
-      headers: {
-        authorization: `Bearer ${token}`,
-      },
-    });
-    return res
+  return async function (dispatch) {
+    try {
+      let res = await axios.delete("/favourites/" + id, {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
+      dispatch(getAllFavorites(token))
+      return res
+    } catch (error) {
+      console.log(error)
+    }
   };
 };
 
@@ -424,14 +498,36 @@ export function getCartLocalStorage(payload, id) {
   };
 }
 
-export function getAllCart(){
+export function getAllCart(id){
   return async function(dispatch){
-    let res = await axios.get("/cart/" + id, {
-      headers: {
-        authorization: `Bearer ${token}`,
-      },
-    });
+    let res = await axios.get("/cart/" + id);
     return dispatch({ type: GET_CART, payload: res.data });
+  };
+}
+
+export function postCartPackage(id, value) {
+  try {
+    return async function(dispatch) {
+      let res = await axios.post('/cart/' + id, value);
+      console.log(res.data)
+      return dispatch({ type: POST_CART, payload: res.data })
+    }
+  
+  } catch (error) {
+    console.log(error);
+  }
+
+}
+
+export function deleteCartPackage(id){
+  return async function (dispatch) {
+    try {
+      let res = await axios.delete("/cart/" + id);
+      dispatch(getAllCart(id))
+      return res
+    } catch (error) {
+      console.log(error)
+    }
   };
 }
 

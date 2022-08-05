@@ -2,14 +2,21 @@ import React, { useEffect } from "react";
 import BotonFav from "../../Detail/BotonFav";
 import { useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllPackage, getFavoritesLocalStorage } from "../../../redux/actions/index";
+import { getAllPackage, getFavoritesLocalStorage, postFavorites, deleteFavorites, getAllFavorites } from "../../../redux/actions/index";
 import s from "./Cards.module.css";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export default function Card({ name, image, description, price, id }) {
   const [checked, setChecked] = useState(false);
   const favPackage = { name, image, description, price, id };
   const dispatch = useDispatch();
   const favorites = useSelector((state) => state.favorites);
+  const {
+    isAuthenticated,
+    loginWithPopup,
+    logout,
+    getAccessTokenSilently,
+  } = useAuth0();
 
   useEffect(() => {
     favorites?.forEach((f) => f.id === id && setChecked(true));
@@ -22,29 +29,66 @@ export default function Card({ name, image, description, price, id }) {
     return match;
   }
 
-  function handleFavorite(e) {
+  async function handleFavorite(e) {
     e.preventDefault();
     if(checkPackageInCart(id)) { return alert('ya esta en el carrito') }
     setChecked(!checked);
 
-    if(!checked){
-      if(!localStorage.getItem('favorites')) {
-        let favorites = [];
-        favorites.push(favPackage);
-        localStorage.setItem('favorites', JSON.stringify(favorites));
-      } else {
-        let favorites = JSON.parse(localStorage.getItem('favorites'));
-        if(favorites?.filter((f) => f.id !== id)){
-          favorites.unshift(favPackage);
+    if(!isAuthenticated){
+      if(!checked){
+        if(!localStorage.getItem('favorites')) {
+          let favorites = [];
+          favorites.push(favPackage);
           localStorage.setItem('favorites', JSON.stringify(favorites));
+        } else {
+          let favorites = JSON.parse(localStorage.getItem('favorites'));
+          if(favorites?.filter((f) => f.id !== id)){
+            favorites.unshift(favPackage);
+            localStorage.setItem('favorites', JSON.stringify(favorites));
+          }
+        }
+      }else{
+        let favorites = JSON.parse(localStorage.getItem('favorites'));
+        let remFav = favorites.filter((f) => {return f.id !== id});
+        localStorage.setItem('favorites', JSON.stringify(remFav));
+      }
+      dispatch(getFavoritesLocalStorage());
+    } else{
+      const token = await getAccessTokenSilently();
+      if(!checked){
+        try{
+          dispatch(postFavorites(id, token));
+        } catch(e){
+          console.log(e.message);
+        }
+      } else{
+        try{
+          dispatch(deleteFavorites(id, token));
+        }catch (e) {
+          console.log(e.message);
         }
       }
-    }else{
-      let favorites = JSON.parse(localStorage.getItem('favorites'));
-      let remFav = favorites.filter((f) => {return f.id !== id});
-      localStorage.setItem('favorites', JSON.stringify(remFav));
+      dispatch(getAllFavorites(token));
     }
-    dispatch(getFavoritesLocalStorage());
+
+    // if(!checked){
+    //   if(!localStorage.getItem('favorites')) {
+    //     let favorites = [];
+    //     favorites.push(favPackage);
+    //     localStorage.setItem('favorites', JSON.stringify(favorites));
+    //   } else {
+    //     let favorites = JSON.parse(localStorage.getItem('favorites'));
+    //     if(favorites?.filter((f) => f.id !== id)){
+    //       favorites.unshift(favPackage);
+    //       localStorage.setItem('favorites', JSON.stringify(favorites));
+    //     }
+    //   }
+    // }else{
+    //   let favorites = JSON.parse(localStorage.getItem('favorites'));
+    //   let remFav = favorites.filter((f) => {return f.id !== id});
+    //   localStorage.setItem('favorites', JSON.stringify(remFav));
+    // }
+    // dispatch(getFavoritesLocalStorage());
   }
 
   return (

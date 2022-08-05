@@ -11,8 +11,27 @@ export default function ListUsers() {
   const dispatch = useDispatch();
   const users = useSelector((state) => state.users);
   const { getAccessTokenSilently} = useAuth0();
+ 
+  useEffect(async() => {
+     const token = await getAccessTokenSilently()
+      if(!users.length) {
+    
+          dispatch(getUsers(token))
+      }
+  }, [dispatch]);
+
 
   const handleDelete = async (e, id, nombre) => {
+
+    // console.log(e);
+    if (prompt(`Para borrar el paquete escribe '${nombre}'`) === nombre) {
+      const token = await getAccessTokenSilently()
+      dispatch(deleteUser(id, token))
+      dispatch(getUsers(token));
+      alert("El paquete se borro");
+    } else {
+      alert("El paquete no se borro");
+    }
     Swal.fire({
       title: `Esta seguro que desea eliminar a ${nombre}?`,
       icon: 'warning',
@@ -23,19 +42,15 @@ export default function ListUsers() {
     }).then( async (result) => {
       if (result.isConfirmed) {
         const token = await getAccessTokenSilently()
-<<<<<<< HEAD
+
         if(!users.length) {
             
             dispatch(getUsers(token))
         }
-    }, [dispatch]);
+    } [dispatch]})};
     
-   const handleDelete = async (id) =>{
+   const handleDeleteUser = async (id) =>{
     const token = await getAccessTokenSilently()
-    dispatch(borrarUsuario(id, token))
-    dispatch(getUsers(token))
-   }
-=======
         dispatch(deleteUser(id, token))
         dispatch(getUsers(token));
         Swal.fire(
@@ -44,7 +59,7 @@ export default function ListUsers() {
           'success'
         )
       }
-    })
+    
     // if (prompt(`Para borrar el paquete escribe '${nombre}'`) === nombre) {
     //   const token = await getAccessTokenSilently()
     //   dispatch(deleteUser(id, token))
@@ -53,8 +68,8 @@ export default function ListUsers() {
     // } else {
     //   alert("El paquete no se borro");
     // }
-  };
 
+  
   useEffect(() => {
     // declare the data fetching function
     const fetchData = async () => {
@@ -67,7 +82,6 @@ export default function ListUsers() {
       // make sure to catch any error
       .catch(console.error);
   }, [dispatch])
->>>>>>> c5b3c1a7eb1de123eae93d5f4ee5fbc7ded1a8da
 
   return (
     <div>

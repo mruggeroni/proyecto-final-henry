@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
-import { getAllPackage, getCartLocalStorage } from "../../redux/actions";
+import { getAllPackage, getCartLocalStorage, getAllCart } from "../../redux/actions";
 import CardCheckout from './CardCheckout';
 import Login from './Login.jsx';
 import CreateAccount from './CrateAccount.jsx'
@@ -29,7 +29,12 @@ export default function CheckoutCart(){
 
     useEffect(() => {
       dispatch(getAllPackage());
-      dispatch(getCartLocalStorage());
+     
+      if(!isAuthenticated){
+        dispatch(getCartLocalStorage());
+      }else{
+        dispatch(getAllCart());
+      }
     },[dispatch])
 
     const handleShowLogin = () => {
@@ -117,11 +122,12 @@ export default function CheckoutCart(){
                   </div>
                 </div>
                 )}
-                <div className={s.buttonContainer}>
+                {cart?.length > 0 &&
+                  <div className={s.buttonContainer}>
                   <Link to={'/checkout'}>
                     <button className={s.comprarBtn}>Comprar</button>
                   </Link>
-                </div>
+                </div>}
             </div>
        </div>
     )

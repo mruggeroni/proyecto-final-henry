@@ -10,6 +10,8 @@ import {
   getAllPackage,
   getDestinationsWithPackages,
   createUser,
+  getAllFavorites,
+  getFavoritesLocalStorage
 } from "../../redux/actions/index";
 // import BacktoTop from "../BacktoTop/BacktoTop";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -43,7 +45,18 @@ export default function Home() {
     //   const token = await dispatch(createUser(token));
     //   console.log(token);
     // }
+    if(!isAuthenticated) {
+      // dispatch(getFavoritesLocalStorage());
+    } else{
+      const token = await getAccessTokenSilently();
+      dispatch(getAllFavorites(token))
+    }
     setLoading(false);
+    const fetch = async () => {
+      const token = await getAccessTokenSilently()
+      dispatch(createUser(token))
+    }
+    fetch()
   }, [dispatch]);
 
   return (

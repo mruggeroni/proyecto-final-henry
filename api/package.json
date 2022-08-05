@@ -26,6 +26,8 @@
     "nodemon": "^2.0.19",
     "pg": "^8.7.3",
     "pg-hstore": "^2.3.4",
-    "sequelize": "^6.21.3"
+    "sequelize": "^6.21.3",
+    "stripe": "^10.0.0",
+    "stripe-cli": "^0.1.0"
   }
 }
