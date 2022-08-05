@@ -37,12 +37,13 @@ export default function PopUpsComponent() {
     const [showCartPopUp, setShowCartPopUp] = useState(false);
     const dispatch = useDispatch();
       
-    useEffect(() => {
+    useEffect( async () => {
         if(!isAuthenticated){
             dispatch(getCartLocalStorage());
             dispatch(getFavoritesLocalStorage());
         }else{
-            dispatch(getAllFavorites());
+            const token = await getAccessTokenSilently();
+            dispatch(getAllFavorites(token));
         }
         showFavoritePopUp === true || showUserPopUp === true || showCartPopUp === true ? document.getElementById("popUpBackground").classList?.add(`${s.is_active}`) : document.getElementById("popUpBackground")?.classList?.remove(`${s.is_active}`);
     }, [dispatch])
@@ -66,7 +67,7 @@ export default function PopUpsComponent() {
         const token = await getAccessTokenSilently();
         await dispatch(createUser(token));
         await dispatch(cleanPackageById());
-        await dispatch(getPackageById(id));
+        if(id !== undefined) await dispatch(getPackageById(id));
         // guarda los favoritos que tenia en el localstorage en la db
         let match = true;
         stateFavoritesLocalStorage.forEach( async (flocal) => {
@@ -76,7 +77,6 @@ export default function PopUpsComponent() {
                     return;
                 }
             })
-            console.log(match, flocal.id)
             if(match) await dispatch(postFavorites(flocal.id, token))
         });
         await dispatch(getAllFavorites(token));

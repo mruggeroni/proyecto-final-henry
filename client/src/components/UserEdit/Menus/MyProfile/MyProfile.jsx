@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { AiOutlineArrowRight } from 'react-icons/ai'
 import s from './MyProfile.module.css';
 import { validations } from "./validations";
 import axios from 'axios';
@@ -111,7 +112,7 @@ export default function MyProfile({ showProfile, setShowProfile }) {
         !showProfile ? null
             :
             <div className={s.profile_container}>
-                <h2>Perfil</h2>
+                <h2>Configuración de la cuenta</h2>
                 <hr />
                 <form className={s.profile_information_container}>
                     <div className={s.profile_image_container}>
@@ -126,6 +127,22 @@ export default function MyProfile({ showProfile, setShowProfile }) {
                                     onChange={handleChange}
                                     className={s.profile_input_image}
                                 />
+                            </div>
+                        </div>
+                        <div className={s.profile_input_container}>
+                            <label className={s.profile_label}>Email</label>
+                            <input type='text'
+                                name='email'
+                                disabled={true}
+                                value={user.email}
+                                className={s.profile_input} />
+                        </div>
+                        <div className={s.profile_input_container}>
+                            <label className={s.profile_label}>Cambiar contraseña</label>
+                            <div onClick={ () => alert('auth0 change password') } 
+                                className={s.profile_input_password}>
+                                <span>********</span>
+                                <span><AiOutlineArrowRight/></span>
                             </div>
                         </div>
                         <div className={s.profile_input_container}>

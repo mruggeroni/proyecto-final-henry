@@ -36,7 +36,7 @@ export const CLEAN_PACKAGE_BY_ID = 'CLEAN_PACKAGE_BY_ID';
 export const CLEAN_ALL_PACKAGE = 'CLEAN_ALL_PACKAGE';
 
 
-export const patchOrders = (id) => {
+/* export const patchOrders = (id) => {
   try {
     return async function (dispatch) {
       let res = await axios.get('/order' + id);
@@ -46,7 +46,7 @@ export const patchOrders = (id) => {
     console.log(error);
   }
 }
-
+ */
 export const getOrders = () => {
   try {
     return async function (dispatch) {
