@@ -7,8 +7,9 @@ import {useDispatch, useSelector } from "react-redux";
 
 
 export default function Card({ name, image, qty, price, total, id, activities }) {
+
     // const [modify, setModify] = useState(false);
-    
+    const user = useSelector( (state) => state.user )
     // function handleModify(e){
     //     e.preventDefault();
     //     setModify(!modify);
@@ -16,18 +17,20 @@ export default function Card({ name, image, qty, price, total, id, activities })
     //     sQty?.setAttribute('selected', true);
     // }
 
-    //const { getAccessTokenSilently} = useAuth0();
-    //const dispatch = useDispatch();
-    //const handlepay = async (e) => {
-     //   e.preventDefault();
-      //  console.log(user)
-       // const cart = {items: [
-        //    {id: 1,quantity:2 },
-         //   {id: 2, quantity: 1}
-        //]}
-        //const token = await getAccessTokenSilently()
-        //dispatch(Payment(cart, token))
-      //};
+    const { getAccessTokenSilently} = useAuth0();
+    const dispatch = useDispatch();
+
+    const handlepay = async (e) => {
+       e.preventDefault();
+       console.log(user)
+       const cart = {items: [
+           {id: 1,quantity:2 },
+           {id: 2, quantity: 1}
+        ]}
+        const token = await getAccessTokenSilently()
+        dispatch(Payment(cart, token))
+      };
+
   return (
     <div className={s.checkoutCard}>    
         <div className={s.removeCard}>

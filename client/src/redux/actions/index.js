@@ -36,7 +36,7 @@ export const CLEAN_PACKAGE_BY_ID = "CLEAN_PACKAGE_BY_ID";
 export const CLEAN_ALL_PACKAGE = "CLEAN_ALL_PACKAGE";
 export const GET_RATING = "GET_RATING";
 export const GET_FEATURED = 'GET_FEATURED';
-
+export const GET_ORDER_DETAILS = 'GET_ORDER_DETAILS';
 /* export const patchOrders = (id) => {
   try {
     return async function (dispatch) {
@@ -48,6 +48,17 @@ export const GET_FEATURED = 'GET_FEATURED';
   }
 }
  */
+export const getOrderDetail = (id) => {
+  try {
+    return async function (dispatch) {
+      let res = await axios.get("/order/" + id);
+      return dispatch({ type: GET_ORDER_DETAILS, payload: res.data });
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const getOrders = () => {
   try {
     return async function (dispatch) {

@@ -9,7 +9,7 @@ export default function Card({ name, image, description, price, id, start_date, 
         <h3>{name}</h3>
         <br />
         <h5>
-          {description.length > 310
+          {description?.length > 310
             ? description.slice(0, 310) + "..."
             : description}
         </h5>

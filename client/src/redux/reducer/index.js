@@ -31,7 +31,8 @@ import {
   GET_ORDERS,
   UPDATE_CART,
   GET_RATING,
-  GET_FEATURED
+  GET_FEATURED,
+  GET_ORDER_DETAILS
 } from "./../actions/index.js";
 
 import {
@@ -66,6 +67,7 @@ const initialState = {
   user: {},
   categories: [],
   region: [],
+  orderDetails: [],
   ordenado: { tipo: "precio", forma: "asc" },
   rating: "",
   //filtrado y ordenamiento
@@ -87,6 +89,12 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         allPackages: action.payload,
         // filteredPackages: action.payload,
+      };
+    case GET_ORDER_DETAILS:
+     
+      return {
+        ...state,
+        orderDetails: action.payload.packages
       };
     case GET_ORDERS:
       return {
