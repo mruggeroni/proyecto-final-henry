@@ -15,8 +15,22 @@ import View from "../Search/View";
 import Paginado from "../Paginado/paginado";
 
 export default function Historial() {
-
+  // Filtrar todas las ordenes por id de usuario
+  // dispachar el detalle de la orden
   const dispatch = useDispatch();
+  const user = useSelector( (state) => state.user );
+  const orders = useSelector( (state) => state.orders );
+  // const ordersUser = orders.filter( (o) => o.userId === user.id );
+  // const 
+  // ordersUser.forEch( (o) => {
+
+  // });
+
+  useEffect( () => {
+      dispatch(getOrders());
+  }, [])
+
+
   const allPackages = useSelector((state) => state.allPackages);
   const allDestinations = useSelector((state) => state.allDestinations);
   const [order, setOrder] = useState("");

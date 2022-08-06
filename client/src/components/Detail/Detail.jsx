@@ -28,7 +28,7 @@ import {
 import { useAuth0 } from "@auth0/auth0-react";
 import Loading from "../Loading/Loading";
 import Rating from 'react-rating';
-import { BsFillStarFill } from 'react-icons/bs';
+import { BsFillStarFill, BsStar } from 'react-icons/bs';
 
 export default function Detail() {
   const dispatch = useDispatch();
@@ -439,9 +439,9 @@ export default function Detail() {
               onClick={(value) => handleEstrellas(value)}
               initialRating={rating}
               readonly={!isAuthenticated}
-              emptySymbol={<BsFillStarFill style={{color: 'gray'}} />}
+              emptySymbol={<BsFillStarFill style={{color: '#fafafa', fontSize: '24px'}} />}
               placeholderSymbol={<BsFillStarFill style={{color: 'red'}} />}
-              fullSymbol={<BsFillStarFill style={{color: 'yellow'}} />}
+              fullSymbol={<BsFillStarFill style={{color: '#4a9eab', fontSize: '24px'}} />}
             />
           </div>
           <div className={s.contenedorDetalles}>
