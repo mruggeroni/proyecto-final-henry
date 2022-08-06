@@ -30,7 +30,7 @@ import {
   CLEAN_ALL_PACKAGE,
   GET_ORDERS,
   UPDATE_CART,
-  GET_RATING
+  GET_RATING,
   GET_FEATURED
 } from "./../actions/index.js";
 

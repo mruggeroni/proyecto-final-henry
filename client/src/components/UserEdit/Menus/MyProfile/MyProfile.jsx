@@ -7,6 +7,7 @@ import axios from 'axios';
 import { getUserById, updateUser } from "../../../../redux/actions";
 import Swal from 'sweetalert2'
 import { useAuth0 } from "@auth0/auth0-react";
+import { WebAuth } from 'auth0-js';
 
 export default function MyProfile({ showProfile, setShowProfile }) {
 
@@ -36,7 +37,33 @@ export default function MyProfile({ showProfile, setShowProfile }) {
             }, 0);
             setShowProfile(false)
         }
-    }, [])
+    }, []);
+
+    const handlePassword = async (e, user) => {
+        e.preventDefault()
+        var options = { domain: "dev-33fzkaw8.us.auth0.com", clientID: "x5cL1uiTL2R0BR0VXYS0dIeqkA5gSdDm"};
+        var webAuth = new WebAuth(options);
+          console.log('HERE')
+          console.log(user.email)
+        const change = await webAuth.changePassword({
+           connection: 'Username-Password-Authentication',
+            email: user.email
+            }, function (err, resp){
+                 if(err){
+                   console.log(err);
+                }else{
+                    if(resp.includes('sent')) {
+                        Swal.fire(
+                            `Email: ${user.email}.`,
+                            'Te acabamos de enviar un correo electrónico para restablecer tu contraseña!',
+                            'success'
+                          )
+                    }
+                   console.log(resp);
+          }});
+          console.log('HERE FUNCTION')
+          console.log(change)
+      }
 
     const handleChange = (e) => {
         e.preventDefault();
@@ -139,7 +166,7 @@ export default function MyProfile({ showProfile, setShowProfile }) {
                         </div>
                         <div className={s.profile_input_container}>
                             <label className={s.profile_label}>Cambiar contraseña</label>
-                            <div onClick={ () => alert('auth0 change password') } 
+                            <div onClick={ (e) => handlePassword(e, user) } 
                                 className={s.profile_input_password}>
                                 <span>********</span>
                                 <span><AiOutlineArrowRight/></span>
@@ -215,6 +242,7 @@ export default function MyProfile({ showProfile, setShowProfile }) {
 
                         <button onClick={handleSubmit} disabled={isChange || Object.keys(errors).length > 0} className={s.profile_btn_save}>Guardar cambios</button>
                     </div>
+                        <button onClick={() => {}} disabled={true} className={s.profile_btn_delete}>Eliminar cuenta</button>
                 </form>
             </div>
     );
