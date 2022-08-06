@@ -31,6 +31,7 @@ import {
   GET_ORDERS,
   UPDATE_CART,
   GET_RATING
+  GET_FEATURED
 } from "./../actions/index.js";
 
 import {
@@ -137,6 +138,12 @@ const rootReducer = (state = initialState, action) => {
         onsale: action.payload,
       };
 
+    case GET_FEATURED:
+      return {
+        ...state,
+        featured: action.payload
+      }
+
     case GET_ACTIVITIES:
       return {
         ...state,
@@ -200,27 +207,27 @@ const rootReducer = (state = initialState, action) => {
       let sortPrice =
         action.payload === "minPrice"
           ? state.filteredPackages.sort(function (a, b) {
-              if (a.price > b.price) return 1;
-              if (b.price > a.price) return -1;
-              return 0;
-            })
+            if (a.price > b.price) return 1;
+            if (b.price > a.price) return -1;
+            return 0;
+          })
           : state.filteredPackages.sort(function (a, b) {
-              if (a.price > b.price) return -1;
-              if (b.price > a.price) return 1;
-              return 0;
-            });
+            if (a.price > b.price) return -1;
+            if (b.price > a.price) return 1;
+            return 0;
+          });
       let favSort =
         action.payload === "minPrice"
           ? state.favorites.sort(function (a, b) {
-              if (a.price > b.price) return 1;
-              if (b.price > a.price) return -1;
-              return 0;
-            })
+            if (a.price > b.price) return 1;
+            if (b.price > a.price) return -1;
+            return 0;
+          })
           : state.favorites.sort(function (a, b) {
-              if (a.price > b.price) return -1;
-              if (b.price > a.price) return 1;
-              return 0;
-            });
+            if (a.price > b.price) return -1;
+            if (b.price > a.price) return 1;
+            return 0;
+          });
       return {
         ...state,
         filteredPackages: sortPrice,
@@ -233,10 +240,10 @@ const rootReducer = (state = initialState, action) => {
       action.payload === "all"
         ? allPackages.forEach((e) => aux.push(e))
         : allPackages.filter((p) =>
-            p.destinations.forEach((el) => {
-              el.name === action.payload && aux.push(p);
-            })
-          );
+          p.destinations.forEach((el) => {
+            el.name === action.payload && aux.push(p);
+          })
+        );
 
       return {
         ...state,

@@ -8,7 +8,7 @@ import Favorites from "./components/Favorites/Favorites";
 import CreatePackage from "./components/Dashboard/CreatePackage";
 import CreateActivity from "./components/Dashboard/CreateActivity";
 import ModifyPackages from "./components/Dashboard/ModifyPackage";
-import Checkout from "./components/Checkout/Checkout.jsx";
+import Checkout from "./components/Checkout/Checkout2.jsx";
 import Historial from "./components/Historial/Historial.jsx";
 import ListPackages from "./components/Dashboard/ListPackages.jsx";
 import ModifyActivity from "./components/Dashboard/ModifyActivity.jsx";

@@ -1,6 +1,9 @@
 import React,  { useState } from "react";
 import s from "./CardCheckout.module.css";
 import Remove from '../Favorites/RemoveFavorite';
+import { Payment } from "../../redux/actions";
+import { useAuth0 } from "@auth0/auth0-react";
+import {useDispatch, useSelector } from "react-redux";
 
 
 export default function Card({ name, image, qty, price, total, id, activities }) {
@@ -13,6 +16,18 @@ export default function Card({ name, image, qty, price, total, id, activities })
     //     sQty?.setAttribute('selected', true);
     // }
 
+    //const { getAccessTokenSilently} = useAuth0();
+    //const dispatch = useDispatch();
+    //const handlepay = async (e) => {
+     //   e.preventDefault();
+      //  console.log(user)
+       // const cart = {items: [
+        //    {id: 1,quantity:2 },
+         //   {id: 2, quantity: 1}
+        //]}
+        //const token = await getAccessTokenSilently()
+        //dispatch(Payment(cart, token))
+      //};
   return (
     <div className={s.checkoutCard}>    
         <div className={s.removeCard}>
@@ -61,6 +76,8 @@ export default function Card({ name, image, qty, price, total, id, activities })
                 <hr />
                 <div className={s.totalPaq}>
                     <h3>Total: </h3><h3>${total === 0 ? (price*qty) : total}</h3>
+                    <button onClick={(e) => handlepay(e)}>Go to pay</button>
+
                 </div>
             </div> 
         </div>
