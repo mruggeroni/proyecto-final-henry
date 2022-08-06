@@ -23,12 +23,12 @@ export default function Favorites() {
     favorites = [...stateFavorites];
   }
 
-  // useEffect(async () => {
-  //   if(isAuthenticated){
-  //     const token = await getAccessTokenSilently();
-  //     dispatch(getAllFavorites(token));
-  //   } 
-  // }, [dispatch]);
+  useEffect(async () => {
+    if(isAuthenticated){
+      const token = await getAccessTokenSilently();
+      dispatch(getAllFavorites(token));
+    } 
+  }, [dispatch]);
 
   return (
     <div className={s.fullContainer}>

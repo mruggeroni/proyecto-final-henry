@@ -1,0 +1,15 @@
+.confirmation_container{
+    margin: auto;
+    margin-top: 10vw;
+    background-color: #e4eaea;
+    width: 70%;
+    height: 20vw;
+    text-align: center;
+}
+
+.textConfirmation{
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}

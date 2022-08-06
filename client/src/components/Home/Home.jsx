@@ -48,18 +48,18 @@ export default function Home() {
     //   const token = await dispatch(createUser(token));
     //   console.log(token);
     // }
-    if(!isAuthenticated) {
-      // dispatch(getFavoritesLocalStorage());
-    } else{
-      const token = await getAccessTokenSilently();
-      dispatch(getAllFavorites(token))
-    }
     setLoading(false);
     const fetch = async () => {
       const token = await getAccessTokenSilently()
       dispatch(createUser(token))
     }
     fetch()
+    if(!isAuthenticated) {
+      // dispatch(getFavoritesLocalStorage());
+    } else{
+      const token = await getAccessTokenSilently();
+      dispatch(getAllFavorites(token))
+    }
   }, [dispatch]);
 
   return (
@@ -81,7 +81,7 @@ export default function Home() {
           </div>
         </React.Fragment>
       )}
-      <Footer />
+     <Footer />
     </div>
   );
 }

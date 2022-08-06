@@ -63,6 +63,9 @@ export default function UserPopOut({ showProfile, setShowProfile }) {
               Dashboard
             </NavLink>
           }
+          <NavLink to="/historial" className={s.user_btn} onClick={ () => handleClickUser() }>
+            Historial de compras
+          </NavLink>
           <NavLink to="./" className={s.user_btn} onClick={ () => handleClickUser() }>
             Servicio al Cliente
           </NavLink>

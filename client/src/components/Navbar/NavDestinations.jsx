@@ -5,12 +5,13 @@ import { BsFillCaretLeftFill } from "react-icons/bs";
 import {
   getAllDestinations,
   filterPackagesByDestination,
-  getDestinationsWithPackages
+  getDestinationsWithPackages,
+  filtrar
 } from "../../redux/actions/index";
 import style from "./Navbar.module.css";
 
 export default function NavDestinations({ handleClose }) {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch(); 
   const navigate = useNavigate();
   // const params = props.match.params; 
   // const allDestinations = useSelector((state) => state.destinations);
@@ -23,7 +24,8 @@ export default function NavDestinations({ handleClose }) {
 
   function handleClick(e) {
     e.preventDefault();
-    dispatch(filterPackagesByDestination(e.target.innerText));
+    dispatch(filtrar(e.target.innerText, "searchDestinations"));
+    // dispatch(filterPackagesByDestination(e.target.innerText));
     // console.log(params)
 
     navigate("/search");

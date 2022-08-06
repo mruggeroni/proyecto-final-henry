@@ -22,11 +22,13 @@ import {
   deleteCartPackage,
   postCartPackage,
   getAllCart,
-  updateCart
-
+  updateCart,
+  getRating,
 } from "../../redux/actions/index";
 import { useAuth0 } from "@auth0/auth0-react";
 import Loading from "../Loading/Loading";
+import Rating from 'react-rating';
+import { BsFillStarFill } from 'react-icons/bs';
 
 export default function Detail() {
   const dispatch = useDispatch();
@@ -38,6 +40,7 @@ export default function Detail() {
   const cart = useSelector((state) => state.cart);
   const favorites = useSelector((state) => state.favorites);
   const user = useSelector((state) => state.user);
+  const rating = useSelector((s) => s.rating);
   const [checkeado, setCheckeado] = useState(false);
   const [loading, setLoading] = useState(true);
   const [checkboxEstado, setCheckboxEstado] = useState(
@@ -48,9 +51,10 @@ export default function Detail() {
     total: 0,
     actividades: [],
   });
+
   const { isAuthenticated, getAccessTokenSilently } = useAuth0();
 
-  useEffect( async () => {
+  useEffect(async () => {
     setLoading(true);
 
     if (
@@ -82,9 +86,11 @@ export default function Detail() {
     }
   }, [packageDetail, relationatedPackage, allActivities]);
 
-  useEffect( async () => {
+  useEffect(async () => {
     dispatch(cleanPackageById());
     dispatch(getPackageById(id));
+    const rating = await dispatch(getRating(id));
+    console.log(rating);
     dispatch(getRelationated(id));
     dispatch(getAllActivities());
     dispatch(getFavoritesLocalStorage());
@@ -93,7 +99,7 @@ export default function Detail() {
       // console.log(token)
       dispatch(createUser(token));
     };
-    // fetch();
+    fetch();
     // if (!isAuthenticated) {
     //   dispatch(getFavoritesLocalStorage());
     // } else {
@@ -113,9 +119,13 @@ export default function Detail() {
   }
 
   const checkPackageInCart = (id) => {
-    let cart = JSON.parse(localStorage.getItem("cart"));
     let match = false;
-    cart?.forEach((p) => p.paquete.id === parseInt(id) && (match = true));
+    if (!isAuthenticated) {
+      let cart = JSON.parse(localStorage.getItem("cart"));
+      cart?.forEach((p) => p.paquete.id === parseInt(id) && (match = true));
+    } else {
+      cart?.forEach((p) => p.paquete.id === parseInt(id) && (match = true));
+    }
     return match;
   };
 
@@ -201,7 +211,7 @@ export default function Detail() {
 
   const handleBotonRegresar = async (e) => {
     e.preventDefault();
-    navigate('/');
+    navigate("/");
     /* setLoading(true);
     setCheckeado(false);
     scrollToTop();
@@ -260,11 +270,11 @@ export default function Detail() {
     }
   };
 
-  async function handleBotonComprar(e){
+  async function handleBotonComprar(e) {
     e.preventDefault();
     input.paquete = packageDetail;
-    
-    if(!isAuthenticated){
+
+    if (!isAuthenticated) {
       if (!localStorage.getItem("cart")) {
         let cart = [];
         cart.unshift(input);
@@ -292,37 +302,46 @@ export default function Detail() {
         total: 0,
         actividades: [],
       });
-      /* 
-      setCheckboxEstado(new Array(10).fill(false));
-      */
+
+      // setCheckboxEstado(new Array(10).fill(false));
+
       setTimeout(() => {
         dispatch(getPackageById(id));
       }, 1);
       dispatch(getCartLocalStorage());
-    } else{
-      try{
-      //  console.log(input)
-      //   input = packageDetail;
-      //   console.log([packageDetail])
-        if(cart?.length){
+    } else {
+      try {
+        // if (localStorage.getItem("cart")) {
+        //   let cart = JSON.parse(localStorage.getItem("cart"));
+        //   cart.forEach((c) => dispatch(updateCart(user.id, c)))
+        //   //NO FALTARIA BORRAR EL CARRITO DEL LOCAL??
+        // }
+        if (!Object.keys(cart).length) {
           dispatch(postCartPackage(user.id, [input]));
-          dispatch(getAllCart(user.id));
-        } else{
+          // dispatch(getAllCart(user.id));
+        } else {
+          // const input2 = {
+          //   cantidad: 1,
+          //   total: 2000,
+          //   actividades: [],
+          //   paquete: { id: 2 }
+          // }
+
           dispatch(updateCart(cart.id, [input]));
-          dispatch(getAllCart(user.id));
+          // dispatch(getAllCart(user.id));
         }
       } catch (error) {
         console.log(error.message);
       }
     }
-  };
+  }
 
-  const handleEstrellas = async (e) => {
-    e.preventDefault();
+  const handleEstrellas = async (value) => {
     try {
-      console.log(e.target.outerHTML.slice(13, 14));
       const token = await getAccessTokenSilently();
-      // dispatch(crearRating(id, token, e.target.id))
+      await dispatch(crearRating(id, token, value));
+      dispatch(getRating(id))
+      setInput({...input})
     } catch (error) {
       console.log(error.message);
     }
@@ -353,13 +372,31 @@ export default function Detail() {
             </div>
           </div>
           <div>
+            <button
+              onClick={(e) => {
+                dispatch(deleteCartPackage(cart.id));
+              }}
+            >
+              delete cart
+            </button>
+          </div>
+          <div>
+            <button
+              onClick={(e) => {
+                dispatch(getAllCart(user.id));
+              }}
+            >
+              reset cart
+            </button>
+          </div>
+          {/* <div>
             <button onClick={(e) => handleFavorito(e)}>postear favorito</button>
           </div>
           <div>
             <button onClick={(e) => handleFavoritoBorrar(e)}>
               borrar favorito
             </button>
-          </div>
+          </div> */}
           <div>
             <select
               onChange={(e) => handlePuntuar(e)}
@@ -385,29 +422,27 @@ export default function Detail() {
               eliminar rating
             </button>
           </div>
-          <div onClick={(e) => handleEstrellas(e)} className={s.card_rating}>
-            <p className={s.card_text}>
-              <b>Rating: {`${3}`}</b>
-            </p>
+          <div className={s.card_rating}>
+          
 
-            <span value="1" className={Math.round(3) >= 1 ? s.star_rating : ""}>
-              ★
-            </span>
-            <span value="2" className={Math.round(3) >= 2 ? s.star_rating : ""}>
-              ★
-            </span>
-            <span value="3" className={Math.round(3) >= 3 ? s.star_rating : ""}>
-              ★
-            </span>
-            <span value="4" className={Math.round(3) >= 4 ? s.star_rating : ""}>
-              ★
-            </span>
-            <span
-              value="5"
-              className={Math.round(3) === 5 ? s.star_rating : ""}
-            >
-              ★
-            </span>
+            <p className={s.card_text}>
+              <b>
+                Rating:{" "}
+                {`${
+                  isNaN(parseInt(rating))
+                    ? (isAuthenticated ? "Se el primero en puntuar este paquete" : "S/R")
+                    : rating
+                }`}
+              </b>
+            </p>
+            <Rating 
+              onClick={(value) => handleEstrellas(value)}
+              initialRating={rating}
+              readonly={!isAuthenticated}
+              emptySymbol={<BsFillStarFill style={{color: 'gray'}} />}
+              placeholderSymbol={<BsFillStarFill style={{color: 'red'}} />}
+              fullSymbol={<BsFillStarFill style={{color: 'yellow'}} />}
+            />
           </div>
           <div className={s.contenedorDetalles}>
             <h1>{packageDetail.name}</h1>
