@@ -55,12 +55,12 @@ export default function Navbar() {
         >
           Inicio
         </NavLink>
-        <button
+        {/* <button
           onClick={() => handleOpen("nav_menu_promotions")}
           className={style.nav_menu_item}
         >
           Promociones <BsFillCaretRightFill />
-        </button>
+        </button> */}
         <button
           onClick={() => handleOpen("nav_menu_region")}
           className={style.nav_menu_item}
@@ -89,7 +89,7 @@ export default function Navbar() {
         </NavLink>
       </nav>
 
-      <NavPromotions handleClose={handleClose} />
+      {/* <NavPromotions handleClose={handleClose} /> */}
       <NavDestinations handleClose={handleClose} />
       <NavRegion handleClose={handleClose} />
 

@@ -9,7 +9,6 @@ import CreateAccount from './CrateAccount.jsx'
 import s from './Checkout.module.css';
 import { HiOutlineEmojiSad } from "react-icons/hi";
 import Carousel from '../Detail/Carousel';
-// import style from '../UserEdit/UserEdit.module.css'
 
 export default function CheckoutCart(){
     const cart = useSelector((state) =>state.cart);
@@ -29,7 +28,6 @@ export default function CheckoutCart(){
 
     useEffect(() => {
       dispatch(getAllPackage());
-     
       if(!isAuthenticated){
         dispatch(getCartLocalStorage());
       }else{
@@ -122,7 +120,7 @@ export default function CheckoutCart(){
                   </div>
                 </div>
                 )}
-                {cart?.length > 0 &&
+                {cart?.length > 0 && isAuthenticated &&
                   <div className={s.buttonContainer}>
                   <Link to={'/checkout'}>
                     <button className={s.comprarBtn}>Comprar</button>

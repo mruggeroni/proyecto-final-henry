@@ -10,7 +10,7 @@ import { HiOutlineEmojiSad } from "react-icons/hi";
 import { getAllFavorites, getFavoritesLocalStorage, getPackageById } from "../../redux/actions";
 import { useAuth0 } from "@auth0/auth0-react";
 
-export default function FavoritesPopOut({ showProfile, setShowProfile }) {
+export default function FavoritesPopOut({ showProfile, setShowProfile, divBackground }) {
   const dispatch = useDispatch();
   const [isActive, setIsActive] = useState(false);
   const { isAuthenticated, getAccessTokenSilently, } = useAuth0();
@@ -48,6 +48,7 @@ export default function FavoritesPopOut({ showProfile, setShowProfile }) {
 
   function handleClickFav(e){
     setShowProfile(false);
+    divBackground?.classList?.remove(`${s.is_active}`);
   }
 
   return (

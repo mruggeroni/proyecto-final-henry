@@ -41,10 +41,10 @@
   font-weight: bold;
 }
 
-/* .cardText:hover{
+.cardText:hover{
   color: #4a9eab;
   transition: .2s;
-} */
+}
 
 .buttons > * {
   text-decoration: none;

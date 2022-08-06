@@ -26,14 +26,22 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 export default function FilteredSearch() {
   const dispatch = useDispatch();
-  const {
-    isAuthenticated,
-    getAccessTokenSilently,
-  } = useAuth0();
+  const { isAuthenticated, getAccessTokenSilently } = useAuth0();
 
   const allPackages = useSelector((state) => state.allPackages);
   const filteredPackages = useSelector((s) => s.filteredPackages);
-  const allDestinations = useSelector((state) => state.destinationsWithPackages);
+  const allDestinations = useSelector(
+    (state) => state.destinationsWithPackages
+  );
+
+  const regionesFiltradas = [];
+  filteredPackages &&
+    filteredPackages.forEach((i) => {
+      i.destinations.forEach((i) => {
+        if (!regionesFiltradas.includes(i.region))
+          regionesFiltradas.push(i.region);
+      });
+    });
   const destinosFiltrados = [];
   filteredPackages &&
     filteredPackages.forEach((i) => {
@@ -45,6 +53,7 @@ export default function FilteredSearch() {
   const fechaDesde = useSelector((s) => s.filtradoDateMin);
   const fechaHasta = useSelector((s) => s.filtradoDateMax);
   const estadoDestino = useSelector((s) => s.filtradoDestino);
+  const estadoRegion = useSelector((s) => s.filtradoRegion);
   const allTypes = useSelector((s) => s.types);
   const filtradoType = useSelector((s) => s.filtradoType);
   const estadoPrecioMin = useSelector((s) => s.priceFilterMin);
@@ -56,8 +65,16 @@ export default function FilteredSearch() {
   const indexOfLastPackages = currentPage * packagesPerPage;
   const indexOfFirstPackage = indexOfLastPackages - packagesPerPage;
   const currentPackage =
-    filteredPackages.length &&
-    filteredPackages.slice(indexOfFirstPackage, indexOfLastPackages);
+    fechaDesde !== "" &&
+    fechaHasta !== "" &&
+    estadoDestino !== "" &&
+    estadoRegion !== "" &&
+    filtradoType !== "" &&
+    estadoPrecioMin !== "" &&
+    estadoPrecioMax !== ""
+      ? allPackages
+      : filteredPackages.length &&
+        filteredPackages.slice(indexOfFirstPackage, indexOfLastPackages);
   const paginado = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
@@ -68,15 +85,21 @@ export default function FilteredSearch() {
   const [type, setType] = useState("all");
   const [precioDesde, setPrecioDesde] = useState(estadoPrecioMin);
   const [precioHasta, setPrecioHasta] = useState(estadoPrecioMax);
+  const [region, setRegion] = useState(estadoRegion);
 
   const handleChange = (e) => {
     e.preventDefault();
+    if (e.target.id === "region") {
+      // dispatch(getAllPackage(1000));
+      setRegion(e.target.value);
+      dispatch(filtrar(e.target.value, e.target.id));
+      console.log("jklasdhvbipasjdvbapi");
+    }
     if (e.target.id === "searchDestinations") {
       setDestination(e.target.value);
       // dispatch(getAllPackage(10000));
       // dispatch(filterPackagesByDestination(e.target.value));
       dispatch(filtrar(e.target.value, e.target.id));
-      console.log("jklasdhvbipasjdvbapi");
     }
 
     if (e.target.id === "from") {
@@ -139,18 +162,18 @@ export default function FilteredSearch() {
     await dispatch(getAllActivities());
     await dispatch(getDestinationsWithPackages());
     await dispatch(getTypes());
-    if(!isAuthenticated) {
+    if (!isAuthenticated) {
       // dispatch(getFavoritesLocalStorage());
-    } else{
+    } else {
       const token = await getAccessTokenSilently();
-      dispatch(getAllFavorites(token))
+      dispatch(getAllFavorites(token));
     }
     setLoading(false);
     const fetch = async () => {
-      const token = await getAccessTokenSilently()
-      dispatch(createUser(token))
-    }
-    fetch()
+      const token = await getAccessTokenSilently();
+      dispatch(createUser(token));
+    };
+    fetch();
   }, []);
 
   useEffect(() => {
@@ -180,7 +203,41 @@ export default function FilteredSearch() {
               }
             >
               <label>
-                <select id="searchDestinations" className={s.create_input}>
+                <select
+                  onChange={(e) => handleChange(e)}
+                  id="region"
+                  className={s.create_input}
+                >
+                  <option
+                    value=""
+                    selected={estadoRegion === "" ? true : false}
+                    disabled="disabled"
+                  >
+                    Regiones
+                  </option>
+                  <option
+                    selected={estadoRegion === "all" ? true : false}
+                    value="all"
+                  >
+                    Todas las regiones
+                  </option>
+                  {regionesFiltradas?.sort().map((el) => (
+                    <option
+                      selected={estadoRegion === el ? true : false}
+                      key={el}
+                      value={el}
+                    >
+                      {el}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label>
+                <select
+                  onChange={(e) => handleChange(e)}
+                  id="searchDestinations"
+                  className={s.create_input}
+                >
                   <option
                     value=""
                     selected={estadoDestino === "" ? true : false}

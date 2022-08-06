@@ -8,7 +8,7 @@ import s from "./PopUps.module.css";
 import Card from "../Favorites/FavoriteCard.jsx";
 import { HiOutlineEmojiSad } from "react-icons/hi";
 
-export default function CartPopOut({ showProfile, setShowProfile }) {
+export default function CartPopOut({ showProfile, setShowProfile, divBackground }) {
   // const cart = useSelector((state) => state.cart);
   const cart = JSON.parse(localStorage.getItem("cart"));
   const [isVisible, setIsVisible] = useState(false);
@@ -29,6 +29,7 @@ export default function CartPopOut({ showProfile, setShowProfile }) {
 
   function handleClickCart(e){
     setShowProfile(false);
+    divBackground?.classList?.remove(`${s.is_active}`);
   }
 
   return (
