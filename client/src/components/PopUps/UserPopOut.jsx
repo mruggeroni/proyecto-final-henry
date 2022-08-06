@@ -8,7 +8,7 @@ import { createUser, getAllFavorites, postFavorites, getAllCart, postCartPackage
 import { useDispatch, useSelector } from "react-redux";
 import s from "./PopUps.module.css";
 
-export default function UserPopOut({ showProfile, setShowProfile }) {
+export default function UserPopOut({ showProfile, setShowProfile, divBackground }) {
   const dispatch = useDispatch();
   const {
     isAuthenticated,
@@ -37,6 +37,7 @@ export default function UserPopOut({ showProfile, setShowProfile }) {
 
   function handleClickUser(e){
     setShowProfile(!showProfile);
+    divBackground?.classList?.remove(`${s.is_active}`);
   }
 
   return (

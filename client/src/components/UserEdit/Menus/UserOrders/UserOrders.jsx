@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { BsFillEyeFill, BsFillEyeSlashFill } from 'react-icons/bs';
 import { MdBuild } from 'react-icons/md';
 import { useDispatch, useSelector } from "react-redux";
+import { NavLink } from "react-router-dom";
 import { getOrders } from "../../../../redux/actions";
 import s from './UserOrders.module.css';
 
@@ -42,6 +43,7 @@ export default function UserOrders({ showUserOrders, setShowUserOrders }) {
                   <th>Fecha</th>
                   <th>Total</th>
                   <th>Estatus</th>
+                  <th>Detalle</th>
                 </tr>
               </thead>
               <tbody>
@@ -54,6 +56,12 @@ export default function UserOrders({ showUserOrders, setShowUserOrders }) {
                         <td>
                             <div className={s[validateStatus(o.status)]}>{o.status}</div>
                         </td>
+                        <td>
+                            <NavLink to={`/historial/${o.id}`} className={s.fl_table_btn} >
+                              {/* <AiFillEdit /> */}
+                              Detalle
+                            </NavLink>                        
+                          </td>
                       </tr>
                     );
                   })

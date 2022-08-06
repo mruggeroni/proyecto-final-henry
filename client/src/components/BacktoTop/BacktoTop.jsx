@@ -15,11 +15,10 @@ export default function BacktoTop(){
     });
   }, []);
 
-  // This function will scroll the window to the top 
   function scrollToTop(){
     window.scrollTo({
       top: 0,
-      behavior: 'smooth' // for smoothly scrolling
+      behavior: 'smooth'
     });
   };
 
@@ -30,25 +29,3 @@ export default function BacktoTop(){
       )
   );
 };
-
-
-
-/* 
-<div className={s.backtoTop_container}>
-      <div className="container">
-        <div className="box box--1"></div>
-        <div className="box box--2"></div>
-        <div className="box box--3"></div>
-        <div className="box box--4"></div>
-        <div className="box box--5"></div>
-      </div>
-
-      {showButton && (
-        <button onClick={scrollToTop} className={s.backtoTop_btn}>
-          &#8679;
-        </button>
-      )}
-      &#8679; is used to create the upward arrow
-      </div>
-
-*/

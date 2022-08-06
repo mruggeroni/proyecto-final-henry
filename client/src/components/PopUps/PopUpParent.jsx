@@ -149,7 +149,7 @@ export default function PopUpsComponent() {
         </div>
         <div>
             <FavoritePopUp showProfile={showFavoritePopUp} setShowProfile={setShowFavoritePopUp} divBackground={divBackground}/>
-            <UserPopOut showProfile={showUserPopUp} setShowProfile={setShowUserPopUp}/>
+            <UserPopOut showProfile={showUserPopUp} setShowProfile={setShowUserPopUp} divBackground={divBackground}/>
             <CartPopUp showProfile={showCartPopUp} setShowProfile={setShowCartPopUp} divBackground={divBackground}/>
             <div id="popUpBackground" onClick={() => handleClose()} className={`${s.nav_menu_container}`}></div>
         </div>

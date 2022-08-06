@@ -2,10 +2,12 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-
+import { HiOutlineEmojiSad } from "react-icons/hi";
 import {
   filterPackagesByDestination,
   getAllPackage,
+  getOrderDetail,
+  getOrders,
 } from "./../../redux/actions/index";
 import s from './Historial.module.css'
 import style from "../Search/Select.module.css";
@@ -20,85 +22,22 @@ export default function Historial() {
   const dispatch = useDispatch();
   const user = useSelector( (state) => state.user );
   const orders = useSelector( (state) => state.orders );
-  // const ordersUser = orders.filter( (o) => o.userId === user.id );
-  // const 
-  // ordersUser.forEch( (o) => {
+  const orderDetails = useSelector( (state) => state.orderDetails );
+    
+  useEffect( async () => {
+    await dispatch(getOrders());
 
-  // });
-
-  useEffect( () => {
-      dispatch(getOrders());
+    const ordersUser = orders.filter( (o) => o.userId === user.id );
+    ordersUser?.forEach( async (o) => {
+      await dispatch(getOrderDetail(o.id)); 
+    });
   }, [])
-
-
-  const allPackages = useSelector((state) => state.allPackages);
-  const allDestinations = useSelector((state) => state.allDestinations);
-  const [order, setOrder] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [packagesPerPage, setPackagesPerPage] = useState(10);
-  const indexOfLastPackages = currentPage * packagesPerPage;
-  const indexOfFirstPackage = indexOfLastPackages - packagesPerPage;
-  const currentPackage = allPackages.slice(
-    indexOfFirstPackage,
-    indexOfLastPackages
-  );
-  const paginado = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
-
-  const handleChange = (e) => {
-    e.preventDefault();
-    dispatch(filterPackagesByDestination(e.target.value));
-    dispatch(getAllPackage());
-    setCurrentPage(1);
-  };
-
-  useEffect(() => {
-		dispatch(getAllPackage());
-	},[dispatch])
 
   return (
     <div className={s.container}>
-        <div>
-          <div className={s.view}>
-            <SortPrice setOrder={setOrder} setCurrentPage={setCurrentPage} />
-            <div>
-              <label>Search Package from: </label>
-              <select
-                id="searchDestinations"
-                className={style.select}
-                onChange={(e) => handleChange(e)}
-              >
-                {" "}
-                <option selected={true} disabled="disabled">
-                  Seleccionar un Destino
-                </option>
-                <option value="all">Todos los destinos</option>
-                {allDestinations?.map((el) => (
-                  <option key={el} value={el}>
-                    {el}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <View
-              currentPackage={currentPackage}
-              allPackages={allPackages}
-              indexOfFirstPackage={indexOfFirstPackage}
-              setPackagesPerPage={setPackagesPerPage}
-              setCurrentPage={setCurrentPage}
-              currentPage={currentPage}
-            />
-          </div>
-          <Paginado
-            packagesPerPage={packagesPerPage}
-            allPackages={allPackages.length}
-            paginado={paginado}
-            currentPage={currentPage}
-          />
           <div className={s.cardsHistorial}>
-            {currentPackage &&
-              currentPackage?.map((p) => {
+            {orderDetails?.length ?
+              orderDetails?.map((p) => {
                 return (
                   <div className={s.eachcard} key={p.id}>
                     <Link to={"/detail/" + p.id} key={p.id}>
@@ -114,9 +53,17 @@ export default function Historial() {
                     </Link>
                   </div>
                 );
-              })}
+              }) :
+            <div>
+              <div className={s.noPaq}>
+                <div className={s.sadFace}>
+                  <HiOutlineEmojiSad />
+                </div>
+                <p className={s.vacioPaq}>No tienes compras pasadas, pero no te preocupes que eso se puede solucionar! COMPRANOS PAQUETEEEEEES!!!!!!!!!!!!!!!</p>
+              </div>
+            </div>
+            }
           </div>
-        </div>
     </div>
   );
 }
