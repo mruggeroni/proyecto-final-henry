@@ -130,6 +130,47 @@ img {
   color: black;
 }
 
+.musRibbon.right {
+  left: auto;
+  right: 20%;
+}
+
+.onSale {
+  background-image: url('./../../../assets/img/promos.webp');
+  background-position: -120px -144px;
+  width: 120px;
+  height: 52px;
+}
+
+.onSale span {
+  font-size: 20px;
+  font-family: sans-serif;
+  font-weight: bold;
+}
+
+.right {
+  float: right;
+}
+
+.musRibbon {
+    display: inline-block;
+    position: absolute;
+    top: -11px;
+    left: 5%;
+    box-sizing: border-box;
+    padding: 10px 20px 10px 30px;
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    text-transform: uppercase;
+    text-align: center;
+    min-width: 60px;
+}
+
+.optionsRibbon {
+  padding: 12px 10px 12px 10px;
+  color: #fff;
+}
+
 @keyframes fade_in_show {
   0% {
     opacity: 0;

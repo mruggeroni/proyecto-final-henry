@@ -8,7 +8,7 @@ import Favorites from "./components/Favorites/Favorites";
 import CreatePackage from "./components/Dashboard/CreatePackage";
 import CreateActivity from "./components/Dashboard/CreateActivity";
 import ModifyPackages from "./components/Dashboard/ModifyPackage";
-import Checkout from "./components/Checkout/Checkout2.jsx";
+import Checkout from "./components/Checkout/Checkout.jsx";
 import Historial from "./components/Historial/Historial.jsx";
 import ListPackages from "./components/Dashboard/ListPackages.jsx";
 import ModifyActivity from "./components/Dashboard/ModifyActivity.jsx";
@@ -26,6 +26,7 @@ import Faq from "./components/Information/Faq.jsx";
 import Error404 from "./components/Error404/Error404.jsx";
 import { useSelector } from "react-redux";
 import ListOrders from "./components/Dashboard/ListOrders.jsx";
+// import Footer from './components/Footer/Footer.jsx';
 
 function App() {
   const user = useSelector( (state) => state.user )
@@ -46,8 +47,9 @@ function App() {
         <Route path="/dashboard/activities" element={ user.is_admin ? <CreateActivity /> : <Navigate to='/' />} />
         <Route path="/dashboard/modifyPackage/:id" element={ user.is_admin ? <ModifyPackages /> : <Navigate to='/' />} />
         <Route path="/dashboard/modifyActivities/:id" element={ user.is_admin ? <ModifyActivity /> : <Navigate to='/' />} />
-        <Route path="/checkout" element={ Object.keys(user).length ? <CheckoutParent /> : <Navigate to='/' />} />
-        <Route path="/historial" element={ Object.keys(user).length ? <Historial /> : <Navigate to='/' />} />
+        {/* <Route path="/checkout" element={ Object.keys(user).length ? <CheckoutParent /> : <Navigate to='/' />} /> */}
+        <Route path="/checkout" element={ <CheckoutParent /> } />
+        <Route path="/historial/:id" element={ Object.keys(user).length ? <Historial /> : <Navigate to='/' />} />
         <Route path='/createaccount' element={ Object.keys(user).length ? <CreateAccountModal /> : <Navigate to='/' />} />
         <Route path="/terms-and-conditions" element={<Terms />} />
         <Route path="/faq" element={<Faq />} />
@@ -61,6 +63,7 @@ function App() {
         <Route path="/contact" element={<Home />} />
         <Route path="*" element={<Error404 />} />
       </Routes>
+      {/* <Footer /> */}
     </BrowserRouter>
   );
 }

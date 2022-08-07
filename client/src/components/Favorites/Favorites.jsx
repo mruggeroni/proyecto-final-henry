@@ -14,20 +14,21 @@ export default function Favorites() {
     isAuthenticated,
     getAccessTokenSilently,
     } = useAuth0();
-    let favorites = [];
-    let stateFavorites = useSelector((state) => state.favorites);
-    if(!isAuthenticated) {
-      favorites = JSON.parse(localStorage.getItem("favorites")) || [];
-    } else {
-      favorites = stateFavorites;
-    }
+  let favorites = [];
+  let stateFavorites = useSelector((state) => state.favorites);
+  let stateFavoritesLocalStorage = useSelector((state) => state.favoritesLocalStorage);
+  if(!isAuthenticated) {
+    favorites = [...stateFavoritesLocalStorage];
+  } else {
+    favorites = [...stateFavorites];
+  }
 
-  // useEffect(async () => {
-  //   if(isAuthenticated){
-  //     const token = await getAccessTokenSilently();
-  //     dispatch(getAllFavorites(token));
-  //   } 
-  // }, [dispatch]);
+  useEffect(async () => {
+    if(isAuthenticated){
+      const token = await getAccessTokenSilently();
+      dispatch(getAllFavorites(token));
+    } 
+  }, [dispatch]);
 
   return (
     <div className={s.fullContainer}>

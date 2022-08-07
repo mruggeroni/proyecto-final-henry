@@ -4,7 +4,7 @@ import CartPopUp from './CartPopUp.jsx';
 import FavoritePopUp from './FavoritePopOut.jsx';
 import UserPopOut from './UserPopOut';
 import { useDispatch, useSelector } from "react-redux";
-import { getFavoritesLocalStorage, getCartLocalStorage, getAllFavorites, cleanPackageById, getPackageById } from "../../redux/actions/index.js";
+import { getFavoritesLocalStorage, getCartLocalStorage, getAllFavorites, cleanPackageById, getPackageById, postFavorites, deleteFavorites, getAllCart } from "../../redux/actions/index.js";
 import { AiOutlineHeart } from "react-icons/ai";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { BsPersonPlusFill } from "react-icons/bs";
@@ -26,8 +26,9 @@ export default function PopUpsComponent() {
     const id = detailPackage.id; 
     let favorites = [];
     let stateFavorites = useSelector((state) => state.favorites);
+    let stateFavoritesLocalStorage = useSelector((state) => state.favoritesLocalStorage);
     if(!isAuthenticated) {
-      favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+      favorites = [...stateFavoritesLocalStorage];
     } else {
       favorites = [...stateFavorites];
     }
@@ -35,14 +36,16 @@ export default function PopUpsComponent() {
     const [showUserPopUp, setShowUserPopUp] = useState(false);
     const [showCartPopUp, setShowCartPopUp] = useState(false);
     const dispatch = useDispatch();
-   
+    const divBackground = document.getElementById('popUpBackground')
       
-    useEffect(() => {
+    useEffect( async () => {
         if(!isAuthenticated){
             dispatch(getCartLocalStorage());
-            // dispatch(getFavoritesLocalStorage());
+            dispatch(getFavoritesLocalStorage());
         }else{
-            dispatch(getAllFavorites());
+            const token = await getAccessTokenSilently();
+            dispatch(getAllFavorites(token));
+            dispatch(getAllCart(user.id))
         }
         showFavoritePopUp === true || showUserPopUp === true || showCartPopUp === true ? document.getElementById("popUpBackground").classList?.add(`${s.is_active}`) : document.getElementById("popUpBackground")?.classList?.remove(`${s.is_active}`);
     }, [dispatch])
@@ -65,9 +68,21 @@ export default function PopUpsComponent() {
         await loginWithPopup();
         const token = await getAccessTokenSilently();
         await dispatch(createUser(token));
-        await dispatch(cleanPackageById());
+        // guarda los favoritos que tenia en el localstorage en la db
+        let match = true;
+        stateFavoritesLocalStorage?.forEach( async (flocal) => {
+            stateFavorites.forEach( (f) => {
+                if(f.id === flocal.id) {
+                    match = false;
+                    return;
+                }
+            })
+            if(match) await dispatch(postFavorites(flocal.id, token))
+        });
+        localStorage.getItem('favorites') && localStorage.removeItem('favorites');
         await dispatch(getAllFavorites(token));
-        await dispatch(getPackageById(id));
+        await dispatch(cleanPackageById());
+        if(id !== undefined) await dispatch(getPackageById(id));
         setShowFavoritePopUp(false);
         setShowCartPopUp(false);
         // showFavoritePopUp === false ? document.getElementById("popUpBackground").classList?.add(`${s.is_active}`) : document.getElementById("popUpBackground")?.classList?.remove(`${s.is_active}`);
@@ -133,10 +148,10 @@ export default function PopUpsComponent() {
             </div>
         </div>
         <div>
-            <FavoritePopUp showProfile={showFavoritePopUp} setShowProfile={setShowFavoritePopUp} />
-            <UserPopOut showProfile={showUserPopUp} setShowProfile={setShowUserPopUp} />
-            <CartPopUp showProfile={showCartPopUp} setShowProfile={setShowCartPopUp} />
-            <div id="popUpBackground" onClick={() => handleClose()} className={`${s.nav_menu_container}`} ></div>
+            <FavoritePopUp showProfile={showFavoritePopUp} setShowProfile={setShowFavoritePopUp} divBackground={divBackground}/>
+            <UserPopOut showProfile={showUserPopUp} setShowProfile={setShowUserPopUp} divBackground={divBackground}/>
+            <CartPopUp showProfile={showCartPopUp} setShowProfile={setShowCartPopUp} divBackground={divBackground}/>
+            <div id="popUpBackground" onClick={() => handleClose()} className={`${s.nav_menu_container}`}></div>
         </div>
     </div>
   );
