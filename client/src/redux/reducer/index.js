@@ -51,7 +51,7 @@ const initialState = {
   allPackages: [],
   filteredPackages: [],
   activities: [],
-  cart: [],
+  cart: {},
   destinations: [],
   destinationsWithPackages: [],
   regions: [],

@@ -314,35 +314,94 @@ export const createCart = async (req, res) => {
 
 export const updateCart = async (req, res) => {
 	const { cartId } = req.params;
-	const cartPackages = req.body;
+	const /* cartPackages */ { packageId, activitiesId, quantity, total_package } = req.body;
 
 	try {
 		const oldCart = await Order.findByPk(cartId);
 		if (!oldCart) return res.status(404).json({ message: 'Cart not found' });
 		if (oldCart.status !== 'shopping cart') return res.status(400).json({ message: "The id entered is not from a cart" });
 
-		const packagesId = [],
-			arrayActivitiesId = [],
-			quantitiesPackages = [],
-			total_packages = [];
-		let total_order = 0;
+		// const packagesId = [],
+		// 	arrayActivitiesId = [],
+		// 	quantitiesPackages = [],
+		// 	total_packages = [];
+		// let total_order = 0;
 
-		cartPackages.forEach(pack => {
-			packagesId.push(pack.paquete.id);
+		// cartPackages.forEach(pack => {
+		// 	packagesId.push(pack.paquete.id);
 
-			const activitiesId = [];
-			pack.actividades.forEach(act => {
-				activitiesId.push(act.Package_Activity.activityId);
-			});
-			arrayActivitiesId.push(activitiesId);
+		// 	const activitiesId = [];
+		// 	pack.actividades.forEach(act => {
+		// 		activitiesId.push(act.Package_Activity.activityId);
+		// 	});
+		// 	arrayActivitiesId.push(activitiesId);
 
-			quantitiesPackages.push(pack.cantidad);
-			total_packages.push(pack.total);
+		// 	quantitiesPackages.push(pack.cantidad);
+		// 	total_packages.push(pack.total);
+		// });
+		// total_order = total_packages.reduce((total, price) => total + price, 0);
+
+		// await Order.update({
+		// 	total_order,
+		// }, {
+		// 	where: {
+		// 		id: cartId,
+		// 	},
+		// });
+
+		// const cart = await Order.findByPk(cartId);
+		// const paquetes = await Package.findAll({
+		// 	where: {
+		// 		id: packagesId,
+		// 	},
+		// });
+
+		// await cart.setPackages(paquetes, { 
+		// 	through: OrderItem, 
+		// });
+		// await Promise.all(packagesId.map((packageId, index) => {
+		// 	return OrderItem.update({
+		// 		quantity: quantitiesPackages[index],
+		// 	}, {
+		// 		where: {
+		// 			[Op.and]: [{
+		// 				orderId: cartId,
+		// 			}, {
+		// 				packageId,
+		// 			}],
+		// 		},
+		// 	})
+		// 	.catch(err => console.log(err.message));
+		// }));
+
+		// const orderItems = await OrderItem.findAll({
+		// 	where: {
+		// 		[Op.and]: [{
+		// 			orderId: cart.id,
+		// 		}, {
+		// 			packageId: packagesId,
+		// 		}],
+		// 	},
+		// });
+
+		// await Promise.all(orderItems.map((orderItem, index) => {
+		// 	return Activity.findAll({where: {id: arrayActivitiesId[index]}})
+		// 		.then(activities => orderItem.setActivities(activities)) 
+		// 		.catch(err => console.log(err.message));
+		// }));
+
+		const existPackageInCart = await Order.findByPk(cartId, {
+			include: {
+				model: Package,
+				where: {
+					id: packageId,
+				},
+			},
 		});
-		total_order = total_packages.reduce((total, price) => total + price, 0);
-
+		if (existPackageInCart) return res.status(400).json({ message: 'The package exist into the user\'s cart' });
+		console.log(oldCart.total_order, parseInt(total_package))
 		await Order.update({
-			total_order,
+			total_order: oldCart.total_order + parseInt(total_package),
 		}, {
 			where: {
 				id: cartId,
@@ -350,50 +409,56 @@ export const updateCart = async (req, res) => {
 		});
 
 		const cart = await Order.findByPk(cartId);
-		const paquetes = await Package.findAll({
-			where: {
-				id: packagesId,
-			},
-		});
+		const paquete = await Package.findByPk(packageId);
 
-		await cart.setPackages(paquetes, { 
+		await cart.addPackage(paquete, { 
 			through: OrderItem, 
 		});
-		await Promise.all(packagesId.map((packageId, index) => {
-			return OrderItem.update({
-				quantity: quantitiesPackages[index],
-			}, {
-				where: {
-					[Op.and]: [{
-						orderId: cartId,
-					}, {
-						packageId,
-					}],
-				},
-			})
-			.catch(err => console.log(err.message));
-		}));
 
-		const orderItems = await OrderItem.findAll({
+		await OrderItem.update({
+			quantity,
+		}, {
+			where: {
+				[Op.and]: [{
+					orderId: cartId,
+				}, {
+					packageId,
+				}],
+			},
+		})
+
+		const orderItem = await OrderItem.findOne({
 			where: {
 				[Op.and]: [{
 					orderId: cart.id,
 				}, {
-					packageId: packagesId,
+					packageId,
 				}],
 			},
 		});
 
-		await Promise.all(orderItems.map((orderItem, index) => {
-			return Activity.findAll({where: {id: arrayActivitiesId[index]}})
-				.then(activities => orderItem.setActivities(activities)) 
-				.catch(err => console.log(err.message));
-		}));
+		const activities = await Activity.findAll({
+			where: {
+				id: activitiesId,
+			},
+		});
+
+		await orderItem.setActivities(activities);
 
 		return res.status(200).json({ message: 'Cart updated successfully' });
 	} catch (error) {
 		return res.status(400).json({ error: error.message });
 	};
+};
+
+export const statusCartFunction = async (cartId) => {
+	await Order.update({
+		status: 'pending',
+	}, {
+		where: {
+			id: cartId,
+		},
+	});
 };
 
 export const patchStatusCart = async (req, res) => {
@@ -404,13 +469,7 @@ export const patchStatusCart = async (req, res) => {
 		if (!cart) return res.status(404).json({ message: "Cart not found" });
 		if (cart.status !== 'shopping cart') return res.status(400).json({ message: "The id entered is not from a cart" });
 
-		await Order.update({
-			status: 'pending',
-		}, {
-			where: {
-				id: cartId,
-			},
-		});
+		await statusCartFunction(cartId);
 
 		return res.status(200).json({ message: "Cart status changed to \'pending\' successfully" });
 	} catch (error) {
@@ -420,17 +479,36 @@ export const patchStatusCart = async (req, res) => {
 
 export const deleteCart = async (req, res) => {
 	const cartId = parseInt(req.params.cartId);
+	const packageId = parseInt(req.query.packageId)
 
 	try {
-		const cart = await Order.findByPk(cartId);
+		const cart = await Order.findByPk(cartId, {
+			include: {
+				model: Package,
+				where: {
+					id: packageId,
+				},
+			},
+		});
 		if (!cart) return res.status(404).json({ message: "Cart not found" });
 		if (cart.status !== 'shopping cart') return res.status(400).json({ message: "The id entered is not from a cart" });
 
-		await Order.destroy({
+		// await Order.destroy({
+		// 	where: {
+		// 		id: cartId,
+		// 	},
+		// });
+
+		const paquete = await Package.findByPk(packageId);
+		const orderItemId = cart.packages[0].order_item.id;
+
+		await OrderItem.destroy({
 			where: {
-				id: cartId,
+				id: orderItemId,
 			},
 		});
+
+		cart.removePackage(paquete)
 
 		return res.status(200).json({ message: "Cart deleted successfully" }); 
 	} catch (error) {

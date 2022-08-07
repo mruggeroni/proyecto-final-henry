@@ -597,12 +597,13 @@ export function updateCart(id, value) {
   }
 }
 
-export function deleteCartPackage(id) {
+export function deleteCartPackage(id, packageId) {
   return async function (dispatch) {
     try {
-      let res = await axios.delete("/cart/" + id);
+      // let res = await axios.delete(`/cart/${id}/?packageId=${packageId}`);
+      await axios.delete(`/cart/${id}/?packageId=${packageId}`);
       // dispatch(getAllCart(id))
-      return res;
+      // return res;
     } catch (error) {
       console.log(error);
     }
