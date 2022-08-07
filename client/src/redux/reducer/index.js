@@ -32,7 +32,8 @@ import {
   UPDATE_CART,
   GET_RATING,
   GET_FEATURED,
-  GET_ORDER_DETAILS
+  GET_ORDER_DETAILS,
+  STATUS_USER
 } from "./../actions/index.js";
 
 import {
@@ -65,6 +66,7 @@ const initialState = {
   relationated: [],
   users: [],
   user: {},
+  userStatus: {},
   categories: [],
   region: [],
   orderDetails: [],
@@ -126,7 +128,6 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         destinations: action.payload,
       };
-
     case GET_DESTINATIONS_WITH_PACKAGES:
       const pack = state.allPackages;
       let arr = [];
@@ -169,30 +170,30 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         detailPackage: action.payload,
       };
-
     case GET_RELATIONATED:
       return {
         ...state,
         relationated: action.payload,
       };
-
     case POST_PACKAGE:
       return {
         ...state,
       };
-
     case POST_USER:
       return {
         ...state,
         user: action.payload,
       };
-
+    case STATUS_USER:
+      return {
+        ...state,
+        userStatus: action.payload,
+      };
     case GET_USERS:
       return {
         ...state,
         users: action.payload,
       };
-
     case DELETE_USER:
       return {
         ...state,

@@ -8,7 +8,7 @@ import { MdDelete } from 'react-icons/md';
 import { AiFillEdit } from 'react-icons/ai';
 import s from "./Table.module.css";
 import { useAuth0 } from "@auth0/auth0-react";
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
 import Loading from "../Loading/Loading";
 
 export default function ListPackages() {
@@ -28,14 +28,22 @@ export default function ListPackages() {
       confirmButtonText: 'Eliminar'
     }).then( async (result) => {
       if (result.isConfirmed) {
-        await dispatch(getAllPackage(10000));
-        const token = await getAccessTokenSilently()
-        dispatch(borrarPaquete(id, token))
-        Swal.fire(
-          `Paquete: ${id} | ${nombre}.`,
-          'Eliminado exitosamente!',
-          'success'
-        )
+        try{
+          dispatch(getAllPackage(10000));
+          const token = await getAccessTokenSilently()
+          dispatch(borrarPaquete(id, token));
+          Swal.fire(
+            `Paquete: ${id} | ${nombre}.`,
+            'Eliminado exitosamente!',
+            'success'
+          )
+        } catch(error){
+          Swal.fire(
+            `Paquete: ${id} | ${nombre}.`,
+            `${error.message}`,
+            'error'
+          )
+        }
       }
     })
   };

@@ -25,6 +25,7 @@ export const ORDENAR = "ORDENAR";
 export const UPDATE_USER = "UPDATE_USER";
 export const DELETE_USER = "DELETE_USER";
 export const GET_USER_BY_ID = "GET_USER_BY_ID";
+export const STATUS_USER = 'STATUS_USER';
 export const GET_ORDERS = "GET_ORDERS";
 export const PATCH_ORDER = "PATCH_ORDER";
 export const GET_CART = "GET_CART";
@@ -35,8 +36,10 @@ export const PATCH_PACKAGE = "PATCH_PACKAGE";
 export const CLEAN_PACKAGE_BY_ID = "CLEAN_PACKAGE_BY_ID";
 export const CLEAN_ALL_PACKAGE = "CLEAN_ALL_PACKAGE";
 export const GET_RATING = "GET_RATING";
-export const GET_FEATURED = 'GET_FEATURED';
-export const GET_ORDER_DETAILS = 'GET_ORDER_DETAILS';
+export const GET_FEATURED = "GET_FEATURED";
+export const GET_ORDER_DETAILS = "GET_ORDER_DETAILS";
+
+
 /* export const patchOrders = (id) => {
   try {
     return async function (dispatch) {
@@ -93,16 +96,24 @@ export const cleanPackageById = () => {
   return { type: CLEAN_PACKAGE_BY_ID };
 };
 
-export const updateUser = (id, newUser) => {
+export const updateUser = (newUser, token) => {
   return async function (dispatch) {
-    let res = await axios.put("/user/" + id, newUser);
+    let res = await axios.put("/user/?email=" + newUser.email, newUser, {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
     return dispatch({ type: UPDATE_USER, payload: res.data });
   };
 };
 
-export const deleteUser = (id) => {
+export const deleteUser = (id, token) => {
   return async function (dispatch) {
-    let res = await axios.delete("/user/" + id);
+    let res = await axios.delete("/user/" + id, {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
     return dispatch({ type: DELETE_USER, payload: res.data });
   };
 };
@@ -190,6 +201,49 @@ export const createPackage = (payload, token) => {
   };
 };
 
+export const getUserStatus = (id) => {
+  return async function (dispatch) {
+    try {
+      const res = await axios.patch("/user/status/" + id);
+      return res.data;
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+};
+
+export const patchUserRestore = (id, token) => {
+  return async function (dispatch) {
+    try {
+      const res = await axios.patch("/restoreUser/" + id, {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
+      dispatch(getUsers(token));
+      return res;
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+};
+
+export const patchUserAdmin = (id, isAdmin, token) => {
+  return async function (dispatch) {
+    try {
+      const res = await axios.patch("/user/" + id, isAdmin, {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
+      dispatch(getUsers(token));
+      return res;
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+};
+
 export const createUser = (payload) => {
   return async function (dispatch) {
     try {
@@ -207,37 +261,33 @@ export const createUser = (payload) => {
 export const ModifyUser = (email, payload, token) => {
   return async function (dispatch) {
     try {
-      const res = await axios.put('/user?email=' + email, payload,
-        {
-          headers: {
-            authorization: `Bearer ${token}`,
-          }
-        })
-    } catch (error) {
-
-    }
-  }
-}
+      const res = await axios.put("/user?email=" + email, payload, {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
+    } catch (error) {}
+  };
+};
 export const Payment = (payload, token) => {
   return async function (dispatch) {
     try {
-      console.log(payload)
-      const res = await axios.post('/payment',
-        {
-          headers: {
-            authorization: `Bearer ${token}`,
-          },
-          body: payload
-        })
+      console.log(payload);
+      const res = await axios.post("/payment", {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+        body: payload,
+      });
       if (res) {
-        console.log(res.data.url)
-        window.location = res.data.url
+        console.log(res.data.url);
+        window.location = res.data.url;
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
-}
+  };
+};
 
 export const getUsers = (token) => {
   return async function (dispatch) {

@@ -6,7 +6,7 @@ import { getAllPackage, getFavoritesLocalStorage, postFavorites, deleteFavorites
 import s from "./Cards.module.css";
 import { useAuth0 } from "@auth0/auth0-react";
 
-export default function Card({ name, image, description, price, id }) {
+export default function Card({ name, image, description, price, on_sale, id }) {
   const [checked, setChecked] = useState(false);
   const favPackage = { name, image, description, price, id };
   const dispatch = useDispatch();
@@ -93,6 +93,11 @@ export default function Card({ name, image, description, price, id }) {
 
   return (
     <div className={s.card}>
+      {
+        on_sale != '0' && <div className={`${s.onSale} ${s.musRibbon} ${s.optionsRibbon} ${s.right}`}>
+          <span>{on_sale}% OFF</span>
+        </div>
+      }
       <img src={image} alt="img not found" width="300vw" height="250vw" />
       <div className={s.cardBody}>
         <h3>{name}</h3>

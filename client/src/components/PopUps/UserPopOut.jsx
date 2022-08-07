@@ -57,21 +57,16 @@ export default function UserPopOut({ showProfile, setShowProfile, divBackground 
         <div className={s.user_profile_link}>
           {/* <div> */}
           <div className={s.user_btn}>
-            <UserEdit />
+            <UserEdit handleClickUser={handleClickUser} />
           </div>
           {
             user.is_admin && <NavLink to="/dashboard" className={s.user_btn} onClick={ () => handleClickUser() }>
               Dashboard
             </NavLink>
           }
-          <NavLink to="/historial" className={s.user_btn} onClick={ () => handleClickUser() }>
-            Historial de compras
-          </NavLink>
           <NavLink to="./" className={s.user_btn} onClick={ () => handleClickUser() }>
             Servicio al Cliente
           </NavLink>
-            {/* <p></p> */}
-          {/* </div> */}
         </div>
         <hr />
         <button className={s.user_profile_btn} onClick={logout}>

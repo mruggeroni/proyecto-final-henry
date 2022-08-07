@@ -79,7 +79,7 @@ export default function Card({ name, image, qty, price, total, id, activities })
                 <hr />
                 <div className={s.totalPaq}>
                     <h3>Total: </h3><h3>${total === 0 ? (price*qty) : total}</h3>
-                    <button onClick={(e) => handlepay(e)}>Go to pay</button>
+                    {/* <button onClick={(e) => handlepay(e)}>Go to pay</button> */}
 
                 </div>
             </div> 
