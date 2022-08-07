@@ -71,6 +71,11 @@ export default function Detail() {
         });
         document.getElementsByName("selectCantidad")[0].value = "1";
       }
+      setInput({
+        cantidad: 1,
+        total: packageDetail.price,
+        actividades: [],
+      });
       setCheckeado(false);
       if (!isAuthenticated) {
         let favorites = JSON.parse(localStorage.getItem("favorites"));
@@ -214,44 +219,6 @@ export default function Detail() {
     navigate("/");
   };
 
-  const handleFavorito = async (e) => {
-    e.preventDefault();
-    try {
-      const token = await getAccessTokenSilently();
-      dispatch(postFavorites(id, token));
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleFavoritoBorrar = async (e) => {
-    e.preventDefault();
-    try {
-      const token = await getAccessTokenSilently();
-      dispatch(deleteFavorites(id, token));
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handlePuntuar = async (e) => {
-    try {
-      const token = await getAccessTokenSilently();
-      console.log(e.target.value);
-      dispatch(crearRating(id, token, e.target.value));
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  const handleBorrarRating = async (e) => {
-    try {
-      const token = await getAccessTokenSilently();
-      dispatch(eliminarRating(id, token));
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   async function handleBotonComprar(e) {
     e.preventDefault();
     input.paquete = packageDetail;
@@ -264,7 +231,7 @@ export default function Detail() {
     console.log(input)
 
 
-    /* if (!isAuthenticated) {
+    if (!isAuthenticated) {
       if (!localStorage.getItem("cart")) {
         let cart = [];
         cart.unshift(input);
@@ -306,17 +273,23 @@ export default function Detail() {
         //   cart.forEach((c) => dispatch(updateCart(user.id, c)))
         //   //NO FALTARIA BORRAR EL CARRITO DEL LOCAL??
         // }
+        console.log(cart)
+        dispatch(getAllCart(user.id));
         if (!Object.keys(cart).length) {
           dispatch(postCartPackage(user.id, [input]));
-          // dispatch(getAllCart(user.id));
         } else {
-          dispatch(updateCart(cart.id, [input]));
-          // dispatch(getAllCart(user.id));
-        }
+          dispatch(updateCart(cart.id, { 
+            packageId: input.paquete.id, 
+            activitiesId: input.activities?.map( (a) => a.id ) || [], 
+            quantity: input.cantidad, 
+            total_package: parseInt(input.total) }));
+            //que el total pueda recibir numeros con decimal
+          }
+        dispatch(getAllCart(user.id));
       } catch (error) {
         console.log(error.message);
       }
-    } */
+    }
   }
 
   const handleEstrellas = async (value) => {
@@ -344,9 +317,11 @@ export default function Detail() {
       <div className={s.body}>
         <div className={s.contenedor}>
         
-         <div className={`${s.onSale} ${s.musRibbon} ${s.optionsRibbon} ${s.right}`}>
+        {
+          packageDetail.on_sale != '0' && <div className={`${s.onSale} ${s.musRibbon} ${s.optionsRibbon} ${s.right}`}>
             <span>{packageDetail.on_sale}% OFF</span>
           </div>
+        }
         
           <div className={s.contenedorBarraSuperior}>
             <div onClick={(e) => handleBotonRegresar(e)}>Inicio</div>
@@ -359,10 +334,10 @@ export default function Detail() {
               />
             </div>
           </div>
-          {/* <div>
+          <div>
             <button
               onClick={(e) => {
-                dispatch(deleteCartPackage(cart.id));
+                dispatch(deleteCartPackage(cart.id, packageDetail.id));
               }}
             >
               delete cart
@@ -376,15 +351,8 @@ export default function Detail() {
             >
               reset cart
             </button>
-          </div> */}
-          {/* <div>
-            <button onClick={(e) => handleFavorito(e)}>postear favorito</button>
           </div>
-          <div>
-            <button onClick={(e) => handleFavoritoBorrar(e)}>
-              borrar favorito
-            </button>
-          </div> */}
+          
           {/* <div>
             <select
               onChange={(e) => handlePuntuar(e)}
@@ -543,3 +511,48 @@ export default function Detail() {
     </div>
   );
 }
+
+
+/* 
+
+
+  const handleFavorito = async (e) => {
+    e.preventDefault();
+    try {
+      const token = await getAccessTokenSilently();
+      dispatch(postFavorites(id, token));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleFavoritoBorrar = async (e) => {
+    e.preventDefault();
+    try {
+      const token = await getAccessTokenSilently();
+      dispatch(deleteFavorites(id, token));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handlePuntuar = async (e) => {
+    try {
+      const token = await getAccessTokenSilently();
+      console.log(e.target.value);
+      dispatch(crearRating(id, token, e.target.value));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handleBorrarRating = async (e) => {
+    try {
+      const token = await getAccessTokenSilently();
+      dispatch(eliminarRating(id, token));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
+*/
