@@ -212,24 +212,6 @@ export default function Detail() {
   const handleBotonRegresar = async (e) => {
     e.preventDefault();
     navigate("/");
-    /* setLoading(true);
-    setCheckeado(false);
-    scrollToTop();
-    setInput({
-      cantidad: 1,
-      total: 0,
-      actividades: [],
-    });
-    // await dispatch(cleanPackageById());
-    await dispatch(cleanPackageById());
-    setTimeout(async () => {
-      await dispatch(getPackageById(id));
-      console.log(id)
-      setLoading(false);
-    }, 1); */
-    // dispatch(cleanPackageById());
-    // dispatch(getPackageById(id)); // TENDRIAMOS QUE VER SI CON LOCAL STORAGE SE PUEDE ENCONREAR EK ID
-    // dispatch(getAllPackage());
   };
 
   const handleFavorito = async (e) => {
@@ -273,8 +255,16 @@ export default function Detail() {
   async function handleBotonComprar(e) {
     e.preventDefault();
     input.paquete = packageDetail;
+    if(!input.actividades.length && input.total === 0) {
+      input.total = packageDetail.price;
+    }
+    if(packageDetail.on_sale != '0') {
+      input.total = input.total - (packageDetail.on_sale * input.total) / 100;
+    }
+    console.log(input)
 
-    if (!isAuthenticated) {
+
+    /* if (!isAuthenticated) {
       if (!localStorage.getItem("cart")) {
         let cart = [];
         cart.unshift(input);
@@ -320,20 +310,13 @@ export default function Detail() {
           dispatch(postCartPackage(user.id, [input]));
           // dispatch(getAllCart(user.id));
         } else {
-          // const input2 = {
-          //   cantidad: 1,
-          //   total: 2000,
-          //   actividades: [],
-          //   paquete: { id: 2 }
-          // }
-
           dispatch(updateCart(cart.id, [input]));
           // dispatch(getAllCart(user.id));
         }
       } catch (error) {
         console.log(error.message);
       }
-    }
+    } */
   }
 
   const handleEstrellas = async (value) => {
@@ -360,6 +343,11 @@ export default function Detail() {
     >
       <div className={s.body}>
         <div className={s.contenedor}>
+        
+         <div className={`${s.onSale} ${s.musRibbon} ${s.optionsRibbon} ${s.right}`}>
+            <span>{packageDetail.on_sale}% OFF</span>
+          </div>
+        
           <div className={s.contenedorBarraSuperior}>
             <div onClick={(e) => handleBotonRegresar(e)}>Inicio</div>
             <div onClick={(e) => handleFavorite(e)}>
@@ -371,7 +359,7 @@ export default function Detail() {
               />
             </div>
           </div>
-          <div>
+          {/* <div>
             <button
               onClick={(e) => {
                 dispatch(deleteCartPackage(cart.id));
@@ -388,7 +376,7 @@ export default function Detail() {
             >
               reset cart
             </button>
-          </div>
+          </div> */}
           {/* <div>
             <button onClick={(e) => handleFavorito(e)}>postear favorito</button>
           </div>
@@ -397,7 +385,7 @@ export default function Detail() {
               borrar favorito
             </button>
           </div> */}
-          <div>
+          {/* <div>
             <select
               onChange={(e) => handlePuntuar(e)}
               name="rating"
@@ -421,7 +409,7 @@ export default function Detail() {
             >
               eliminar rating
             </button>
-          </div>
+          </div> */}
           <div className={s.card_rating}>
           
 
@@ -534,7 +522,7 @@ export default function Detail() {
             <div className={s.total}>
               {" "}
               <span>TOTAL U$S </span>
-              {input.total ? input.total : packageDetail.price}
+              <span>{input.total ? input.total : packageDetail.price}</span>
             </div>
           </div>
 

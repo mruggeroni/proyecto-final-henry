@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { HiOutlineEmojiSad } from "react-icons/hi";
 import {
   filterPackagesByDestination,
@@ -17,20 +17,14 @@ import View from "../Search/View";
 import Paginado from "../Paginado/paginado";
 
 export default function Historial() {
-  // Filtrar todas las ordenes por id de usuario
-  // dispachar el detalle de la orden
   const dispatch = useDispatch();
+  const { id } = useParams();
   const user = useSelector( (state) => state.user );
-  const orders = useSelector( (state) => state.orders );
   const orderDetails = useSelector( (state) => state.orderDetails );
     
   useEffect( async () => {
     await dispatch(getOrders());
-
-    const ordersUser = orders.filter( (o) => o.userId === user.id );
-    ordersUser?.forEach( async (o) => {
-      await dispatch(getOrderDetail(o.id)); 
-    });
+    await dispatch(getOrderDetail(id)); 
   }, [])
 
   return (

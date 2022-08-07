@@ -93,16 +93,24 @@ export const cleanPackageById = () => {
   return { type: CLEAN_PACKAGE_BY_ID };
 };
 
-export const updateUser = (id, newUser) => {
+export const updateUser = (newUser, token) => {
   return async function (dispatch) {
-    let res = await axios.put("/user/" + id, newUser);
+    let res = await axios.put("/user/?email=" + newUser.email, newUser, {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
     return dispatch({ type: UPDATE_USER, payload: res.data });
   };
 };
 
-export const deleteUser = (id) => {
+export const deleteUser = (id, token) => {
   return async function (dispatch) {
-    let res = await axios.delete("/user/" + id);
+    let res = await axios.delete("/user/" + id, {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
     return dispatch({ type: DELETE_USER, payload: res.data });
   };
 };

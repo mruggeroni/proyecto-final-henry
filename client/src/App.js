@@ -49,7 +49,7 @@ function App() {
         <Route path="/dashboard/modifyActivities/:id" element={ user.is_admin ? <ModifyActivity /> : <Navigate to='/' />} />
         {/* <Route path="/checkout" element={ Object.keys(user).length ? <CheckoutParent /> : <Navigate to='/' />} /> */}
         <Route path="/checkout" element={ <CheckoutParent /> } />
-        <Route path="/historial" element={ Object.keys(user).length ? <Historial /> : <Navigate to='/' />} />
+        <Route path="/historial/:id" element={ Object.keys(user).length ? <Historial /> : <Navigate to='/' />} />
         <Route path='/createaccount' element={ Object.keys(user).length ? <CreateAccountModal /> : <Navigate to='/' />} />
         <Route path="/terms-and-conditions" element={<Terms />} />
         <Route path="/faq" element={<Faq />} />

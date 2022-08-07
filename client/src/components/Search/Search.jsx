@@ -462,6 +462,7 @@ export default function FilteredSearch() {
                         image={p.main_image}
                         description={p.description}
                         price={p.price}
+                        on_sale={p.on_sale}
                         id={p.id}
                         key={p.id}
                       />
