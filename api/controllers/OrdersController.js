@@ -31,7 +31,7 @@ export const getOrders = async (req, res) => {
 	
 	try {
 		const page = parseInt(req.query.page) || 1;
-		const limit = parseInt(req.query.limit) || 10;
+		const limit = parseInt(req.query.limit) || 100000;
 		const offset = limit * (page - 1);
 		const totalRows = await Order.count({
 			where: filter,

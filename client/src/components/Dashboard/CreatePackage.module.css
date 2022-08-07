@@ -130,6 +130,7 @@ select {
   margin-top: 5vh;
   transition: 1s;
   color: #fafafa;
+  margin-bottom: 5vh;
 }
 
 .create_btn:disabled {
