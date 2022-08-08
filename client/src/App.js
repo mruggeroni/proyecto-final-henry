@@ -27,12 +27,12 @@ import Error404 from "./components/Error404/Error404.jsx";
 import { useSelector } from "react-redux";
 import ListOrders from "./components/Dashboard/ListOrders.jsx";
 import CheckoutConfirmation from './components/Checkout/CheckoutForm/CheckoutConfirmation.jsx'
+import ListDeletedPackages from "./components/Dashboard/ListDeletedPackages.jsx";
 // import Footer from './components/Footer/Footer.jsx';
 
 function App() {
   const user = useSelector( (state) => state.user )
  
-
   return (
     <BrowserRouter>
       <Navbar />
@@ -42,6 +42,7 @@ function App() {
         <Route path="/dashboard" element={ user.is_admin ? <CreatePackage /> : <Navigate to='/' /> } />
         <Route path="/dashboard/orders" element={ user.is_admin ? <ListOrders /> : <Navigate to='/' />} />
         <Route path="/dashboard/listPackages" element={ user.is_admin ? <ListPackages /> : <Navigate to='/' />} />
+        <Route path="/dashboard/listDeletedPackages" element={ user.is_admin ? <ListDeletedPackages /> : <Navigate to='/' />} />
         <Route path="/dashboard/listActivities" element={ user.is_admin ? <ListActivities /> : <Navigate to='/' />} />
         <Route path="/dashboard/listCategories" element={ user.is_admin ? <ListCategories /> : <Navigate to='/' />} />
         <Route path="/dashboard/listUsers" element={ user.is_admin ? <ListUsers /> : <Navigate to='/' />} />

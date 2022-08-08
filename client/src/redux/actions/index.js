@@ -4,6 +4,7 @@ export const GET_PACKAGE_BY_ID = "GET_PACKAGE_BY_ID";
 export const GET_RELATIONATED = "GET_RELATIONATED";
 export const GET_ALL_PACKAGES = "GET_ALL_PACKAGES";
 export const GET_ALL_PACKAGES_DASHBOARD = "GET_ALL_PACKAGES_DASHBOARD";
+export const GET_DELETED_PACKAGES = "GET_DELETED_PACKAGES";
 export const GET_ALL_DESTINATIONS = "GET_ALL_DESTINATIONS";
 export const GET_ON_SALE = "GET_ON_SALE";
 export const GET_ACTIVITIES = "GET_ACTIVITIES";
@@ -68,6 +69,37 @@ export const getOrders = () => {
     return async function (dispatch) {
       let res = await axios.get("/orders");
       return dispatch({ type: GET_ORDERS, payload: res.data.results });
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const patchRestorePackages = (id, token) => {
+  return async function (dispatch) {
+    try {
+      const res = await axios.patch("/restoredPackage/" + id, "",{
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
+      dispatch(getDeletedPackages(token));
+      return res;
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+};
+
+export const getDeletedPackages = (token) => {
+  try {
+    return async function (dispatch) {
+      let res = await axios.get("/deletedPackages", {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
+      return dispatch({ type: GET_DELETED_PACKAGES, payload: res.data });
     };
   } catch (error) {
     console.log(error);
