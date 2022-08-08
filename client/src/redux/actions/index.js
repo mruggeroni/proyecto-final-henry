@@ -3,6 +3,7 @@ import axios, { AxiosError } from "axios";
 export const GET_PACKAGE_BY_ID = "GET_PACKAGE_BY_ID";
 export const GET_RELATIONATED = "GET_RELATIONATED";
 export const GET_ALL_PACKAGES = "GET_ALL_PACKAGES";
+export const GET_ALL_PACKAGES_DASHBOARD = "GET_ALL_PACKAGES_DASHBOARD";
 export const GET_ALL_DESTINATIONS = "GET_ALL_DESTINATIONS";
 export const GET_ON_SALE = "GET_ON_SALE";
 export const GET_ACTIVITIES = "GET_ACTIVITIES";
@@ -120,7 +121,15 @@ export const deleteUser = (id, token) => {
 
 export const getAllPackage = (limitRender) => {
   return async function (dispatch) {
-    let res = await axios.get("/packages/" + limitRender);
+    let res = await axios.get(`/packages/${limitRender}?available=true`);
+    // let res = await axios.get("/packages/" + limitRender);
+    return dispatch({ type: GET_ALL_PACKAGES, payload: res.data });
+  };
+};
+
+export const getAllPackageDashboard = () => {
+  return async function (dispatch) {
+    let res = await axios.get(`/packages/10000`);
     return dispatch({ type: GET_ALL_PACKAGES, payload: res.data });
   };
 };
@@ -629,10 +638,9 @@ export function modificarCategoria(id, payload, token) {
 
 export function filtrar(target, id) {
   return async function (dispatch) {
-    const paquetes = await axios.get("/packages/10000");
+    const paquetes = await axios.get("/packages/10000?available=true");
     return dispatch({ type: FILTRAR, payload: paquetes.data, target, id });
   };
-  // return { type: FILTRAR, target, id };
 }
 
 export function ordenar(target) {

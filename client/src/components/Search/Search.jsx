@@ -20,7 +20,6 @@ import {
 } from "./../../redux/actions/index";
 import Paginado from "../Paginado/paginado";
 import s from "./Search.module.css";
-import { BsArrowBarDown, BsArrowBarUp } from "react-icons/bs";
 import { VscChevronDown, VscChevronUp } from "react-icons/vsc";
 import { useAuth0 } from "@auth0/auth0-react";
 
@@ -30,9 +29,7 @@ export default function FilteredSearch() {
 
   const allPackages = useSelector((state) => state.allPackages);
   const filteredPackages = useSelector((s) => s.filteredPackages);
-  const allDestinations = useSelector(
-    (state) => state.destinationsWithPackages
-  );
+  const allDestinations = useSelector((state) => state.destinationsWithPackages );
 
   const regionesFiltradas = [];
   filteredPackages &&
@@ -90,15 +87,12 @@ export default function FilteredSearch() {
   const handleChange = (e) => {
     e.preventDefault();
     if (e.target.id === "region") {
-      // dispatch(getAllPackage(1000));
       setRegion(e.target.value);
       dispatch(filtrar(e.target.value, e.target.id));
       console.log("jklasdhvbipasjdvbapi");
     }
     if (e.target.id === "searchDestinations") {
       setDestination(e.target.value);
-      // dispatch(getAllPackage(10000));
-      // dispatch(filterPackagesByDestination(e.target.value));
       dispatch(filtrar(e.target.value, e.target.id));
     }
 
@@ -163,16 +157,16 @@ export default function FilteredSearch() {
     await dispatch(getDestinationsWithPackages());
     await dispatch(getTypes());
     if (!isAuthenticated) {
-      // dispatch(getFavoritesLocalStorage());
+      dispatch(getFavoritesLocalStorage());
     } else {
       const token = await getAccessTokenSilently();
       dispatch(getAllFavorites(token));
     }
-    const fetch = async () => {
-      const token = await getAccessTokenSilently();
-      dispatch(createUser(token));
-    };
-    fetch();
+    // const fetch = async () => {
+    //   const token = await getAccessTokenSilently();
+    //   dispatch(createUser(token));
+    // };
+    // fetch();
     setLoading(false);
   }, []);
 

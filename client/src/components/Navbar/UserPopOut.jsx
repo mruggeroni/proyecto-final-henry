@@ -5,8 +5,6 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { NavLink } from "react-router-dom";
 import { createUser } from "../../redux/actions";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
-
 
 export default function UserPopOut() {
   const { user, isAuthenticated, loginWithPopup, logout, getAccessTokenSilently } = useAuth0();
@@ -35,7 +33,6 @@ export default function UserPopOut() {
   }
   return !isAuthenticated ? (
     <div onClick={(e) => handleLogin(e)} className={style.nav_item}>
-      {}
       <BsPersonPlusFill />
     </div>
     

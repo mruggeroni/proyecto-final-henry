@@ -128,7 +128,7 @@ export default function Detail() {
   const checkPackageInCart = (id) => {
     let match = false;
     if (!isAuthenticated) {
-      let cart = JSON.parse(localStorage.getItem("cart"));
+      let cart = JSON.parse(localStorage.getItem("cart")) || {};
       cart.packages?.forEach((p) => p.id === parseInt(id) && (match = true));
     } else {
       cart.packages?.forEach((p) => p.id === parseInt(id) && (match = true));
@@ -139,10 +139,10 @@ export default function Detail() {
 
   async function handleFavorite(e) {
     e.preventDefault();
-    if (checkPackageInCart(id)) {
-      return alert("ya esta en el carrito");
-    }
-    console.log(checkPackageInCart(id))
+    // if (checkPackageInCart(id)) {
+    //   return alert("ya esta en el carrito");
+    // }
+    // console.log(checkPackageInCart(id))
 
     if (!isAuthenticated) {
       packageDetail.image = packageDetail.main_image;
@@ -262,9 +262,9 @@ export default function Detail() {
           alert("ya esta en el carrito");
         }
       }
-      let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
-      favorites = favorites?.filter((f) => f.id !== parseInt(id));
-      localStorage.setItem("favorites", JSON.stringify(favorites));
+      // let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+      // favorites = favorites?.filter((f) => f.id !== parseInt(id));
+      // localStorage.setItem("favorites", JSON.stringify(favorites));
       setCheckeado(false);
       dispatch(cleanPackageById());
       setLoading(true);
@@ -291,9 +291,11 @@ export default function Detail() {
             activitiesId: input.activities?.map( (a) => a.id ) || [], 
             quantity: input.cantidad, 
             total_package: parseInt(input.total) }));
+            scrollToTop()
           }
         } catch (error) { 
         console.log(error.message);
+        alert('El paquete no se pudo agregar al carrito');
       }
     }
     await dispatch(getAllCart(user.id));
@@ -341,7 +343,7 @@ export default function Detail() {
               />
             </div>
           </div>
-          <div>
+          {/* <div>
             <button
               onClick={(e) => {
                 dispatch(deleteCartPackage(cart.id, packageDetail.id));
@@ -358,7 +360,7 @@ export default function Detail() {
             >
               reset cart
             </button>
-          </div>
+          </div> */}
           
           {/* <div>
             <select
@@ -419,7 +421,10 @@ export default function Detail() {
                 {packageDetail.start_date?.split("-").reverse().join("-")} /{" "}
                 {packageDetail.end_date?.split("-").reverse().join("-")}
               </h3>
-              <h3>U$S {packageDetail.price}</h3>
+              <div className={s.pricePaq}>
+                <h3>U$S {packageDetail.on_sale ? <s>{packageDetail.price}</s> : packageDetail.price}</h3>
+                { packageDetail.on_sale && <h4>{packageDetail.price*((100 - packageDetail.on_sale)/100)}</h4> }
+              </div>
               <h3>
                 Destinos:{" "}
                 {packageDetail.destinations?.map((i, o) => {
@@ -474,7 +479,7 @@ export default function Detail() {
                         onChange={() => handleCheckbox(index)}
                       />
                       <label htmlFor={i.name}>
-                        U$S {i.price}
+                        U$S {packageDetail.on_sale ? (i.price*(100 - packageDetail.on_sale)/100) : i.price}
                         {"       "}
                       </label>
                     </div>
@@ -497,10 +502,16 @@ export default function Detail() {
             <div className={s.total}>
               {" "}
               <span>TOTAL U$S </span>
-              <span>{input.total ? input.total : packageDetail.price}</span>
+              {/* <span>{input.total ? input.total : packageDetail.price}</span> */}
+             {packageDetail.on_sale &&  
+             <span>{(input.total ? input.total : packageDetail.price)*((100 - packageDetail.on_sale)/100)}</span>}
             </div>
           </div>
-
+            {packageDetail.on_sale &&
+              <div className={s.discountTotal}>
+                <p>Subtotal: U$S{input.total ? input.total : packageDetail.price}</p>
+                <p>Total Descuento: U$S{input.total - input.total*((100 - packageDetail.on_sale)/100)}</p> 
+              </div>}
           <div className={s.contenedorBotonComprar}>
             <button
               onClick={(e) => handleBotonComprar(e)}
