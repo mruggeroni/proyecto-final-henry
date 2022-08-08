@@ -191,11 +191,7 @@ export default function FilteredSearch() {
       ) : (
         <div>
           <div className={s.view}>
-            <div
-              className={
-                mostrar ? s.contenedorFiltros : s.contenedorFiltrosEsconder
-              }
-            >
+            <div className={mostrar ? s.contenedorFiltros : s.contenedorFiltrosEsconder}>
               <label>
                 <select
                   onChange={(e) => handleChange(e)}
@@ -417,34 +413,42 @@ export default function FilteredSearch() {
               </button>
             </div>
           </div>
-          <div className={s.contenedorOrdenar}>
-            <SortPrice setOrder={setOrder} setCurrentPage={setCurrentPage} />
-            <div onClick={() => setMostrar(!mostrar)}>
-              filtros
+          <div onClick={() => setMostrar(!mostrar)} className={s.moreFilters}>
               <VscChevronDown
                 className={s.flechaFiltros}
                 display={mostrar ? "none" : true}
-              />
+                />
               <VscChevronUp
                 className={s.flechaFiltros}
                 display={mostrar ? true : "none"}
-              />
+                />
+                <p>+ filtros</p>
             </div>
-            <View
-              currentPackage={currentPackage}
-              allPackages={allPackages}
-              indexOfFirstPackage={indexOfFirstPackage}
-              setPackagesPerPage={setPackagesPerPage}
-              setCurrentPage={setCurrentPage}
+          {/* <div className={s.contenedorOrdenar}>
+            <SortPrice setOrder={setOrder} setCurrentPage={setCurrentPage} />
+          </div> */}
+            {currentPackage ? <div className={s.pag}>
+              <div className={s.divVacio}></div>
+              <div className={s.paginadoSearch}>
+              <Paginado
+              packagesPerPage={packagesPerPage}
+              allPackages={filteredPackages.length}
+              paginado={paginado}
               currentPage={currentPage}
             />
-          </div>
-          <Paginado
-            packagesPerPage={packagesPerPage}
-            allPackages={filteredPackages.length}
-            paginado={paginado}
-            currentPage={currentPage}
-          />
+            </div>
+            <div className={s.viewComponent}>
+              <View
+                currentPackage={currentPackage}
+                allPackages={allPackages}
+                indexOfFirstPackage={indexOfFirstPackage}
+                setPackagesPerPage={setPackagesPerPage}
+                setCurrentPage={setCurrentPage}
+                currentPage={currentPage}
+              />
+              </div>
+            </div> : ' '}
+          {/* </div> */}
           <div className={s.cards}>
             {currentPackage ? (
               currentPackage.map((p) => {

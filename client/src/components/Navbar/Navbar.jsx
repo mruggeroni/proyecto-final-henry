@@ -19,17 +19,17 @@ export default function Navbar() {
   
   useEffect( async () => {
     const token = await getAccessTokenSilently()
-    let res = dispatch(createUser(token))
+    // let res = dispatch(createUser(token))
     if(!isAuthenticated) {
       // dispatch(getFavoritesLocalStorage());
     } else {
       const token = await getAccessTokenSilently();
       await dispatch(getAllFavorites(token))
       try {
-        await dispatch(getAllCart(res.payload.id));
+        await dispatch(getAllCart(user.id));
       } catch(error) {
-        await dispatch(postCartPackage(res.payload.id, []))
-        await dispatch(getAllCart(res.payload.id));
+        await dispatch(postCartPackage(user.id, []))
+        await dispatch(getAllCart(user.id));
       }
     }
 

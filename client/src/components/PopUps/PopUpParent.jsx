@@ -118,14 +118,13 @@ export default function PopUpsComponent() {
         });
         localStorage.getItem('cart') && localStorage.removeItem('cart');
         await dispatch(getCartLocalStorage());
-        
-        
+          
         
         await dispatch(cleanPackageById());
         if(id !== undefined) await dispatch(getPackageById(id));
         setShowFavoritePopUp(false);
         setShowCartPopUp(false);
-        await dispatch(getAllCart(res.payload.id));
+        // await dispatch(getAllCart(res.payload.id));
         // showFavoritePopUp === false ? document.getElementById("popUpBackground").classList?.add(`${s.is_active}`) : document.getElementById("popUpBackground")?.classList?.remove(`${s.is_active}`);
     }
 
