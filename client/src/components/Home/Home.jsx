@@ -34,7 +34,7 @@ export default function Home() {
   const featured = useSelector((state) => state.featured);
   const sortDestinations = allDestinations.sort();
 
-  useEffect( () => {
+  useEffect( async () => {
     setLoading(true);
     const fetch = async () => {
       await dispatch(getAllPackage(1000));
@@ -43,11 +43,12 @@ export default function Home() {
       await dispatch(getOnSale());
       await dispatch(getAllActivities());
       await dispatch(getFeatured())
+      setLoading(false);
       // const token = await getAccessTokenSilently()
       // dispatch(createUser(token))
     }
     fetch()
-    setLoading(false);
+    // setLoading(false);
   }, [dispatch]);
 
   useEffect( async () => {

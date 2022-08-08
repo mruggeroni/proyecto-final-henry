@@ -64,6 +64,7 @@ function App() {
         <Route path="/cart" element={<Checkout />} />
         <Route path="/faq" element={<Home />} />
         <Route path="/contact" element={<Home />} />
+        <Route path="/404" element={<Error404 />} />
         <Route path="*" element={<Error404 />} />
       </Routes>
       {/* <Footer /> */}
