@@ -11,7 +11,11 @@ import {
   getDestinationsWithPackages,
   createUser,
   getAllFavorites,
-  getFavoritesLocalStorage
+  getFavoritesLocalStorage,
+  getFeatured,
+  getAllCart,
+  postCartPackage,
+  getCartLocalStorage
 } from "../../redux/actions/index";
 // import BacktoTop from "../BacktoTop/BacktoTop";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -20,7 +24,6 @@ import Footer from "../Footer/Footer";
 export default function Home() {
   const dispatch = useDispatch();
   const {
-    user,
     isAuthenticated,
     loginWithPopup,
     logout,
@@ -28,10 +31,10 @@ export default function Home() {
   } = useAuth0();
 
   const [loading, setLoading] = useState(true);
-  const allDestinations = useSelector(
-    (state) => state.destinationsWithPackages
-  );
+  const allDestinations = useSelector( (state) => state.destinationsWithPackages );
   const onSale = useSelector((state) => state.onsale);
+  const user = useSelector( (state) => state.user )
+  const featured = useSelector((state) => state.featured);
   const sortDestinations = allDestinations.sort();
 
   useEffect(async () => {
@@ -41,23 +44,45 @@ export default function Home() {
     await dispatch(getDestinationsWithPackages());
     await dispatch(getOnSale());
     await dispatch(getAllActivities());
+    await dispatch(getFeatured())
     // if (isAuthenticated) {
     //   const token = await dispatch(createUser(token));
     //   console.log(token);
     // }
-    if(!isAuthenticated) {
-      // dispatch(getFavoritesLocalStorage());
-    } else{
-      const token = await getAccessTokenSilently();
-      dispatch(getAllFavorites(token))
-    }
     setLoading(false);
     const fetch = async () => {
       const token = await getAccessTokenSilently()
       dispatch(createUser(token))
     }
     fetch()
+    if(!isAuthenticated) {
+      // dispatch(getFavoritesLocalStorage());
+    } else{
+      const token = await getAccessTokenSilently();
+      dispatch(getAllFavorites(token))
+      try {
+        await dispatch(getAllCart(user.id));
+    } catch(error) {
+        await dispatch(postCartPackage(user.id, []))
+        await dispatch(getAllCart(user.id));
+    }
+    }
   }, [dispatch]);
+
+  useEffect(() => {
+    const fetch = async () => {
+      if (!isAuthenticated) {
+       dispatch(getCartLocalStorage());
+       console.log("deslogueado")
+     } else {
+       const token = await getAccessTokenSilently();
+       const usuario = await dispatch(createUser(token));
+       console.log(usuario)
+       dispatch(getAllCart(usuario.payload.id));
+     }
+   };
+   fetch();
+  }, []);
 
   return (
     <div className={style.home_container}>
@@ -70,15 +95,15 @@ export default function Home() {
           <Hero destinations={sortDestinations} />
           <div className={style.feature_container}>
             <h2 className={style.h2}>Destacados</h2>
-            <CardGenericContainer listCards={onSale} />
+            <CardGenericContainer listCards={featured} />
           </div>
           <div className={style.promotions_container}>
             <h2 className={style.h2}>Promociones</h2>
-            <CardGenericContainer listCards={onSale} />
+            <CardGenericContainer listCards={onSale} component='promotions' />
           </div>
         </React.Fragment>
       )}
-      <Footer />
+     <Footer />
     </div>
   );
 }

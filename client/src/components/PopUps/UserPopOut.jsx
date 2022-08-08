@@ -8,7 +8,7 @@ import { createUser, getAllFavorites, postFavorites, getAllCart, postCartPackage
 import { useDispatch, useSelector } from "react-redux";
 import s from "./PopUps.module.css";
 
-export default function UserPopOut({ showProfile, setShowProfile }) {
+export default function UserPopOut({ showProfile, setShowProfile, divBackground }) {
   const dispatch = useDispatch();
   const {
     isAuthenticated,
@@ -37,6 +37,7 @@ export default function UserPopOut({ showProfile, setShowProfile }) {
 
   function handleClickUser(e){
     setShowProfile(!showProfile);
+    divBackground?.classList?.remove(`${s.is_active}`);
   }
 
   return (
@@ -56,7 +57,7 @@ export default function UserPopOut({ showProfile, setShowProfile }) {
         <div className={s.user_profile_link}>
           {/* <div> */}
           <div className={s.user_btn}>
-            <UserEdit />
+            <UserEdit handleClickUser={handleClickUser} />
           </div>
           {
             user.is_admin && <NavLink to="/dashboard" className={s.user_btn} onClick={ () => handleClickUser() }>
@@ -66,8 +67,6 @@ export default function UserPopOut({ showProfile, setShowProfile }) {
           <NavLink to="./" className={s.user_btn} onClick={ () => handleClickUser() }>
             Servicio al Cliente
           </NavLink>
-            {/* <p></p> */}
-          {/* </div> */}
         </div>
         <hr />
         <button className={s.user_profile_btn} onClick={logout}>

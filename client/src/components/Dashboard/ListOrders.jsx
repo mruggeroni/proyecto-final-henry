@@ -22,6 +22,17 @@ export default function ListOrders() {
     fetchData().catch(console.error);
   }, [dispatch])
 
+  const validateStatus = (status) => {
+    switch (status) {
+        case 'cancel':
+        return 'fl_table_false';
+        case 'paid':
+        return 'fl_table_true';
+        case 'pending':
+        return 'fl_table_pending';
+    }
+  }
+
   return (
     <div>
       <Dashboard />
@@ -50,10 +61,7 @@ export default function ListOrders() {
                         <td>{o.user.id}</td>
                         <td>{o.user.first_name} {o.user.last_name}</td>
                         <td>
-                            {o.status === 'paid' 
-                            ? <div className={s.fl_table_true}>Completo</div> 
-                            : <div className={s.fl_table_false}>Pendiente</div>
-                            }
+                            <div className={s[validateStatus(o.status)]}>{o.status}</div>
                         </td>
                       </tr>
                     );

@@ -28,7 +28,12 @@ import {
   PATCH_PACKAGE,
   GET_CART,
   CLEAN_ALL_PACKAGE,
-  GET_ORDERS
+  GET_ORDERS,
+  UPDATE_CART,
+  GET_RATING,
+  GET_FEATURED,
+  GET_ORDER_DETAILS,
+  STATUS_USER
 } from "./../actions/index.js";
 
 import {
@@ -39,30 +44,35 @@ import {
   filtrarType,
   filtrarPrecioDesde,
   filtrarPrecioHasta,
+  filtrarRegion,
 } from "./funciones.js";
 
 const initialState = {
   allPackages: [],
   filteredPackages: [],
   activities: [],
-  cart: [],
+  cartLocalStorage: {},
+  cart: {},
   destinations: [],
   destinationsWithPackages: [],
   regions: [],
   types: [],
   seasons: [],
+  favoritesLocalStorage: [],
   favorites: [],
   orders: [],
-  order: {},
   featured: [],
   onsale: [],
   detailPackage: {},
   relationated: [],
   users: [],
   user: {},
+  userStatus: {},
   categories: [],
   region: [],
+  orderDetails: [],
   ordenado: { tipo: "precio", forma: "asc" },
+  rating: "",
   //filtrado y ordenamiento
   page: 1,
   limitRender: 100000,
@@ -83,25 +93,31 @@ const rootReducer = (state = initialState, action) => {
         allPackages: action.payload,
         // filteredPackages: action.payload,
       };
+    case GET_ORDER_DETAILS:
+     
+      return {
+        ...state,
+        orderDetails: action.payload.packages
+      };
     case GET_ORDERS:
       return {
         ...state,
-        orders: action.payload
-      }
+        orders: action.payload,
+      };
     case PATCH_PACKAGE:
       return {
-        ...state
-      }
+        ...state,
+      };
     case CLEAN_ALL_PACKAGE:
       return {
         ...state,
-        allPackages: {}
-      }
+        allPackages: {},
+      };
     case CLEAN_PACKAGE_BY_ID:
       return {
         ...state,
-        detailPackage: {}
-      }
+        detailPackage: {},
+      };
     case GET_ALL_DESTINATIONS:
       return {
         ...state,
@@ -113,7 +129,6 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         destinations: action.payload,
       };
-
     case GET_DESTINATIONS_WITH_PACKAGES:
       const pack = state.allPackages;
       let arr = [];
@@ -133,6 +148,12 @@ const rootReducer = (state = initialState, action) => {
         onsale: action.payload,
       };
 
+    case GET_FEATURED:
+      return {
+        ...state,
+        featured: action.payload
+      }
+
     case GET_ACTIVITIES:
       return {
         ...state,
@@ -150,30 +171,30 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         detailPackage: action.payload,
       };
-
     case GET_RELATIONATED:
       return {
         ...state,
         relationated: action.payload,
       };
-
     case POST_PACKAGE:
       return {
         ...state,
       };
-
     case POST_USER:
       return {
         ...state,
         user: action.payload,
       };
-
+    case STATUS_USER:
+      return {
+        ...state,
+        userStatus: action.payload,
+      };
     case GET_USERS:
       return {
         ...state,
         users: action.payload,
       };
-
     case DELETE_USER:
       return {
         ...state,
@@ -196,27 +217,27 @@ const rootReducer = (state = initialState, action) => {
       let sortPrice =
         action.payload === "minPrice"
           ? state.filteredPackages.sort(function (a, b) {
-              if (a.price > b.price) return 1;
-              if (b.price > a.price) return -1;
-              return 0;
-            })
+            if (a.price > b.price) return 1;
+            if (b.price > a.price) return -1;
+            return 0;
+          })
           : state.filteredPackages.sort(function (a, b) {
-              if (a.price > b.price) return -1;
-              if (b.price > a.price) return 1;
-              return 0;
-            });
+            if (a.price > b.price) return -1;
+            if (b.price > a.price) return 1;
+            return 0;
+          });
       let favSort =
         action.payload === "minPrice"
           ? state.favorites.sort(function (a, b) {
-              if (a.price > b.price) return 1;
-              if (b.price > a.price) return -1;
-              return 0;
-            })
+            if (a.price > b.price) return 1;
+            if (b.price > a.price) return -1;
+            return 0;
+          })
           : state.favorites.sort(function (a, b) {
-              if (a.price > b.price) return -1;
-              if (b.price > a.price) return 1;
-              return 0;
-            });
+            if (a.price > b.price) return -1;
+            if (b.price > a.price) return 1;
+            return 0;
+          });
       return {
         ...state,
         filteredPackages: sortPrice,
@@ -229,10 +250,10 @@ const rootReducer = (state = initialState, action) => {
       action.payload === "all"
         ? allPackages.forEach((e) => aux.push(e))
         : allPackages.filter((p) =>
-            p.destinations.forEach((el) => {
-              el.name === action.payload && aux.push(p);
-            })
-          );
+          p.destinations.forEach((el) => {
+            el.name === action.payload && aux.push(p);
+          })
+        );
 
       return {
         ...state,
@@ -273,43 +294,92 @@ const rootReducer = (state = initialState, action) => {
       let localStorageFav = JSON.parse(localStorage.getItem("favorites")) || [];
       return {
         ...state,
-        // favorites: localStorageFav,
+        favoritesLocalStorage: localStorageFav,
       };
 
     case GET_FAVORITES:
       return {
         ...state,
-        favorites: action.payload
+        favorites: action.payload,
       };
 
     case GET_LOCAL_STORAGE_CART:
       let localStorageCart = JSON.parse(localStorage.getItem("cart")) || [];
       return {
         ...state,
-        cart: localStorageCart
+        cartLocalStorage: localStorageCart,
       };
 
-      case GET_CART:
-        return{
-          ...state,
-          cart: action.payload
-        }
-        
+    case GET_CART:
+      return {
+        ...state,
+        cart: action.payload,
+      };
+
+    case UPDATE_CART:
+      // action.payload es un mensaje de confirmación
+      // let newCart = state.cart;
+      // console.log(action.payload);
+      // newCart.paquete.push(action.payload)
+      return {
+        ...state,
+        // cart: newCart
+      };
+
     case FILTRAR:
       console.log("filtrar", action);
       // primero ordenamos
       let ordenados = funcionOdenar(
-        state.allPackages,
+        action.payload,
         state.ordenado.tipo,
         state.ordenado.forma
       );
 
       // filtramos
+      //por region
+      if (action.id === "region") {
+        let filtradoRegion = filtrarRegion(ordenados, action.target);
+        // let filtradoDestino = filtrarDestinos(
+        //   filtradoRegion,
+        //   state.filtradoDestino?.length ? state.filtradoDestino : "all"
+        // );
+        let filtradosFechaDesde = filtrarFechaDesde(
+          filtradoRegion,
+          state.filtradoDateMin?.length ? state.filtradoDateMin : "all"
+        );
+        let filtradosFechaHasta = filtrarFechaHasta(
+          filtradosFechaDesde,
+          state.filtradoDateMax?.length ? state.filtradoDateMax : "all"
+        );
+        let filtradoPrecioDesde = filtrarPrecioDesde(
+          filtradosFechaHasta,
+          state.priceFilterMin
+        );
+        let filtradoPrecioHasta = filtrarPrecioHasta(
+          filtradoPrecioDesde,
+          state.priceFilterMax
+        );
+        let filtradoType = filtrarType(
+          filtradoPrecioHasta,
+          state.filtradoType?.length ? state.filtradoType : "all"
+        );
+        return {
+          ...state,
+          filteredPackages: filtradoType,
+          filtradoRegion  : action.target,
+          filtradoDestino  : "",
+        };
+      }
+
       //por destino
       if (action.id === "searchDestinations") {
         let filtradosDestino = filtrarDestinos(ordenados, action.target);
-        let filtradosFechaDesde = filtrarFechaDesde(
+        let filtradosRegion = filtrarRegion(
           filtradosDestino,
+          state.filtradoRegion?.length ? state.filtradoRegion : "all"
+        );
+        let filtradosFechaDesde = filtrarFechaDesde(
+          filtradosRegion,
           state.filtradoDateMin?.length ? state.filtradoDateMin : "all"
         );
         let filtradosFechaHasta = filtrarFechaHasta(
@@ -341,8 +411,12 @@ const rootReducer = (state = initialState, action) => {
           filtradoFechaDesde,
           state.filtradoDestino?.length ? state.filtradoDestino : "all"
         );
-        let filtradoFechaHasta = filtrarFechaHasta(
+        let filtradosRegion = filtrarRegion(
           filtradoDestino,
+          state.filtradoRegion?.length ? state.filtradoRegion : "all"
+        );
+        let filtradoFechaHasta = filtrarFechaHasta(
+          filtradosRegion,
           state.filtradoDateMax.length ? state.filtradoDateMax : "all"
         );
         let filtradoPrecioDesde = filtrarPrecioDesde(
@@ -370,8 +444,12 @@ const rootReducer = (state = initialState, action) => {
           filtradoFechaHasta,
           state.filtradoDestino?.length ? state.filtradoDestino : "all"
         );
-        let filtradosFechaDesde = filtrarFechaDesde(
+        let filtradosRegion = filtrarRegion(
           filtradoDestino,
+          state.filtradoRegion?.length ? state.filtradoRegion : "all"
+        );
+        let filtradosFechaDesde = filtrarFechaDesde(
+          filtradosRegion,
           state.filtradoDateMin?.length ? state.filtradoDateMin : "all"
         );
 
@@ -403,8 +481,12 @@ const rootReducer = (state = initialState, action) => {
           filtradoType,
           state.filtradoDestino.length ? state.filtradoDestino : "all"
         );
-        let filtradosFechaDesde = filtrarFechaDesde(
+        let filtradosRegion = filtrarRegion(
           filtradoDestino,
+          state.filtradoRegion?.length ? state.filtradoRegion : "all"
+        );
+        let filtradosFechaDesde = filtrarFechaDesde(
+          filtradosRegion,
           state.filtradoDateMin?.length ? state.filtradoDateMin : "all"
         );
         let filtradoFechaHasta = filtrarFechaHasta(
@@ -433,8 +515,12 @@ const rootReducer = (state = initialState, action) => {
           filtadosPrecioDesde,
           state.filtradoDestino?.length ? state.filtradoDestino : "all"
         );
-        let filtradosFechaDesde = filtrarFechaDesde(
+        let filtradosRegion = filtrarRegion(
           filtradoDestino,
+          state.filtradoRegion?.length ? state.filtradoRegion : "all"
+        );
+        let filtradosFechaDesde = filtrarFechaDesde(
+          filtradosRegion,
           state.filtradoDateMin?.length ? state.filtradoDateMin : "all"
         );
 
@@ -473,8 +559,12 @@ const rootReducer = (state = initialState, action) => {
           filtadosPrecioHasta,
           state.filtradoDestino?.length ? state.filtradoDestino : "all"
         );
-        let filtradosFechaDesde = filtrarFechaDesde(
+        let filtradosRegion = filtrarRegion(
           filtradoDestino,
+          state.filtradoRegion?.length ? state.filtradoRegion : "all"
+        );
+        let filtradosFechaDesde = filtrarFechaDesde(
+          filtradosRegion,
           state.filtradoDateMin?.length ? state.filtradoDateMin : "all"
         );
         let filtradoFechaHasta = filtrarFechaHasta(
@@ -507,6 +597,7 @@ const rootReducer = (state = initialState, action) => {
       if (action.id === "reset") {
         return {
           ...state,
+          allPackages: action.payload,
           filteredPackages: action.payload,
           ordenado: { tipo: "precio", forma: "asc" },
           limitRender: 100000,
@@ -554,6 +645,12 @@ const rootReducer = (state = initialState, action) => {
           },
         };
       }
+
+      case GET_RATING:
+        return {
+          ...state,
+          rating: action.payload,
+        };
 
     default:
       return { ...state };

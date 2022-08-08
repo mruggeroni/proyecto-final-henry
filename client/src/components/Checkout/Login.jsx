@@ -2,19 +2,19 @@ import React, { useState } from "react";
 import { BsFillEyeFill, BsFillEyeSlashFill } from "react-icons/bs";
 import s from './Login.module.css';
 
-export default function Login({ showProfile, setShowProfile }) {
+export default function Login({ showProfile, setShowProfile, loginWithPopup }) {
 
-    let [ showPassword, setShowPassword ] = useState(false);
-  const handlePassword = (e) => {
-    e.preventDefault();
-    setShowPassword(!showPassword)
-  }
+  //   let [ showPassword, setShowPassword ] = useState(false);
+  // const handlePassword = (e) => {
+  //   e.preventDefault();
+  //   setShowPassword(!showPassword)
+  // }
 
   return (
     !showProfile ? null
     :   
     <div className={s.profile_container}>
-        <div className={s.profile_input_container}>
+        {/* <div className={s.profile_input_container}>
             <label className={s.profile_label}>Email</label>
             <input type='text' className={s.profile_input} />
         </div>
@@ -31,9 +31,9 @@ export default function Login({ showProfile, setShowProfile }) {
                 <label className={s.rememberMe}>Recordarme</label>
             </div>
             <p>Haz olvidado tu contraseña?</p>
-        </div>
+        </div> */}
         <div>
-        <button type="submit" className={s.profile_btn_save}>Iniciar Sesión</button>
+        <button type="submit" className={s.profile_btn_save} onClick={() => loginWithPopup}>Iniciar Sesión</button>
         </div>
     </div>   
   );

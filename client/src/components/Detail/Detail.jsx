@@ -21,11 +21,14 @@ import {
   createUser,
   deleteCartPackage,
   postCartPackage,
-  getAllCart
-
+  getAllCart,
+  updateCart,
+  getRating,
 } from "../../redux/actions/index";
 import { useAuth0 } from "@auth0/auth0-react";
 import Loading from "../Loading/Loading";
+import Rating from 'react-rating';
+import { BsFillStarFill, BsStar } from 'react-icons/bs';
 
 export default function Detail() {
   const dispatch = useDispatch();
@@ -34,8 +37,10 @@ export default function Detail() {
   const packageDetail = useSelector((state) => state.detailPackage);
   const relationatedPackage = useSelector((state) => state.relationated);
   const allActivities = useSelector((state) => state.activities);
+  const cart = useSelector((state) => state.cart);
   const favorites = useSelector((state) => state.favorites);
   const user = useSelector((state) => state.user);
+  const rating = useSelector((s) => s.rating);
   const [checkeado, setCheckeado] = useState(false);
   const [loading, setLoading] = useState(true);
   const [checkboxEstado, setCheckboxEstado] = useState(
@@ -46,9 +51,10 @@ export default function Detail() {
     total: 0,
     actividades: [],
   });
+
   const { isAuthenticated, getAccessTokenSilently } = useAuth0();
 
-  useEffect( async () => {
+  useEffect(async () => {
     setLoading(true);
 
     if (
@@ -65,6 +71,11 @@ export default function Detail() {
         });
         document.getElementsByName("selectCantidad")[0].value = "1";
       }
+      setInput({
+        cantidad: 1,
+        total: packageDetail.price,
+        actividades: [],
+      });
       setCheckeado(false);
       if (!isAuthenticated) {
         let favorites = JSON.parse(localStorage.getItem("favorites"));
@@ -80,18 +91,22 @@ export default function Detail() {
     }
   }, [packageDetail, relationatedPackage, allActivities]);
 
-  useEffect( async () => {
+  useEffect(async () => {
     dispatch(cleanPackageById());
     dispatch(getPackageById(id));
+    const rating = await dispatch(getRating(id));
+    console.log(rating);
     dispatch(getRelationated(id));
     dispatch(getAllActivities());
     dispatch(getFavoritesLocalStorage());
+    dispatch(getCartLocalStorage());
+    dispatch(getAllCart(user.id));
     const fetch = async () => {
       const token = await getAccessTokenSilently();
       // console.log(token)
       dispatch(createUser(token));
     };
-    // fetch();
+    fetch();
     // if (!isAuthenticated) {
     //   dispatch(getFavoritesLocalStorage());
     // } else {
@@ -111,19 +126,26 @@ export default function Detail() {
   }
 
   const checkPackageInCart = (id) => {
-    let cart = JSON.parse(localStorage.getItem("cart"));
     let match = false;
-    cart?.forEach((p) => p.paquete.id === parseInt(id) && (match = true));
+    if (!isAuthenticated) {
+      let cart = JSON.parse(localStorage.getItem("cart"));
+      cart.packages?.forEach((p) => p.id === parseInt(id) && (match = true));
+    } else {
+      cart.packages?.forEach((p) => p.id === parseInt(id) && (match = true));
+    }
+    console.log(match)
     return match;
   };
 
   async function handleFavorite(e) {
     e.preventDefault();
+    if (checkPackageInCart(id)) {
+      return alert("ya esta en el carrito");
+    }
+    console.log(checkPackageInCart(id))
+
     if (!isAuthenticated) {
       packageDetail.image = packageDetail.main_image;
-      if (checkPackageInCart(id)) {
-        return alert("ya esta en el carrito");
-      }
       if (checkeado) {
         let favorites = JSON.parse(localStorage.getItem("favorites"));
         let remFav = favorites.filter((f) => {
@@ -197,80 +219,44 @@ export default function Detail() {
   }
 
   const handleBotonRegresar = async (e) => {
-    // e.preventDefault();
-    setCheckeado(false);
-    setLoading(true);
-    scrollToTop();
-    setInput({
-      cantidad: 1,
-      total: 0,
-      actividades: [],
-    });
-    // await dispatch(cleanPackageById());
-    navigate(-1);
-    setTimeout(async () => {
-      await dispatch(cleanPackageById());
-      await dispatch(getPackageById(id));
-      console.log(id)
-      }, 0);
-    // dispatch(cleanPackageById());
-    // dispatch(getPackageById(id)); // TENDRIAMOS QUE VER SI CON LOCAL STORAGE SE PUEDE ENCONREAR EK ID
-    // dispatch(getAllPackage());
-  };
-
-  const handleFavorito = async (e) => {
     e.preventDefault();
-    try {
-      const token = await getAccessTokenSilently();
-      dispatch(postFavorites(id, token));
-    } catch (error) {
-      console.log(error);
-    }
+    navigate("/");
   };
 
-  const handleFavoritoBorrar = async (e) => {
-    e.preventDefault();
-    try {
-      const token = await getAccessTokenSilently();
-      dispatch(deleteFavorites(id, token));
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handlePuntuar = async (e) => {
-    try {
-      const token = await getAccessTokenSilently();
-      console.log(e.target.value);
-      dispatch(crearRating(id, token, e.target.value));
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  const handleBorrarRating = async (e) => {
-    try {
-      const token = await getAccessTokenSilently();
-      dispatch(eliminarRating(id, token));
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  async function handleBotonComprar(e){
+  async function handleBotonComprar(e) {
     e.preventDefault();
     input.paquete = packageDetail;
-    
-    if(!isAuthenticated){
+    if(!input.actividades.length && input.total === 0) {
+      input.total = packageDetail.price;
+    }
+    // if(packageDetail.on_sale != '0') {
+    //   input.total = input.total - (packageDetail.on_sale * input.total) / 100;
+    // }
+    console.log(input)
+
+
+    if (!isAuthenticated) {
       if (!localStorage.getItem("cart")) {
-        let cart = [];
-        cart.unshift(input);
+        let cart = {
+          total_order: 0,
+          packages: []
+        };
+        cart.total_order += input.total;
+        input.paquete.total = input.total;
+        input.paquete.quantity = input.cantidad;
+        input.paquete.activities = input.actividades;
+        cart.packages.push(input.paquete)
         localStorage.setItem("cart", JSON.stringify(cart));
       } else {
         let cart = JSON.parse(localStorage.getItem("cart"));
         let match = false;
-        cart?.forEach((p) => p.paquete.id === parseInt(id) && (match = true));
+        cart.packages?.forEach((p) => p.id === parseInt(id) && (match = true));
         if (!match) {
-          cart.unshift(input);
+          cart.total_order += input.total;
+          input.paquete.total = input.total;
+          input.paquete.quantity = input.cantidad;
+          input.paquete.activities = input.actividades;
+          cart.packages.push(input.paquete)
           localStorage.setItem("cart", JSON.stringify(cart));
         } else {
           alert("ya esta en el carrito");
@@ -288,32 +274,37 @@ export default function Detail() {
         total: 0,
         actividades: [],
       });
-      /* 
-      setCheckboxEstado(new Array(10).fill(false));
-      */
+
+      // setCheckboxEstado(new Array(10).fill(false));
+
+      dispatch(getCartLocalStorage());
       setTimeout(() => {
         dispatch(getPackageById(id));
       }, 1);
-      dispatch(getCartLocalStorage());
-    } else{
-      try{
-      //  console.log(input)
-      //   input = packageDetail;
-      //   console.log([packageDetail])
-        dispatch(postCartPackage(user.id, [input]));
-        dispatch(getAllCart(user.id));
-      } catch (error) {
+    } else {
+      try {
+        if (!Object.keys(cart).length) {
+          await dispatch(postCartPackage(user.id, [input]));
+        } else {
+          await dispatch(updateCart(cart.id, { 
+            packageId: input.paquete.id, 
+            activitiesId: input.activities?.map( (a) => a.id ) || [], 
+            quantity: input.cantidad, 
+            total_package: parseInt(input.total) }));
+          }
+        } catch (error) { 
         console.log(error.message);
       }
     }
-  };
+    await dispatch(getAllCart(user.id));
+  }
 
-  const handleEstrellas = async (e) => {
-    e.preventDefault();
+  const handleEstrellas = async (value) => {
     try {
-      console.log(e.target.outerHTML.slice(13, 14));
       const token = await getAccessTokenSilently();
-      // dispatch(crearRating(id, token, e.target.id))
+      await dispatch(crearRating(id, token, value));
+      dispatch(getRating(id))
+      setInput({...input})
     } catch (error) {
       console.log(error.message);
     }
@@ -332,8 +323,15 @@ export default function Detail() {
     >
       <div className={s.body}>
         <div className={s.contenedor}>
+        
+        {
+          packageDetail.on_sale != '0' && <div className={`${s.onSale} ${s.musRibbon} ${s.optionsRibbon} ${s.right}`}>
+            <span>{packageDetail.on_sale}% OFF</span>
+          </div>
+        }
+        
           <div className={s.contenedorBarraSuperior}>
-            <div onClick={(e) => handleBotonRegresar(e)}>Volver</div>
+            <div onClick={(e) => handleBotonRegresar(e)}>Inicio</div>
             <div onClick={(e) => handleFavorite(e)}>
               <BotonFav
                 setChecked={setCheckeado}
@@ -344,14 +342,25 @@ export default function Detail() {
             </div>
           </div>
           <div>
-            <button onClick={(e) => handleFavorito(e)}>postear favorito</button>
-          </div>
-          <div>
-            <button onClick={(e) => handleFavoritoBorrar(e)}>
-              borrar favorito
+            <button
+              onClick={(e) => {
+                dispatch(deleteCartPackage(cart.id, packageDetail.id));
+              }}
+            >
+              delete cart
             </button>
           </div>
           <div>
+            <button
+              onClick={(e) => {
+                dispatch(getAllCart(user.id));
+              }}
+            >
+              reset cart
+            </button>
+          </div>
+          
+          {/* <div>
             <select
               onChange={(e) => handlePuntuar(e)}
               name="rating"
@@ -375,30 +384,28 @@ export default function Detail() {
             >
               eliminar rating
             </button>
-          </div>
-          <div onClick={(e) => handleEstrellas(e)} className={s.card_rating}>
-            <p className={s.card_text}>
-              <b>Rating: {`${3}`}</b>
-            </p>
+          </div> */}
+          <div className={s.card_rating}>
+          
 
-            <span value="1" className={Math.round(3) >= 1 ? s.star_rating : ""}>
-              ★
-            </span>
-            <span value="2" className={Math.round(3) >= 2 ? s.star_rating : ""}>
-              ★
-            </span>
-            <span value="3" className={Math.round(3) >= 3 ? s.star_rating : ""}>
-              ★
-            </span>
-            <span value="4" className={Math.round(3) >= 4 ? s.star_rating : ""}>
-              ★
-            </span>
-            <span
-              value="5"
-              className={Math.round(3) === 5 ? s.star_rating : ""}
-            >
-              ★
-            </span>
+            <p className={s.card_text}>
+              <b>
+                Rating:{" "}
+                {`${
+                  isNaN(parseInt(rating))
+                    ? (isAuthenticated ? "Se el primero en puntuar este paquete" : "S/R")
+                    : rating
+                }`}
+              </b>
+            </p>
+            <Rating 
+              onClick={(value) => handleEstrellas(value)}
+              initialRating={rating}
+              readonly={!isAuthenticated}
+              emptySymbol={<BsFillStarFill style={{color: '#fafafa', fontSize: '24px'}} />}
+              placeholderSymbol={<BsFillStarFill style={{color: 'red'}} />}
+              fullSymbol={<BsFillStarFill style={{color: '#4a9eab', fontSize: '24px'}} />}
+            />
           </div>
           <div className={s.contenedorDetalles}>
             <h1>{packageDetail.name}</h1>
@@ -490,7 +497,7 @@ export default function Detail() {
             <div className={s.total}>
               {" "}
               <span>TOTAL U$S </span>
-              {input.total ? input.total : packageDetail.price}
+              <span>{input.total ? input.total : packageDetail.price}</span>
             </div>
           </div>
 
@@ -511,3 +518,48 @@ export default function Detail() {
     </div>
   );
 }
+
+
+/* 
+
+
+  const handleFavorito = async (e) => {
+    e.preventDefault();
+    try {
+      const token = await getAccessTokenSilently();
+      dispatch(postFavorites(id, token));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleFavoritoBorrar = async (e) => {
+    e.preventDefault();
+    try {
+      const token = await getAccessTokenSilently();
+      dispatch(deleteFavorites(id, token));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handlePuntuar = async (e) => {
+    try {
+      const token = await getAccessTokenSilently();
+      console.log(e.target.value);
+      dispatch(crearRating(id, token, e.target.value));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handleBorrarRating = async (e) => {
+    try {
+      const token = await getAccessTokenSilently();
+      dispatch(eliminarRating(id, token));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
+*/

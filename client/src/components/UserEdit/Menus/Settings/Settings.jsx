@@ -8,7 +8,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { ModifyUser } from "../../../../redux/actions";
 
 export default function Settings({ showSettings, setShowSettings }) {
-  const { getAccessTokenSilently} = useAuth0();
+  const { getAccessTokenSilently } = useAuth0();
   const user = useSelector( (state) => state.user );
   const [email, setemail] = useState({
     currentEmail: '',
@@ -34,7 +34,7 @@ export default function Settings({ showSettings, setShowSettings }) {
       }});
       console.log('HERE FUNCTION')
       console.log(change)
-    }
+  }
   const dispatch = useDispatch();
 
   // const handleSubmit = (e) => {

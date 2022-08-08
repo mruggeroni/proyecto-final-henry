@@ -34,6 +34,11 @@ export default function CardGeneric({ feature }) {
 
   return (
     <div className={style.cardG_container}>
+      {
+        feature.component === 'promotions' && feature.on_sale != '0' && <div className={`${style.onSale} ${style.musRibbon} ${style.optionsRibbon} ${style.right}`}>
+          <span>{feature.on_sale}% OFF</span>
+        </div>
+      }
       <div className={style.cardG_img_container}>
         <img
           src={feature.img}
