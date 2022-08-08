@@ -31,7 +31,7 @@ export const getOrders = async (req, res) => {
 	
 	try {
 		const page = parseInt(req.query.page) || 1;
-		const limit = parseInt(req.query.limit) || 100000;
+		const limit = parseInt(req.query.limit) || 10;
 		const offset = limit * (page - 1);
 		const totalRows = await Order.count({
 			where: filter,
@@ -93,7 +93,6 @@ export const getOrderDetail = async (req, res) => {
 							'images',
 							'featured',
 							'available',
-							'on_sale',
 							'destroyTime'
 						]
 					}
@@ -121,6 +120,7 @@ export const getOrderDetail = async (req, res) => {
 
 		order[0].packages.forEach(packg => {
 			packg.quantity = packg.order_item.quantity;
+			packg.total = packg.order_item.total;
 			const activities = orderItems.find(orderItem => orderItem.id === packg.order_item.id);
 			packg.activities = activities.activities;
 			delete packg.order_item;
@@ -197,8 +197,8 @@ export const getCart = async (req, res) => {
 		});
 		if (!user) return res.status(404).json({ message: 'User does not have a cart' });
 
-		const cart = JSON.parse(JSON.stringify(user.orders[0]));
-		const ids = cart.packages.map(p => p.order_item.id);
+		const cart = JSON.parse(JSON.stringify(user.orders));
+		const ids = cart[0].packages.map(p => p.order_item.id)
 		const orderItems = await OrderItem.findAll({
 			where: {
 				id: ids,
@@ -212,22 +212,15 @@ export const getCart = async (req, res) => {
 			},
 		});
 
-		cart.packages.forEach(packg => {
+		cart[0].packages.forEach(packg => {
 			packg.quantity = packg.order_item.quantity;
+			packg.total = packg.order_item.total;
 			const activities = orderItems.find(orderItem => orderItem.id === packg.order_item.id);
 			packg.activities = activities.activities;
 			delete packg.order_item;
 		});
 
-		cart.total_order_discounted = cart.packages.reduce((sum, pack) => 
-			sum + ((100 - pack.on_sale) / 100) * pack.quantity * (pack.price + pack.activities.reduce((sum, act) => 
-				sum + act.price, 
-				0
-			)), 
-			0
-		);
-
-		return res.status(200).json(cart);
+		return res.status(200).json(cart[0]);
 	} catch (error) {
 		return res.status(400).json({ message: error.message });
 	};
@@ -287,6 +280,7 @@ export const createCart = async (req, res) => {
 		await Promise.all(packagesId.map((packageId, index) => {
 			return OrderItem.update({
 				quantity: quantitiesPackages[index],
+				total: total_packages[index],
 			}, {
 				where: {
 					[Op.and]: [{
@@ -323,7 +317,7 @@ export const createCart = async (req, res) => {
 
 export const updateCart = async (req, res) => {
 	const { cartId } = req.params;
-	const /* cartPackages */ { packageId, activitiesId, quantity, total_package } = req.body;
+	const /* cartPackages */ { packageId, activitiesId, quantity,  total_package } = req.body;
 
 	try {
 		const oldCart = await Order.findByPk(cartId);
@@ -426,6 +420,7 @@ export const updateCart = async (req, res) => {
 
 		await OrderItem.update({
 			quantity,
+			total: total_package
 		}, {
 			where: {
 				[Op.and]: [{
@@ -510,10 +505,10 @@ export const deleteCart = async (req, res) => {
             include: {
                 model: Activity,
             },
-        }); 
+        });
 
         await Order.update({
-            total_order: parseFloat(cart.total_order) - cart.packages[0].order_item.quantity * (paquete.price + orderItem.activities.reduce((sum, act) => sum + act.price, 0)),
+            total_order: parseFloat(cart.total_order) - cart.packages[0].order_item.total,
         }, {
             where: {
                 id: cart.id,
@@ -526,7 +521,7 @@ export const deleteCart = async (req, res) => {
             },
         });
 
-        await cart.removePackage(paquete);
+        await cart.removePackage(paquete)
 
 		return res.status(200).json({ message: "Cart deleted successfully" }); 
 	} catch (error) {

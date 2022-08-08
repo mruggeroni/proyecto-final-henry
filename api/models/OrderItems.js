@@ -16,6 +16,11 @@ export const OrderItem = sequelize.define('order_item', {
 		allowNull: false,
 		defaultValue: 1,
 	},
+	total: {
+		type: DataTypes.DECIMAL(10,2),
+		allowNull: true,
+		defaultValue: 1000,
+	}
 	// price_package: {
 	// 	type: DataTypes.VIRTUAL,
 	// 	get() {
