@@ -6,20 +6,26 @@ import CheckoutPassengers from "./CheckoutPassengers.jsx";
 import CheckoutPayment from "./CheckoutPayment.jsx";
 import CheckoutConfirmation from "./CheckoutConfirmation";
 import { useDispatch, useSelector } from "react-redux";
-import { getCartLocalStorage } from "../../../redux/actions";
+import { createUser, getAllCart, getCartLocalStorage } from "../../../redux/actions";
 import s from "./CheckoutParent.module.css";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export default function CheckoutSteps() {
+  const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
+  const user = useSelector( (state) => state.user )
   const [showCheckoutPassengers, setShowCheckoutPassengers] = useState(true);
   const [showCheckoutPayment, setShowCheckoutPayment] = useState(false);
-  const [showCheckoutConfirmation, setShowCheckoutConfirmation] =
-    useState(false);
-  const dispatch = useDispatch();
+  const [showCheckoutConfirmation, setShowCheckoutConfirmation] = useState(false);
+  const { getAccessTokenSilently } = useAuth0();
 
-  useEffect(() => {
+  useEffect( async () => {
     dispatch(getCartLocalStorage());
+    const token = await getAccessTokenSilently();
+    let res = await dispatch(createUser(token));
+    await dispatch(getAllCart(res.payload.id));
   }, [dispatch]);
+
 
   const handleCheckoutPassengers = () => {
     setShowCheckoutPassengers(true);
@@ -44,11 +50,9 @@ export default function CheckoutSteps() {
       <div className={s.logInCreateAcc}>
         <div className={s.right}>
           <div className={s.headerCheckout}>
-            <button onClick={handleCheckoutPassengers}>
-              Información del Pasajero
-            </button>
+            {/* <button onClick={handleCheckoutPassengers}>Información del Pasajero</button>
             <button onClick={handleCheckoutPayment}>Información de Pago</button>
-            <button onClick={handleCheckoutConfirmation}>Confirmación</button>
+            <button onClick={handleCheckoutConfirmation}>Confirmación</button> */}
           </div>
         </div>
         <div>

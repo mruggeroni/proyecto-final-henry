@@ -9,6 +9,7 @@ import claves from "./privado";
 import axios from "axios";
 axios.defaults.baseURL = process.env.REACT_APP_API || "http://localhost:3001"
 
+const URL = process.env.REACT_APP_URL || "http://localhost:3000";
 const DOMAIN = process.env.REACT_APP_DOMAIN || claves.DOMAIN;
 const CLIENT_ID = process.env.REACT_APP_CLIENT_ID || claves.CLIENTID;
 ReactDOM.render(
@@ -16,7 +17,7 @@ ReactDOM.render(
     <Auth0Provider
       domain={DOMAIN}
       clientId={CLIENT_ID}
-      redirectUri={window.location.origin}
+      redirectUri={URL}
       // redirectUri={"http://localhost:3000"}
       //audiencie="identificador unico" //deberia de ser privado -> lo usamos en las rutas tmb
       audience="endpointPF"

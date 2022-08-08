@@ -8,28 +8,30 @@ import {useDispatch, useSelector } from "react-redux";
 
 export default function Card({ name, image, qty, price, total, id, activities }) {
 
-    // const [modify, setModify] = useState(false);
-    const user = useSelector( (state) => state.user )
-    // function handleModify(e){
-    //     e.preventDefault();
-    //     setModify(!modify);
-    //     let sQty = document.getElementById(`select${qty}`)
-    //     sQty?.setAttribute('selected', true);
-    // }
+    const [modify, setModify] = useState(false);
+    const user = useSelector((state) => state.user)
+    
+    async function handleModify(e){
+        e.preventDefault();
+        setModify(!modify);
+        let sQty = document.getElementById(`select${qty}`);
+        console.log(sQty)
+        sQty?.setAttribute('selected', true);
+    }
 
     const { getAccessTokenSilently} = useAuth0();
     const dispatch = useDispatch();
 
-    const handlepay = async (e) => {
-       e.preventDefault();
-       console.log(user)
-       const cart = {items: [
-           {id: 1,quantity:2 },
-           {id: 2, quantity: 1}
-        ]}
-        const token = await getAccessTokenSilently()
-        dispatch(Payment(cart, token))
-      };
+    // const handlepay = async (e) => {
+    //    e.preventDefault();
+    //    console.log(user)
+    //    const cart = {items: [
+    //        {id: 1,quantity:2 },
+    //        {id: 2, quantity: 1}
+    //     ]}
+    //     const token = await getAccessTokenSilently()
+    //     dispatch(Payment(cart, token))
+    //   };
 
   return (
     <div className={s.checkoutCard}>    
@@ -65,10 +67,10 @@ export default function Card({ name, image, qty, price, total, id, activities })
         </div>
         <div className={s.bottomGroup}>
             <div className={s.deglose}>
-                <p>{qty}x Paquetes {name.length > 30 ? name.slice(0, 310) + "..." : name}</p>
+                <p>{qty}x Paquetes {name.length > 35 ? name.slice(0, 35) + "..." : name}</p>
                 <p> ${price*qty}</p>
             </div>
-            {activities && activities.map((a) => {
+            {activities.length > 0 && activities.map((a) => {
                 return (
                     <div className={s.deglose}>
                         <p>{qty}x {a.name}</p>
@@ -78,7 +80,7 @@ export default function Card({ name, image, qty, price, total, id, activities })
              <div className={s.price}>
                 <hr />
                 <div className={s.totalPaq}>
-                    <h3>Total: </h3><h3>${total === 0 ? (price*qty) : total}</h3>
+                    <h3>{total === 0 ? ' ' : 'Total:'}</h3><h3>{total === 0 ? ' ' : '$' + total}</h3>
                     {/* <button onClick={(e) => handlepay(e)}>Go to pay</button> */}
 
                 </div>

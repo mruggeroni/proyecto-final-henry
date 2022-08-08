@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import FavoriteCard from "./FavoriteCard.jsx";
 // import SortPrice from '../Search/SortPrice.jsx';
 import s from "./Favorites.module.css";
-import { getFavoritesLocalStorage, getAllFavorites } from "../../redux/actions/index.js";
+import { getFavoritesLocalStorage, getAllFavorites, getAllCart } from "../../redux/actions/index.js";
 import { useAuth0 } from "@auth0/auth0-react";
 
 export default function Favorites() {
