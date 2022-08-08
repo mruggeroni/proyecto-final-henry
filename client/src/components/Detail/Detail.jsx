@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Swal from "sweetalert2";
 import s from "./Detail.module.css";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import ControlledCarousel from "./Carousel";
@@ -62,7 +63,6 @@ export default function Detail() {
       relationatedPackage.length &&
       allActivities.length
     ) {
-      setLoading(false);
       if (document.getElementsByName("selectCantidad").length) {
         setInput({
           cantidad: 1,
@@ -89,6 +89,7 @@ export default function Detail() {
         fetch();
       }
     }
+    setLoading(false);
   }, [packageDetail, relationatedPackage, allActivities]);
 
   useEffect(async () => {
@@ -238,15 +239,19 @@ export default function Detail() {
     //   input.total = input.total - (packageDetail.on_sale * input.total) / 100;
     // }
     console.log(input);
-
+    let descuento = 0;
+    if (packageDetail.on_sale != "0") {
+      descuento = input.total - (packageDetail.on_sale * input.total) / 100;
+    }
     if (!isAuthenticated) {
       if (!localStorage.getItem("cart")) {
         let cart = {
           total_order: 0,
           packages: [],
         };
-        cart.total_order += input.total;
-        input.paquete.total = input.total;
+        cart.total_order = descuento != 0 ? descuento : parseInt(input.total);
+        input.paquete.total =
+          descuento != 0 ? descuento : parseInt(input.total);
         input.paquete.quantity = input.cantidad;
         input.paquete.activities = input.actividades;
         cart.packages.push(input.paquete);
@@ -256,8 +261,10 @@ export default function Detail() {
         let match = false;
         cart.packages?.forEach((p) => p.id === parseInt(id) && (match = true));
         if (!match) {
-          cart.total_order += input.total;
-          input.paquete.total = input.total;
+          cart.total_order +=
+            descuento != 0 ? descuento : parseInt(input.total);
+          input.paquete.total =
+            descuento != 0 ? descuento : parseInt(input.total);
           input.paquete.quantity = input.cantidad;
           input.paquete.activities = input.actividades;
           cart.packages.push(input.paquete);
@@ -286,10 +293,6 @@ export default function Detail() {
         dispatch(getPackageById(id));
       }, 1);
     } else {
-      let descuento = 0;
-      if (packageDetail.on_sale != "0") {
-        descuento = input.total - (packageDetail.on_sale * input.total) / 100;
-      }
       try {
         if (!Object.keys(cart).length) {
           console.log(input);
@@ -299,42 +302,38 @@ export default function Detail() {
           await dispatch(
             updateCart(cart.id, {
               packageId: input.paquete.id,
-              activitiesId: input.activities?.map((a) => a.id) || [],
+              activitiesId:
+                input.actividades?.map((a) => a.Package_Activity.activityId) ||
+                [],
               quantity: input.cantidad,
               total_package: descuento != 0 ? descuento : parseInt(input.total),
             })
-            );
-            scrollToTop();
+          );
+          scrollToTop();
         }
         await dispatch(getAllCart(user.id));
       } catch (error) {
-        let activitiesId = input.actividades?.map(
-          (a) => a.Package_Activity.activityId
-        );
-        console.log({
-          packageId: input.paquete.id,
-          activitiesId:
-            input.actividades?.map((a) => a.Package_Activity.activityId) || [],
-          quantity: input.cantidad,
-          total_package: descuento != 0 ? descuento : parseInt(input.total),
-        });
-        const algo = await dispatch(
-          updateCart(cart.id, {
-            packageId: input.paquete.id,
-            activitiesId:
-              input.actividades?.map((a) => a.Package_Activity.activityId) ||
-              [],
-            quantity: input.cantidad,
-            total_package: descuento != 0 ? descuento : parseInt(input.total),
-          })
-        );
-        console.log(algo);
-        dispatch(cleanPackageById());
-        dispatch(getPackageById(id));
-      } // catch (error) {
-      //   console.log(error.message);
-      //   alert('El paquete no se pudo agregar al carrito');
-      // }
+        try {
+          await dispatch(
+            updateCart(cart.id, {
+              packageId: input.paquete.id,
+              activitiesId:
+                input.actividades?.map((a) => a.Package_Activity.activityId) ||
+                [],
+              quantity: input.cantidad,
+              total_package: descuento != 0 ? descuento : parseInt(input.total),
+            })
+          );
+          dispatch(cleanPackageById());
+          dispatch(getPackageById(id));
+        } catch (error) {
+          Swal.fire({
+            icon: "error",
+            title: "Oops algo fallo...",
+            text: "El paquete ya debe estar en el carrito",
+          });
+        }
+      }
     }
   }
 
@@ -426,14 +425,20 @@ export default function Detail() {
               <div className={s.pricePaq}>
                 <h3>
                   U$S{" "}
-                  {packageDetail.on_sale ? (<s>{packageDetail.price}</s>) : (packageDetail.price)}
+                  {packageDetail.on_sale ? (
+                    <s>{packageDetail.price}</s>
+                  ) : (
+                    packageDetail.price
+                  )}
                 </h3>
                 {packageDetail.on_sale ? (
                   <h4>
                     {packageDetail.price *
                       ((100 - packageDetail.on_sale) / 100)}
                   </h4>
-                ) : ' '}
+                ) : (
+                  " "
+                )}
               </div>
               <h3>
                 Destinos:{" "}
@@ -521,7 +526,9 @@ export default function Detail() {
                   {(input.total ? input.total : packageDetail.price) *
                     ((100 - packageDetail.on_sale) / 100)}
                 </span>
-              ) :  <span>{input.total ? input.total : packageDetail.price}</span>}
+              ) : (
+                <span>{input.total ? input.total : packageDetail.price}</span>
+              )}
             </div>
           </div>
           {packageDetail.on_sale ? (
@@ -535,7 +542,9 @@ export default function Detail() {
                   input.total * ((100 - packageDetail.on_sale) / 100)}
               </p>
             </div>
-          ) : ' '}
+          ) : (
+            " "
+          )}
           <div className={s.contenedorBotonComprar}>
             <button
               onClick={(e) => handleBotonComprar(e)}
