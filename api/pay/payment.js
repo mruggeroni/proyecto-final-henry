@@ -4,9 +4,24 @@ const stripe = Stripe('sk_test_51LSoUXFrlpRCY5YH7F7s7KDDAOsF4LAeXJyAJrHjUUSObyUb
 
 
 export const PaymentCreate = async (req, res) => {
+    let cart = req.body;
     try {
+
+        const itemsCart = cart.packages?.map( (p) => ({
+            quantity: p.quantity,
+            packageId: p.id,
+            packageName: p.name,
+            packagePriceCents: 101000,
+            activities: p.activities?.map( (a) => ({
+                activityId: a.id,
+                activityName: a.name,
+                activityPriceCents: a.price
+            })),
+            totalPerUnitCents: p.price*100
+        }) )
+
         //FUNCION PARA FORMATEAR EL CARRITO ENVIADO POR REQ DARIA UN RESULTADO COMO EL REPRESENTADO EN ITEMSCART    
-        const itemsCart = [
+        /* const itemsCart = [
             {
                 "quantity": "7",
                 "packageId": 4,
@@ -26,7 +41,9 @@ export const PaymentCreate = async (req, res) => {
                 ],
                 "totalPerUnitCents": 126000
             }
-        ]
+        ] */
+
+
         //console.log(req.body.body.items)
        const session = await stripe.checkout.sessions.create({
            payment_method_types: ['card'],
@@ -43,7 +60,7 @@ export const PaymentCreate = async (req, res) => {
                    quantity: item.quantity
                }
            }),
-           success_url: 'http://localhost:3000' ,
+           success_url: 'http://localhost:3000/checkout/confirmation' ,
            cancel_url: 'http://localhost:3000/checkout'
        })
        console.log(session)

@@ -6,9 +6,35 @@ import NavDestinations from "./NavDestinations";
 import NavPromotions from "./NavPromotions";
 // import PopUps from "./../PopUps/PopUps.jsx";
 import NavRegion from "./NavRegion";
-
+import { useDispatch, useSelector } from "react-redux";
+import { createUser, getAllCart, getAllFavorites, postCartPackage } from "../../redux/actions";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export default function Navbar() {
+  const dispatch = useDispatch();
+  const user = useSelector( (state) => state.user );
+  const { isAuthenticated, getAccessTokenSilently } = useAuth0();
+  
+  useEffect( async () => {
+    const token = await getAccessTokenSilently()
+    let res = dispatch(createUser(token))
+    if(!isAuthenticated) {
+      // dispatch(getFavoritesLocalStorage());
+    } else {
+      const token = await getAccessTokenSilently();
+      await dispatch(getAllFavorites(token))
+      try {
+        await dispatch(getAllCart(res.payload.id));
+      } catch(error) {
+        await dispatch(postCartPackage(res.payload.id, []))
+        await dispatch(getAllCart(res.payload.id));
+      }
+    }
+
+  }, [])
+
+
+
   function handleClose() {
     document.getElementById("nav_menu")?.classList?.remove(`${style.is_active}`);
     document

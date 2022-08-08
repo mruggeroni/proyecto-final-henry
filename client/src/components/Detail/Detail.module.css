@@ -10,6 +10,7 @@
   background-color: #fafafaa2;
   width: 80%;
   padding: 3%;
+  padding-top: 4%;
 }
 
 .contenedorBarraSuperior {
@@ -320,8 +321,8 @@
 
 
 .musRibbon.right {
-  left: auto;
-  right: 20%;
+  right: auto;
+  left: 3%;
 }
 
 .onSale {

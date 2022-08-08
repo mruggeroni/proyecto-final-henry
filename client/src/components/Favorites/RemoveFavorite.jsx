@@ -8,6 +8,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 export default function RemoveFavorite({ id, popUp, componente }){
 	const dispatch = useDispatch();
 	const user = useSelector((state) => state.user);
+	const cart = useSelector( (state) => state.cart );
 	const {
 		isAuthenticated,
 		loginWithPopup,
@@ -17,41 +18,33 @@ export default function RemoveFavorite({ id, popUp, componente }){
 
 	async function handleRemove(e){
 	 	e.preventDefault();
-		if(!isAuthenticated){
-			if(popUp === 'cart'){
-				if(!isAuthenticated){
-					let cart = JSON.parse(localStorage.getItem('cart'));
-					let remCart = cart.filter((c) => {return c.paquete.id !== id});
-				  	localStorage.setItem('cart', JSON.stringify(remCart));
-					dispatch(getCartLocalStorage());
-				} else{
-					const token = await getAccessTokenSilently();
-					dispatch(deleteCartPackage(id));
-					dispatch(getAllCart(user.id, token))
-				}
-			} else {		
+		if(popUp === 'cart'){
+			if(!isAuthenticated){
+				let cart = JSON.parse(localStorage.getItem('cart'));
+				let remPackage = cart.packages.find((p) => p.id === id)
+				cart.packages = cart.packages.filter((p) => p.id !== id);
+				cart.total_order -= remPackage.total; 
+				localStorage.setItem('cart', JSON.stringify(cart));
+				dispatch(getCartLocalStorage());
+			} else{
+				const token = await getAccessTokenSilently();
+				await dispatch(deleteCartPackage(cart.id, id));
+				await dispatch(getAllCart(user.id))
+			}
+		} else {	
+			if(!isAuthenticated){
 				let favorites = JSON.parse(localStorage.getItem('favorites'));
 				let remFav = favorites.filter((f) => f.id !== id );
-				  localStorage.setItem('favorites', JSON.stringify(remFav));
-				dispatch(cleanPackageById());
-				dispatch(getPackageById(id));
-				dispatch(getFavoritesLocalStorage());
-			}	
-		} else{
-			const token = await getAccessTokenSilently();
-			try{
-				if(popUp === 'cart'){
-					let cart = JSON.parse(localStorage.getItem('cart'));
-					let remCart = cart.filter((c) => {return c.paquete.id !== id});
-					  localStorage.setItem('cart', JSON.stringify(remCart));
-					dispatch(getCartLocalStorage());
-				} else{
-					dispatch(deleteFavorites(id, token));
-				}
-			}catch (e) {
-				console.log(e.message);
-			} dispatch(getAllFavorites(token));
-		}
+				localStorage.setItem('favorites', JSON.stringify(remFav));
+				await dispatch(cleanPackageById());
+				await dispatch(getPackageById(id));
+				await dispatch(getFavoritesLocalStorage());
+			} else {
+				const token = await getAccessTokenSilently();
+				await dispatch(deleteFavorites(id, token));
+				await dispatch(getAllFavorites(token));
+			}
+		}	
 	}
 
 	return(
