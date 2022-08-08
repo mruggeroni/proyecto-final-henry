@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { BsJustify, BsFillCaretRightFill } from "react-icons/bs";
 import style from "./Navbar.module.css";
@@ -7,8 +7,8 @@ import NavPromotions from "./NavPromotions";
 // import PopUps from "./../PopUps/PopUps.jsx";
 import NavRegion from "./NavRegion";
 
-export default function Navbar() {
 
+export default function Navbar() {
   function handleClose() {
     document.getElementById("nav_menu")?.classList?.remove(`${style.is_active}`);
     document
@@ -55,12 +55,12 @@ export default function Navbar() {
         >
           Inicio
         </NavLink>
-        <button
+        {/* <button
           onClick={() => handleOpen("nav_menu_promotions")}
           className={style.nav_menu_item}
         >
           Promociones <BsFillCaretRightFill />
-        </button>
+        </button> */}
         <button
           onClick={() => handleOpen("nav_menu_region")}
           className={style.nav_menu_item}
@@ -89,7 +89,7 @@ export default function Navbar() {
         </NavLink>
       </nav>
 
-      <NavPromotions handleClose={handleClose} />
+      {/* <NavPromotions handleClose={handleClose} /> */}
       <NavDestinations handleClose={handleClose} />
       <NavRegion handleClose={handleClose} />
 
@@ -101,7 +101,7 @@ export default function Navbar() {
           >
             <BsJustify />
           </button>
-{/*       <div className={style.icons}>
+          {/*       <div className={style.icons}>
             <PopUps />
           </div> */}
         </nav>

@@ -62,6 +62,9 @@ export default function Dashboard() {
         <NavLink to="/dashboard/listUsers" className={style.links_item}>
           Lista de usuarios
         </NavLink>
+        <NavLink to="/dashboard/orders" className={style.links_item}>
+          Lista de ordenes
+        </NavLink>
         <ModalCategoria
           show={show}
           setShow={setShow}

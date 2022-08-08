@@ -2,18 +2,31 @@ import React, { useEffect } from "react";
 import BotonFav from "../../Detail/BotonFav";
 import { useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllPackage, getFavoritesLocalStorage } from "../../../redux/actions/index";
+import { getAllPackage, getFavoritesLocalStorage, postFavorites, deleteFavorites, getAllFavorites } from "../../../redux/actions/index";
 import s from "./Cards.module.css";
+import { useAuth0 } from "@auth0/auth0-react";
 
-export default function Card({ name, image, description, price, id }) {
+export default function Card({ name, image, description, price, on_sale, id }) {
   const [checked, setChecked] = useState(false);
   const favPackage = { name, image, description, price, id };
   const dispatch = useDispatch();
-  const favorites = useSelector((state) => state.favorites);
+  const {
+    isAuthenticated,
+    getAccessTokenSilently,
+  } = useAuth0();
 
+  let favorites = [];
+  let stateFavorites = useSelector((state) => state.favorites);
+  let stateFavoritesLocalStorage = useSelector((state) => state.favoritesLocalStorage);
+  if(!isAuthenticated) {
+    favorites = [...stateFavoritesLocalStorage];
+  } else {
+    favorites = [...stateFavorites];
+  }
+  
   useEffect(() => {
     favorites?.forEach((f) => f.id === id && setChecked(true));
-  }, [favorites]);
+  }, []);
 
   const checkPackageInCart = (id) => {
     let cart = JSON.parse(localStorage.getItem("cart"));
@@ -22,33 +35,69 @@ export default function Card({ name, image, description, price, id }) {
     return match;
   }
 
-  function handleFavorite(e) {
+  async function handleFavorite(e) {
     e.preventDefault();
     if(checkPackageInCart(id)) { return alert('ya esta en el carrito') }
     setChecked(!checked);
 
-    if(!checked){
-      if(!localStorage.getItem('favorites')) {
-        let favorites = [];
-        favorites.push(favPackage);
-        localStorage.setItem('favorites', JSON.stringify(favorites));
-      } else {
-        let favorites = JSON.parse(localStorage.getItem('favorites'));
-        if(favorites?.filter((f) => f.id !== id)){
-          favorites.unshift(favPackage);
+    if(!isAuthenticated){
+      if(!checked){
+        if(!localStorage.getItem('favorites')) {
+          let favorites = [];
+          favorites.push(favPackage);
           localStorage.setItem('favorites', JSON.stringify(favorites));
+        } else {
+          let favorites = JSON.parse(localStorage.getItem('favorites'));
+          if(favorites?.filter((f) => f.id !== id)){
+            favorites.unshift(favPackage);
+            localStorage.setItem('favorites', JSON.stringify(favorites));
+          }
         }
+      }else{
+        let favorites = JSON.parse(localStorage.getItem('favorites'));
+        let remFav = favorites.filter((f) => {return f.id !== id});
+        localStorage.setItem('favorites', JSON.stringify(remFav));
       }
-    }else{
-      let favorites = JSON.parse(localStorage.getItem('favorites'));
-      let remFav = favorites.filter((f) => {return f.id !== id});
-      localStorage.setItem('favorites', JSON.stringify(remFav));
+      dispatch(getFavoritesLocalStorage());
+    } else{
+      const token = await getAccessTokenSilently();
+      if (checked) {
+        await dispatch(deleteFavorites(id, token));
+        setChecked(false);
+      } else {
+        await dispatch(postFavorites(id, token));
+        setChecked(true);
+      }
+      dispatch(getAllFavorites(token));
     }
-    dispatch(getFavoritesLocalStorage());
+
+    // if(!checked){
+    //   if(!localStorage.getItem('favorites')) {
+    //     let favorites = [];
+    //     favorites.push(favPackage);
+    //     localStorage.setItem('favorites', JSON.stringify(favorites));
+    //   } else {
+    //     let favorites = JSON.parse(localStorage.getItem('favorites'));
+    //     if(favorites?.filter((f) => f.id !== id)){
+    //       favorites.unshift(favPackage);
+    //       localStorage.setItem('favorites', JSON.stringify(favorites));
+    //     }
+    //   }
+    // }else{
+    //   let favorites = JSON.parse(localStorage.getItem('favorites'));
+    //   let remFav = favorites.filter((f) => {return f.id !== id});
+    //   localStorage.setItem('favorites', JSON.stringify(remFav));
+    // }
+    // dispatch(getFavoritesLocalStorage());
   }
 
   return (
     <div className={s.card}>
+      {
+        on_sale != '0' && <div className={`${s.onSale} ${s.musRibbon} ${s.optionsRibbon} ${s.right}`}>
+          <span>{on_sale}% OFF</span>
+        </div>
+      }
       <img src={image} alt="img not found" width="300vw" height="250vw" />
       <div className={s.cardBody}>
         <h3>{name}</h3>

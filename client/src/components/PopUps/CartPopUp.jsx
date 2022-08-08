@@ -8,12 +8,12 @@ import s from "./PopUps.module.css";
 import Card from "../Favorites/FavoriteCard.jsx";
 import { HiOutlineEmojiSad } from "react-icons/hi";
 
-export default function CartPopOut({ showProfile, setShowProfile }) {
+export default function CartPopOut({ showProfile, setShowProfile, divBackground }) {
   // const cart = useSelector((state) => state.cart);
   const cart = JSON.parse(localStorage.getItem("cart"));
   const [isVisible, setIsVisible] = useState(false);
   let sum = 0; 
-  cart.forEach((p) => p.total === 0 ? sum +=(p.paquete.price*p.cantidad) : sum += p.total);
+  cart?.forEach((p) => p.total === 0 ? sum +=(p.paquete.price*p.cantidad) : sum += p.total);
 
   // function handleCartClick(e) {
   //   e.preventDefault();
@@ -29,6 +29,7 @@ export default function CartPopOut({ showProfile, setShowProfile }) {
 
   function handleClickCart(e){
     setShowProfile(false);
+    divBackground?.classList?.remove(`${s.is_active}`);
   }
 
   return (

@@ -6,6 +6,7 @@ import {
   getAllDestinations,
   filterPackagesByDestination,
   paquetesPorRegion,
+  filtrar
 } from "../../redux/actions/index";
 import style from "./Navbar.module.css";
 
@@ -23,7 +24,8 @@ export default function NavRegion({ handleClose }) {
 
   function handleClickRegion(e) {
     e.preventDefault();
-    dispatch(paquetesPorRegion(e.target.innerText));
+    dispatch(filtrar(e.target.innerText, "region"))
+    // dispatch(paquetesPorRegion(e.target.innerText));
     navigate("/search");
     // navigate(`/search/${e.target.innerText}`);
     handleClose();
