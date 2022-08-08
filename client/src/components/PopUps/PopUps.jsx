@@ -6,7 +6,6 @@ import FavoritesPopOut from "../PopUps/FavoritePopOut";
 import CartPopOut from "../PopUps/CartPopUp";
 
 export default function PopUps() {
-
   return (
     <div className={s.popUpContainer}>
       <div className={s.tabNav}> 
@@ -21,4 +20,3 @@ export default function PopUps() {
     </div>
   );
 }
-

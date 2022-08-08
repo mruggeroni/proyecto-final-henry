@@ -26,10 +26,12 @@ import Faq from "./components/Information/Faq.jsx";
 import Error404 from "./components/Error404/Error404.jsx";
 import { useSelector } from "react-redux";
 import ListOrders from "./components/Dashboard/ListOrders.jsx";
+import CheckoutConfirmation from './components/Checkout/CheckoutForm/CheckoutConfirmation.jsx'
 // import Footer from './components/Footer/Footer.jsx';
 
 function App() {
   const user = useSelector( (state) => state.user )
+ 
 
   return (
     <BrowserRouter>
@@ -49,6 +51,7 @@ function App() {
         <Route path="/dashboard/modifyActivities/:id" element={ user.is_admin ? <ModifyActivity /> : <Navigate to='/' />} />
         {/* <Route path="/checkout" element={ Object.keys(user).length ? <CheckoutParent /> : <Navigate to='/' />} /> */}
         <Route path="/checkout" element={ <CheckoutParent /> } />
+        <Route path="/checkout/confirmation" element={ <CheckoutConfirmation /> } />
         <Route path="/historial/:id" element={ Object.keys(user).length ? <Historial /> : <Navigate to='/' />} />
         <Route path='/createaccount' element={ Object.keys(user).length ? <CreateAccountModal /> : <Navigate to='/' />} />
         <Route path="/terms-and-conditions" element={<Terms />} />

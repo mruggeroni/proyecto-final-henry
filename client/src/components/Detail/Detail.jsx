@@ -99,6 +99,8 @@ export default function Detail() {
     dispatch(getRelationated(id));
     dispatch(getAllActivities());
     dispatch(getFavoritesLocalStorage());
+    dispatch(getCartLocalStorage());
+    dispatch(getAllCart(user.id));
     const fetch = async () => {
       const token = await getAccessTokenSilently();
       // console.log(token)
@@ -127,21 +129,23 @@ export default function Detail() {
     let match = false;
     if (!isAuthenticated) {
       let cart = JSON.parse(localStorage.getItem("cart"));
-      cart?.forEach((p) => p.paquete.id === parseInt(id) && (match = true));
+      cart.packages?.forEach((p) => p.id === parseInt(id) && (match = true));
     } else {
-      cart?.forEach((p) => p.paquete.id === parseInt(id) && (match = true));
+      cart.packages?.forEach((p) => p.id === parseInt(id) && (match = true));
     }
+    console.log(match)
     return match;
   };
 
   async function handleFavorite(e) {
     e.preventDefault();
+    if (checkPackageInCart(id)) {
+      return alert("ya esta en el carrito");
+    }
+    console.log(checkPackageInCart(id))
 
     if (!isAuthenticated) {
       packageDetail.image = packageDetail.main_image;
-      if (checkPackageInCart(id)) {
-        return alert("ya esta en el carrito");
-      }
       if (checkeado) {
         let favorites = JSON.parse(localStorage.getItem("favorites"));
         let remFav = favorites.filter((f) => {
@@ -225,23 +229,34 @@ export default function Detail() {
     if(!input.actividades.length && input.total === 0) {
       input.total = packageDetail.price;
     }
-    if(packageDetail.on_sale != '0') {
-      input.total = input.total - (packageDetail.on_sale * input.total) / 100;
-    }
+    // if(packageDetail.on_sale != '0') {
+    //   input.total = input.total - (packageDetail.on_sale * input.total) / 100;
+    // }
     console.log(input)
 
 
     if (!isAuthenticated) {
       if (!localStorage.getItem("cart")) {
-        let cart = [];
-        cart.unshift(input);
+        let cart = {
+          total_order: 0,
+          packages: []
+        };
+        cart.total_order += input.total;
+        input.paquete.total = input.total;
+        input.paquete.quantity = input.cantidad;
+        input.paquete.activities = input.actividades;
+        cart.packages.push(input.paquete)
         localStorage.setItem("cart", JSON.stringify(cart));
       } else {
         let cart = JSON.parse(localStorage.getItem("cart"));
         let match = false;
-        cart?.forEach((p) => p.paquete.id === parseInt(id) && (match = true));
+        cart.packages?.forEach((p) => p.id === parseInt(id) && (match = true));
         if (!match) {
-          cart.unshift(input);
+          cart.total_order += input.total;
+          input.paquete.total = input.total;
+          input.paquete.quantity = input.cantidad;
+          input.paquete.activities = input.actividades;
+          cart.packages.push(input.paquete)
           localStorage.setItem("cart", JSON.stringify(cart));
         } else {
           alert("ya esta en el carrito");
@@ -262,34 +277,26 @@ export default function Detail() {
 
       // setCheckboxEstado(new Array(10).fill(false));
 
+      dispatch(getCartLocalStorage());
       setTimeout(() => {
         dispatch(getPackageById(id));
       }, 1);
-      dispatch(getCartLocalStorage());
     } else {
       try {
-        // if (localStorage.getItem("cart")) {
-        //   let cart = JSON.parse(localStorage.getItem("cart"));
-        //   cart.forEach((c) => dispatch(updateCart(user.id, c)))
-        //   //NO FALTARIA BORRAR EL CARRITO DEL LOCAL??
-        // }
-        console.log(cart)
-        dispatch(getAllCart(user.id));
         if (!Object.keys(cart).length) {
-          dispatch(postCartPackage(user.id, [input]));
+          await dispatch(postCartPackage(user.id, [input]));
         } else {
-          dispatch(updateCart(cart.id, { 
+          await dispatch(updateCart(cart.id, { 
             packageId: input.paquete.id, 
             activitiesId: input.activities?.map( (a) => a.id ) || [], 
             quantity: input.cantidad, 
             total_package: parseInt(input.total) }));
-            //que el total pueda recibir numeros con decimal
           }
-        dispatch(getAllCart(user.id));
-      } catch (error) {
+        } catch (error) { 
         console.log(error.message);
       }
     }
+    await dispatch(getAllCart(user.id));
   }
 
   const handleEstrellas = async (value) => {
