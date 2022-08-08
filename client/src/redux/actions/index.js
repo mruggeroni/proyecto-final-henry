@@ -561,16 +561,7 @@ export function getCartLocalStorage(payload, id) {
     payload,
   };
 }
-// export function getAllCart(){
-//   return async function(dispatch){
-//     let res = await axios.get("/cart/" + id, {
-//       headers: {
-//         authorization: `Bearer ${token}`,
-//       },
-//     });
-//     return dispatch({ type: GET_CART, payload: res.data });
-//   };
-// }
+
 export function getAllCart(id) {
   try {
     return async function (dispatch) {
