@@ -11,13 +11,12 @@ import {
   getDestinationsWithPackages,
   createUser,
   getAllFavorites,
-  getFavoritesLocalStorage,
   getFeatured,
   getAllCart,
   postCartPackage,
-  getCartLocalStorage
+  getCartLocalStorage,
+  getFavoritesLocalStorage
 } from "../../redux/actions/index";
-// import BacktoTop from "../BacktoTop/BacktoTop";
 import { useAuth0 } from "@auth0/auth0-react";
 import Footer from "../Footer/Footer";
 
@@ -25,8 +24,6 @@ export default function Home() {
   const dispatch = useDispatch();
   const {
     isAuthenticated,
-    loginWithPopup,
-    logout,
     getAccessTokenSilently,
   } = useAuth0();
 
@@ -37,48 +34,37 @@ export default function Home() {
   const featured = useSelector((state) => state.featured);
   const sortDestinations = allDestinations.sort();
 
-  useEffect(async () => {
+  useEffect( () => {
     setLoading(true);
-    await dispatch(getAllPackage(1000));
-    await dispatch(getAllDestinations());
-    await dispatch(getDestinationsWithPackages());
-    await dispatch(getOnSale());
-    await dispatch(getAllActivities());
-    await dispatch(getFeatured())
-    // if (isAuthenticated) {
-    //   const token = await dispatch(createUser(token));
-    //   console.log(token);
-    // }
-    setLoading(false);
     const fetch = async () => {
-      const token = await getAccessTokenSilently()
-      dispatch(createUser(token))
+      await dispatch(getAllPackage(1000));
+      await dispatch(getAllDestinations());
+      await dispatch(getDestinationsWithPackages());
+      await dispatch(getOnSale());
+      await dispatch(getAllActivities());
+      await dispatch(getFeatured())
+      // const token = await getAccessTokenSilently()
+      // dispatch(createUser(token))
     }
     fetch()
-    if(!isAuthenticated) {
-      // dispatch(getFavoritesLocalStorage());
-    } else{
-      const token = await getAccessTokenSilently();
-      dispatch(getAllFavorites(token))
-      try {
-        await dispatch(getAllCart(user.id));
-    } catch(error) {
-        await dispatch(postCartPackage(user.id, []))
-        await dispatch(getAllCart(user.id));
-    }
-    }
+    setLoading(false);
   }, [dispatch]);
 
-  useEffect(() => {
+  useEffect( async () => {
     const fetch = async () => {
       if (!isAuthenticated) {
-       dispatch(getCartLocalStorage());
-       console.log("deslogueado")
+      dispatch(getCartLocalStorage());
+      dispatch(getFavoritesLocalStorage());
      } else {
-       const token = await getAccessTokenSilently();
-       const usuario = await dispatch(createUser(token));
-       console.log(usuario)
-       dispatch(getAllCart(usuario.payload.id));
+      const token = await getAccessTokenSilently();
+      // const res = await dispatch(createUser(token));
+      await dispatch(getAllFavorites(token))
+      try {
+        await dispatch(getAllCart(user.id));
+      } catch(error) {
+        await dispatch(postCartPackage(user.id, []))
+        await dispatch(getAllCart(user.id));
+      }
      }
    };
    fetch();
@@ -86,7 +72,7 @@ export default function Home() {
 
   return (
     <div className={style.home_container}>
-      {loading ? (
+      { (loading) ? (
         <div className={style.contenedorSpinner}>
           <div className={style.spinner}></div>
         </div>

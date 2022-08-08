@@ -20,7 +20,6 @@ import {
 } from "./../../redux/actions/index";
 import Paginado from "../Paginado/paginado";
 import s from "./Search.module.css";
-import { BsArrowBarDown, BsArrowBarUp } from "react-icons/bs";
 import { VscChevronDown, VscChevronUp } from "react-icons/vsc";
 import { useAuth0 } from "@auth0/auth0-react";
 
@@ -30,9 +29,7 @@ export default function FilteredSearch() {
 
   const allPackages = useSelector((state) => state.allPackages);
   const filteredPackages = useSelector((s) => s.filteredPackages);
-  const allDestinations = useSelector(
-    (state) => state.destinationsWithPackages
-  );
+  const allDestinations = useSelector((state) => state.destinationsWithPackages );
 
   const regionesFiltradas = [];
   filteredPackages &&
@@ -90,15 +87,12 @@ export default function FilteredSearch() {
   const handleChange = (e) => {
     e.preventDefault();
     if (e.target.id === "region") {
-      // dispatch(getAllPackage(1000));
       setRegion(e.target.value);
       dispatch(filtrar(e.target.value, e.target.id));
       console.log("jklasdhvbipasjdvbapi");
     }
     if (e.target.id === "searchDestinations") {
       setDestination(e.target.value);
-      // dispatch(getAllPackage(10000));
-      // dispatch(filterPackagesByDestination(e.target.value));
       dispatch(filtrar(e.target.value, e.target.id));
     }
 
@@ -163,16 +157,16 @@ export default function FilteredSearch() {
     await dispatch(getDestinationsWithPackages());
     await dispatch(getTypes());
     if (!isAuthenticated) {
-      // dispatch(getFavoritesLocalStorage());
+      dispatch(getFavoritesLocalStorage());
     } else {
       const token = await getAccessTokenSilently();
       dispatch(getAllFavorites(token));
     }
-    const fetch = async () => {
-      const token = await getAccessTokenSilently();
-      dispatch(createUser(token));
-    };
-    fetch();
+    // const fetch = async () => {
+    //   const token = await getAccessTokenSilently();
+    //   dispatch(createUser(token));
+    // };
+    // fetch();
     setLoading(false);
   }, []);
 
@@ -197,11 +191,7 @@ export default function FilteredSearch() {
       ) : (
         <div>
           <div className={s.view}>
-            <div
-              className={
-                mostrar ? s.contenedorFiltros : s.contenedorFiltrosEsconder
-              }
-            >
+            <div className={mostrar ? s.contenedorFiltros : s.contenedorFiltrosEsconder}>
               <label>
                 <select
                   onChange={(e) => handleChange(e)}
@@ -423,34 +413,42 @@ export default function FilteredSearch() {
               </button>
             </div>
           </div>
-          <div className={s.contenedorOrdenar}>
-            <SortPrice setOrder={setOrder} setCurrentPage={setCurrentPage} />
-            <div onClick={() => setMostrar(!mostrar)}>
-              filtros
+          <div onClick={() => setMostrar(!mostrar)} className={s.moreFilters}>
               <VscChevronDown
                 className={s.flechaFiltros}
                 display={mostrar ? "none" : true}
-              />
+                />
               <VscChevronUp
                 className={s.flechaFiltros}
                 display={mostrar ? true : "none"}
-              />
+                />
+                <p>+ filtros</p>
             </div>
-            <View
-              currentPackage={currentPackage}
-              allPackages={allPackages}
-              indexOfFirstPackage={indexOfFirstPackage}
-              setPackagesPerPage={setPackagesPerPage}
-              setCurrentPage={setCurrentPage}
+          {/* <div className={s.contenedorOrdenar}>
+            <SortPrice setOrder={setOrder} setCurrentPage={setCurrentPage} />
+          </div> */}
+            {currentPackage ? <div className={s.pag}>
+              <div className={s.divVacio}></div>
+              <div className={s.paginadoSearch}>
+              <Paginado
+              packagesPerPage={packagesPerPage}
+              allPackages={filteredPackages.length}
+              paginado={paginado}
               currentPage={currentPage}
             />
-          </div>
-          <Paginado
-            packagesPerPage={packagesPerPage}
-            allPackages={filteredPackages.length}
-            paginado={paginado}
-            currentPage={currentPage}
-          />
+            </div>
+            <div className={s.viewComponent}>
+              <View
+                currentPackage={currentPackage}
+                allPackages={allPackages}
+                indexOfFirstPackage={indexOfFirstPackage}
+                setPackagesPerPage={setPackagesPerPage}
+                setCurrentPage={setCurrentPage}
+                currentPage={currentPage}
+              />
+              </div>
+            </div> : ' '}
+          {/* </div> */}
           <div className={s.cards}>
             {currentPackage ? (
               currentPackage.map((p) => {
