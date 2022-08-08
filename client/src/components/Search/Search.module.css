@@ -2,6 +2,7 @@
   margin-top: 90px;
   display: flex;
   flex-direction: column;
+  padding: 5%
 }
 
 .sortPrice {
@@ -42,6 +43,7 @@
   flex-wrap: wrap;
   transition: 0s 1s all easeOutSine;
   align-items: center;
+  margin-top: 200px;
 }
 
 .contenedorFiltrosEsconder {
@@ -111,6 +113,34 @@
   color: #fafafa;
 }
 
+.pag{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin: auto;
+  padding-top: 2%
+}
+
+.viewComponent{
+  margin: auto;
+  width: 10%;
+}
+
+.divVacio{
+  width: 10%;
+}
+
+.paginadoSearch{
+  width: 80%;
+}
+
+.moreFilters{
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  text-align: 
+}
+
 /* .flechaFiltros {
   width: 20%;
 } */
@@ -126,6 +156,12 @@
 @media (max-width: 825px) {
   .noPaq {
     font-size: 2vw;
+  }
+}
+
+@media (max-width: 780px){
+  .divVacio{
+    display: none;
   }
 }
 

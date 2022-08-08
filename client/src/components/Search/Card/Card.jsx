@@ -111,7 +111,13 @@ export default function Card({ name, image, description, price, on_sale, id }) {
       <div className={s.rightGroup}>
         <div className={s.both}>
         <div className={s.price}>
-          <h3>${price}</h3>
+        {/* <h3>U$S {packageDetail.on_sale ? <s>{packageDetail.price}</s> : packageDetail.price}</h3>
+        { packageDetail.on_sale && <h4>{packageDetail.price*((100 - packageDetail.on_sale)/100)}</h4> } */}
+          <div className={s.discount}>
+            <h4>${on_sale ? <s>{price}</s> : price}</h4>
+            {on_sale ? <h5>{price*((100 - on_sale)/100)}</h5> : ' '}
+          </div> 
+          {/* <h3>${price}</h3> */}
           <h5>per Person</h5>
         </div>
         <div className={s.hide} onClick={(e) => handleFavorite(e)}>

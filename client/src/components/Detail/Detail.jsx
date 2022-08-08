@@ -129,7 +129,7 @@ export default function Detail() {
   const checkPackageInCart = (id) => {
     let match = false;
     if (!isAuthenticated) {
-      let cart = JSON.parse(localStorage.getItem("cart"));
+      let cart = JSON.parse(localStorage.getItem("cart")) || {};
       cart.packages?.forEach((p) => p.id === parseInt(id) && (match = true));
     } else {
       cart.packages?.forEach((p) => p.id === parseInt(id) && (match = true));
@@ -140,6 +140,10 @@ export default function Detail() {
 
   async function handleFavorite(e) {
     e.preventDefault();
+    // if (checkPackageInCart(id)) {
+    //   return alert("ya esta en el carrito");
+    // }
+    // console.log(checkPackageInCart(id))
     if (checkPackageInCart(id)) {
       return alert("ya esta en el carrito");
     }
@@ -262,9 +266,9 @@ export default function Detail() {
           alert("ya esta en el carrito");
         }
       }
-      let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
-      favorites = favorites?.filter((f) => f.id !== parseInt(id));
-      localStorage.setItem("favorites", JSON.stringify(favorites));
+      // let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+      // favorites = favorites?.filter((f) => f.id !== parseInt(id));
+      // localStorage.setItem("favorites", JSON.stringify(favorites));
       setCheckeado(false);
       dispatch(cleanPackageById());
       setLoading(true);
@@ -291,36 +295,47 @@ export default function Detail() {
           console.log(input);
           await dispatch(postCartPackage(user.id, [input]));
         } else {
-          let activitiesId = input.actividades?.map(
-            (a) => a.Package_Activity.activityId
-          );
-          console.log({
+          await dispatch(getAllCart(user.id));
+          await dispatch(
+            updateCart(cart.id, {
+              packageId: input.paquete.id,
+              activitiesId: input.activities?.map((a) => a.id) || [],
+              quantity: input.cantidad,
+              total_package: descuento != 0 ? descuento : parseInt(input.total),
+            })
+            );
+            scrollToTop();
+        }
+        await dispatch(getAllCart(user.id));
+      } catch (error) {
+        let activitiesId = input.actividades?.map(
+          (a) => a.Package_Activity.activityId
+        );
+        console.log({
+          packageId: input.paquete.id,
+          activitiesId:
+            input.actividades?.map((a) => a.Package_Activity.activityId) || [],
+          quantity: input.cantidad,
+          total_package: descuento != 0 ? descuento : parseInt(input.total),
+        });
+        const algo = await dispatch(
+          updateCart(cart.id, {
             packageId: input.paquete.id,
             activitiesId:
               input.actividades?.map((a) => a.Package_Activity.activityId) ||
               [],
             quantity: input.cantidad,
             total_package: descuento != 0 ? descuento : parseInt(input.total),
-          });
-          const algo = await dispatch(
-            updateCart(cart.id, {
-              packageId: input.paquete.id,
-              activitiesId:
-                input.actividades?.map((a) => a.Package_Activity.activityId) ||
-                [],
-              quantity: input.cantidad,
-              total_package: descuento != 0 ? descuento : parseInt(input.total),
-            })
-          );
-          console.log(algo);
-          dispatch(cleanPackageById());
-          dispatch(getPackageById(id));
-        }
-      } catch (error) {
-        console.log(error.message);
-      }
+          })
+        );
+        console.log(algo);
+        dispatch(cleanPackageById());
+        dispatch(getPackageById(id));
+      } // catch (error) {
+      //   console.log(error.message);
+      //   alert('El paquete no se pudo agregar al carrito');
+      // }
     }
-    await dispatch(getAllCart(user.id));
   }
 
   const handleEstrellas = async (value) => {
@@ -366,50 +381,6 @@ export default function Detail() {
               />
             </div>
           </div>
-          <div>
-            <button
-              onClick={(e) => {
-                dispatch(deleteCartPackage(cart.id, packageDetail.id));
-              }}
-            >
-              delete cart
-            </button>
-          </div>
-          <div>
-            <button
-              onClick={(e) => {
-                dispatch(getAllCart(user.id));
-              }}
-            >
-              reset cart
-            </button>
-          </div>
-
-          {/* <div>
-            <select
-              onChange={(e) => handlePuntuar(e)}
-              name="rating"
-              id="rating"
-            >
-              <option selected disabled value="">
-                puntua
-              </option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-            </select>
-          </div>
-          <div>
-            <button
-              onClick={(e) => {
-                handleBorrarRating(e);
-              }}
-            >
-              eliminar rating
-            </button>
-          </div> */}
           <div className={s.card_rating}>
             <p className={s.card_text}>
               <b>
@@ -452,7 +423,18 @@ export default function Detail() {
                 {packageDetail.start_date?.split("-").reverse().join("-")} /{" "}
                 {packageDetail.end_date?.split("-").reverse().join("-")}
               </h3>
-              <h3>U$S {packageDetail.price}</h3>
+              <div className={s.pricePaq}>
+                <h3>
+                  U$S{" "}
+                  {packageDetail.on_sale ? (<s>{packageDetail.price}</s>) : (packageDetail.price)}
+                </h3>
+                {packageDetail.on_sale ? (
+                  <h4>
+                    {packageDetail.price *
+                      ((100 - packageDetail.on_sale) / 100)}
+                  </h4>
+                ) : ' '}
+              </div>
               <h3>
                 Destinos:{" "}
                 {packageDetail.destinations?.map((i, o) => {
@@ -507,7 +489,10 @@ export default function Detail() {
                         onChange={() => handleCheckbox(index)}
                       />
                       <label htmlFor={i.name}>
-                        U$S {i.price}
+                        U$S{" "}
+                        {packageDetail.on_sale
+                          ? (i.price * (100 - packageDetail.on_sale)) / 100
+                          : i.price}
                         {"       "}
                       </label>
                     </div>
@@ -530,10 +515,27 @@ export default function Detail() {
             <div className={s.total}>
               {" "}
               <span>TOTAL U$S </span>
-              <span>{input.total ? input.total : packageDetail.price}</span>
+              {/* <span>{input.total ? input.total : packageDetail.price}</span> */}
+              {packageDetail.on_sale ? (
+                <span>
+                  {(input.total ? input.total : packageDetail.price) *
+                    ((100 - packageDetail.on_sale) / 100)}
+                </span>
+              ) :  <span>{input.total ? input.total : packageDetail.price}</span>}
             </div>
           </div>
-
+          {packageDetail.on_sale ? (
+            <div className={s.discountTotal}>
+              <p>
+                Subtotal: U$S{input.total ? input.total : packageDetail.price}
+              </p>
+              <p>
+                Total Descuento: U$S
+                {input.total -
+                  input.total * ((100 - packageDetail.on_sale) / 100)}
+              </p>
+            </div>
+          ) : ' '}
           <div className={s.contenedorBotonComprar}>
             <button
               onClick={(e) => handleBotonComprar(e)}
@@ -551,47 +553,3 @@ export default function Detail() {
     </div>
   );
 }
-
-/* 
-
-
-  const handleFavorito = async (e) => {
-    e.preventDefault();
-    try {
-      const token = await getAccessTokenSilently();
-      dispatch(postFavorites(id, token));
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleFavoritoBorrar = async (e) => {
-    e.preventDefault();
-    try {
-      const token = await getAccessTokenSilently();
-      dispatch(deleteFavorites(id, token));
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handlePuntuar = async (e) => {
-    try {
-      const token = await getAccessTokenSilently();
-      console.log(e.target.value);
-      dispatch(crearRating(id, token, e.target.value));
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  const handleBorrarRating = async (e) => {
-    try {
-      const token = await getAccessTokenSilently();
-      dispatch(eliminarRating(id, token));
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-
-*/

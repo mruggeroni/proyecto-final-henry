@@ -246,6 +246,22 @@
   padding-top: 1%;
 }
 
+.pricePaq{
+  display: flex;
+  flex-direction: row;
+}
+
+.pricePaq h4{
+  margin: auto;
+  margin-left: 1vw;
+}
+
+.discountTotal{
+  left: auto;
+  right: 10%;
+  width: 30%;
+}
+
 @media (max-width: 1000px) {
   .contenedorDetalles h1 {
     font-size: 2.5em;

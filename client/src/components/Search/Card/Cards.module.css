@@ -6,7 +6,7 @@
   flex-direction: row;
   justify-content: space-evenly;
   color: black;
-  width: 90%;
+  width: 100%;
   border: none;
   background-color: #fafafa;
   box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24),
@@ -52,16 +52,16 @@ img {
   margin-right: 4vw;
   z-index: 1;
   margin-top: 2vw;
-  width: 50%;
+  width: 100%;
 }
 
-.price h3 {
+/* .price h3 {
   font-size: 2vw;
-}
+} */
 
-.price h5 {
+/* .price h5 {
   font-size: 1.2vw;
-}
+} */
 
 .rectangle {
   width: 2vw;
@@ -88,7 +88,7 @@ img {
 }
 
 .card:hover .rectangle {
-  width: 16vw;
+  width: 18vw;
   top: 0;
   right: 0;
   text-align: right;
@@ -169,6 +169,24 @@ img {
 .optionsRibbon {
   padding: 12px 10px 12px 10px;
   color: #fff;
+}
+
+.discount{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.price h4{
+  display: flex;
+  flex-direction: row;
+  margin-top: 1vw;
+  width: 100%;
+}
+
+.discount h4{
+  display: flex;
+  flex-direction: row;
 }
 
 @keyframes fade_in_show {
