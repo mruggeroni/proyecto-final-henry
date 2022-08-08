@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import s from "./Detail.module.css";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import ControlledCarousel from "./Carousel";
 import BotonFav from "./BotonFav";
 import CardGenericContainer from "../Cards/CardGenericContainer";
@@ -29,6 +29,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import Loading from "../Loading/Loading";
 import Rating from "react-rating";
 import { BsFillStarFill, BsStar } from "react-icons/bs";
+import Swal from "sweetalert2";
 
 export default function Detail() {
   const dispatch = useDispatch();
@@ -144,9 +145,9 @@ export default function Detail() {
     //   return alert("ya esta en el carrito");
     // }
     // console.log(checkPackageInCart(id))
-    if (checkPackageInCart(id)) {
-      return alert("ya esta en el carrito");
-    }
+    // if (checkPackageInCart(id)) {
+    //   return alert("ya esta en el carrito");
+    // }
     console.log(checkPackageInCart(id));
 
     if (!isAuthenticated) {
@@ -351,8 +352,9 @@ export default function Detail() {
 
   return loading ? (
     <Loading />
-  ) : (
-    <div
+  ) : !packageDetail.available && !user.is_admin ? (
+    <Navigate to='/' />
+  ) : (<div
       style={{
         backgroundImage: `url(${packageDetail.main_image})`,
         backgroundSize: "cover",

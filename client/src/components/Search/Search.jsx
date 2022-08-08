@@ -189,10 +189,11 @@ export default function FilteredSearch() {
           <div className={s.spinner}></div>
         </div>
       ) : (
-        <div>
+        <div className={s.containerSearch}>
           <div className={s.view}>
-            <div className={mostrar ? s.contenedorFiltros : s.contenedorFiltrosEsconder}>
-              <label>
+            <div className={s.verticalHideFilter}>
+              <div className={mostrar ? s.contenedorFiltros : s.contenedorFiltrosEsconder}>
+              {/* <label>
                 <select
                   onChange={(e) => handleChange(e)}
                   id="region"
@@ -251,7 +252,8 @@ export default function FilteredSearch() {
                     </option>
                   ))}
                 </select>
-              </label>
+              </label> */}
+              <SortPrice setOrder={setOrder} setCurrentPage={setCurrentPage} />
               <label>
                 <select
                   className={s.create_input}
@@ -282,28 +284,7 @@ export default function FilteredSearch() {
                   ))}
                 </select>
               </label>
-              <div className={s.create_input_date}>
-                <input
-                  type="date"
-                  id="from"
-                  value={fechaDesde}
-                  min={dataNow}
-                  // disabled={destination === "x"}
-                  onChange={(e) => handleChange(e)}
-                  className={s.create_input}
-                />
-              </div>
-              <div className={s.create_input_date}>
-                <input
-                  type="date"
-                  id="until"
-                  value={untilDate}
-                  min={fechaDesde ? fechaDesde : dataNow}
-                  // disabled={destination === "x"}
-                  onChange={(e) => handleChange(e)}
-                  className={s.create_input}
-                />
-              </div>
+          
               <label>
                 <select
                   id="precioDesde"
@@ -411,9 +392,13 @@ export default function FilteredSearch() {
               >
                 Reiniciar Filtros
               </button>
+              </div>
+              <div>
+              <hr />
+              </div>
             </div>
           </div>
-          <div onClick={() => setMostrar(!mostrar)} className={s.moreFilters}>
+          {currentPackage ? <div onClick={() => setMostrar(!mostrar)} className={s.moreFilters}>
               <VscChevronDown
                 className={s.flechaFiltros}
                 display={mostrar ? "none" : true}
@@ -423,10 +408,96 @@ export default function FilteredSearch() {
                 display={mostrar ? true : "none"}
                 />
                 <p>+ filtros</p>
-            </div>
+          </div> : ' '}
           {/* <div className={s.contenedorOrdenar}>
             <SortPrice setOrder={setOrder} setCurrentPage={setCurrentPage} />
           </div> */}
+            { currentPackage ? 
+            <div className={s.mainFilters}>
+            <div>
+                <select
+                  onChange={(e) => handleChange(e)}
+                  id="region"
+                  className={s.create_input}
+                >
+                  <option
+                    value=""
+                    selected={estadoRegion === "" ? true : false}
+                    disabled="disabled"
+                  >
+                    Regiones
+                  </option>
+                  <option
+                    selected={estadoRegion === "all" ? true : false}
+                    value="all"
+                  >
+                    Todas las regiones
+                  </option>
+                  {regionesFiltradas?.sort().map((el) => (
+                    <option
+                      selected={estadoRegion === el ? true : false}
+                      key={el}
+                      value={el}
+                    >
+                      {el}
+                    </option>
+                  ))}
+                </select>
+            </div>
+            <div>
+                <select
+                  onChange={(e) => handleChange(e)}
+                  id="searchDestinations"
+                  className={s.create_input}
+                >
+                  <option
+                    value=""
+                    selected={estadoDestino === "" ? true : false}
+                    disabled="disabled"
+                  >
+                    Destinos
+                  </option>
+                  <option
+                    selected={estadoDestino === "all" ? true : false}
+                    value="all"
+                  >
+                    Todos los destinos
+                  </option>
+                  {destinosFiltrados?.sort().map((el) => (
+                    <option
+                      selected={estadoDestino === el ? true : false}
+                      key={el}
+                      value={el}
+                    >
+                      {el}
+                    </option>
+                  ))}
+                </select>
+            </div>
+            <div className={s.create_input_date}>
+                <input
+                  type="date"
+                  id="from"
+                  value={fechaDesde}
+                  min={dataNow}
+                  // disabled={destination === "x"}
+                  onChange={(e) => handleChange(e)}
+                  className={s.create_input}
+                />
+              </div>
+              <div className={s.create_input_date}>
+                <input
+                  type="date"
+                  id="until"
+                  value={untilDate}
+                  min={fechaDesde ? fechaDesde : dataNow}
+                  // disabled={destination === "x"}
+                  onChange={(e) => handleChange(e)}
+                  className={s.create_input}
+                />
+              </div>
+            </div> : ' '
+            }
             {currentPackage ? <div className={s.pag}>
               <div className={s.divVacio}></div>
               <div className={s.paginadoSearch}>

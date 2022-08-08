@@ -130,7 +130,7 @@ export const getAllPackage = (limitRender) => {
 export const getAllPackageDashboard = () => {
   return async function (dispatch) {
     let res = await axios.get(`/packages/10000`);
-    return dispatch({ type: GET_ALL_PACKAGES, payload: res.data });
+    return dispatch({ type: GET_ALL_PACKAGES_DASHBOARD, payload: res.data });
   };
 };
 
@@ -224,7 +224,7 @@ export const getUserStatus = (id) => {
 export const patchUserRestore = (id, token) => {
   return async function (dispatch) {
     try {
-      const res = await axios.patch("/restoreUser/" + id, {
+      const res = await axios.patch("/restoreUser/" + id, "",{
         headers: {
           authorization: `Bearer ${token}`,
         },
@@ -263,7 +263,7 @@ export const createUser = (payload) => {
       });
       return dispatch({ type: POST_USER, payload: res.data });
     } catch (e) {
-      alert(e.message);
+      console.log(e.message);
     }
   };
 };

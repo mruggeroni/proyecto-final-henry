@@ -2,6 +2,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ordenar, orderByPrice } from "../../redux/actions/index";
 import s from "./Select.module.css";
+import style from './Search.module.css';
 
 export default function SortPrice({ setOrder, setCurrentPage }) {
   const dispatch = useDispatch();
@@ -16,28 +17,21 @@ export default function SortPrice({ setOrder, setCurrentPage }) {
   }
 
   return (
-    <div className={s.contenedorOrdenar}>
-      <label>
-        Ordenar
-        <select className={s.select} onChange={(e) => handlePriceSort(e)}>
-          <option
-            selected={ordenado.tipo === "precio" ? true : false}
-            value="precio"
-          >
+    <div className={s.sortPriceContainer}>
+      <label>Ordenar</label>
+        <select className={style.create_input} onChange={(e) => handlePriceSort(e)}>
+          <option selected={ordenado.tipo === "precio" ? true : false} value="precio">
             Precio
           </option>
-          <option
-            selected={ordenado.tipo === "duracion" ? true : false}
-            value="duracion"
-          >
+          <option selected={ordenado.tipo === "duracion" ? true : false} value="duracion">
             Duración
           </option>
         </select>
-      </label>
-      <label>
+      
+      
         <select
           id="ascDes"
-          className={s.select}
+          className={style.create_input}
           onChange={(e) => handlePriceSort(e)}
         >
           <option
@@ -53,7 +47,6 @@ export default function SortPrice({ setOrder, setCurrentPage }) {
             Mayor a menor
           </option>
         </select>
-      </label>
     </div>
   );
 }
