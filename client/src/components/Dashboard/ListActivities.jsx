@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { getAllActivities } from "../../redux/actions";
+import { AiFillEdit } from 'react-icons/ai';
 import Dashboard from "./Dashboard";
 import s from "./Table.module.css";
 
@@ -10,9 +11,7 @@ export default function ListActivities() {
   const activities = useSelector((state) => state.activities);
 
   useEffect(() => {
-    if (!activities.length) {
-      dispatch(getAllActivities());
-    }
+    dispatch(getAllActivities());
   }, [dispatch]);
 
   return (
@@ -34,20 +33,20 @@ export default function ListActivities() {
               </thead>
               <tbody>
                 {activities.length &&
-                  activities.map((a) => {
+                  activities?.map((a) => {
                     return (
                       <tr key={"activitiesList" + a.name}>
                         <td>{a.id}</td>
                         <td>{a.name}</td>
                         <td>{a.description}</td>
                         <td>${a.price}</td>
-                        <td>{a.classification.name}</td>
+                        <td>{a.classification?.name ? a.classification?.name : ""}</td>
                         <td>
                           <NavLink
                             to={`/dashboard/modifyActivities/${a.id}`}
                             className={s.fl_table_btn}
                           >
-                            Editar
+                            <AiFillEdit />
                           </NavLink>
                           {/* <button className={s.fl_table_btn}>Delete</button> */}
                         </td>

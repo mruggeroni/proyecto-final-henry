@@ -18,10 +18,11 @@
   position: relative;
 }
 
-.profile_information_container .profile_input {
+.profile_information_container .profile_input, .profile_input_password {
   margin-bottom: 10px;
 }
 
+.profile_input_password,
 .profile_input {
   width: 95%;
   height: 5vh;
@@ -35,6 +36,22 @@
   padding-right: 10px;
 }
 
+.profile_input_password {
+  width: 95%;
+  height: 5vh;
+  background-color: #e4eaea99;
+  color: #383838;
+  outline: none;
+  border: none;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-right: 60px;
+  padding-left: 12px;
+  padding-right: 15px;
+  cursor: pointer;
+}
 
 .profile_input_image input[type='file']{
   background-color: transparent;
@@ -64,10 +81,11 @@
 
 .profile_label {
   position: absolute;
-  top: -10px;
+  top: -8px;
   left: 10px;
+  font-weight: bold;
   z-index: 966;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .profile_error {

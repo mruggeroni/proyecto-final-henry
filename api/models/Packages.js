@@ -7,6 +7,7 @@ import { OrderItem } from './OrderItems.js';
 import { User } from './Users.js';
 import { RatingAndFavourite } from './RatingAndFavourite.js';
 
+
 export const Package = sequelize.define('package', {
 	name: {
 		type: DataTypes.STRING,
@@ -80,13 +81,10 @@ export const Package = sequelize.define('package', {
 		defaultValue: 0,
 	},
 }, {
-	timestamps: true,
-	createdAt: false,
-	updatedAt: false,
+	timestamps: false,
 	paranoid: true,
-	deletedAt: 'destroyTime'
+	deletedAt: 'destroyTime',
 });
-
 
 Package.belongsToMany(Order, {through: OrderItem})
 Order.belongsToMany(Package, {through: OrderItem})

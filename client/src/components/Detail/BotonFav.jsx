@@ -10,15 +10,15 @@ export default function BotonFav({ setChecked, checked, id, componente }) {
 
     useEffect(() => {
         dispatch(getFavoritesLocalStorage());
-      }, [dispatch]);
+    }, [dispatch]);
 
-      function handleFavoriteButton(id){
+    function handleFavoriteButton(id){
         if(componente !== 'favoriteList'){
-        favorites?.forEach((f) => f.id === parseInt(id) ? setChecked(true) : setChecked(false));
-        return checked;
+            favorites?.forEach((f) => f.id === parseInt(id) && setChecked(true));
+            return checked;
         } else return true;
-      }
-      console.log(checked)
+    }
+
     return (
         <div>
             <label className={s.heart_switch}>

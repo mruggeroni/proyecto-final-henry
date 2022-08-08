@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
+  cleanPackageById,
   getAllActivities,
   getPackageById,
   getRelationated,
@@ -20,16 +21,24 @@ export default function CardGeneric({ feature }) {
   }
 
   const handleClick = (e) => {
-    e.preventDefault();
-    dispatch(getPackageById(feature.id));
-    dispatch(getRelationated(feature.id));
-    dispatch(getAllActivities());
+    // e.preventDefault();
+    dispatch(cleanPackageById());
+    setTimeout(() => {
+      dispatch(getPackageById(feature.id));
+      dispatch(getRelationated(feature.id));
+      dispatch(getAllActivities());  
+    }, 2);
     navigate(`/detail/${feature.id}`);
     scrollToTop();
   };
 
   return (
     <div className={style.cardG_container}>
+      {
+        feature.component === 'promotions' && feature.on_sale != '0' && <div className={`${style.onSale} ${style.musRibbon} ${style.optionsRibbon} ${style.right}`}>
+          <span>{feature.on_sale}% OFF</span>
+        </div>
+      }
       <div className={style.cardG_img_container}>
         <img
           src={feature.img}

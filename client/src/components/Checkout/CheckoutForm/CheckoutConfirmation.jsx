@@ -1,40 +1,19 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import { BsFillEyeFill, BsFillEyeSlashFill } from "react-icons/bs";
-import s from '../Login.module.css';
-export default function CheckoutConfirmation({ showProfile, setShowProfile }) {
+import s from './CheckoutConfirmation.module.css';
 
-    let [ showPassword, setShowPassword ] = useState(false);
-  const handlePassword = (e) => {
-    e.preventDefault();
-    setShowPassword(!showPassword)
-  }
+export default function CheckoutConfirmation({ showCheckoutConfirmation, setShowCheckoutConfirmation }) {
+  const user = useSelector((state) => state.user);
 
   return (
-    !showProfile ? null
+    !showCheckoutConfirmation ? null
     :   
-    <div className={s.profile_container}>
-
-        <div className={s.profile_input_container}>
-            <label className={s.profile_label}>Email</label>
-            <input type='text' className={s.profile_input} />
-        </div>
-        <div className={s.settings_password_container}>
-          <div className={s.password}>
-                <label className={s.settings_label}>Contraseña</label>
-                <input type={showPassword ? 'text' : 'password'} className={s.profile_input} />
-                <span className={s.eyeHide} onClick={ (e) =>  handlePassword(e)}>{ showPassword ? <BsFillEyeSlashFill /> : <BsFillEyeFill /> }</span>
-          </div>
-        </div>
-        <div className={s.questions}>
-            <div>
-                <input type='checkbox'></input>
-                <label className={s.rememberMe}>Recordarme</label>
-            </div>
-            <p>Haz olvidado tu contraseña?</p>
-        </div>
-        <div>
-        <button type="submit" className={s.profile_btn_save}>Iniciar Sesión</button>
-        </div>
+    <div className={s.confirmation_container}>
+      <div className={s.textConfirmation}>
+        <h1>Su compra fue realizada con éxito!</h1>
+        <p>Recibirá un mail a {user.email} con los datos de su compra.</p>
+      </div>
     </div>   
   );
 }

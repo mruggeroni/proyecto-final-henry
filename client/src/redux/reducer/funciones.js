@@ -54,6 +54,19 @@ export function funcionOdenar(
   }
 }
 
+export function filtrarRegion(arrayAFiltrar, region) {
+  console.log("filtro region", region);
+  let respuesta = [];
+  region === "all"
+    ? arrayAFiltrar.forEach((e) => respuesta.push(e))
+    : arrayAFiltrar.filter((p) =>
+        p.destinations.forEach((el) => {
+          el.region === region && respuesta.push(p);
+        })
+      );
+  return respuesta;
+}
+
 export function filtrarDestinos(arrayAFiltrar, destino) {
   console.log("filtro destinos", destino);
   let respuesta = [];

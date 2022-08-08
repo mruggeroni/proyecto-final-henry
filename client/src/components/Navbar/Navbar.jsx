@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { BsJustify, BsFillCaretRightFill } from "react-icons/bs";
 import style from "./Navbar.module.css";
@@ -6,8 +6,34 @@ import NavDestinations from "./NavDestinations";
 import NavPromotions from "./NavPromotions";
 // import PopUps from "./../PopUps/PopUps.jsx";
 import NavRegion from "./NavRegion";
+import { useDispatch, useSelector } from "react-redux";
+import { createUser, getAllCart, getAllFavorites, postCartPackage } from "../../redux/actions";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export default function Navbar() {
+  const dispatch = useDispatch();
+  const user = useSelector( (state) => state.user );
+  const { isAuthenticated, getAccessTokenSilently } = useAuth0();
+  
+  useEffect( async () => {
+    const token = await getAccessTokenSilently()
+    let res = dispatch(createUser(token))
+    if(!isAuthenticated) {
+      // dispatch(getFavoritesLocalStorage());
+    } else {
+      const token = await getAccessTokenSilently();
+      await dispatch(getAllFavorites(token))
+      try {
+        await dispatch(getAllCart(res.payload.id));
+      } catch(error) {
+        await dispatch(postCartPackage(res.payload.id, []))
+        await dispatch(getAllCart(res.payload.id));
+      }
+    }
+
+  }, [])
+
+
 
   function handleClose() {
     document.getElementById("nav_menu")?.classList?.remove(`${style.is_active}`);
@@ -37,8 +63,8 @@ export default function Navbar() {
       <div
         id="nav_menu"
         onClick={() => handleClose()}
-        className={`${style.nav_menu_container}`}
-      ></div>
+        className={`${style.nav_menu_container}`} >
+      </div>
       <nav id="nav_menu_items" className={`${style.nav_menu}`}>
         <div className={style.nav_menu_container_close}>
           <button
@@ -55,12 +81,12 @@ export default function Navbar() {
         >
           Inicio
         </NavLink>
-        <button
+        {/* <button
           onClick={() => handleOpen("nav_menu_promotions")}
           className={style.nav_menu_item}
         >
           Promociones <BsFillCaretRightFill />
-        </button>
+        </button> */}
         <button
           onClick={() => handleOpen("nav_menu_region")}
           className={style.nav_menu_item}
@@ -81,7 +107,7 @@ export default function Navbar() {
           FAQ
         </NavLink>
         <NavLink
-          to="/contact"
+          to="/about"
           onClick={() => handleClose()}
           className={style.nav_menu_item}
         >
@@ -89,7 +115,7 @@ export default function Navbar() {
         </NavLink>
       </nav>
 
-      <NavPromotions handleClose={handleClose} />
+      {/* <NavPromotions handleClose={handleClose} /> */}
       <NavDestinations handleClose={handleClose} />
       <NavRegion handleClose={handleClose} />
 
@@ -101,7 +127,7 @@ export default function Navbar() {
           >
             <BsJustify />
           </button>
-{/*       <div className={style.icons}>
+          {/*       <div className={style.icons}>
             <PopUps />
           </div> */}
         </nav>

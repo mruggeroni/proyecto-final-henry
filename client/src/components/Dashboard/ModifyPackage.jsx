@@ -15,6 +15,7 @@ import Dashboard from "./Dashboard";
 import validationModifyPackage from "./validationModifyPackage.js";
 import ModalActividades from "./ModalActividades";
 import ModalDestinos from "./ModalDestinos";
+import Swal from 'sweetalert2'
 
 export default function ModifyPackages() {
   const { id } = useParams();
@@ -22,7 +23,7 @@ export default function ModifyPackages() {
   const dispatch = useDispatch();
   const [aux, setAux] = useState(false);
   const navigate = useNavigate();
-  const { getAccessTokenSilently} = useAuth0();
+  const { getAccessTokenSilently } = useAuth0();
   const allDestinations = useSelector((state) => state.destinations);
   const allActivities = useSelector((state) => state.activities);
   const types = useSelector((state) => state.types);
@@ -62,8 +63,8 @@ export default function ModifyPackages() {
         images1: paquete.images[1],
         images2: paquete.images[2],
         images: paquete.images,
-        destinations: paquete.destinations.map((i) => i.name),
-        activities: paquete.activities.map((i) => i.name),
+        destinations: paquete.destinations?.map((i) => i.name),
+        activities: paquete.activities?.map((i) => i.name),
         start_date: paquete.start_date,
         end_date: paquete.end_date,
         region: paquete.region,
@@ -76,7 +77,7 @@ export default function ModifyPackages() {
     }
   }, [paquete]);
 
-  useEffect(async () => {
+  useEffect(() => {
     // if (!allActivities.length) {
     //   dispatch(getAllActivities());
     // }
@@ -143,7 +144,6 @@ export default function ModifyPackages() {
 
   const handleSelectDestinations = (e) => {
     if (e.target.value === "otro") {
-      console.log("soy otro");
       e.target.value = "default";
       handleShowDestinos();
     } else {
@@ -156,17 +156,22 @@ export default function ModifyPackages() {
           e.target.value = "default";
         } else {
           e.target.value = "default";
-          return alert("Ese país ya fue seleccionado!");
+          return Swal.fire({
+            icon: 'error',
+            title: 'El país ya fue seleccionado',
+          })
         }
       } else {
         e.target.value = "default";
-        return alert("Maximo 5 destinos!");
+        return Swal.fire({
+          icon: 'error',
+          title: 'Maximo 5 destinos...',
+        })
       }
     }
   };
   const handleSelectActividades = (e) => {
     if (e.target.value === "otro") {
-      console.log("soy otro");
       e.target.value = "default";
       handleShow();
     } else {
@@ -179,11 +184,17 @@ export default function ModifyPackages() {
           e.target.value = "default";
         } else {
           e.target.value = "default";
-          return alert("Esa actividad ya fue seleccionada!");
+          return Swal.fire({
+            icon: 'error',
+            title: 'La actividad ya fue seleccionada!',
+          })
         }
       } else {
         e.target.value = "default";
-        return alert("Maximo 10 actividades!");
+        return Swal.fire({
+          icon: 'error',
+          title: 'Maximo 10 actividades!',
+        })
       }
     }
   };
@@ -204,7 +215,6 @@ export default function ModifyPackages() {
           start_date: e.target.value,
           end_date: e.target.value,
         });
-        console.log(input);
       } else {
         setInput({
           ...input,
@@ -219,22 +229,21 @@ export default function ModifyPackages() {
     }
   };
 
-  function handleBorrarDestinations(e) {
+  function handleBorrarDestinations(e, nombre) {
     setInput({
       ...input,
-      destinations: input.destinations.filter((i) => i !== e.target.innerText),
+      destinations: input.destinations.filter((i) => i !== nombre),
     });
   }
 
-  function handleBorrarActividades(e) {
+  function handleBorrarActividades(e, nombre) {
     setInput({
       ...input,
-      activities: input.activities.filter((i) => i !== e.target.innerText),
+      activities: input.activities.filter((i) => i !== nombre),
     });
   }
 
   const handleSubmit = async (e) => {
-    console.log(input);
     e.preventDefault();
     input.images = [input.images0, input.images1, input.images2];
     input.price = parseInt(input.price);
@@ -258,10 +267,11 @@ export default function ModifyPackages() {
       valida.seasson ||
       valida.destinations
     ) {
-      console.log(valida);
-      alert(
-        "Presta mas atencion al completar el formulario y volve a intentar ;)"
-      );
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops algo fallo...',
+        text: 'Presta mas atencion al completar!',
+      })
     } else {
       const patch = {};
       patch.featured = input.featured;
@@ -280,28 +290,39 @@ export default function ModifyPackages() {
       put.activities = input.activities;
       put.destinations = input.destinations;
       const modificar = [put, patch];
-      dispatch(modificarPaquete(modificar, id, token));
-      alert("Nuevo paquete creado..");
-      setInput({
-        name: "",
-        price: "",
-        description: "",
-        main_image: "",
-        images: "",
-        images0: "",
-        images1: "",
-        images2: "",
-        featured: "",
-        destinations: [],
-        start_date: "",
-        end_date: "",
-        available: "",
-        on_sale: "",
-        region: "",
-        seasson: "",
-        type: "",
-      });
-      navigate("/dashboard");
+      try {
+        dispatch(modificarPaquete(modificar, id, token));
+        Swal.fire({
+          icon: 'success',
+          title: 'Paquete modificado!',
+        })
+        setInput({
+          name: "",
+          price: "",
+          description: "",
+          main_image: "",
+          images: "",
+          images0: "",
+          images1: "",
+          images2: "",
+          featured: "",
+          destinations: [],
+          start_date: "",
+          end_date: "",
+          available: "",
+          on_sale: "",
+          region: "",
+          seasson: "",
+          type: "",
+        });
+        navigate("/dashboard/listPackages");
+      } catch (error) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops algo fallo...',
+          text: error.message,
+        })
+      }
     }
   };
 
@@ -566,7 +587,6 @@ export default function ModifyPackages() {
             setInput={setInput}
             input={input}
           />
-
           {input.destinations
             ?.sort(function (a, b) {
               if (a > b) {
@@ -578,21 +598,24 @@ export default function ModifyPackages() {
               return 0;
             })
             .map((i, o) => (
-              <div
-                key={"destinations" + o}
-                id="input_destinations"
-                className={style.create_destinations_items}
-                onClick={(e) => handleBorrarDestinations(e)}
-                value={i.name}
-              >
-                {i}
+              <div className={style.create_destinations_contenedor} key={"destinations" + o}>
+                <div
+                  key={"destination" + o}
+                  id="input_destinations"
+                  className={style.create_destinations_items}
+                  onClick={(e) => handleBorrarDestinations(e, i)}
+                  value={i}
+                >
+                  {i}
+                </div>
+                <div className={style.create_destinations_X} onClick={(e) => handleBorrarDestinations(e, i)}>X</div>
               </div>
             ))}
+
 
           {/* Final destinos */}
 
           <div className={style.create_input_container}>
-            {error.destinations && <span>{error.destinations}</span>}
             <label className={style.create_label}>Actividades</label>
             <select
               id="actividadesSelect"
@@ -638,14 +661,17 @@ export default function ModifyPackages() {
               return 0;
             })
             .map((i, o) => (
-              <div
-                key={"activities" + o}
-                id="input_activities"
-                className={style.create_destinations_items}
-                onClick={(e) => handleBorrarActividades(e)}
-                value={i.name}
-              >
-                {i}
+              <div className={style.create_destinations_contenedor} key={"activities" + o}>
+                <div
+                  key={"activitie" + o}
+                  id="input_activities"
+                  className={style.create_destinations_items}
+                  onClick={(e) => handleBorrarActividades(e, i)}
+                  value={i}
+                >
+                  {i}
+                </div>
+                <div className={style.create_destinations_X} onClick={(e) => handleBorrarActividades(e, i)}>X</div>
               </div>
             ))}
 
@@ -744,7 +770,7 @@ export default function ModifyPackages() {
               )}
             </div>
 
-            {input.images?.map((i, index) => {
+            {input.images && input.images?.map((i, index) => {
               return (
                 <div key={i + index} className={style.create_input_images}>
                   <label className={style.create_label}>
@@ -768,13 +794,13 @@ export default function ModifyPackages() {
               type="submit"
               disabled={
                 !input.name.length &&
-                !input.price.length &&
-                !input.description.length &&
-                !input.main_image.length &&
-                !input.images0.length &&
-                !input.images1.length &&
-                !input.images2.length &&
-                !input.destinations?.length
+                  !input.price.length &&
+                  !input.description.length &&
+                  !input.main_image.length &&
+                  !input.images0.length &&
+                  !input.images1.length &&
+                  !input.images2.length &&
+                  !input.destinations?.length
                   ? true
                   : false
               }

@@ -9,7 +9,8 @@ import UsersRoutes from './routes/UsersRoutes.js';
 import OrderRoutes from './routes/OrdersRouter.js';
 import FavouritesRoutes from './routes/FavouritesRoutes.js';
 import RatingRoutes from './routes/RatingRoutes.js'
-
+import PaymentRoutes from './routes/PaymentRoutes.js'
+import { PaymentResponse } from './pay/webhook.js';
 
 const app = express();
 
@@ -26,6 +27,7 @@ app.use(UsersRoutes);
 app.use(OrderRoutes);
 app.use(FavouritesRoutes)
 app.use(RatingRoutes)
+app.use(PaymentRoutes, PaymentResponse)
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*'); // update to match the domain you will make the request from

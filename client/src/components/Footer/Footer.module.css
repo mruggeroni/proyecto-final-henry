@@ -1,5 +1,5 @@
 .footer_container {
-  position: relative;
+  position: static;
   width: 100%;
   height: 25vh;
   bottom: 0;
@@ -59,5 +59,8 @@
 @media (max-width: 760px) {
   .footer_container {
     height: 100%;
+  }
+  .footer_links {
+    flex-wrap: wrap;
   }
 }

@@ -5,7 +5,7 @@ import { addRating, deleteRating, getRating } from '../controllers/RatingControl
 const router = Router();
 
 router.post('/rating/:id', verifyJwt, addRating)
-router.get('/rating/:id', verifyJwt, getRating)
+router.get('/rating/:id', getRating)
 router.delete('/rating/:id', verifyJwt, deleteRating)
 
 export default router;

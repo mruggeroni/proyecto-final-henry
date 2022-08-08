@@ -53,7 +53,7 @@
   justify-content: center;
 }
 
-.create_input_date > input[type="date"] {
+.create_input_date>input[type="date"] {
   width: 95%;
 }
 
@@ -164,7 +164,7 @@ select {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: auto;
+  /* margin: auto; */
   margin-bottom: 10px;
 }
 
@@ -188,11 +188,11 @@ select {
   transition: all 2s ease-in-out;
 }
 
-.create_destinations_items:hover {
+/* .create_destinations_items:hover {
   background-color: red;
   color: white;
   transition: all 2s ease-in-out;
-}
+} */
 
 /* SPINNER */
 .contenedorSpinner {
@@ -221,14 +221,38 @@ select {
   color: red;
 }
 
+.create_destinations_X {
+  background-color: #e4eaea99;
+  color: red;
+  cursor: pointer;
+  /* padding: 0px 10px 0px 12px; */
+  position: relative;
+  /* width: 40vh; */
+  height: 3.5vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* margin: auto; */
+  margin-bottom: 10px;
+}
+
+.create_destinations_contenedor {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  margin: auto
+}
+
 @keyframes spin {
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
   }
 }
+
 /* SPINNER FIN*/
 
 @media (max-width: 760px) {
@@ -239,6 +263,7 @@ select {
     align-items: center;
     justify-content: center;
   }
+
   .create_input_container {
     width: 100%;
     position: relative;
@@ -249,21 +274,26 @@ select {
     height: 100%;
     margin-bottom: 20px;
   }
+
   .create_textarea_container {
     width: 100%;
   }
+
   .create_input_date_container {
     width: 100%;
     margin-bottom: 20px;
   }
+
   .create_input_images_container {
     width: 100%;
   }
+
   .create_input_images {
     width: 100%;
     height: 100%;
     margin-bottom: 20px;
   }
+
   .create_input {
     height: 100%;
     margin-top: 20px;

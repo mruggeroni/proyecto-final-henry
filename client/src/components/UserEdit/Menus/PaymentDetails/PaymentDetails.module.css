@@ -1,0 +1,63 @@
+.payment_container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: #000 !important;
+  overflow-y: auto;
+}
+
+.payment_information_container {
+  position: relative;
+  text-align: center;
+  height: inherit;
+  overflow-x: hidden;
+}
+
+.payment_input_container {
+  position: relative;
+  margin-top: 20px;
+}
+
+.payment_input {
+  width: 95%;
+  height: 5vh;
+  background-color: #e4eaea99;
+  color: #383838;
+  outline: none;
+  border: none;
+  font-size: 14px;
+  margin-right: 60px;
+  padding-left: 12px;
+  padding-right: 10px;
+}
+
+.payment_label {
+  position: absolute;
+  top: -8px;
+  left: 10px;
+  font-weight: bold;
+  z-index: 966;
+  font-size: 12px;
+}
+
+.payment_error {
+  font-size: 12px;
+  color: #ff0000 !important;
+  margin: 10px 0;
+}
+
+.payment_btn_save {
+  background-color: #4a9eaacc;
+  font-size: 20px;
+  color: #fff;
+  width: 80%;
+  padding: 5px 0;
+  border: none;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.payment_btn_delete:hover {
+  color: #4a9eaacc;
+}
