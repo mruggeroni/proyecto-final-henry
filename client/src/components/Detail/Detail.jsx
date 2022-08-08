@@ -30,7 +30,6 @@ import { useAuth0 } from "@auth0/auth0-react";
 import Loading from "../Loading/Loading";
 import Rating from "react-rating";
 import { BsFillStarFill, BsStar } from "react-icons/bs";
-import Swal from "sweetalert2";
 
 export default function Detail() {
   const dispatch = useDispatch();
@@ -89,8 +88,8 @@ export default function Detail() {
         };
         fetch();
       }
+      setLoading(false);
     }
-    setLoading(false);
   }, [packageDetail, relationatedPackage, allActivities]);
 
   useEffect(async () => {
@@ -110,15 +109,6 @@ export default function Detail() {
       dispatch(getAllCart(usuario.payload.id));
     };
     fetch();
-    // if (!isAuthenticated) {
-    //   dispatch(getFavoritesLocalStorage());
-    // } else {
-    //   const fetch = async () => {
-    //     const token = await getAccessTokenSilently();
-    //     dispatch(getAllFavorites(token));
-    //   };
-    //   fetch();
-    // }
   }, [dispatch]);
 
   function scrollToTop() {
@@ -348,10 +338,10 @@ export default function Detail() {
       console.log(error.message);
     }
   };
-
+  console.log(packageDetail.available, user.is_admin)
   return loading ? (
     <Loading />
-  ) : !packageDetail.available && !user.is_admin ? (
+  ) : (packageDetail && !packageDetail.available && user.is_admin !== true ) ? (
     <Navigate to='/' />
   ) : (<div
       style={{

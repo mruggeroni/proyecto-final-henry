@@ -104,9 +104,9 @@ export default function ListPackages() {
                   <th>Id</th>
                   <th>Nombre</th>
                   <th>Precio</th>
+                  <th>Promoción</th>
                   <th>Destacado</th>
                   <th>Disponible</th>
-                  <th>Promoción</th>
                   <th>Editar</th>
                   <th>Eliminar</th>
                 </tr>
@@ -123,6 +123,7 @@ export default function ListPackages() {
                           </Link>
                           </td>
                         <td>${p.price}</td>
+                        <td>%{p.on_sale}</td>
                         <td onClick={ (e) => handlePatchPackage(e, p) }>
                           {p.featured ? (
                             <div id='destacado' className={s.fl_table_true}>true</div>
@@ -137,7 +138,6 @@ export default function ListPackages() {
                             <div id='disponible' className={s.fl_table_false}>false</div>
                           )}
                         </td>
-                        <td>%{p.on_sale}</td>
                         <td>
                           <NavLink
                             to={`/dashboard/modifyPackage/${p.id}`}
