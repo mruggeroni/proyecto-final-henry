@@ -8,8 +8,8 @@ export const getDestinationData = async () =>{
             console.log("\n", "uploading database Destinations", "\n");
             const infoDelJson = data.default;
 
-            infoDelJson.map(({ name, image, region }) => {
-                Destination.findOrCreate({
+            infoDelJson.map(async({ name, image, region }) => {
+                const destino = await Destination.findOrCreate({
                     where: {
                         name,
                     },

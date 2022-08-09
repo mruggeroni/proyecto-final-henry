@@ -6,15 +6,17 @@ export default function(){
     const user = useSelector( (state) => state.user );
     const { getAccessTokenSilently} = useAuth0();
     const dispatch = useDispatch();
+    let stateCart = useSelector((state) => state.cart);
 
     const handlepay = async (e) => {
         e.preventDefault();
         console.log(user)
-        const cart = {items: [
-            {id: 1,quantity:2 },
-            {id: 2, quantity: 1}
-        ]}
-        const token = await getAccessTokenSilently()
+        const token = await getAccessTokenSilently();
+        const usuario = await dispatch(createUser(token));
+        console.log(usuario)
+        const cart = await dispatch(getAllCart(usuario.payload.id));
+        console.log('CART')
+        console.log(cart)
         dispatch(Payment(cart, token))
       };
     return(

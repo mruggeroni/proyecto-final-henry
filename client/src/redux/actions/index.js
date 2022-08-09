@@ -671,9 +671,10 @@ export function modificarCategoria(id, payload, token) {
 
 export function filtrar(target, id) {
   return async function (dispatch) {
-    const paquetes = await axios.get("/packages/10000?available=true");
+    const paquetes = await axios.get("/packages/10000");
     return dispatch({ type: FILTRAR, payload: paquetes.data, target, id });
   };
+  // return { type: FILTRAR, target, id };
 }
 
 export function ordenar(target) {

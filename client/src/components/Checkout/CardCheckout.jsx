@@ -1,45 +1,81 @@
-import React,  { useState } from "react";
+import React,  { useState, useEffect } from "react";
 import s from "./CardCheckout.module.css";
 import Remove from '../Favorites/RemoveFavorite';
 import { Payment } from "../../redux/actions";
 import { useAuth0 } from "@auth0/auth0-react";
 import {useDispatch, useSelector } from "react-redux";
+import {
+    deleteCartPackage,
+    postCartPackage,
+    getAllCart,
+    updateCart
+  } from "../../redux/actions/index";
 
 
-export default function Card({ name, image, qty, price, total, id, activities, on_sale }) {
-
+export default function Card({ name, image, qty, price, totalPack, id, activities, on_sale, packageDetail }) {
+    const dispatch = useDispatch();
     const [modify, setModify] = useState(false);
     const user = useSelector((state) => state.user);
-    let sumAct = 0;
-    activities.forEach((a) => sumAct += a.price*qty);
-
-    
-    // async function handleModify(e){
-    //     e.preventDefault();
-    //     setModify(!modify);
-    //     let sQty = document.getElementById(`select${qty}`);
-    //     console.log(sQty)
-    //     sQty?.setAttribute('selected', true);
-    // }
-
+    const cart = useSelector((state) => state.cart);
     const { getAccessTokenSilently} = useAuth0();
-    const dispatch = useDispatch();
+    let sumAct = 0;
+    activities.forEach((a) => on_sale ? (sumAct += a.price)*on_sale/100 : sumAct += a.price);
+    
+    const [input, setInput] = useState({
 
-    // const handlepay = async (e) => {
-    //    e.preventDefault();
-    //    console.log(user)
-    //    const cart = {items: [
-    //        {id: 1,quantity:2 },
-    //        {id: 2, quantity: 1}
-    //     ]}
-    //     const token = await getAccessTokenSilently()
-    //     dispatch(Payment(cart, token))
-    //   };
+        cantidad: qty,
+        total: totalPack,
+        actividades: activities,
+    });
+    
+    useEffect(() => {
+        let sQty = document.getElementById(`select${qty}${id}`);
+        sQty?.setAttribute('selected', true);
+    }, [dispatch]);
+    
+    async function handleModify(e){
+        e.preventDefault();
+        setModify(!modify);
+        // console.log(packageDetail)
+        // let sQty = document.getElementById(`select${qty}`);
+        // sQty?.setAttribute('selected', {true});
+    }
+
+    function handleSelectQty(e){
+        e.preventDefault();
+    }
+
+    async function handleModifyPq(e){
+        const token = await getAccessTokenSilently();
+        // let newTotal = 0;
+		await dispatch(deleteCartPackage(cart.id, id));
+        await dispatch(getAllCart(user.id));
+        input.paquete = packageDetail;
+        setInput({
+            ...input,
+            cantidad: e.target.value,
+            total: totalPack,
+        });
+        console.log('card-checkout-inicio')
+        console.log(e.target.value)
+        console.log(price)
+        console.log(activities.reduce((a, newTotal) => newTotal += a.price*e.target.value, 0))
+        console.log(price*e.target.value + (activities.reduce((a, newTotal) => newTotal += a.price*e.target.value, 0)))
+        console.log('card-checkout-fin')
+        await dispatch(updateCart(cart.id, {
+            packageId: id,
+            activitiesId: activities?.map((a) => a.id) || [],
+            quantity: e.target.value,
+            // total: price*e.target.value,
+            total_package: on_sale ? ((price+sumAct)*e.target.value)*(100-on_sale)/100 : (price*e.target.value + sumAct*e.target.value),
+          }));
+		await dispatch(getAllCart(user.id));
+    }
 
   return (
     <div className={s.checkoutCard}>    
         <div className={s.removeCard}>
-            {/* <p onClick={(e) => handleModify(e)}>Modificar</p> */}
+            <a onClick={(e) => handleModify(e)} className={s.modifybutton}>Modificar</a>
             <Remove popUp={'cart'} id={id}/>
         </div>
         <div className={s.topGroup}>
@@ -49,22 +85,20 @@ export default function Card({ name, image, qty, price, total, id, activities, o
             <div className={s.cardBody}>
                 <div><h3 className={s.checkoutPackTitle}>{name}</h3><br /></div>
                 <div className={s.inlineGroup}>
-                    {/* {!modify ? */}
-                    <h4>QTY : {qty}</h4>
-                    {/* : <div className={s.inlineGroup}>
+                    <div className={ modify ? s.qtySelect : s.qtyInput }>
                         <h4>QTY :</h4>  
-                        <select id='qtySelect'>
-                            <option value="1" id='select1'>1</option>
-                            <option value="2" id='select2'>2</option>
-                            <option value="3" id='select3'>3</option>
-                            <option value="4" id='select4'>4</option>
-                            <option value="5" id='select5'>5</option>
-                            <option value="6" id='select6'>6</option>
-                            <option value="7" id='select7'>7</option>
-                            <option value="8" id='select8'>8</option>
+                        <select id={`qtySelect${id}`} disabled={ !modify } onClick={(e) => handleSelectQty(e)} onChange={(e) => handleModifyPq(e)}>
+                            <option value="1" id={`select1${id}`}>1</option>
+                            <option value="2" id={`select2${id}`}>2</option>
+                            <option value="3" id={`select3${id}`}>3</option>
+                            <option value="4" id={`select4${id}`}>4</option>
+                            <option value="5" id={`select5${id}`}>5</option>
+                            <option value="6" id={`select6${id}`}>6</option>
+                            <option value="7" id={`select7${id}`}>7</option>
+                            <option value="8" id={`select8${id}`}>8</option>
                         </select>
-                    </div>} */}
-                    <h4>${on_sale ? price*((100 - on_sale)/100) : price}</h4> 
+                    </div>
+                    {/* <h4>${on_sale ? price*((100 - on_sale)/100) : price}</h4>  */}
                 </div>
             </div>
         </div>
@@ -84,11 +118,11 @@ export default function Card({ name, image, qty, price, total, id, activities, o
                 <hr />
                 {on_sale ?
                 <div className={s.discountTotal}>
-                    <p>Subtotal: ${price*qty + sumAct}</p>
-                    <p>Total Descuento: ${(price*qty + sumAct) - total}</p> 
+                    <p>Subtotal: ${price*qty + (sumAct*qty)}</p>
+                    <p>Total Descuento: ${(price*qty + (sumAct*qty)) *on_sale/100}</p> 
                 </div> : ''}
                 <div className={s.totalPaq}>
-                    <h3>{total === 0 ? ' ' : 'Total:'}</h3><h3>{total === 0 ? ' ' : '$' + total}</h3>
+                    <h3>{totalPack === 0 ? ' ' : 'Total:'}</h3><h3>{totalPack === 0 ? ' ' : '$' + totalPack}</h3>
                     {/* <button onClick={(e) => handlepay(e)}>Go to pay</button> */}
 
                 </div>
