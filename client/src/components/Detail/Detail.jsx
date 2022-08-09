@@ -88,6 +88,12 @@ export default function Detail() {
         };
         fetch();
       }
+      console.log(packageDetail.available, user.is_admin)
+      console.log(!packageDetail.available && user.is_admin !== true )
+      if(!packageDetail.available && user.is_admin !== true ) {
+        navigate('/');
+      }
+
       setLoading(false);
     }
   }, [packageDetail, relationatedPackage, allActivities]);
@@ -338,11 +344,9 @@ export default function Detail() {
       console.log(error.message);
     }
   };
-  console.log(packageDetail.available, user.is_admin)
+
   return loading ? (
     <Loading />
-  ) : (packageDetail && !packageDetail.available && user.is_admin !== true ) ? (
-    <Navigate to='/' />
   ) : (<div
       style={{
         backgroundImage: `url(${packageDetail.main_image})`,

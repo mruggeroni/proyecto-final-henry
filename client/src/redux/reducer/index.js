@@ -110,7 +110,7 @@ const rootReducer = (state = initialState, action) => {
      
       return {
         ...state,
-        orderDetails: action.payload.packages
+        orderDetails: action.payload
       };
     case GET_ORDERS:
       return {

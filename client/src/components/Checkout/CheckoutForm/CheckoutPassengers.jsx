@@ -14,10 +14,10 @@ export default function CheckoutPassengers({ showCheckoutPassengers, handleCheck
     const handlepay = async (e) => {
         e.preventDefault();
         handleCheckoutPayment();
-        /* const cart = {items: [
+        const cart = {items: [
           {id: 1,quantity:2 },
           {id: 2, quantity: 1}
-        ]} */
+        ]}
         const token = await getAccessTokenSilently()
         await dispatch(Payment(cart, token))
     };

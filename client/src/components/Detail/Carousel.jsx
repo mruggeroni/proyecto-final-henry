@@ -19,7 +19,7 @@ export default function ControlledCarousel({ name, main_image, images, component
         </div>
       </Carousel.Item>
 
-      {images?.map((i) => {
+      {images && images?.map((i) => {
         return (
           <Carousel.Item key={'asdasd'+i} interval={2000}>
             <div className={componente === 'checkout' ? s.carouselForCheckout : s.item}>
