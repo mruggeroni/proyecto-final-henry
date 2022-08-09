@@ -42,17 +42,23 @@ export default function ListUsers() {
     }).then( async (result) => {
       if (result.isConfirmed) {
         const token = await getAccessTokenSilently()
-        dispatch(deleteUser(id, token))
-        dispatch(getUsers(token));
-        Swal.fire(
-          `Usuario: ${id} | ${nombre}.`,
-          'Eliminado exitosamente!',
-          'success'
-        )
-      }
-    })
-  };
-  
+
+        if(!users.length) {
+            
+            dispatch(getUsers(token))
+        }
+    } })};
+    
+  //  const handleDeleteUser = async (id) =>{
+  //   const token = await getAccessTokenSilently()
+  //       dispatch(deleteUser(id, token))
+  //       dispatch(getUsers(token));
+  //       Swal.fire(
+  //         `Usuario: ${id} | ${nombre}.`,
+  //         'Eliminado exitosamente!',
+  //         'success'
+  //       )
+  //     }
   useEffect(() => {
     const fetchData = async () => {
       const token = await getAccessTokenSilently()

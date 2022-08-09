@@ -12,11 +12,11 @@ export const verifyJwt = expressJwt({
 	audience: process.env.AUDIENCE,
 	issuer: process.env.ISSUER,
 	algorithms: ['RS256']
-
 })
 
 export const verifySuperAdminPermission = (req, res, next) => {
     if(req.auth){const permissions = req.auth.permissions[0]
+		console.log(permissions)
         permissions === 'SuperAdmin' ? next() : res.status(403).send('Not authorized'); }
 
 }

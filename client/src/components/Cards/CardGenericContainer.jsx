@@ -4,6 +4,7 @@ import style from "./CardGenericContainer.module.css";
 
 export default function CardGenericContainer({ listCards, component }) {
 
+  console.log(listCards)
   return (
     <div className={style.cards_container}>
       {listCards.length &&

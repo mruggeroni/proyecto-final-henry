@@ -580,3 +580,48 @@ export default function Detail() {
     </div>
   );
 }
+
+
+/* 
+
+
+  const handleFavorito = async (e) => {
+    e.preventDefault();
+    try {
+      const token = await getAccessTokenSilently();
+      dispatch(postFavorites(id, token));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleFavoritoBorrar = async (e) => {
+    e.preventDefault();
+    try {
+      const token = await getAccessTokenSilently();
+      dispatch(deleteFavorites(id, token));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handlePuntuar = async (e) => {
+    try {
+      const token = await getAccessTokenSilently();
+      console.log(e.target.value);
+      dispatch(crearRating(id, token, e.target.value));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handleBorrarRating = async (e) => {
+    try {
+      const token = await getAccessTokenSilently();
+      dispatch(eliminarRating(id, token));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
+*/
