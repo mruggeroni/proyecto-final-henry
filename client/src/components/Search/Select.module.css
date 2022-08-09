@@ -35,8 +35,8 @@ label {
 .sortPriceContainer{
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
-  width: 25%
+  justify-content: flex-start;
+  width: 30%
 }
 
 @media (max-width: 1000px) {

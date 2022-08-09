@@ -57,6 +57,7 @@ export const getOrderDetail = (id) => {
   try {
     return async function (dispatch) {
       let res = await axios.get("/order/" + id);
+      console.log(res)
       return dispatch({ type: GET_ORDER_DETAILS, payload: res.data });
     };
   } catch (error) {
@@ -237,7 +238,7 @@ export const createPackage = (payload, token) => {
       });
       return respuesta;
     } catch (e) {
-      alert(e.message);
+      console.log(e.message);
     }
   };
 };
@@ -414,7 +415,7 @@ export const crearDestino = (payload, token) => {
       );
       return respuesta;
     } catch (e) {
-      alert(e.message);
+      console.log(e.message);
     }
   };
 };
@@ -431,7 +432,7 @@ export const crearActividad = (payload, token) => {
       });
       return respuesta;
     } catch (e) {
-      alert(e.message);
+      console.log(e.message);
     }
   };
 };
@@ -454,7 +455,7 @@ export function modificarPaquete(payload, id, token) {
       console.log("respuesta2 : ", respuesta2);
       return respuesta2; // como no necesitamos hacer nada podemos no dispachar nada
     } catch (e) {
-      alert(e.message);
+      console.log(e.message);
     }
   };
 }
@@ -476,7 +477,7 @@ export const createCategories = (payload, token) => {
       });
       return respuesta;
     } catch (e) {
-      alert(e.message);
+      console.log(e.message);
     }
   };
 };
@@ -491,7 +492,7 @@ export const createActivities = (payload, token) => {
       });
       return respuesta;
     } catch (e) {
-      alert(e.message);
+      console.log(e.message);
     }
   };
 };
@@ -508,7 +509,7 @@ export function modificarActividad(payload, id, token) {
       });
       return respuesta;
     } catch (e) {
-      alert(e.message);
+      console.log(e.message);
     }
   };
 }
@@ -525,7 +526,7 @@ export function borrarPaquete(payload, token) {
       dispatch(getAllPackage(1000));
       return json;
     } catch (e) {
-      alert("No pudimos borrar el paquete!");
+      console.log("No pudimos borrar el paquete!");
     }
   };
 }
@@ -541,7 +542,7 @@ export function borrarUsuario(payload, token) {
       dispatch(getUsers);
       return json;
     } catch (e) {
-      alert("No pudimos borrar el paquete!");
+      console.log("No pudimos borrar el paquete!");
     }
   };
 }

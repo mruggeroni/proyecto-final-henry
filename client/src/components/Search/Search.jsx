@@ -83,13 +83,15 @@ export default function FilteredSearch() {
   const [precioDesde, setPrecioDesde] = useState(estadoPrecioMin);
   const [precioHasta, setPrecioHasta] = useState(estadoPrecioMax);
   const [region, setRegion] = useState(estadoRegion);
+  const [loading, setLoading] = useState(false);
+  const [mostrar, setMostrar] = useState(false);
 
   const handleChange = (e) => {
     e.preventDefault();
+    setLoading(true);
     if (e.target.id === "region") {
       setRegion(e.target.value);
       dispatch(filtrar(e.target.value, e.target.id));
-      console.log("jklasdhvbipasjdvbapi");
     }
     if (e.target.id === "searchDestinations") {
       setDestination(e.target.value);
@@ -138,15 +140,13 @@ export default function FilteredSearch() {
     if (e.target.id === "reset") {
       dispatch(filtrar("", e.target.id));
       setUntilDate(estadoPrecioMax);
+      setLoading(false);
     }
     setCurrentPage(1);
     // dispatch(filterPackagesByDestination(e.target.value));
     // dispatch(getAllPackage(10000));
+    setLoading(false);
   };
-
-  const [loading, setLoading] = useState(false);
-
-  const [mostrar, setMostrar] = useState(false);
 
   useEffect(async () => {
     setLoading(true);
@@ -190,7 +190,7 @@ export default function FilteredSearch() {
         </div>
       ) : (
         <div className={s.containerSearch}>
-          <div className={s.view}>
+          <div className={ mostrar ? s.view : s.contenedorFiltrosEsconder }>
             <div className={s.verticalHideFilter}>
               <div className={mostrar ? s.contenedorFiltros : s.contenedorFiltrosEsconder}>
               {/* <label>
@@ -436,11 +436,7 @@ export default function FilteredSearch() {
                   {regionesFiltradas?.sort().map((el) => (
                     <option
                       selected={estadoRegion === el ? true : false}
-                      key={el}
-                      value={el}
-                    >
-                      {el}
-                    </option>
+                      key={el} value={el} > {el} </option>
                   ))}
                 </select>
             </div>
