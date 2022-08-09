@@ -442,12 +442,7 @@ export default function FilteredSearch() {
                   >
                     Regiones
                   </option>
-                  <option
-                    selected={estadoRegion === "all" ? true : false}
-                    value="all"
-                  >
-                    Todas las regiones
-                  </option>
+        
                   {regionesFiltradas?.sort().map((el) => (
                     <option
                       selected={estadoRegion === el ? true : false}

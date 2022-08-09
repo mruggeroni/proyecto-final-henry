@@ -11,26 +11,26 @@ export default function Contact() {
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Ratione sed
           ea, aut similique maiores quo.
         </p>
-        <h4 className={s.information_title}>Llamanos</h4>
+        <h4>Llamanos</h4>
         <hr />
         <div className={s.callus}>
           <div className={s.callus_item}>
             <div className={s.callus_item_left}>
-              <h5>Reservas Individuales</h5>
+              <h6>Reservas Individuales</h6>
               <span>Mon-Sun 7am-2am (EST)</span>
             </div>
             <p>866-562-7625</p>
           </div>
           <div className={s.callus_item}>
             <div className={s.callus_item_left}>
-              <h5>Ayuda en el día del Embarque</h5>
+              <h6>Ayuda en el día del Embarque</h6>
               <span>24/7</span>
             </div>
             <p>800-256-6649</p>
           </div>
           <div className={s.callus_item}>
             <div className={s.callus_item_left}>
-              <h5>Asistencia Online</h5>
+              <h6>Asistencia Online</h6>
               <span>Mon-Fri 8am-11pm EST / Sat-Sun 9am-6pm EST</span>
             </div>
             <p>800-398-9819</p>

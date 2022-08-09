@@ -68,7 +68,7 @@ export const getOrderDetail = (id) => {
 export const getOrders = () => {
   try {
     return async function (dispatch) {
-      let res = await axios.get("/orders");
+      let res = await axios.get("/orders?limit=10000");
       return dispatch({ type: GET_ORDERS, payload: res.data.results });
     };
   } catch (error) {
