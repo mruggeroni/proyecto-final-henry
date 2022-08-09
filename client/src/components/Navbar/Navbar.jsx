@@ -12,12 +12,6 @@ export default function Navbar() {
   const dispatch = useDispatch();
   const user = useSelector( (state) => state.user );
   const { isAuthenticated, getAccessTokenSilently } = useAuth0();
-<<<<<<< HEAD
-  
-  useEffect( async () => {
-    const token = await getAccessTokenSilently()
-    let res = dispatch(createUser(token))
-=======
   const [showNavMenu, setShowNavMenu] = useState(false)
   const [showNavMenuItems, setShowNavMenuItems] = useState(false)
   const [showNavMenuDestinations, setShowNavMenuDestinations] = useState(false)
@@ -26,34 +20,22 @@ export default function Navbar() {
   useEffect( async () => {
     const token = await getAccessTokenSilently()
     // let res = dispatch(createUser(token))
->>>>>>> 6619fdc4664f95d4d74e30022e796b228847e293
     if(!isAuthenticated) {
       // dispatch(getFavoritesLocalStorage());
     } else {
       const token = await getAccessTokenSilently();
       await dispatch(getAllFavorites(token))
       try {
-<<<<<<< HEAD
-        await dispatch(getAllCart(res.payload.id));
-      } catch(error) {
-        await dispatch(postCartPackage(res.payload.id, []))
-        await dispatch(getAllCart(res.payload.id));
-=======
         await dispatch(getAllCart(user.id));
       } catch(error) {
         await dispatch(postCartPackage(user.id, []))
         await dispatch(getAllCart(user.id));
->>>>>>> 6619fdc4664f95d4d74e30022e796b228847e293
       }
     }
 
   }, [])
 
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 6619fdc4664f95d4d74e30022e796b228847e293
   function handleClose() {
     setShowNavMenu(false);
     setShowNavMenuItems(false);
@@ -105,15 +87,6 @@ export default function Navbar() {
         >
           Inicio
         </NavLink>
-<<<<<<< HEAD
-        {/* <button
-          onClick={() => handleOpen("nav_menu_promotions")}
-          className={style.nav_menu_item}
-        >
-          Promociones <BsFillCaretRightFill />
-        </button> */}
-=======
->>>>>>> 6619fdc4664f95d4d74e30022e796b228847e293
         <button
           onClick={() => handleOpen("nav_menu_region")}
           className={`${style.nav_menu_item} ${showNavMenuRegion ? style.is_active : null }`}
@@ -143,13 +116,8 @@ export default function Navbar() {
       </nav>
 
       {/* <NavPromotions handleClose={handleClose} /> */}
-<<<<<<< HEAD
-      <NavDestinations handleClose={handleClose} />
-      <NavRegion handleClose={handleClose} />
-=======
       <NavDestinations showNavMenuDestinations={showNavMenuDestinations} handleOpen={handleOpen} handleClose={handleClose} />
       <NavRegion showNavMenuRegion={showNavMenuRegion} handleOpen={handleOpen} handleClose={handleClose} />
->>>>>>> 6619fdc4664f95d4d74e30022e796b228847e293
 
       <div className={style.nav_container}>
         <nav className={style.nav_items}>

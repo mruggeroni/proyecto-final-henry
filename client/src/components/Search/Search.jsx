@@ -29,13 +29,7 @@ export default function FilteredSearch() {
 
   const allPackages = useSelector((state) => state.allPackages);
   const filteredPackages = useSelector((s) => s.filteredPackages);
-<<<<<<< HEAD
-  const allDestinations = useSelector(
-    (state) => state.destinationsWithPackages
-  );
-=======
   const allDestinations = useSelector((state) => state.destinationsWithPackages );
->>>>>>> 6619fdc4664f95d4d74e30022e796b228847e293
 
   const regionesFiltradas = [];
   filteredPackages &&
@@ -93,10 +87,6 @@ export default function FilteredSearch() {
   const handleChange = (e) => {
     e.preventDefault();
     if (e.target.id === "region") {
-<<<<<<< HEAD
-      // dispatch(getAllPackage(1000));
-=======
->>>>>>> 6619fdc4664f95d4d74e30022e796b228847e293
       setRegion(e.target.value);
       dispatch(filtrar(e.target.value, e.target.id));
       console.log("jklasdhvbipasjdvbapi");
@@ -167,28 +157,16 @@ export default function FilteredSearch() {
     await dispatch(getDestinationsWithPackages());
     await dispatch(getTypes());
     if (!isAuthenticated) {
-<<<<<<< HEAD
-      // dispatch(getFavoritesLocalStorage());
-=======
       dispatch(getFavoritesLocalStorage());
->>>>>>> 6619fdc4664f95d4d74e30022e796b228847e293
     } else {
       const token = await getAccessTokenSilently();
       dispatch(getAllFavorites(token));
     }
-<<<<<<< HEAD
-    const fetch = async () => {
-      const token = await getAccessTokenSilently();
-      dispatch(createUser(token));
-    };
-    fetch();
-=======
     // const fetch = async () => {
     //   const token = await getAccessTokenSilently();
     //   dispatch(createUser(token));
     // };
     // fetch();
->>>>>>> 6619fdc4664f95d4d74e30022e796b228847e293
     setLoading(false);
   }, []);
 

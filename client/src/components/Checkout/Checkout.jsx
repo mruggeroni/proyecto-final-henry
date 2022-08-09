@@ -164,10 +164,7 @@ export default function CheckoutCart() {
                     price={p.price}
                     total={cart.total_order}
                     activities={p.activities}
-<<<<<<< HEAD
-=======
                     on_sale={p.on_sale}
->>>>>>> 6619fdc4664f95d4d74e30022e796b228847e293
                     id={p.id}
                     key={p.id}
                   />
@@ -187,15 +184,9 @@ export default function CheckoutCart() {
         )}
         {Object.keys(cart).length > 0 && isAuthenticated && (
           <div className={s.buttonContainer}>
-<<<<<<< HEAD
-            {/* <Link to={"/checkout"}> */}
-              <button onClick={(e) => handlePay(e) } className={s.comprarBtn}>Comprar</button>
-            {/* </Link> */}
-=======
             <Link to={"/checkout"}>
               <button className={s.comprarBtn}>Comprar</button>
             </Link>
->>>>>>> 6619fdc4664f95d4d74e30022e796b228847e293
           </div>
         )}
       </div>

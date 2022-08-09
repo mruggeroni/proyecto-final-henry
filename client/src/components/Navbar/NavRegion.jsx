@@ -4,11 +4,6 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { BsFillCaretLeftFill } from "react-icons/bs";
 import {
   getAllDestinations,
-<<<<<<< HEAD
-  filterPackagesByDestination,
-  paquetesPorRegion,
-=======
->>>>>>> 6619fdc4664f95d4d74e30022e796b228847e293
   filtrar
 } from "../../redux/actions/index";
 import style from "./Navbar.module.css";
@@ -28,10 +23,6 @@ export default function NavRegion({ showNavMenuRegion, handleOpen, handleClose }
   function handleClickRegion(e) {
     e.preventDefault();
     dispatch(filtrar(e.target.innerText, "region"))
-<<<<<<< HEAD
-    // dispatch(paquetesPorRegion(e.target.innerText));
-=======
->>>>>>> 6619fdc4664f95d4d74e30022e796b228847e293
     navigate("/search");
     handleClose();
   }

@@ -11,24 +11,15 @@ import {
 } from "../../redux/actions/index";
 import style from "./Navbar.module.css";
 
-<<<<<<< HEAD
-export default function NavDestinations({ handleClose }) {
-=======
 export default function NavDestinations({ showNavMenuDestinations, handleOpen, handleClose }) {
->>>>>>> 6619fdc4664f95d4d74e30022e796b228847e293
   const dispatch = useDispatch(); 
   const navigate = useNavigate();
   const allDestinations = useSelector((state) => state.destinationsWithPackages);
 
   useEffect(() => {
     const fetch = async () => {
-<<<<<<< HEAD
-      await dispatch(getAllPackage(10000))
-      dispatch(getAllDestinations());
-=======
       await dispatch(getAllDestinations());
       await dispatch(getAllPackage(10000))
->>>>>>> 6619fdc4664f95d4d74e30022e796b228847e293
       dispatch(getDestinationsWithPackages());
     }
     fetch().catch(console.log("error"))
@@ -37,12 +28,6 @@ export default function NavDestinations({ showNavMenuDestinations, handleOpen, h
   function handleClick(e) {
     e.preventDefault();
     dispatch(filtrar(e.target.innerText, "searchDestinations"));
-<<<<<<< HEAD
-    // dispatch(filterPackagesByDestination(e.target.innerText));
-    // console.log(params)
-
-=======
->>>>>>> 6619fdc4664f95d4d74e30022e796b228847e293
     navigate("/search");
     handleClose();
   }

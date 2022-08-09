@@ -6,20 +6,6 @@ import { useAuth0 } from "@auth0/auth0-react";
 import {useDispatch, useSelector } from "react-redux";
 
 
-<<<<<<< HEAD
-export default function Card({ name, image, qty, price, total, id, activities }) {
-
-    const [modify, setModify] = useState(false);
-    const user = useSelector((state) => state.user)
-    
-    async function handleModify(e){
-        e.preventDefault();
-        setModify(!modify);
-        let sQty = document.getElementById(`select${qty}`);
-        console.log(sQty)
-        sQty?.setAttribute('selected', true);
-    }
-=======
 export default function Card({ name, image, qty, price, total, id, activities, on_sale }) {
 
     const [modify, setModify] = useState(false);
@@ -35,7 +21,6 @@ export default function Card({ name, image, qty, price, total, id, activities, o
     //     console.log(sQty)
     //     sQty?.setAttribute('selected', true);
     // }
->>>>>>> 6619fdc4664f95d4d74e30022e796b228847e293
 
     const { getAccessTokenSilently} = useAuth0();
     const dispatch = useDispatch();
@@ -79,23 +64,14 @@ export default function Card({ name, image, qty, price, total, id, activities, o
                             <option value="8" id='select8'>8</option>
                         </select>
                     </div>} */}
-<<<<<<< HEAD
-                    <h4>${price}</h4> 
-=======
                     <h4>${on_sale ? price*((100 - on_sale)/100) : price}</h4> 
->>>>>>> 6619fdc4664f95d4d74e30022e796b228847e293
                 </div>
             </div>
         </div>
         <div className={s.bottomGroup}>
             <div className={s.deglose}>
-<<<<<<< HEAD
-                <p>{qty}x Paquetes {name.length > 35 ? name.slice(0, 35) + "..." : name}</p>
-                <p> ${price*qty}</p>
-=======
                 <p>{qty}x Paquetes {name.length > 40 ? name.slice(0, 40) + "..." : name}</p>
                 <p> ${on_sale ? price*qty*((100 - on_sale)/100) : price*qty}</p>
->>>>>>> 6619fdc4664f95d4d74e30022e796b228847e293
             </div>
             {activities.length > 0 && activities.map((a) => {
                 return (

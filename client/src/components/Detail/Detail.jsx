@@ -27,13 +27,8 @@ import {
 } from "../../redux/actions/index";
 import { useAuth0 } from "@auth0/auth0-react";
 import Loading from "../Loading/Loading";
-<<<<<<< HEAD
-import Rating from 'react-rating';
-import { BsFillStarFill, BsStar } from 'react-icons/bs';
-=======
 import Rating from "react-rating";
 import { BsFillStarFill, BsStar } from "react-icons/bs";
->>>>>>> 6619fdc4664f95d4d74e30022e796b228847e293
 
 export default function Detail() {
   const dispatch = useDispatch();
@@ -105,10 +100,6 @@ export default function Detail() {
     dispatch(getAllActivities());
     dispatch(getFavoritesLocalStorage());
     dispatch(getCartLocalStorage());
-<<<<<<< HEAD
-    dispatch(getAllCart(user.id));
-=======
->>>>>>> 6619fdc4664f95d4d74e30022e796b228847e293
     const fetch = async () => {
       const token = await getAccessTokenSilently();
       // console.log(token)
@@ -138,31 +129,17 @@ export default function Detail() {
   const checkPackageInCart = (id) => {
     let match = false;
     if (!isAuthenticated) {
-<<<<<<< HEAD
-      let cart = JSON.parse(localStorage.getItem("cart"));
-=======
       let cart = JSON.parse(localStorage.getItem("cart")) || {};
->>>>>>> 6619fdc4664f95d4d74e30022e796b228847e293
       cart.packages?.forEach((p) => p.id === parseInt(id) && (match = true));
     } else {
       cart.packages?.forEach((p) => p.id === parseInt(id) && (match = true));
     }
-<<<<<<< HEAD
-    console.log(match)
-=======
     console.log(match);
->>>>>>> 6619fdc4664f95d4d74e30022e796b228847e293
     return match;
   };
 
   async function handleFavorite(e) {
     e.preventDefault();
-<<<<<<< HEAD
-    if (checkPackageInCart(id)) {
-      return alert("ya esta en el carrito");
-    }
-    console.log(checkPackageInCart(id))
-=======
     // if (checkPackageInCart(id)) {
     //   return alert("ya esta en el carrito");
     // }
@@ -171,7 +148,6 @@ export default function Detail() {
       return alert("ya esta en el carrito");
     }
     console.log(checkPackageInCart(id));
->>>>>>> 6619fdc4664f95d4d74e30022e796b228847e293
 
     if (!isAuthenticated) {
       packageDetail.image = packageDetail.main_image;
@@ -255,16 +231,6 @@ export default function Detail() {
   async function handleBotonComprar(e) {
     e.preventDefault();
     input.paquete = packageDetail;
-<<<<<<< HEAD
-    if(!input.actividades.length && input.total === 0) {
-      input.total = packageDetail.price;
-    }
-    // if(packageDetail.on_sale != '0') {
-    //   input.total = input.total - (packageDetail.on_sale * input.total) / 100;
-    // }
-    console.log(input)
-
-=======
     if (!input.actividades.length && input.total === 0) {
       input.total = packageDetail.price;
     }
@@ -272,27 +238,18 @@ export default function Detail() {
     //   input.total = input.total - (packageDetail.on_sale * input.total) / 100;
     // }
     console.log(input);
->>>>>>> 6619fdc4664f95d4d74e30022e796b228847e293
 
     if (!isAuthenticated) {
       if (!localStorage.getItem("cart")) {
         let cart = {
           total_order: 0,
-<<<<<<< HEAD
-          packages: []
-=======
           packages: [],
->>>>>>> 6619fdc4664f95d4d74e30022e796b228847e293
         };
         cart.total_order += input.total;
         input.paquete.total = input.total;
         input.paquete.quantity = input.cantidad;
         input.paquete.activities = input.actividades;
-<<<<<<< HEAD
-        cart.packages.push(input.paquete)
-=======
         cart.packages.push(input.paquete);
->>>>>>> 6619fdc4664f95d4d74e30022e796b228847e293
         localStorage.setItem("cart", JSON.stringify(cart));
       } else {
         let cart = JSON.parse(localStorage.getItem("cart"));
@@ -303,11 +260,7 @@ export default function Detail() {
           input.paquete.total = input.total;
           input.paquete.quantity = input.cantidad;
           input.paquete.activities = input.actividades;
-<<<<<<< HEAD
-          cart.packages.push(input.paquete)
-=======
           cart.packages.push(input.paquete);
->>>>>>> 6619fdc4664f95d4d74e30022e796b228847e293
           localStorage.setItem("cart", JSON.stringify(cart));
         } else {
           alert("ya esta en el carrito");
@@ -333,24 +286,9 @@ export default function Detail() {
         dispatch(getPackageById(id));
       }, 1);
     } else {
-<<<<<<< HEAD
-      try {
-        if (!Object.keys(cart).length) {
-          await dispatch(postCartPackage(user.id, [input]));
-        } else {
-          await dispatch(updateCart(cart.id, { 
-            packageId: input.paquete.id, 
-            activitiesId: input.activities?.map( (a) => a.id ) || [], 
-            quantity: input.cantidad, 
-            total_package: parseInt(input.total) }));
-          }
-        } catch (error) { 
-        console.log(error.message);
-=======
       let descuento = 0;
       if (packageDetail.on_sale != "0") {
         descuento = input.total - (packageDetail.on_sale * input.total) / 100;
->>>>>>> 6619fdc4664f95d4d74e30022e796b228847e293
       }
       try {
         if (!Object.keys(cart).length) {
@@ -398,23 +336,14 @@ export default function Detail() {
       //   alert('El paquete no se pudo agregar al carrito');
       // }
     }
-<<<<<<< HEAD
-    await dispatch(getAllCart(user.id));
-=======
->>>>>>> 6619fdc4664f95d4d74e30022e796b228847e293
   }
 
   const handleEstrellas = async (value) => {
     try {
       const token = await getAccessTokenSilently();
       await dispatch(crearRating(id, token, value));
-<<<<<<< HEAD
-      dispatch(getRating(id))
-      setInput({...input})
-=======
       dispatch(getRating(id));
       setInput({ ...input });
->>>>>>> 6619fdc4664f95d4d74e30022e796b228847e293
     } catch (error) {
       console.log(error.message);
     }
@@ -433,15 +362,6 @@ export default function Detail() {
     >
       <div className={s.body}>
         <div className={s.contenedor}>
-<<<<<<< HEAD
-        
-        {
-          packageDetail.on_sale != '0' && <div className={`${s.onSale} ${s.musRibbon} ${s.optionsRibbon} ${s.right}`}>
-            <span>{packageDetail.on_sale}% OFF</span>
-          </div>
-        }
-        
-=======
           {packageDetail.on_sale != "0" && (
             <div
               className={`${s.onSale} ${s.musRibbon} ${s.optionsRibbon} ${s.right}`}
@@ -450,7 +370,6 @@ export default function Detail() {
             </div>
           )}
 
->>>>>>> 6619fdc4664f95d4d74e30022e796b228847e293
           <div className={s.contenedorBarraSuperior}>
             <div onClick={(e) => handleBotonRegresar(e)}>Inicio</div>
             <div onClick={(e) => handleFavorite(e)}>
@@ -462,82 +381,19 @@ export default function Detail() {
               />
             </div>
           </div>
-<<<<<<< HEAD
-          <div>
-            <button
-              onClick={(e) => {
-                dispatch(deleteCartPackage(cart.id, packageDetail.id));
-              }}
-            >
-              delete cart
-            </button>
-          </div>
-          <div>
-            <button
-              onClick={(e) => {
-                dispatch(getAllCart(user.id));
-              }}
-            >
-              reset cart
-            </button>
-          </div>
-          
-          {/* <div>
-            <select
-              onChange={(e) => handlePuntuar(e)}
-              name="rating"
-              id="rating"
-            >
-              <option selected disabled value="">
-                puntua
-              </option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-            </select>
-          </div>
-          <div>
-            <button
-              onClick={(e) => {
-                handleBorrarRating(e);
-              }}
-            >
-              eliminar rating
-            </button>
-          </div> */}
           <div className={s.card_rating}>
-          
-
-=======
-          <div className={s.card_rating}>
->>>>>>> 6619fdc4664f95d4d74e30022e796b228847e293
             <p className={s.card_text}>
               <b>
                 Rating:{" "}
                 {`${
                   isNaN(parseInt(rating))
-<<<<<<< HEAD
-                    ? (isAuthenticated ? "Se el primero en puntuar este paquete" : "S/R")
-=======
                     ? isAuthenticated
                       ? "Se el primero en puntuar este paquete"
                       : "S/R"
->>>>>>> 6619fdc4664f95d4d74e30022e796b228847e293
                     : rating
                 }`}
               </b>
             </p>
-<<<<<<< HEAD
-            <Rating 
-              onClick={(value) => handleEstrellas(value)}
-              initialRating={rating}
-              readonly={!isAuthenticated}
-              emptySymbol={<BsFillStarFill style={{color: '#fafafa', fontSize: '24px'}} />}
-              placeholderSymbol={<BsFillStarFill style={{color: 'red'}} />}
-              fullSymbol={<BsFillStarFill style={{color: '#4a9eab', fontSize: '24px'}} />}
-=======
             <Rating
               onClick={(value) => handleEstrellas(value)}
               initialRating={rating}
@@ -553,7 +409,6 @@ export default function Detail() {
                   style={{ color: "#4a9eab", fontSize: "24px" }}
                 />
               }
->>>>>>> 6619fdc4664f95d4d74e30022e796b228847e293
             />
           </div>
           <div className={s.contenedorDetalles}>
@@ -660,9 +515,6 @@ export default function Detail() {
             <div className={s.total}>
               {" "}
               <span>TOTAL U$S </span>
-<<<<<<< HEAD
-              <span>{input.total ? input.total : packageDetail.price}</span>
-=======
               {/* <span>{input.total ? input.total : packageDetail.price}</span> */}
               {packageDetail.on_sale ? (
                 <span>
@@ -670,7 +522,6 @@ export default function Detail() {
                     ((100 - packageDetail.on_sale) / 100)}
                 </span>
               ) :  <span>{input.total ? input.total : packageDetail.price}</span>}
->>>>>>> 6619fdc4664f95d4d74e30022e796b228847e293
             </div>
           </div>
           {packageDetail.on_sale ? (

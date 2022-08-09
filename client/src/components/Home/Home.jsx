@@ -11,19 +11,11 @@ import {
   getDestinationsWithPackages,
   createUser,
   getAllFavorites,
-<<<<<<< HEAD
-  getFavoritesLocalStorage,
-  getFeatured,
-  getAllCart,
-  postCartPackage,
-  getCartLocalStorage
-=======
   getFeatured,
   getAllCart,
   postCartPackage,
   getCartLocalStorage,
   getFavoritesLocalStorage
->>>>>>> 6619fdc4664f95d4d74e30022e796b228847e293
 } from "../../redux/actions/index";
 import { useAuth0 } from "@auth0/auth0-react";
 import Footer from "../Footer/Footer";
@@ -44,48 +36,6 @@ export default function Home() {
 
   useEffect( () => {
     setLoading(true);
-<<<<<<< HEAD
-    await dispatch(getAllPackage(1000));
-    await dispatch(getAllDestinations());
-    await dispatch(getDestinationsWithPackages());
-    await dispatch(getOnSale());
-    await dispatch(getAllActivities());
-    await dispatch(getFeatured())
-    // if (isAuthenticated) {
-    //   const token = await dispatch(createUser(token));
-    //   console.log(token);
-    // }
-    setLoading(false);
-    const fetch = async () => {
-      const token = await getAccessTokenSilently()
-      dispatch(createUser(token))
-    }
-    fetch()
-    if(!isAuthenticated) {
-      // dispatch(getFavoritesLocalStorage());
-    } else{
-      const token = await getAccessTokenSilently();
-      dispatch(getAllFavorites(token))
-      try {
-        await dispatch(getAllCart(user.id));
-    } catch(error) {
-        await dispatch(postCartPackage(user.id, []))
-        await dispatch(getAllCart(user.id));
-    }
-    }
-  }, [dispatch]);
-
-  useEffect(() => {
-    const fetch = async () => {
-      if (!isAuthenticated) {
-       dispatch(getCartLocalStorage());
-       console.log("deslogueado")
-     } else {
-       const token = await getAccessTokenSilently();
-       const usuario = await dispatch(createUser(token));
-       console.log(usuario)
-       dispatch(getAllCart(usuario.payload.id));
-=======
     const fetch = async () => {
       await dispatch(getAllPackage(1000));
       await dispatch(getAllDestinations());
@@ -115,7 +65,6 @@ export default function Home() {
         await dispatch(postCartPackage(user.id, []))
         await dispatch(getAllCart(user.id));
       }
->>>>>>> 6619fdc4664f95d4d74e30022e796b228847e293
      }
    };
    fetch();

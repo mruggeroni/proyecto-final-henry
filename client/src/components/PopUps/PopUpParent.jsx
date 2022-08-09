@@ -118,22 +118,13 @@ export default function PopUpsComponent() {
         });
         localStorage.getItem('cart') && localStorage.removeItem('cart');
         await dispatch(getCartLocalStorage());
-<<<<<<< HEAD
-        
-        
-=======
           
->>>>>>> 6619fdc4664f95d4d74e30022e796b228847e293
         
         await dispatch(cleanPackageById());
         if(id !== undefined) await dispatch(getPackageById(id));
         setShowFavoritePopUp(false);
         setShowCartPopUp(false);
-<<<<<<< HEAD
-        await dispatch(getAllCart(res.payload.id));
-=======
         // await dispatch(getAllCart(res.payload.id));
->>>>>>> 6619fdc4664f95d4d74e30022e796b228847e293
         // showFavoritePopUp === false ? document.getElementById("popUpBackground").classList?.add(`${s.is_active}`) : document.getElementById("popUpBackground")?.classList?.remove(`${s.is_active}`);
     }
 

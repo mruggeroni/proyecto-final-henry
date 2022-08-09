@@ -47,34 +47,18 @@ export default function ListUsers() {
             
             dispatch(getUsers(token))
         }
-    } [dispatch]})};
+    } })};
     
-   const handleDeleteUser = async (id) =>{
-    const token = await getAccessTokenSilently()
-        dispatch(deleteUser(id, token))
-        dispatch(getUsers(token));
-        Swal.fire(
-          `Usuario: ${id} | ${nombre}.`,
-          'Eliminado exitosamente!',
-          'success'
-        )
-      }
-<<<<<<< .merge_file_C88pRb
-  
-=======
-    })
-  };
-<<<<<<< HEAD
-<<<<<<< .merge_file_geaB7j
-<<<<<<< .merge_file_fXpd2S
->>>>>>> .merge_file_CcHYqh
-=======
->>>>>>> .merge_file_WiEUKW
-=======
->>>>>>> .merge_file_mTf52l
-=======
->>>>>>> 6619fdc4664f95d4d74e30022e796b228847e293
-  
+  //  const handleDeleteUser = async (id) =>{
+  //   const token = await getAccessTokenSilently()
+  //       dispatch(deleteUser(id, token))
+  //       dispatch(getUsers(token));
+  //       Swal.fire(
+  //         `Usuario: ${id} | ${nombre}.`,
+  //         'Eliminado exitosamente!',
+  //         'success'
+  //       )
+  //     }
   useEffect(() => {
     const fetchData = async () => {
       const token = await getAccessTokenSilently()
