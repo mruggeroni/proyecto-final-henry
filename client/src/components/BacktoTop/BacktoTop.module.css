@@ -4,7 +4,7 @@
 }
 
 .backtoTop_btn {
-    /* position: relative; */
+    position: absolute;
     background-color: transparent;
     color: #fff;
     border: thin solid #fff;
