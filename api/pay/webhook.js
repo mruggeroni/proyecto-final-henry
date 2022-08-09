@@ -1,4 +1,5 @@
 import Stripe from "stripe";
+import { statusCartFunction, statusOrderFunction } from '../controllers/OrdersController.js';
 //const stripeKey = 
 let endpointSecret 
 
@@ -6,6 +7,7 @@ endpointSecret = "whsec_0b5f910e80d53f35ab1415e1b1e44fddd72476ce111c907e4ef053a8
 const stripe = Stripe('sk_test_51LSoUXFrlpRCY5YH7F7s7KDDAOsF4LAeXJyAJrHjUUSObyUbcDECpGu7N2Afj6N9P1aa7hdc1Ca85x4fSDUJebER00IklWuRZ3')
 export const PaymentResponse = async (req, res)=>{
     const sig = req.headers['stripe-signature'];
+
     let data
     let eventType
     try {
@@ -22,13 +24,27 @@ export const PaymentResponse = async (req, res)=>{
        eventType = event.type
        if(eventType === 'payment_intent.payment_failed'){
         console.log(data.status)
+           await statusOrderFunction(id, 'cancel');
       }
        
       console.log(eventType)
        if(eventType === 'payment_intent.succeeded') {
-         console.log(data.status)
+         console.log('HERE')
+         
     
         }
+      if(eventType === 'checkout.session.completed'){
+        const id = req.body.data.object.client_reference_id;
+        console.log('ID')
+        console.log(req.body.data.object.client_reference_id)
+        if(data.payment_status === 'paid'){
+          console.log(data.payment_status)
+         const respuesta = await statusOrderFunction(id, 'paid');
+         //console.log(respuesta)
+        }
+        
+
+      }
         
         res.send('pay')
     } catch (err) {
