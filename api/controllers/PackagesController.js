@@ -285,6 +285,21 @@ export const deletePackage = async (req, res) => {
   }
 };
 
+export const restoredPackage = async (req, res) => {
+	try {
+		const id = req.params.id
+		await Package.restore({
+			where: {
+				id
+			}
+		})
+		const restoredPackage = await Package.findByPk(id)
+		res.status(200).send({ 'Package restored successfully': restoredPackage })
+	} catch (error) {
+		res.status(400).send({ data: error.message })
+	}
+}
+
 export const getDeletedPackages = async (req, res) => {
   try {
     const deleted = await Package.findAll({

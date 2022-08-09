@@ -8,6 +8,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import style from "./CreatePackage.module.css";
 import {
   getAllActivities,
+  getAllPackageDashboard,
   getCategories,
   modificarActividad,
 } from "../../redux/actions";
@@ -133,6 +134,7 @@ export default function ModifyActivity() {
           classification: "",
         });
         dispatch(modificarActividad(input, id, token));
+        await dispatch(getAllPackageDashboard());
         Swal.fire({
           icon: 'success',
           title: 'Actividad modificada!',
