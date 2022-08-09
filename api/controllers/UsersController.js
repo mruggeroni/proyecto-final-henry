@@ -76,31 +76,40 @@ export const getUserDetail = async (req, res) => {
 		const idUser = parseInt(id);
 
 		const user = await User.findByPk(idUser, {
-			include: {
-				model: Order,
-				attributes: {
-					exclude: ['userId'],
-				},
-				include: {
+			include: [
+				{
 					model: Package,
-					attributes: {
-						exclude: [
-							'main_image',
-							'description', 
-							'images', 
-							'seasson',
-							'type',
-							'featured', 
-							'available', 
-							'on_sale', 
-							'destroyTime'
-						],
-					},
+					attributes: ['id'],
 					through: {
-						attributes: ['quantity'],
+						attributes: ['favourite']
 					},
 				},
-			},
+				{
+					model: Order,
+					attributes: {
+						exclude: ['userId'],
+					},
+					include: {
+						model: Package,
+						attributes: {
+							exclude: [
+								'main_image',
+								'description', 
+								'images', 
+								'seasson',
+								'type',
+								'featured', 
+								'available', 
+								'on_sale', 
+								'destroyTime'
+							],
+						},
+						through: {
+							attributes: ['quantity'],
+						},
+					},
+				},
+			],
 			attributes: {
 				exclude: [
 					'password',
@@ -112,19 +121,24 @@ export const getUserDetail = async (req, res) => {
 			},
 		});
 		if (!user) return res.status(404).json({ message: 'User not found' });
-
+		
 		const userCopy = JSON.parse(JSON.stringify(user));
-		userCopy.orders.forEach(order => {
-			order.packages.forEach(p => {
+		
+		userCopy.packages.length? userCopy.favouritePackages = userCopy.packages : userCopy.favouritePackages = 'No favourite Packages';
+		delete userCopy.packages
+		
+		userCopy.orders?.forEach(order => {
+			order.packages?.forEach(p => {
 				p.quantity = p.order_item.quantity;
 				delete p.order_item;
 			});
 		});
-		userCopy.cart = userCopy.orders.filter(order => order.status === 'shopping cart')[0];
-		userCopy.orders = userCopy.orders.filter(order => order.status !== 'shopping cart');
-		userCopy.orders_pending = userCopy.orders.filter(order => order.status === 'pending');
-		userCopy.orders_paid = userCopy.orders.filter(order => order.status === 'paid');
-		userCopy.orders_cancel = userCopy.orders.filter(order => order.status === 'cancel');
+		
+		userCopy.cart = userCopy.orders?.filter(order => order.status === 'shopping cart')[0];
+		userCopy.orders = userCopy.orders?.filter(order => order.status !== 'shopping cart');
+		userCopy.orders_pending = userCopy.orders?.filter(order => order.status === 'pending');
+		userCopy.orders_paid = userCopy.orders?.filter(order => order.status === 'paid');
+		userCopy.orders_cancel = userCopy.orders?.filter(order => order.status === 'cancel');
 
 		return res.status(200).json(userCopy);
 		// if(permissions === 'SuperAdmin' || permissions === 'Admin' || user.email === userInfo.email){
@@ -158,6 +172,7 @@ export const getUserStatus = async (req, res) => {
 export const createUser = async (req, res) => {
 	try {
 		const accessToken = req.body.headers.authorization.split(" ")[1];
+		console.log(accessToken);
 		const respuesta = await axios.get(
 			"https://dev-33fzkaw8.us.auth0.com/userinfo",
 			{
