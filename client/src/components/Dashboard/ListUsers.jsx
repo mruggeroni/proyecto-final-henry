@@ -59,7 +59,12 @@ export default function ListUsers() {
           'success'
         )
       }
+<<<<<<< .merge_file_C88pRb
   
+=======
+    })
+  };
+>>>>>>> .merge_file_CcHYqh
   
   useEffect(() => {
     const fetchData = async () => {
