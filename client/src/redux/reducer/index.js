@@ -34,12 +34,8 @@ import {
   GET_FEATURED,
   GET_ORDER_DETAILS,
   STATUS_USER,
-<<<<<<< HEAD
-  //GET_ALL_PACKAGES_DASHBOARD
-=======
   GET_ALL_PACKAGES_DASHBOARD,
   GET_DELETED_PACKAGES
->>>>>>> develop
 } from "./../actions/index.js";
 
 import {
@@ -100,14 +96,6 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         allPackages: action.payload,
       };
-<<<<<<< HEAD
-    // case GET_ALL_PACKAGES_DASHBOARD:
-    //   return {
-    //     ...state,
-    //     allPackagesDashboard: action.payload,
-    //     // filteredPackages: action.payload,
-    //   };
-=======
     case GET_ALL_PACKAGES_DASHBOARD:
       return {
         ...state,
@@ -118,7 +106,6 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         deletedPackages: typeof action.payload === 'string' ? [] : action.payload,
       };
->>>>>>> develop
     case GET_ORDER_DETAILS:
      
       return {

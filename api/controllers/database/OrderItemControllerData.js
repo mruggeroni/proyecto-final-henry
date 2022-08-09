@@ -6,8 +6,8 @@ export const getOrderItemData = async () => {
         if (!(await OrderItem.findAndCountAll())?.count) {
             console.log("\n", "uploading database OrderItem", "\n");
             const infoDelJson = data.default;
-            infoDelJson.map(({quantity, packageId, orderId}) => {
-                OrderItem.findOrCreate({
+            infoDelJson.map(async({quantity, packageId, orderId}) => {
+                const order = await OrderItem.findOrCreate({
                     where: {packageId: packageId,
                         orderId: orderId},
                     defaults:{quantity}

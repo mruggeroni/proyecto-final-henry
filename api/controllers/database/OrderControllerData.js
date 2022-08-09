@@ -5,9 +5,9 @@ export const getOrderData = async () => {
         if (!(await Order.findAndCountAll())?.count) {
             console.log("\n", "uploading database Order", "\n");
             const infoDelJson = data.default;
-            infoDelJson.map(({ date, total_order, status,
+            infoDelJson.map(async({ date, total_order, status,
                 userId}) => {
-                Order.create({
+                    const order = await Order.create({
   
                         date, 
                         total_order, 

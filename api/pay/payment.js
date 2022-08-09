@@ -1,4 +1,5 @@
 import Stripe from "stripe";
+import { get0rderDetailAux } from "../controllers/OrdersController.js";
 //import { getUserInfoByToken, findOneUserFromDataBase } from "../controllers/FavouritesController.js";
 
 //const stripeKey = 
@@ -8,22 +9,26 @@ const stripe = Stripe('sk_test_51LSoUXFrlpRCY5YH7F7s7KDDAOsF4LAeXJyAJrHjUUSObyUb
 export const PaymentCreate = async (req, res) => {
     let cart = req.body;
     console.log('HERE PAY BODY')
-    let id = cart.id.toString()
-    console.log(cart.id.toString())
+    let id = cart.payload.id.toString()
+    console.log(cart.payload.id)
     try {
-
+        const cart = await get0rderDetailAux(id)
+        console.log('CART FINAL')
+        console.log(cart.packages[0].dataValues.order_item.dataValues)
         const itemsCart = cart.packages?.map( (p) => ({
-            quantity: p.quantity,
-            packageId: p.id,
-            packageName: p.name,
-            packagePriceCents: 101000,
-            activities: p.activities?.map( (a) => ({
-                activityId: a.id,
-                activityName: a.name,
-                activityPriceCents: a.price
-            })),
-            totalPerUnitCents: p.price*100
+            quantity: p.dataValues.order_item.dataValues.quantity,
+            packageId: p.dataValues.id,
+            packageName: p.dataValues.name,
+            totalPerUnitCents: p.dataValues.order_item.dataValues.total*100,
+            // activities: p.activities?.map( (a) => ({
+            //     activityId: a.id,
+            //     activityName: a.name,
+            //     activityPriceCents: a.price
+            // })),
+            
         }) )
+        console.log('ITEMCART')
+        console.log(itemsCart)
 
         //FUNCION PARA FORMATEAR EL CARRITO ENVIADO POR REQ DARIA UN RESULTADO COMO EL REPRESENTADO EN ITEMSCART    
         /* const itemsCart = [

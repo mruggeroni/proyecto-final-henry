@@ -3,11 +3,8 @@ import axios, { AxiosError } from "axios";
 export const GET_PACKAGE_BY_ID = "GET_PACKAGE_BY_ID";
 export const GET_RELATIONATED = "GET_RELATIONATED";
 export const GET_ALL_PACKAGES = "GET_ALL_PACKAGES";
-<<<<<<< HEAD
-=======
 export const GET_ALL_PACKAGES_DASHBOARD = "GET_ALL_PACKAGES_DASHBOARD";
 export const GET_DELETED_PACKAGES = "GET_DELETED_PACKAGES";
->>>>>>> 3da7ac5761641a907432b1f85470b7360676fc98
 export const GET_ALL_DESTINATIONS = "GET_ALL_DESTINATIONS";
 export const GET_ON_SALE = "GET_ON_SALE";
 export const GET_ACTIVITIES = "GET_ACTIVITIES";
@@ -157,10 +154,6 @@ export const deleteUser = (id, token) => {
 
 export const getAllPackage = (limitRender) => {
   return async function (dispatch) {
-<<<<<<< HEAD
-    let res = await axios.get("/packages/" + limitRender);
-    return dispatch({ type: GET_ALL_PACKAGES, payload: res.data });
-=======
     let res = await axios.get(`/packages/${limitRender}?available=true`);
     // let res = await axios.get("/packages/" + limitRender);
     return dispatch({ type: GET_ALL_PACKAGES, payload: res.data });
@@ -171,7 +164,6 @@ export const getAllPackageDashboard = () => {
   return async function (dispatch) {
     let res = await axios.get(`/packages/10000`);
     return dispatch({ type: GET_ALL_PACKAGES_DASHBOARD, payload: res.data });
->>>>>>> 3da7ac5761641a907432b1f85470b7360676fc98
   };
 };
 
@@ -265,11 +257,7 @@ export const getUserStatus = (id) => {
 export const patchUserRestore = (id, token) => {
   return async function (dispatch) {
     try {
-<<<<<<< HEAD
-      const res = await axios.patch("/restoreUser/" + id,"", {
-=======
       const res = await axios.patch("/restoreUser/" + id, "",{
->>>>>>> 3da7ac5761641a907432b1f85470b7360676fc98
         headers: {
           authorization: `Bearer ${token}`,
         },

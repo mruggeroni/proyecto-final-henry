@@ -70,6 +70,38 @@ export const getOrders = async (req, res) => {
 		return res.status(404).json({ message: error.message });
 	};
 };
+export const get0rderDetailAux = async (id) =>{
+	const orderId = id;
+	console.log('ID DETAIL')
+	console.log(id)
+	try {
+		const orderDetail = await Order.findByPk(orderId,
+			{
+				include: [
+					{
+						model: User,
+					},
+					{
+						model: Package,
+						attributes: {
+							exclude: [
+								'description',
+								'images',
+								'featured',
+								'available',
+								'destroyTime'
+							]
+						},
+						include: [{
+							model: Activity
+						}]
+					},
+				],
+			})
+		return orderDetail
+}catch (error){
+	console.log(error.message)
+}}
 
 export const getOrderDetail = async (req, res) => {
 	const orderId = parseInt(req.params.orderId);

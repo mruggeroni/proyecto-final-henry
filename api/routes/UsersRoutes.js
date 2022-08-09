@@ -26,12 +26,7 @@ router.get('/user/:id', getUserDetail);
 router.post('/user', createUser)
 router.put('/user',verifyJwt,  putUser) 
 router.patch('/restoreUser/:id',verifyJwt, verifySuperAdminPermission, restoreUser)
-<<<<<<< HEAD
-router.patch('/user/:id' ,verifyJwt ,verifySuperAdminPermission , patchIs_adminProperty)
-router.delete('/user/:id',verifyJwt, verifySuperAdminPermission, deleteUser)
-=======
 router.patch('/user/:id', verifyJwt, verifySuperAdminPermission, patchIs_adminProperty)
 router.delete('/user/:id',verifyJwt, deleteUser)
->>>>>>> 3da7ac5761641a907432b1f85470b7360676fc98
 
 export default router;
