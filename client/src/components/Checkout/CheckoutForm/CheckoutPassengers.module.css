@@ -45,3 +45,12 @@
     font-size: 1.5vw;
     margin-left: 1vw;
 }
+
+.profile_btn{
+    margin-top: 2vw;
+    /* justify-content: flex-end;
+    align-items: flex-end;
+    align-self: flex-end;
+    left: auto;
+    right: 3vw; */
+}

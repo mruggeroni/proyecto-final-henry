@@ -27,12 +27,13 @@ import Error404 from "./components/Error404/Error404.jsx";
 import { useSelector } from "react-redux";
 import ListOrders from "./components/Dashboard/ListOrders.jsx";
 import CheckoutConfirmation from './components/Checkout/CheckoutForm/CheckoutConfirmation.jsx'
+import ListDeletedPackages from "./components/Dashboard/ListDeletedPackages.jsx";
+import Contact from "./components/Information/Contact.jsx";
 // import Footer from './components/Footer/Footer.jsx';
 
 function App() {
   const user = useSelector( (state) => state.user )
  
-
   return (
     <BrowserRouter>
       <Navbar />
@@ -42,6 +43,7 @@ function App() {
         <Route path="/dashboard" element={ user.is_admin ? <CreatePackage /> : <Navigate to='/' /> } />
         <Route path="/dashboard/orders" element={ user.is_admin ? <ListOrders /> : <Navigate to='/' />} />
         <Route path="/dashboard/listPackages" element={ user.is_admin ? <ListPackages /> : <Navigate to='/' />} />
+        <Route path="/dashboard/listDeletedPackages" element={ user.is_admin ? <ListDeletedPackages /> : <Navigate to='/' />} />
         <Route path="/dashboard/listActivities" element={ user.is_admin ? <ListActivities /> : <Navigate to='/' />} />
         <Route path="/dashboard/listCategories" element={ user.is_admin ? <ListCategories /> : <Navigate to='/' />} />
         <Route path="/dashboard/listUsers" element={ user.is_admin ? <ListUsers /> : <Navigate to='/' />} />
@@ -55,6 +57,7 @@ function App() {
         <Route path="/historial/:id" element={ Object.keys(user).length ? <Historial /> : <Navigate to='/' />} />
         <Route path='/createaccount' element={ Object.keys(user).length ? <CreateAccountModal /> : <Navigate to='/' />} />
         <Route path="/terms-and-conditions" element={<Terms />} />
+        <Route path="/contact-us" element={<Contact />} />
         <Route path="/faq" element={<Faq />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/search" element={<Search />} />
@@ -62,7 +65,6 @@ function App() {
         <Route path="/detail/:id" element={<Detail />} />
         <Route path="/favorites" element={<Favorites />} />
         <Route path="/cart" element={<Checkout />} />
-        <Route path="/faq" element={<Home />} />
         <Route path="/contact" element={<Home />} />
         <Route path="*" element={<Error404 />} />
       </Routes>

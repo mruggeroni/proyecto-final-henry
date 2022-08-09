@@ -10,9 +10,10 @@ import { getOrderItemData } from "./controllers/database/OrderItemControllerData
 const PORT = process.env.PORT || 3001;
 
 async function main() {
+<<<<<<< HEAD
 	try {
 		// await sequelize.sync({ force: false });
-		await sequelize.sync({ force: false });
+		await sequelize.sync({ alter: true});
 		console.log('Connection has been established successfully.');
 		app.listen(PORT, () => {
 			console.log('Server listening on http://localhost:3001');
@@ -29,5 +30,26 @@ async function main() {
 		console.error('Unable to connect to the database:', error);
 	};
 };
+=======
+  try {
+    // await sequelize.sync({ force: false });
+    await sequelize.sync({ force: false });
+    console.log("Connection has been established successfully.");
+    app.listen(PORT, () => {
+      console.log("Server listening on http://localhost:3001");
+    });
+    await getClassificationData();
+    await getActivitiesData();
+    await getDestinationData();
+    await getPackageData();
+    await getUserData();
+    await getOrderData();
+    await getOrderItemData();
+    console.log("Server is Ok");
+  } catch (error) {
+    console.error("Unable to connect to the database:", error);
+  }
+}
+>>>>>>> 3da7ac5761641a907432b1f85470b7360676fc98
 
 main();

@@ -34,7 +34,12 @@ import {
   GET_FEATURED,
   GET_ORDER_DETAILS,
   STATUS_USER,
+<<<<<<< HEAD
   //GET_ALL_PACKAGES_DASHBOARD
+=======
+  GET_ALL_PACKAGES_DASHBOARD,
+  GET_DELETED_PACKAGES
+>>>>>>> develop
 } from "./../actions/index.js";
 
 import {
@@ -51,6 +56,7 @@ import {
 const initialState = {
   allPackages: [],
   allPackagesDashboard: [],
+  deletedPackages: [],
   filteredPackages: [],
   activities: [],
   cartLocalStorage: {},
@@ -93,19 +99,31 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         allPackages: action.payload,
-        // filteredPackages: action.payload,
       };
+<<<<<<< HEAD
     // case GET_ALL_PACKAGES_DASHBOARD:
     //   return {
     //     ...state,
     //     allPackagesDashboard: action.payload,
     //     // filteredPackages: action.payload,
     //   };
+=======
+    case GET_ALL_PACKAGES_DASHBOARD:
+      return {
+        ...state,
+        allPackagesDashboard: action.payload,
+      };
+    case GET_DELETED_PACKAGES:
+      return {
+        ...state,
+        deletedPackages: typeof action.payload === 'string' ? [] : action.payload,
+      };
+>>>>>>> develop
     case GET_ORDER_DETAILS:
      
       return {
         ...state,
-        orderDetails: action.payload.packages
+        orderDetails: action.payload
       };
     case GET_ORDERS:
       return {
