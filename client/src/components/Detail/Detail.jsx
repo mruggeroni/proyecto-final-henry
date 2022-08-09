@@ -268,7 +268,12 @@ export default function Detail() {
           cart.packages.push(input.paquete);
           localStorage.setItem("cart", JSON.stringify(cart));
         } else {
-          alert("ya esta en el carrito");
+          Swal.fire({
+            icon: "error",
+            title: "Oops algo fallo...",
+            text: "El paquete ya debe estar en el carrito",
+          });
+          // alert("ya esta en el carrito");
         }
       }
       // let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
