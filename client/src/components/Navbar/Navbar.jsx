@@ -1,10 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { BsJustify, BsFillCaretRightFill } from "react-icons/bs";
 import style from "./Navbar.module.css";
 import NavDestinations from "./NavDestinations";
-import NavPromotions from "./NavPromotions";
-// import PopUps from "./../PopUps/PopUps.jsx";
 import NavRegion from "./NavRegion";
 import { useDispatch, useSelector } from "react-redux";
 import { createUser, getAllCart, getAllFavorites, postCartPackage } from "../../redux/actions";
@@ -14,58 +12,66 @@ export default function Navbar() {
   const dispatch = useDispatch();
   const user = useSelector( (state) => state.user );
   const { isAuthenticated, getAccessTokenSilently } = useAuth0();
+  const [showNavMenu, setShowNavMenu] = useState(false)
+  const [showNavMenuItems, setShowNavMenuItems] = useState(false)
+  const [showNavMenuDestinations, setShowNavMenuDestinations] = useState(false)
+  const [showNavMenuRegion, setShowNavMenuRegion] = useState(false)
   
   useEffect( async () => {
     const token = await getAccessTokenSilently()
-    let res = dispatch(createUser(token))
+    // let res = dispatch(createUser(token))
     if(!isAuthenticated) {
       // dispatch(getFavoritesLocalStorage());
     } else {
       const token = await getAccessTokenSilently();
       await dispatch(getAllFavorites(token))
       try {
-        await dispatch(getAllCart(res.payload.id));
+        await dispatch(getAllCart(user.id));
       } catch(error) {
-        await dispatch(postCartPackage(res.payload.id, []))
-        await dispatch(getAllCart(res.payload.id));
+        await dispatch(postCartPackage(user.id, []))
+        await dispatch(getAllCart(user.id));
       }
     }
 
   }, [])
 
 
-
   function handleClose() {
-    document.getElementById("nav_menu")?.classList?.remove(`${style.is_active}`);
-    document
-      .getElementById("nav_menu_items")
-      .classList?.remove(`${style.is_active}`);
-    document
-      .getElementById("nav_menu_destinations")
-      .classList?.remove(`${style.is_active}`);
-    document
-      .getElementById("nav_menu_region")
-      .classList?.remove(`${style.is_active}`);
-    document
-      .getElementById("nav_menu_promotions")
-      .classList?.remove(`${style.is_active}`);
+    setShowNavMenu(false);
+    setShowNavMenuItems(false);
+    setShowNavMenuDestinations(false);
+    setShowNavMenuRegion(false);
   }
 
   function handleOpen(idMenu) {
-    document.getElementById("nav_menu").classList?.add(`${style.is_active}`);
-    document.getElementById(idMenu).classList?.add(`${style.is_active}`);
+    setShowNavMenu(true);
+    switch(idMenu) {
+      case 'nav_menu_items':
+        setShowNavMenuItems(true);
+        setShowNavMenuRegion(false);
+        setShowNavMenuDestinations(false);
+        break;
+      case 'nav_menu_region':
+        setShowNavMenuItems(false);
+        setShowNavMenuRegion(true);
+        setShowNavMenuDestinations(false);
+        break;
+      case 'nav_menu_destinations':
+        setShowNavMenuItems(false);
+        setShowNavMenuRegion(false);
+        setShowNavMenuDestinations(true);
+        break;
+    }
   }
-
-  //autenticacion
 
   return (
     <div id="nav" className={style.container}>
       <div
         id="nav_menu"
         onClick={() => handleClose()}
-        className={`${style.nav_menu_container}`} >
+        className={`${style.nav_menu_container} ${showNavMenu ? style.is_active : null }`} >
       </div>
-      <nav id="nav_menu_items" className={`${style.nav_menu}`}>
+      <nav id="nav_menu_items" className={`${style.nav_menu} ${showNavMenuItems ? style.is_active : null }`}>
         <div className={style.nav_menu_container_close}>
           <button
             onClick={() => handleClose()}
@@ -81,21 +87,15 @@ export default function Navbar() {
         >
           Inicio
         </NavLink>
-        {/* <button
-          onClick={() => handleOpen("nav_menu_promotions")}
-          className={style.nav_menu_item}
-        >
-          Promociones <BsFillCaretRightFill />
-        </button> */}
         <button
           onClick={() => handleOpen("nav_menu_region")}
-          className={style.nav_menu_item}
+          className={`${style.nav_menu_item} ${showNavMenuRegion ? style.is_active : null }`}
         >
           Regiones <BsFillCaretRightFill />
         </button>
         <button
           onClick={() => handleOpen("nav_menu_destinations")}
-          className={style.nav_menu_item}
+          className={`${style.nav_menu_item} ${showNavMenuDestinations ? style.is_active : null }`}
         >
           Destinos <BsFillCaretRightFill />
         </button>
@@ -107,7 +107,7 @@ export default function Navbar() {
           FAQ
         </NavLink>
         <NavLink
-          to="/about"
+          to="/contact-us"
           onClick={() => handleClose()}
           className={style.nav_menu_item}
         >
@@ -116,8 +116,8 @@ export default function Navbar() {
       </nav>
 
       {/* <NavPromotions handleClose={handleClose} /> */}
-      <NavDestinations handleClose={handleClose} />
-      <NavRegion handleClose={handleClose} />
+      <NavDestinations showNavMenuDestinations={showNavMenuDestinations} handleOpen={handleOpen} handleClose={handleClose} />
+      <NavRegion showNavMenuRegion={showNavMenuRegion} handleOpen={handleOpen} handleClose={handleClose} />
 
       <div className={style.nav_container}>
         <nav className={style.nav_items}>

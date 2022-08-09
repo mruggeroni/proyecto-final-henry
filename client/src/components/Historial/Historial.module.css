@@ -1,66 +1,70 @@
-.container{
-	margin-top: 12vw;
-	display: flex;
-	flex-direction: column;
+.container {
+  width: 80%;
+  margin: auto;
+  margin-top: 8vw;
+  display: flex;
+  flex-direction: column;
 }
 
-.sortPrice{
-	display: inline-flex;
+.historialTitle {
+  text-align: center;
+  margin-bottom: 1.5vw;
 }
 
-.view{
-	width: 90%;
-	display: flex;
-	/* display: inline-flex; */
-	/* justify-content: flex-end; */
-	align-items: center;
-	justify-content: space-between;
-	margin: auto;
+.sortPrice {
+  display: inline-flex;
 }
 
-.cardsHistorial{
-	margin-bottom: 8vw;
+.view {
+  width: 90%;
+  display: flex;
+  /* display: inline-flex; */
+  /* justify-content: flex-end; */
+  align-items: center;
+  justify-content: space-between;
+  margin: auto;
+}
+
+.cardsHistorial {
+  margin-bottom: 8vw;
 }
 
 .eachcard > * {
-	text-decoration: none;
+  text-decoration: none;
 }
 
-.noPaq{
-	text-align: center;
-	margin-top: 7vw;
-	font-size: 1.5vw;
+.noPaq {
+  text-align: center;
+  margin-top: 7vw;
+  font-size: 1.5vw;
 }
-
-
 
 @media (max-width: 1000px) {
+  .view {
+    margin-top: 3vw;
+  }
 
-  	.view{
-		margin-top: 3vw;
-	}
-	
-	.noPaq{
-		font-size: 2vw;
-	}
+  .noPaq {
+    font-size: 2vw;
+  }
 }
 
 @media (max-width: 825px) {
-   .view{
-		margin-top: 6vw;
-	}
+  .view {
+    margin-top: 6vw;
+  }
 
-	.noPaq{
-		font-size: 2vw;
-	}
+  .noPaq {
+    font-size: 2vw;
+  }
 }
 
 @media (max-width: 575px) {
-   .view{
-		margin-top: 12vw;
-	}
+  .view {
+    margin-top: 12vw;
+  }
 
-	.noPaq{
-		font-size: 3vw;
-	}
+  .noPaq {
+    font-size: 3vw;
+  }
 }

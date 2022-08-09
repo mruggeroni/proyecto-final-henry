@@ -29,16 +29,18 @@ export default function Historial() {
 
   return (
     <div className={s.container}>
+      <h1 className={s.historialTitle}>Historial ({orderDetails.packages ? orderDetails.packages.length : '0'})</h1>
+      <hr />
           <div className={s.cardsHistorial}>
-            {orderDetails?.length ?
-              orderDetails?.map((p) => {
+            {Object.keys(orderDetails).length ?
+              orderDetails.packages?.map((p) => {
                 return (
                   <div className={s.eachcard} key={p.id}>
                     <Link to={"/detail/" + p.id} key={p.id}>
                       <HistorialCard
                         name={p.name}
                         image={p.main_image}
-                        description={p.description}
+                        date={orderDetails.date}
                         price={p.price}
                         start_date={p.start_date}
                         end_date={p.end_date}

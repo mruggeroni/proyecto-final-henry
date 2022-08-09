@@ -8,8 +8,8 @@ export const getClassificationData = async () => {
             console.log("\n", "uploading database Classifications", "\n");
             const infoDelJson = data.default;
 
-            infoDelJson.map(({ name, image }) => {
-                Classification.findOrCreate({
+            infoDelJson.map(async({ name, image }) => {
+               const clasificacion = await Classification.findOrCreate({
                     where: {
                         name, 
                     },

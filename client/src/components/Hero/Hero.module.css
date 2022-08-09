@@ -56,6 +56,13 @@
   background-color: #f7f1f1;
 }
 
+.form_button:disabled {
+  cursor: not-allowed;
+  border: 1px solid #c1c1c1;
+  background-color: #cccccc;
+  color: #8c8b8b;
+}
+
 .form_date {
   padding: 5px;
   width: 20%;

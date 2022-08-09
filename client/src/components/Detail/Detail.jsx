@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
+import Swal from "sweetalert2";
 import s from "./Detail.module.css";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import ControlledCarousel from "./Carousel";
 import BotonFav from "./BotonFav";
 import CardGenericContainer from "../Cards/CardGenericContainer";
@@ -27,8 +28,8 @@ import {
 } from "../../redux/actions/index";
 import { useAuth0 } from "@auth0/auth0-react";
 import Loading from "../Loading/Loading";
-import Rating from 'react-rating';
-import { BsFillStarFill, BsStar } from 'react-icons/bs';
+import Rating from "react-rating";
+import { BsFillStarFill, BsStar } from "react-icons/bs";
 
 export default function Detail() {
   const dispatch = useDispatch();
@@ -62,7 +63,6 @@ export default function Detail() {
       relationatedPackage.length &&
       allActivities.length
     ) {
-      setLoading(false);
       if (document.getElementsByName("selectCantidad").length) {
         setInput({
           cantidad: 1,
@@ -88,6 +88,13 @@ export default function Detail() {
         };
         fetch();
       }
+      console.log(packageDetail.available, user.is_admin);
+      console.log(!packageDetail.available && user.is_admin !== true);
+      if (!packageDetail.available && user.is_admin !== true) {
+        navigate("/");
+      }
+
+      setLoading(false);
     }
   }, [packageDetail, relationatedPackage, allActivities]);
 
@@ -100,22 +107,15 @@ export default function Detail() {
     dispatch(getAllActivities());
     dispatch(getFavoritesLocalStorage());
     dispatch(getCartLocalStorage());
-    dispatch(getAllCart(user.id));
     const fetch = async () => {
       const token = await getAccessTokenSilently();
       // console.log(token)
-      dispatch(createUser(token));
+      const usuario = await dispatch(createUser(token));
+      console.log(usuario.payload);
+      dispatch(getAllCart(usuario.payload.id));
+      dispatch(getAllFavorites(token));
     };
     fetch();
-    // if (!isAuthenticated) {
-    //   dispatch(getFavoritesLocalStorage());
-    // } else {
-    //   const fetch = async () => {
-    //     const token = await getAccessTokenSilently();
-    //     dispatch(getAllFavorites(token));
-    //   };
-    //   fetch();
-    // }
   }, [dispatch]);
 
   function scrollToTop() {
@@ -128,21 +128,25 @@ export default function Detail() {
   const checkPackageInCart = (id) => {
     let match = false;
     if (!isAuthenticated) {
-      let cart = JSON.parse(localStorage.getItem("cart"));
+      let cart = JSON.parse(localStorage.getItem("cart")) || {};
       cart.packages?.forEach((p) => p.id === parseInt(id) && (match = true));
     } else {
       cart.packages?.forEach((p) => p.id === parseInt(id) && (match = true));
     }
-    console.log(match)
+    console.log(match);
     return match;
   };
 
   async function handleFavorite(e) {
     e.preventDefault();
-    if (checkPackageInCart(id)) {
-      return alert("ya esta en el carrito");
-    }
-    console.log(checkPackageInCart(id))
+    // if (checkPackageInCart(id)) {
+    //   return alert("ya esta en el carrito");
+    // }
+    // console.log(checkPackageInCart(id))
+    // if (checkPackageInCart(id)) {
+    //   return alert("ya esta en el carrito");
+    // }
+    console.log(checkPackageInCart(id));
 
     if (!isAuthenticated) {
       packageDetail.image = packageDetail.main_image;
@@ -226,45 +230,55 @@ export default function Detail() {
   async function handleBotonComprar(e) {
     e.preventDefault();
     input.paquete = packageDetail;
-    if(!input.actividades.length && input.total === 0) {
+    if (!input.actividades.length && input.total === 0) {
       input.total = packageDetail.price;
     }
-    // if(packageDetail.on_sale != '0') {
+    // if (packageDetail.on_sale != "0") {
     //   input.total = input.total - (packageDetail.on_sale * input.total) / 100;
     // }
-    console.log(input)
-
-
+    console.log(input);
+    let descuento = 0;
+    if (packageDetail.on_sale != "0") {
+      descuento = input.total - (packageDetail.on_sale * input.total) / 100;
+    }
     if (!isAuthenticated) {
       if (!localStorage.getItem("cart")) {
         let cart = {
           total_order: 0,
-          packages: []
+          packages: [],
         };
-        cart.total_order += input.total;
-        input.paquete.total = input.total;
+        cart.total_order = descuento != 0 ? descuento : parseInt(input.total);
+        input.paquete.total =
+          descuento != 0 ? descuento : parseInt(input.total);
         input.paquete.quantity = input.cantidad;
         input.paquete.activities = input.actividades;
-        cart.packages.push(input.paquete)
+        cart.packages.push(input.paquete);
         localStorage.setItem("cart", JSON.stringify(cart));
       } else {
         let cart = JSON.parse(localStorage.getItem("cart"));
         let match = false;
         cart.packages?.forEach((p) => p.id === parseInt(id) && (match = true));
         if (!match) {
-          cart.total_order += input.total;
-          input.paquete.total = input.total;
+          cart.total_order +=
+            descuento != 0 ? descuento : parseInt(input.total);
+          input.paquete.total =
+            descuento != 0 ? descuento : parseInt(input.total);
           input.paquete.quantity = input.cantidad;
           input.paquete.activities = input.actividades;
-          cart.packages.push(input.paquete)
+          cart.packages.push(input.paquete);
           localStorage.setItem("cart", JSON.stringify(cart));
         } else {
-          alert("ya esta en el carrito");
+          Swal.fire({
+            icon: "error",
+            title: "Oops algo fallo...",
+            text: "El paquete ya debe estar en el carrito",
+          });
+          // alert("ya esta en el carrito");
         }
       }
-      let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
-      favorites = favorites?.filter((f) => f.id !== parseInt(id));
-      localStorage.setItem("favorites", JSON.stringify(favorites));
+      // let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+      // favorites = favorites?.filter((f) => f.id !== parseInt(id));
+      // localStorage.setItem("favorites", JSON.stringify(favorites));
       setCheckeado(false);
       dispatch(cleanPackageById());
       setLoading(true);
@@ -284,27 +298,54 @@ export default function Detail() {
     } else {
       try {
         if (!Object.keys(cart).length) {
+          console.log(input);
           await dispatch(postCartPackage(user.id, [input]));
         } else {
-          await dispatch(updateCart(cart.id, { 
-            packageId: input.paquete.id, 
-            activitiesId: input.activities?.map( (a) => a.id ) || [], 
-            quantity: input.cantidad, 
-            total_package: parseInt(input.total) }));
-          }
-        } catch (error) { 
-        console.log(error.message);
+          await dispatch(getAllCart(user.id));
+          await dispatch(
+            updateCart(cart.id, {
+              packageId: input.paquete.id,
+              activitiesId:
+                input.actividades?.map((a) => a.Package_Activity.activityId) ||
+                [],
+              quantity: input.cantidad,
+              total_package: descuento != 0 ? descuento : parseInt(input.total),
+            })
+          );
+          scrollToTop();
+        }
+        await dispatch(getAllCart(user.id));
+      } catch (error) {
+        try {
+          await dispatch(
+            updateCart(cart.id, {
+              packageId: input.paquete.id,
+              activitiesId:
+                input.actividades?.map((a) => a.Package_Activity.activityId) ||
+                [],
+              quantity: input.cantidad,
+              total_package: descuento != 0 ? descuento : parseInt(input.total),
+            })
+          );
+          dispatch(cleanPackageById());
+          dispatch(getPackageById(id));
+        } catch (error) {
+          Swal.fire({
+            icon: "error",
+            title: "Oops algo fallo...",
+            text: "El paquete ya debe estar en el carrito",
+          });
+        }
       }
     }
-    await dispatch(getAllCart(user.id));
   }
 
   const handleEstrellas = async (value) => {
     try {
       const token = await getAccessTokenSilently();
       await dispatch(crearRating(id, token, value));
-      dispatch(getRating(id))
-      setInput({...input})
+      dispatch(getRating(id));
+      setInput({ ...input });
     } catch (error) {
       console.log(error.message);
     }
@@ -323,13 +364,14 @@ export default function Detail() {
     >
       <div className={s.body}>
         <div className={s.contenedor}>
-        
-        {
-          packageDetail.on_sale != '0' && <div className={`${s.onSale} ${s.musRibbon} ${s.optionsRibbon} ${s.right}`}>
-            <span>{packageDetail.on_sale}% OFF</span>
-          </div>
-        }
-        
+          {packageDetail.on_sale != "0" && (
+            <div
+              className={`${s.onSale} ${s.musRibbon} ${s.optionsRibbon} ${s.right}`}
+            >
+              <span>{packageDetail.on_sale}% OFF</span>
+            </div>
+          )}
+
           <div className={s.contenedorBarraSuperior}>
             <div onClick={(e) => handleBotonRegresar(e)}>Inicio</div>
             <div onClick={(e) => handleFavorite(e)}>
@@ -341,70 +383,34 @@ export default function Detail() {
               />
             </div>
           </div>
-          <div>
-            <button
-              onClick={(e) => {
-                dispatch(deleteCartPackage(cart.id, packageDetail.id));
-              }}
-            >
-              delete cart
-            </button>
-          </div>
-          <div>
-            <button
-              onClick={(e) => {
-                dispatch(getAllCart(user.id));
-              }}
-            >
-              reset cart
-            </button>
-          </div>
-          
-          {/* <div>
-            <select
-              onChange={(e) => handlePuntuar(e)}
-              name="rating"
-              id="rating"
-            >
-              <option selected disabled value="">
-                puntua
-              </option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-            </select>
-          </div>
-          <div>
-            <button
-              onClick={(e) => {
-                handleBorrarRating(e);
-              }}
-            >
-              eliminar rating
-            </button>
-          </div> */}
           <div className={s.card_rating}>
-          
-
             <p className={s.card_text}>
               <b>
                 Rating:{" "}
                 {`${
                   isNaN(parseInt(rating))
-                    ? (isAuthenticated ? "Se el primero en puntuar este paquete" : "S/R")
+                    ? isAuthenticated
+                      ? "Se el primero en puntuar este paquete"
+                      : "S/R"
                     : rating
                 }`}
               </b>
             </p>
-            <Rating 
+            <Rating
               onClick={(value) => handleEstrellas(value)}
               initialRating={rating}
               readonly={!isAuthenticated}
-              emptySymbol={<BsFillStarFill style={{color: '#fafafa', fontSize: '24px'}} />}
-              placeholderSymbol={<BsFillStarFill style={{color: 'red'}} />}
-              fullSymbol={<BsFillStarFill style={{color: '#4a9eab', fontSize: '24px'}} />}
+              emptySymbol={
+                <BsFillStarFill
+                  style={{ color: "#fafafa", fontSize: "24px" }}
+                />
+              }
+              placeholderSymbol={<BsFillStarFill style={{ color: "red" }} />}
+              fullSymbol={
+                <BsFillStarFill
+                  style={{ color: "#4a9eab", fontSize: "24px" }}
+                />
+              }
             />
           </div>
           <div className={s.contenedorDetalles}>
@@ -419,7 +425,24 @@ export default function Detail() {
                 {packageDetail.start_date?.split("-").reverse().join("-")} /{" "}
                 {packageDetail.end_date?.split("-").reverse().join("-")}
               </h3>
-              <h3>U$S {packageDetail.price}</h3>
+              <div className={s.pricePaq}>
+                <h3>
+                  U$S{" "}
+                  {packageDetail.on_sale ? (
+                    <s>{packageDetail.price}</s>
+                  ) : (
+                    packageDetail.price
+                  )}
+                </h3>
+                {packageDetail.on_sale ? (
+                  <h4>
+                    {packageDetail.price *
+                      ((100 - packageDetail.on_sale) / 100)}
+                  </h4>
+                ) : (
+                  " "
+                )}
+              </div>
               <h3>
                 Destinos:{" "}
                 {packageDetail.destinations?.map((i, o) => {
@@ -474,7 +497,10 @@ export default function Detail() {
                         onChange={() => handleCheckbox(index)}
                       />
                       <label htmlFor={i.name}>
-                        U$S {i.price}
+                        U$S{" "}
+                        {packageDetail.on_sale
+                          ? (i.price * (100 - packageDetail.on_sale)) / 100
+                          : i.price}
                         {"       "}
                       </label>
                     </div>
@@ -497,10 +523,31 @@ export default function Detail() {
             <div className={s.total}>
               {" "}
               <span>TOTAL U$S </span>
-              <span>{input.total ? input.total : packageDetail.price}</span>
+              {/* <span>{input.total ? input.total : packageDetail.price}</span> */}
+              {packageDetail.on_sale ? (
+                <span>
+                  {(input.total ? input.total : packageDetail.price) *
+                    ((100 - packageDetail.on_sale) / 100)}
+                </span>
+              ) : (
+                <span>{input.total ? input.total : packageDetail.price}</span>
+              )}
             </div>
           </div>
-
+          {packageDetail.on_sale ? (
+            <div className={s.discountTotal}>
+              <p>
+                Subtotal: U$S{input.total ? input.total : packageDetail.price}
+              </p>
+              <p>
+                Total Descuento: U$S
+                {input.total -
+                  input.total * ((100 - packageDetail.on_sale) / 100)}
+              </p>
+            </div>
+          ) : (
+            " "
+          )}
           <div className={s.contenedorBotonComprar}>
             <button
               onClick={(e) => handleBotonComprar(e)}
