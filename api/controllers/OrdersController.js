@@ -93,7 +93,6 @@ export const getOrderDetail = async (req, res) => {
 							'images',
 							'featured',
 							'available',
-							'on_sale',
 							'destroyTime'
 						]
 					}
@@ -121,6 +120,7 @@ export const getOrderDetail = async (req, res) => {
 
 		order[0].packages.forEach(packg => {
 			packg.quantity = packg.order_item.quantity;
+			packg.total = packg.order_item.total;
 			const activities = orderItems.find(orderItem => orderItem.id === packg.order_item.id);
 			packg.activities = activities.activities;
 			delete packg.order_item;
@@ -132,21 +132,14 @@ export const getOrderDetail = async (req, res) => {
 		return res.status(400).json({ message: error.message });
 	};
 };
+
 export const statusOrderFunction = async (orderId, status) => {
-	console.log('FUNCTION')
-	console.log(status)
-	const order = await Order.update({status:status},{where: {id: orderId}});
-	const orderFind = await Order.findOne({where: {id: orderId}})
-	console.log(orderFind)
-};
-export const statusCartFunction = async (cartId) => {
-	await Order.update({
-		status: 'pending',
-	}, {
+	await Order.update({status: status} ,{
 		where: {
-			id: cartId,
-		},
-	});
+			
+				id: orderId,
+					
+	}});
 };
 
 export const patchStatusOrder = async (req, res) => {
@@ -161,21 +154,9 @@ export const patchStatusOrder = async (req, res) => {
 		if (existOrder.status === 'shopping cart') return res.status(400).json({ message: "The id entered is not from a order" });
 		if (existOrder.status !== 'pending') return res.status(400).json({ message: "The id entered is not from a order pending" });
 
-		const order = await Order.update({
-			status: status,
-		}, {
-			where: {
-				[Op.and]: [{
-					id: orderId,
-				}, {
-					status: 'pending',
-				}],
-			},
-		});
+		await statusOrderFunction(orderId, status);
 
-		order ? 
-		res.status(200).json({ message: `Order status changed to \'${status}\' successfully` }) : 
-		res.status(404).json({ message: "Order not found" });
+		res.status(200).json({ message: `Order status changed to \'${status}\' successfully` });
 	} catch (error) {
 		return res.status(400).json({ message: error.message });
 	};
@@ -203,7 +184,6 @@ export const getCart = async (req, res) => {
 							'images', 
 							'featured', 
 							'available', 
-							'on_sale', 
 							'destroyTime'
 						],
 					},
@@ -229,6 +209,7 @@ export const getCart = async (req, res) => {
 
 		cart.packages.forEach(packg => {
 			packg.quantity = packg.order_item.quantity;
+			packg.total = packg.order_item.total;
 			const activities = orderItems.find(orderItem => orderItem.id === packg.order_item.id);
 			packg.activities = activities.activities;
 			delete packg.order_item;
@@ -302,6 +283,7 @@ export const createCart = async (req, res) => {
 		await Promise.all(packagesId.map((packageId, index) => {
 			return OrderItem.update({
 				quantity: quantitiesPackages[index],
+				total: total_packages[index],
 			}, {
 				where: {
 					[Op.and]: [{
@@ -338,43 +320,94 @@ export const createCart = async (req, res) => {
 
 export const updateCart = async (req, res) => {
 	const { cartId } = req.params;
-<<<<<<< .merge_file_Ba0W6H
-<<<<<<< HEAD
-	const /* cartPackages */ { packageId, activitiesId, quantity, total_package } = req.body;
-=======
 	const /* cartPackages */ { packageId, activitiesId, quantity,  total_package } = req.body;
->>>>>>> 6619fdc4664f95d4d74e30022e796b228847e293
-=======
-	const cartPackages = req.body;
->>>>>>> .merge_file_DmFlQK
 
 	try {
 		const oldCart = await Order.findByPk(cartId);
 		if (!oldCart) return res.status(404).json({ message: 'Cart not found' });
 		if (oldCart.status !== 'shopping cart') return res.status(400).json({ message: "The id entered is not from a cart" });
-		
-		const packagesId = [],
-			arrayActivitiesId = [],
-			quantitiesPackages = [],
-			total_packages = [];
-		let total_order = 0;
-		
-		cartPackages.forEach(pack => {
-			packagesId.push(pack.paquete.id);
 
-			const activitiesId = [];
-			pack.actividades.forEach(act => {
-				activitiesId.push(act.Package_Activity.activityId);
-			});
-			arrayActivitiesId.push(activitiesId);
+		// const packagesId = [],
+		// 	arrayActivitiesId = [],
+		// 	quantitiesPackages = [],
+		// 	total_packages = [];
+		// let total_order = 0;
 
-			quantitiesPackages.push(pack.cantidad);
-			total_packages.push(pack.total);
+		// cartPackages.forEach(pack => {
+		// 	packagesId.push(pack.paquete.id);
+
+		// 	const activitiesId = [];
+		// 	pack.actividades.forEach(act => {
+		// 		activitiesId.push(act.Package_Activity.activityId);
+		// 	});
+		// 	arrayActivitiesId.push(activitiesId);
+
+		// 	quantitiesPackages.push(pack.cantidad);
+		// 	total_packages.push(pack.total);
+		// });
+		// total_order = total_packages.reduce((total, price) => total + price, 0);
+
+		// await Order.update({
+		// 	total_order,
+		// }, {
+		// 	where: {
+		// 		id: cartId,
+		// 	},
+		// });
+
+		// const cart = await Order.findByPk(cartId);
+		// const paquetes = await Package.findAll({
+		// 	where: {
+		// 		id: packagesId,
+		// 	},
+		// });
+
+		// await cart.setPackages(paquetes, { 
+		// 	through: OrderItem, 
+		// });
+		// await Promise.all(packagesId.map((packageId, index) => {
+		// 	return OrderItem.update({
+		// 		quantity: quantitiesPackages[index],
+		// 	}, {
+		// 		where: {
+		// 			[Op.and]: [{
+		// 				orderId: cartId,
+		// 			}, {
+		// 				packageId,
+		// 			}],
+		// 		},
+		// 	})
+		// 	.catch(err => console.log(err.message));
+		// }));
+
+		// const orderItems = await OrderItem.findAll({
+		// 	where: {
+		// 		[Op.and]: [{
+		// 			orderId: cart.id,
+		// 		}, {
+		// 			packageId: packagesId,
+		// 		}],
+		// 	},
+		// });
+
+		// await Promise.all(orderItems.map((orderItem, index) => {
+		// 	return Activity.findAll({where: {id: arrayActivitiesId[index]}})
+		// 		.then(activities => orderItem.setActivities(activities)) 
+		// 		.catch(err => console.log(err.message));
+		// }));
+
+		const existPackageInCart = await Order.findByPk(cartId, {
+			include: {
+				model: Package,
+				where: {
+					id: packageId,
+				},
+			},
 		});
-		total_order = total_packages.reduce((total, price) => total + price, 0);
+		if (existPackageInCart) return res.status(400).json({ message: 'The package exist into the user\'s cart' });
 
 		await Order.update({
-			total_order,
+			total_order: parseFloat(oldCart.total_order) + total_package,
 		}, {
 			where: {
 				id: cartId,
@@ -382,37 +415,15 @@ export const updateCart = async (req, res) => {
 		});
 
 		const cart = await Order.findByPk(cartId);
-		const paquetes = await Package.findAll({
-			where: {
-				id: packagesId,
-			},
-		});
+		const paquete = await Package.findByPk(packageId);
 
-		await cart.setPackages(paquetes, { 
+		await cart.addPackage(paquete, { 
 			through: OrderItem, 
 		});
-		await Promise.all(packagesId.map((packageId, index) => {
-			return OrderItem.update({
-				quantity: quantitiesPackages[index],
-			}, {
-				where: {
-					[Op.and]: [{
-						orderId: cartId,
-					}, {
-						packageId,
-					}],
-				},
-			})
-			.catch(err => console.log(err.message));
-		}));
 
-<<<<<<< .merge_file_Ba0W6H
 		await OrderItem.update({
 			quantity,
-<<<<<<< HEAD
-=======
 			total: total_package
->>>>>>> 6619fdc4664f95d4d74e30022e796b228847e293
 		}, {
 			where: {
 				[Op.and]: [{
@@ -424,28 +435,37 @@ export const updateCart = async (req, res) => {
 		})
 
 		const orderItem = await OrderItem.findOne({
-=======
-		const orderItems = await OrderItem.findAll({
->>>>>>> .merge_file_DmFlQK
 			where: {
 				[Op.and]: [{
 					orderId: cart.id,
 				}, {
-					packageId: packagesId,
+					packageId,
 				}],
 			},
 		});
 
-		await Promise.all(orderItems.map((orderItem, index) => {
-			return Activity.findAll({where: {id: arrayActivitiesId[index]}})
-				.then(activities => orderItem.setActivities(activities)) 
-				.catch(err => console.log(err.message));
-		}));
+		const activities = await Activity.findAll({
+			where: {
+				id: activitiesId,
+			},
+		});
+
+		await orderItem.setActivities(activities);
 
 		return res.status(200).json({ message: 'Cart updated successfully' });
 	} catch (error) {
 		return res.status(400).json({ error: error.message });
 	};
+};
+
+export const statusCartFunction = async (cartId) => {
+	await Order.update({
+		status: 'pending',
+	}, {
+		where: {
+			id: cartId,
+		},
+	});
 };
 
 export const patchStatusCart = async (req, res) => {
@@ -456,13 +476,7 @@ export const patchStatusCart = async (req, res) => {
 		if (!cart) return res.status(404).json({ message: "Cart not found" });
 		if (cart.status !== 'shopping cart') return res.status(400).json({ message: "The id entered is not from a cart" });
 
-		await Order.update({
-			status: 'pending',
-		}, {
-			where: {
-				id: cartId,
-			},
-		});
+		await statusCartFunction(cartId);
 
 		return res.status(200).json({ message: "Cart status changed to \'pending\' successfully" });
 	} catch (error) {
@@ -472,13 +486,20 @@ export const patchStatusCart = async (req, res) => {
 
 export const deleteCart = async (req, res) => {
 	const cartId = parseInt(req.params.cartId);
+	const packageId = parseInt(req.query.packageId);
 
 	try {
-		const cart = await Order.findByPk(cartId);
+		const cart = await Order.findByPk(cartId, {
+			include: {
+				model: Package,
+				where: {
+					id: packageId,
+				},
+			},
+		});
 		if (!cart) return res.status(404).json({ message: "Cart not found" });
 		if (cart.status !== 'shopping cart') return res.status(400).json({ message: "The id entered is not from a cart" });
 
-<<<<<<< .merge_file_Ba0W6H
 		const paquete = await Package.findByPk(packageId);
 
         const orderItemId = cart.packages[0].order_item.id;
@@ -487,17 +508,10 @@ export const deleteCart = async (req, res) => {
             include: {
                 model: Activity,
             },
-<<<<<<< HEAD
-        }); 
-
-        await Order.update({
-            total_order: parseFloat(cart.total_order) - cart.packages[0].order_item.quantity * (paquete.price + orderItem.activities.reduce((sum, act) => sum + act.price, 0)),
-=======
         });
 
         await Order.update({
             total_order: parseFloat(cart.total_order) - cart.packages[0].order_item.total,
->>>>>>> 6619fdc4664f95d4d74e30022e796b228847e293
         }, {
             where: {
                 id: cart.id,
@@ -510,18 +524,7 @@ export const deleteCart = async (req, res) => {
             },
         });
 
-<<<<<<< HEAD
-        await cart.removePackage(paquete);
-=======
         await cart.removePackage(paquete)
->>>>>>> 6619fdc4664f95d4d74e30022e796b228847e293
-=======
-		await Order.destroy({
-			where: {
-				id: cartId,
-			},
-		});
->>>>>>> .merge_file_DmFlQK
 
 		return res.status(200).json({ message: "Cart deleted successfully" }); 
 	} catch (error) {
