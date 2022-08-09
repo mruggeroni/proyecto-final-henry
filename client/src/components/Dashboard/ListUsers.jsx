@@ -58,7 +58,8 @@ export default function ListUsers() {
           'Eliminado exitosamente!',
           'success'
         )
-  };
+      }
+  
   
   useEffect(() => {
     const fetchData = async () => {
