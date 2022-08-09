@@ -6,7 +6,8 @@ import {
   getAllDestinations,
   filterPackagesByDestination,
   getDestinationsWithPackages,
-  filtrar
+  filtrar,
+  getAllPackage
 } from "../../redux/actions/index";
 import style from "./Navbar.module.css";
 
@@ -18,8 +19,12 @@ export default function NavDestinations({ handleClose }) {
   const allDestinations = useSelector((state) => state.destinationsWithPackages);
 
   useEffect(() => {
-    dispatch(getAllDestinations());
-    dispatch(getDestinationsWithPackages());
+    const fetch = async () => {
+      await dispatch(getAllPackage(10000))
+      dispatch(getAllDestinations());
+      dispatch(getDestinationsWithPackages());
+    }
+    fetch().catch(console.log("error"))
   }, [dispatch]);
 
   function handleClick(e) {

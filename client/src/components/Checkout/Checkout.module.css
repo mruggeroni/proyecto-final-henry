@@ -8,11 +8,13 @@
 .logInCreateAcc{
   width: 50%;
   padding: 3vw;
+  padding-top: 90px;  
   padding-bottom: 3vw;
 }
 
 .right{
-  width: 100%;
+  width: 50%;
+  min-height: 100vh;
   padding: 3vw;
   padding-bottom: 0;
 }
@@ -68,10 +70,12 @@
 }
 
 .left{
-  width: 50%;
+  width: 100%;
+  height: 100%;
   background-color: #e4eaea;
   padding: 3vw;
   padding-bottom: 0;
+  min-height: 100vh;
   /* display: flex;
   flex-direction: column;
   justify-content: space-evenly; */
@@ -102,7 +106,7 @@
   margin-top: 5vw;
   display: flex;
   flex-direction: column;
-  height: 20vw;
+  height: 25vw;
   text-decoration: none;
   box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24),
   0 17px 50px 0 rgba(0, 0, 0, 0.19);
@@ -115,19 +119,13 @@
 
 .vacioPaq{
   margin: auto;
-  margin-top: 2vw;
+  margin-top: 1vw;
   font-size: 1.3vw;
   text-decoration: none;
 }
 
 .noPaq:hover{
   color: black;
-}
-
-.carrouselTravel{
-  width: 50vw;
-  object-fit: cover;
-  /* margin-top: 2.5vw; */
 }
 
 .buttonContainer{
@@ -160,11 +158,21 @@
 }
 
 .containerCarrousel{
-  width: 50%;
+  width: 80%;
   display: flex;
   flex-direction: column;
   margin-top: 90px;
   background-color: #e4eaea;
+  /* height: 150vh; */
+  height: 100%;
+}
+
+.carrouselTravel{
+  width: 100%;
+  height: 100vh;
+  object-fit: cover;
+  max-height: 110vh;
+  /* margin-top: 2.5vw; */
 }
 
 .totalCartPrice{
@@ -202,13 +210,12 @@
     width: 100%;
     height: 100vh;
   }
-  /* .resumenCarrito{
+  .resumenCarrito{
     font-size: 3vw;
-  } */
-
+  } 
 }
 
-/* @media (max-width: 825px) {
+@media (max-width: 825px) {
   .noPaq {
     font-size: 2vw;
   }
@@ -218,4 +225,4 @@
   .noPaq {
     font-size: 3vw;
   }
-} */
+}

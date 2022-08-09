@@ -12,7 +12,10 @@ import {
   createUser,
   getAllFavorites,
   getFavoritesLocalStorage,
-  getFeatured
+  getFeatured,
+  getAllCart,
+  postCartPackage,
+  getCartLocalStorage
 } from "../../redux/actions/index";
 // import BacktoTop from "../BacktoTop/BacktoTop";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -21,7 +24,6 @@ import Footer from "../Footer/Footer";
 export default function Home() {
   const dispatch = useDispatch();
   const {
-    user,
     isAuthenticated,
     loginWithPopup,
     logout,
@@ -29,10 +31,9 @@ export default function Home() {
   } = useAuth0();
 
   const [loading, setLoading] = useState(true);
-  const allDestinations = useSelector(
-    (state) => state.destinationsWithPackages
-  );
+  const allDestinations = useSelector( (state) => state.destinationsWithPackages );
   const onSale = useSelector((state) => state.onsale);
+  const user = useSelector( (state) => state.user )
   const featured = useSelector((state) => state.featured);
   const sortDestinations = allDestinations.sort();
 
@@ -59,8 +60,29 @@ export default function Home() {
     } else{
       const token = await getAccessTokenSilently();
       dispatch(getAllFavorites(token))
+      try {
+        await dispatch(getAllCart(user.id));
+    } catch(error) {
+        await dispatch(postCartPackage(user.id, []))
+        await dispatch(getAllCart(user.id));
+    }
     }
   }, [dispatch]);
+
+  useEffect(() => {
+    const fetch = async () => {
+      if (!isAuthenticated) {
+       dispatch(getCartLocalStorage());
+       console.log("deslogueado")
+     } else {
+       const token = await getAccessTokenSilently();
+       const usuario = await dispatch(createUser(token));
+       console.log(usuario)
+       dispatch(getAllCart(usuario.payload.id));
+     }
+   };
+   fetch();
+  }, []);
 
   return (
     <div className={style.home_container}>
@@ -77,7 +99,7 @@ export default function Home() {
           </div>
           <div className={style.promotions_container}>
             <h2 className={style.h2}>Promociones</h2>
-            <CardGenericContainer listCards={onSale} />
+            <CardGenericContainer listCards={onSale} component='promotions' />
           </div>
         </React.Fragment>
       )}

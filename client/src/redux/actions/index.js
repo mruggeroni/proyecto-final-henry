@@ -273,7 +273,7 @@ export const Payment = (payload, token) => {
   return async function (dispatch) {
     try {
       console.log(payload);
-      const res = await axios.post("/payment", {
+      const res = await axios.post("/payment", payload, {
         headers: {
           authorization: `Bearer ${token}`,
         },
@@ -569,7 +569,7 @@ export function getAllCart(id) {
       return dispatch({ type: GET_CART, payload: res.data });
     };
   } catch (error) {
-    console.log(error);
+    console.log('ERROR POST ' + error);
   }
 }
 

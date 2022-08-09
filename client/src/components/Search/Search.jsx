@@ -71,7 +71,7 @@ export default function FilteredSearch() {
     estadoRegion !== "" &&
     filtradoType !== "" &&
     estadoPrecioMin !== "" &&
-    estadoPrecioMax !== ""
+    estadoPrecioMax >10000
       ? allPackages
       : filteredPackages.length &&
         filteredPackages.slice(indexOfFirstPackage, indexOfLastPackages);
@@ -168,12 +168,12 @@ export default function FilteredSearch() {
       const token = await getAccessTokenSilently();
       dispatch(getAllFavorites(token));
     }
-    setLoading(false);
     const fetch = async () => {
       const token = await getAccessTokenSilently();
       dispatch(createUser(token));
     };
     fetch();
+    setLoading(false);
   }, []);
 
   useEffect(() => {

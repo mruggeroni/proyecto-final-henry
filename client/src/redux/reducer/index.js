@@ -51,6 +51,7 @@ const initialState = {
   allPackages: [],
   filteredPackages: [],
   activities: [],
+  cartLocalStorage: {},
   cart: {},
   destinations: [],
   destinationsWithPackages: [],
@@ -306,8 +307,7 @@ const rootReducer = (state = initialState, action) => {
       let localStorageCart = JSON.parse(localStorage.getItem("cart")) || [];
       return {
         ...state,
-        cart: localStorageCart,
-        // cart: localStorageCart
+        cartLocalStorage: localStorageCart,
       };
 
     case GET_CART:
