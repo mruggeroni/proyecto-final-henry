@@ -16,8 +16,8 @@ export default function Settings({ showSettings, setShowSettings }) {
   });
   let [ showPassword, setShowPassword ] = useState(false);
 
-  const handlePassword = async (e, user) => {
-    e.preventDefault()
+  const handlePassword = async (e) => {
+    e.preventDefault();
     var options = { domain: "dev-33fzkaw8.us.auth0.com", clientID: "x5cL1uiTL2R0BR0VXYS0dIeqkA5gSdDm"};
     var webAuth = new WebAuth(options);
       console.log('HERE')
@@ -37,23 +37,23 @@ export default function Settings({ showSettings, setShowSettings }) {
   }
   const dispatch = useDispatch();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
    
-    setShowSettings(false);
+  //   setShowSettings(false);
    
-    setTimeout(() => {
-      setShowSettings(true)
-      console.log('reset')
-    }, 0);
-    setShowSettings(false) 
-  };
+  //   setTimeout(() => {
+  //     setShowSettings(true)
+  //     console.log('reset')
+  //   }, 0);
+  //   setShowSettings(false) 
+  // };
 
-  const handleChange = (e) => {
-    e.preventDefault(); 
-   
 
-  };
+  // const handleChange = (e) => {
+  //   e.preventDefault(); 
+
+  // };
 
   const handleDelete = (e) => {
     e.preventDefault();
@@ -68,17 +68,9 @@ export default function Settings({ showSettings, setShowSettings }) {
           <h2 className={s.settings_title}>Configuracion de la Cuenta <MdBuild className={s.setting_build} /> </h2>
         </div>
         <hr />
-        {/* <div className={s.settings_email_container}>
-          <h3 className={s.settings_email}>Email</h3>
-            <input type='email' value={user.email} className={s.settings_input}/>
-          //<button className={s.settings_email_btn}>Cambiar</button>
-        </div>
-        </div> */}
-        <form className={s.settings_password_container}>
+        <h3>Contraseña</h3>
           <button onClick={(e) => handlePassword(e, user)} className={s.settings_btn_save}>Cambiar Contraseña</button>
-        </form>
-        <button onClick={handleDelete} disabled={true} className={s.settings_btn_delete}>Eliminar cuenta</button>
-        
-    </div>
+          <button onClick={handleDelete} disabled={true} className={s.settings_btn_delete}>Eliminar cuenta</button>
+      </div>
   );
 }
