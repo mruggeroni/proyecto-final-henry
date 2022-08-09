@@ -1,10 +1,15 @@
 import Stripe from "stripe";
+//import { getUserInfoByToken, findOneUserFromDataBase } from "../controllers/FavouritesController.js";
+
 //const stripeKey = 
 const stripe = Stripe('sk_test_51LSoUXFrlpRCY5YH7F7s7KDDAOsF4LAeXJyAJrHjUUSObyUbcDECpGu7N2Afj6N9P1aa7hdc1Ca85x4fSDUJebER00IklWuRZ3')
 
 
 export const PaymentCreate = async (req, res) => {
     let cart = req.body;
+    console.log('HERE PAY BODY')
+    let id = cart.id.toString()
+    console.log(cart.id.toString())
     try {
 
         const itemsCart = cart.packages?.map( (p) => ({
@@ -57,9 +62,11 @@ export const PaymentCreate = async (req, res) => {
                        },
                        unit_amount: item.totalPerUnitCents
                    },
-                   quantity: item.quantity
+                   quantity: item.quantity,
+
                }
            }),
+           client_reference_id: id,
            success_url: 'http://localhost:3000/checkout/confirmation' ,
            cancel_url: 'http://localhost:3000/checkout'
        })

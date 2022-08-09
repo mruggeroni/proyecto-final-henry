@@ -17,6 +17,7 @@ export const verifyJwt = expressJwt({
 
 export const verifySuperAdminPermission = (req, res, next) => {
     if(req.auth){const permissions = req.auth.permissions[0]
+		console.log(permissions)
         permissions === 'SuperAdmin' ? next() : res.status(403).send('Not authorized'); }
 
 }
