@@ -41,6 +41,7 @@
   font-weight: bold;
 }
 
+<<<<<<< HEAD
 <<<<<<< .merge_file_N8VQWk
 /* .cardText:hover{
   color: #4a9eab;
@@ -52,6 +53,12 @@
   transition: .2s;
 }
 >>>>>>> .merge_file_5YNFfs
+=======
+.cardText:hover{
+  color: #4a9eab;
+  transition: .2s;
+}
+>>>>>>> 6619fdc4664f95d4d74e30022e796b228847e293
 
 .buttons > * {
   text-decoration: none;

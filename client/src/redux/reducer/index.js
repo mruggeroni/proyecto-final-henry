@@ -33,7 +33,12 @@ import {
   GET_RATING,
   GET_FEATURED,
   GET_ORDER_DETAILS,
+<<<<<<< HEAD
   STATUS_USER
+=======
+  STATUS_USER,
+  GET_ALL_PACKAGES_DASHBOARD
+>>>>>>> 6619fdc4664f95d4d74e30022e796b228847e293
 } from "./../actions/index.js";
 
 import {
@@ -49,6 +54,7 @@ import {
 
 const initialState = {
   allPackages: [],
+  allPackagesDashboard: [],
   filteredPackages: [],
   activities: [],
   cartLocalStorage: {},
@@ -93,6 +99,15 @@ const rootReducer = (state = initialState, action) => {
         allPackages: action.payload,
         // filteredPackages: action.payload,
       };
+<<<<<<< HEAD
+=======
+    case GET_ALL_PACKAGES_DASHBOARD:
+      return {
+        ...state,
+        allPackagesDashboard: action.payload,
+        // filteredPackages: action.payload,
+      };
+>>>>>>> 6619fdc4664f95d4d74e30022e796b228847e293
     case GET_ORDER_DETAILS:
      
       return {

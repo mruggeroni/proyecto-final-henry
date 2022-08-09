@@ -7,8 +7,13 @@ export default function CheckoutConfirmation({ showCheckoutConfirmation, setShow
   const user = useSelector((state) => state.user);
 
   return (
+<<<<<<< HEAD
     !showCheckoutConfirmation ? null
     :   
+=======
+    // !showCheckoutConfirmation ? null
+    // :   
+>>>>>>> 6619fdc4664f95d4d74e30022e796b228847e293
     <div className={s.confirmation_container}>
       <div className={s.textConfirmation}>
         <h1>Su compra fue realizada con éxito!</h1>

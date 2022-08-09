@@ -11,13 +11,20 @@ import {
   getDestinationsWithPackages,
   createUser,
   getAllFavorites,
+<<<<<<< HEAD
   getFavoritesLocalStorage,
   getFeatured,
   getAllCart,
   postCartPackage,
   getCartLocalStorage
+=======
+  getFeatured,
+  getAllCart,
+  postCartPackage,
+  getCartLocalStorage,
+  getFavoritesLocalStorage
+>>>>>>> 6619fdc4664f95d4d74e30022e796b228847e293
 } from "../../redux/actions/index";
-// import BacktoTop from "../BacktoTop/BacktoTop";
 import { useAuth0 } from "@auth0/auth0-react";
 import Footer from "../Footer/Footer";
 
@@ -25,8 +32,6 @@ export default function Home() {
   const dispatch = useDispatch();
   const {
     isAuthenticated,
-    loginWithPopup,
-    logout,
     getAccessTokenSilently,
   } = useAuth0();
 
@@ -37,8 +42,9 @@ export default function Home() {
   const featured = useSelector((state) => state.featured);
   const sortDestinations = allDestinations.sort();
 
-  useEffect(async () => {
+  useEffect( () => {
     setLoading(true);
+<<<<<<< HEAD
     await dispatch(getAllPackage(1000));
     await dispatch(getAllDestinations());
     await dispatch(getDestinationsWithPackages());
@@ -79,6 +85,37 @@ export default function Home() {
        const usuario = await dispatch(createUser(token));
        console.log(usuario)
        dispatch(getAllCart(usuario.payload.id));
+=======
+    const fetch = async () => {
+      await dispatch(getAllPackage(1000));
+      await dispatch(getAllDestinations());
+      await dispatch(getDestinationsWithPackages());
+      await dispatch(getOnSale());
+      await dispatch(getAllActivities());
+      await dispatch(getFeatured())
+      // const token = await getAccessTokenSilently()
+      // dispatch(createUser(token))
+    }
+    fetch()
+    setLoading(false);
+  }, [dispatch]);
+
+  useEffect( async () => {
+    const fetch = async () => {
+      if (!isAuthenticated) {
+      dispatch(getCartLocalStorage());
+      dispatch(getFavoritesLocalStorage());
+     } else {
+      const token = await getAccessTokenSilently();
+      // const res = await dispatch(createUser(token));
+      await dispatch(getAllFavorites(token))
+      try {
+        await dispatch(getAllCart(user.id));
+      } catch(error) {
+        await dispatch(postCartPackage(user.id, []))
+        await dispatch(getAllCart(user.id));
+      }
+>>>>>>> 6619fdc4664f95d4d74e30022e796b228847e293
      }
    };
    fetch();
@@ -86,7 +123,7 @@ export default function Home() {
 
   return (
     <div className={style.home_container}>
-      {loading ? (
+      { (loading) ? (
         <div className={style.contenedorSpinner}>
           <div className={style.spinner}></div>
         </div>

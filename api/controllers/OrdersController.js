@@ -93,7 +93,6 @@ export const getOrderDetail = async (req, res) => {
 							'images',
 							'featured',
 							'available',
-							'on_sale',
 							'destroyTime'
 						]
 					}
@@ -121,6 +120,7 @@ export const getOrderDetail = async (req, res) => {
 
 		order[0].packages.forEach(packg => {
 			packg.quantity = packg.order_item.quantity;
+			packg.total = packg.order_item.total;
 			const activities = orderItems.find(orderItem => orderItem.id === packg.order_item.id);
 			packg.activities = activities.activities;
 			delete packg.order_item;
@@ -214,6 +214,7 @@ export const getCart = async (req, res) => {
 
 		cart.packages.forEach(packg => {
 			packg.quantity = packg.order_item.quantity;
+			packg.total = packg.order_item.total;
 			const activities = orderItems.find(orderItem => orderItem.id === packg.order_item.id);
 			packg.activities = activities.activities;
 			delete packg.order_item;
@@ -287,6 +288,7 @@ export const createCart = async (req, res) => {
 		await Promise.all(packagesId.map((packageId, index) => {
 			return OrderItem.update({
 				quantity: quantitiesPackages[index],
+				total: total_packages[index],
 			}, {
 				where: {
 					[Op.and]: [{
@@ -323,7 +325,11 @@ export const createCart = async (req, res) => {
 
 export const updateCart = async (req, res) => {
 	const { cartId } = req.params;
+<<<<<<< HEAD
 	const /* cartPackages */ { packageId, activitiesId, quantity, total_package } = req.body;
+=======
+	const /* cartPackages */ { packageId, activitiesId, quantity,  total_package } = req.body;
+>>>>>>> 6619fdc4664f95d4d74e30022e796b228847e293
 
 	try {
 		const oldCart = await Order.findByPk(cartId);
@@ -426,6 +432,10 @@ export const updateCart = async (req, res) => {
 
 		await OrderItem.update({
 			quantity,
+<<<<<<< HEAD
+=======
+			total: total_package
+>>>>>>> 6619fdc4664f95d4d74e30022e796b228847e293
 		}, {
 			where: {
 				[Op.and]: [{
@@ -510,10 +520,17 @@ export const deleteCart = async (req, res) => {
             include: {
                 model: Activity,
             },
+<<<<<<< HEAD
         }); 
 
         await Order.update({
             total_order: parseFloat(cart.total_order) - cart.packages[0].order_item.quantity * (paquete.price + orderItem.activities.reduce((sum, act) => sum + act.price, 0)),
+=======
+        });
+
+        await Order.update({
+            total_order: parseFloat(cart.total_order) - cart.packages[0].order_item.total,
+>>>>>>> 6619fdc4664f95d4d74e30022e796b228847e293
         }, {
             where: {
                 id: cart.id,
@@ -526,7 +543,11 @@ export const deleteCart = async (req, res) => {
             },
         });
 
+<<<<<<< HEAD
         await cart.removePackage(paquete);
+=======
+        await cart.removePackage(paquete)
+>>>>>>> 6619fdc4664f95d4d74e30022e796b228847e293
 
 		return res.status(200).json({ message: "Cart deleted successfully" }); 
 	} catch (error) {

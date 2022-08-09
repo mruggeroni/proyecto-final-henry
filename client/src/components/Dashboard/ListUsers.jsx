@@ -64,6 +64,7 @@ export default function ListUsers() {
 =======
     })
   };
+<<<<<<< HEAD
 <<<<<<< .merge_file_geaB7j
 <<<<<<< .merge_file_fXpd2S
 >>>>>>> .merge_file_CcHYqh
@@ -71,6 +72,8 @@ export default function ListUsers() {
 >>>>>>> .merge_file_WiEUKW
 =======
 >>>>>>> .merge_file_mTf52l
+=======
+>>>>>>> 6619fdc4664f95d4d74e30022e796b228847e293
   
   useEffect(() => {
     const fetchData = async () => {
