@@ -88,10 +88,10 @@ export default function Detail() {
         };
         fetch();
       }
-      console.log(packageDetail.available, user.is_admin)
-      console.log(!packageDetail.available && user.is_admin !== true )
-      if(!packageDetail.available && user.is_admin !== true ) {
-        navigate('/');
+      console.log(packageDetail.available, user.is_admin);
+      console.log(!packageDetail.available && user.is_admin !== true);
+      if (!packageDetail.available && user.is_admin !== true) {
+        navigate("/");
       }
 
       setLoading(false);
@@ -113,6 +113,7 @@ export default function Detail() {
       const usuario = await dispatch(createUser(token));
       console.log(usuario.payload);
       dispatch(getAllCart(usuario.payload.id));
+      dispatch(getAllFavorites(token));
     };
     fetch();
   }, [dispatch]);
@@ -347,7 +348,8 @@ export default function Detail() {
 
   return loading ? (
     <Loading />
-  ) : (<div
+  ) : (
+    <div
       style={{
         backgroundImage: `url(${packageDetail.main_image})`,
         backgroundSize: "cover",
