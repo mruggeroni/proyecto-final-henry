@@ -365,21 +365,21 @@ export default function FilteredSearch() {
                   <option
                     selected={estadoPrecioMax === 3000 ? true : false}
                     value={3000}
-                    disabled={estadoPrecioMin > 3000 ? true : false}
+                    disabled={estadoPrecioMin >= 3000 ? true : false}
                   >
                     U$S 3.000
                   </option>
                   <option
                     selected={estadoPrecioMax === 2000 ? true : false}
                     value={2000}
-                    disabled={estadoPrecioMin > 2000 ? true : false}
+                    disabled={estadoPrecioMin >= 2000 ? true : false}
                   >
                     U$S 2.000
                   </option>
                   <option
                     selected={estadoPrecioMax === 1000 ? true : false}
                     value={1000}
-                    disabled={estadoPrecioMin > 1000 ? true : false}
+                    disabled={estadoPrecioMin >= 1000 ? true : false}
                   >
                     U$S 1.000
                   </option>
@@ -427,12 +427,7 @@ export default function FilteredSearch() {
                   >
                     Regiones
                   </option>
-                  <option
-                    selected={estadoRegion === "all" ? true : false}
-                    value="all"
-                  >
-                    Todas las regiones
-                  </option>
+        
                   {regionesFiltradas?.sort().map((el) => (
                     <option
                       selected={estadoRegion === el ? true : false}

@@ -39,7 +39,7 @@
   margin: 5px;
   z-index: 1;
   resize: none;
-  width: 80%;
+  width: 87%;
 }
 
 .input_container {
@@ -52,6 +52,7 @@
   background-color: #fff;
   margin: 5px;
   z-index: 1;
+  width: 16.75vw;
 }
 
 .callus {
@@ -71,6 +72,7 @@
   flex-wrap: wrap;
   align-items: center;
   margin-top: 40px;
+  justify-content: center;
 }
 
 .form_btn {
@@ -83,6 +85,8 @@
   text-decoration: none;
   margin: 5px;
   margin-bottom: 1vw;
+  float: right;
+  margin-right: 5.5vw;
 }
 
 /* .information_container h2, h5, p::selection {

@@ -11,24 +11,29 @@ import BacktoTop from "../BacktoTop/BacktoTop";
 export default function Footer() {
   return (
     <div className={s.footer_container}>
-      <BacktoTop />
-      <div className={s.footer_social}>
-        <a href="/" className={s.footer_social_icon}>
-          <FaFacebookF />
-        </a>
-        <a href="/" className={s.footer_social_icon}>
-          <FaTwitter />
-        </a>
-        <a href="/" className={s.footer_social_icon}>
-          <FaYoutube />
-        </a>
-        <a href="/" className={s.footer_social_icon}>
-          <FaInstagram />
-        </a>
-        <a href="/" className={s.footer_social_icon}>
-          <FaLinkedinIn />
-        </a>
+      <div className={s.backToTop}>
+        <div className={s.emptyDiv4Styles}></div>
+        <div className={s.footer_social}>
+          <a href="/" className={s.footer_social_icon}>
+            <FaFacebookF />
+          </a>
+          <a href="/" className={s.footer_social_icon}>
+            <FaTwitter />
+          </a>
+          <a href="/" className={s.footer_social_icon}>
+            <FaYoutube />
+          </a>
+          <a href="/" className={s.footer_social_icon}>
+            <FaInstagram />
+          </a>
+          <a href="/" className={s.footer_social_icon}>
+            <FaLinkedinIn />
+          </a>
+        </div>
+        <div className={s.topButton}>
+          
       </div>
+        </div>
       <div className={s.footer_links}>
         <NavLink to='/about' className={s.footer_link}>Nosotros</NavLink> 
         |<NavLink to='/privacy' className={s.footer_link}>Politica de privacidad</NavLink> 

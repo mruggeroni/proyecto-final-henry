@@ -48,7 +48,7 @@ export const PaymentCreate = async (req, res) => {
        const session = await stripe.checkout.sessions.create({
            payment_method_types: ['card'],
            mode: 'payment',
-           line_items: itemsCart.map(item => {
+           line_items: itemsCart?.map(item => {
                return {
                     price_data: {
                        currency: 'usd',

@@ -68,6 +68,7 @@ function App() {
         <Route path="/contact" element={<Home />} />
         <Route path="*" element={<Error404 />} />
       </Routes>
+      {/* <BacktoTop /> */}
       {/* <Footer /> */}
     </BrowserRouter>
   );
