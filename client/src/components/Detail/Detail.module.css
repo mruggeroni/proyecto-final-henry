@@ -10,6 +10,7 @@
   background-color: #fafafaa2;
   width: 80%;
   padding: 3%;
+  padding-top: 4%;
 }
 
 .contenedorBarraSuperior {
@@ -245,6 +246,22 @@
   padding-top: 1%;
 }
 
+.pricePaq{
+  display: flex;
+  flex-direction: row;
+}
+
+.pricePaq h4{
+  margin: auto;
+  margin-left: 1vw;
+}
+
+.discountTotal{
+  left: auto;
+  right: 10%;
+  width: 30%;
+}
+
 @media (max-width: 1000px) {
   .contenedorDetalles h1 {
     font-size: 2.5em;
@@ -320,8 +337,8 @@
 
 
 .musRibbon.right {
-  left: auto;
-  right: 20%;
+  right: auto;
+  left: 3%;
 }
 
 .onSale {

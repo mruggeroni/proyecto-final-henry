@@ -20,7 +20,6 @@ import {
 } from "./../../redux/actions/index";
 import Paginado from "../Paginado/paginado";
 import s from "./Search.module.css";
-import { BsArrowBarDown, BsArrowBarUp } from "react-icons/bs";
 import { VscChevronDown, VscChevronUp } from "react-icons/vsc";
 import { useAuth0 } from "@auth0/auth0-react";
 
@@ -34,14 +33,24 @@ export default function FilteredSearch() {
     (state) => state.destinationsWithPackages
   );
 
-  const regionesFiltradas = [];
-  filteredPackages &&
-    filteredPackages.forEach((i) => {
-      i.destinations.forEach((i) => {
-        if (!regionesFiltradas.includes(i.region))
-          regionesFiltradas.push(i.region);
-      });
-    });
+  const regionesFiltradas = [
+    "Europa Occidental",
+    "Europa Central",
+    "Europa Oriental",
+    "Asia Oriental",
+    "Asia del Sur",
+    "Asia Sudoriental Continental",
+    "Norte América",
+    "Sudamérica",
+    "América Central",
+  ];
+  // filteredPackages &&
+  //   filteredPackages.forEach((i) => {
+  //     i.destinations.forEach((i) => {
+  //       if (!regionesFiltradas.includes(i.region))
+  //         regionesFiltradas.push(i.region);
+  //     });
+  //   });
   const destinosFiltrados = [];
   filteredPackages &&
     filteredPackages.forEach((i) => {
@@ -65,16 +74,8 @@ export default function FilteredSearch() {
   const indexOfLastPackages = currentPage * packagesPerPage;
   const indexOfFirstPackage = indexOfLastPackages - packagesPerPage;
   const currentPackage =
-    fechaDesde !== "" &&
-    fechaHasta !== "" &&
-    estadoDestino !== "" &&
-    estadoRegion !== "" &&
-    filtradoType !== "" &&
-    estadoPrecioMin !== "" &&
-    estadoPrecioMax !== ""
-      ? allPackages
-      : filteredPackages.length &&
-        filteredPackages.slice(indexOfFirstPackage, indexOfLastPackages);
+    filteredPackages.length &&
+    filteredPackages.slice(indexOfFirstPackage, indexOfLastPackages);
   const paginado = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
@@ -86,19 +87,18 @@ export default function FilteredSearch() {
   const [precioDesde, setPrecioDesde] = useState(estadoPrecioMin);
   const [precioHasta, setPrecioHasta] = useState(estadoPrecioMax);
   const [region, setRegion] = useState(estadoRegion);
+  const [loading, setLoading] = useState(false);
+  const [mostrar, setMostrar] = useState(false);
 
   const handleChange = (e) => {
     e.preventDefault();
+    setLoading(true);
     if (e.target.id === "region") {
-      // dispatch(getAllPackage(1000));
       setRegion(e.target.value);
       dispatch(filtrar(e.target.value, e.target.id));
-      console.log("jklasdhvbipasjdvbapi");
     }
     if (e.target.id === "searchDestinations") {
       setDestination(e.target.value);
-      // dispatch(getAllPackage(10000));
-      // dispatch(filterPackagesByDestination(e.target.value));
       dispatch(filtrar(e.target.value, e.target.id));
     }
 
@@ -144,15 +144,13 @@ export default function FilteredSearch() {
     if (e.target.id === "reset") {
       dispatch(filtrar("", e.target.id));
       setUntilDate(estadoPrecioMax);
+      setLoading(false);
     }
     setCurrentPage(1);
     // dispatch(filterPackagesByDestination(e.target.value));
     // dispatch(getAllPackage(10000));
+    setLoading(false);
   };
-
-  const [loading, setLoading] = useState(false);
-
-  const [mostrar, setMostrar] = useState(false);
 
   useEffect(async () => {
     setLoading(true);
@@ -163,17 +161,17 @@ export default function FilteredSearch() {
     await dispatch(getDestinationsWithPackages());
     await dispatch(getTypes());
     if (!isAuthenticated) {
-      // dispatch(getFavoritesLocalStorage());
+      dispatch(getFavoritesLocalStorage());
     } else {
       const token = await getAccessTokenSilently();
       dispatch(getAllFavorites(token));
     }
+    // const fetch = async () => {
+    //   const token = await getAccessTokenSilently();
+    //   dispatch(createUser(token));
+    // };
+    // fetch();
     setLoading(false);
-    const fetch = async () => {
-      const token = await getAccessTokenSilently();
-      dispatch(createUser(token));
-    };
-    fetch();
   }, []);
 
   useEffect(() => {
@@ -195,14 +193,15 @@ export default function FilteredSearch() {
           <div className={s.spinner}></div>
         </div>
       ) : (
-        <div>
-          <div className={s.view}>
-            <div
-              className={
-                mostrar ? s.contenedorFiltros : s.contenedorFiltrosEsconder
-              }
-            >
-              <label>
+        <div className={s.containerSearch}>
+          <div className={mostrar ? s.view : s.contenedorFiltrosEsconder}>
+            <div className={s.verticalHideFilter}>
+              <div
+                className={
+                  mostrar ? s.contenedorFiltros : s.contenedorFiltrosEsconder
+                }
+              >
+                {/* <label>
                 <select
                   onChange={(e) => handleChange(e)}
                   id="region"
@@ -261,29 +260,228 @@ export default function FilteredSearch() {
                     </option>
                   ))}
                 </select>
-              </label>
-              <label>
+              </label> */}
+                <SortPrice
+                  setOrder={setOrder}
+                  setCurrentPage={setCurrentPage}
+                />
+                <label>
+                  <select
+                    className={s.create_input}
+                    id="searchType"
+                    onChange={(e) => handleChange(e)}
+                  >
+                    <option
+                      selected={filtradoType === "" ? true : false}
+                      value="all"
+                      disabled
+                    >
+                      Tipo
+                    </option>
+                    <option
+                      selected={filtradoType === "all" ? false : true}
+                      value="all"
+                    >
+                      Todos los tipos
+                    </option>
+                    {allTypes?.map((el) => (
+                      <option
+                        selected={filtradoType === el ? true : false}
+                        key={el}
+                        value={el}
+                      >
+                        {el}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+
+                <label>
+                  <select
+                    id="precioDesde"
+                    className={s.create_input}
+                    onChange={(e) => handleChange(e)}
+                  >
+                    <option
+                      value=""
+                      selected={estadoPrecioMin === "" ? true : false}
+                      disabled="disabled"
+                    >
+                      Precio minimo
+                    </option>
+                    <option
+                      selected={estadoPrecioMin === 0 ? true : false}
+                      value={0}
+                      disabled={precioHasta < 0 ? true : false}
+                    >
+                      U$S 0
+                    </option>
+                    <option
+                      selected={estadoPrecioMin === 1000 ? true : false}
+                      value={1000}
+                      disabled={precioHasta < 1000 ? true : false}
+                    >
+                      U$S 1.000
+                    </option>
+
+                    <option
+                      selected={estadoPrecioMin === 2000 ? true : false}
+                      value={2000}
+                      disabled={precioHasta < 2000 ? true : false}
+                    >
+                      U$S 2.000
+                    </option>
+
+                    <option
+                      selected={estadoPrecioMin === 3000 ? true : false}
+                      value={3000}
+                      disabled={precioHasta < 3000 ? true : false}
+                    >
+                      U$S 3.000
+                    </option>
+                    <option
+                      selected={estadoPrecioMin === 4000 ? true : false}
+                      value={4000}
+                      disabled={precioHasta < 4000 ? true : false}
+                    >
+                      U$S 4.000
+                    </option>
+                  </select>
+                </label>
+                <label>
+                  <select
+                    id="precioHasta"
+                    onChange={(e) => handleChange(e)}
+                    className={s.create_input}
+                  >
+                    <option
+                      value=""
+                      selected={estadoPrecioMax > 5000 ? true : false}
+                      disabled="disabled"
+                    >
+                      Precio maximo
+                    </option>
+                    <option
+                      selected={estadoPrecioMax === 5000 ? true : false}
+                      value={5000}
+                    >
+                      U$S 5.000
+                    </option>
+                    <option
+                      selected={estadoPrecioMax === 4000 ? true : false}
+                      value={4000}
+                    >
+                      U$S 4.000
+                    </option>
+                    <option
+                      selected={estadoPrecioMax === 3000 ? true : false}
+                      value={3000}
+                      disabled={estadoPrecioMin > 3000 ? true : false}
+                    >
+                      U$S 3.000
+                    </option>
+                    <option
+                      selected={estadoPrecioMax === 2000 ? true : false}
+                      value={2000}
+                      disabled={estadoPrecioMin > 2000 ? true : false}
+                    >
+                      U$S 2.000
+                    </option>
+                    <option
+                      selected={estadoPrecioMax === 1000 ? true : false}
+                      value={1000}
+                      disabled={estadoPrecioMin > 1000 ? true : false}
+                    >
+                      U$S 1.000
+                    </option>
+                  </select>
+                </label>
+                <button
+                  className={s.create_btn}
+                  id="reset"
+                  onClick={(e) => handleChange(e)}
+                >
+                  Reiniciar Filtros
+                </button>
+              </div>
+              <div>
+                <hr />
+              </div>
+            </div>
+          </div>
+          {currentPackage ? (
+            <div onClick={() => setMostrar(!mostrar)} className={s.moreFilters}>
+              <VscChevronDown
+                className={s.flechaFiltros}
+                display={mostrar ? "none" : true}
+              />
+              <VscChevronUp
+                className={s.flechaFiltros}
+                display={mostrar ? true : "none"}
+              />
+              <p>+ filtros</p>
+            </div>
+          ) : (
+            " "
+          )}
+          {/* <div className={s.contenedorOrdenar}>
+            <SortPrice setOrder={setOrder} setCurrentPage={setCurrentPage} />
+          </div> */}
+          {currentPackage ? (
+            <div className={s.mainFilters}>
+              <div>
                 <select
-                  className={s.create_input}
-                  id="searchType"
                   onChange={(e) => handleChange(e)}
+                  id="region"
+                  className={s.create_input}
                 >
                   <option
-                    selected={filtradoType === "" ? true : false}
-                    value="all"
-                    disabled
+                    value=""
+                    selected={estadoRegion === "" ? true : false}
+                    disabled="disabled"
                   >
-                    Tipo
+                    Regiones
                   </option>
                   <option
-                    selected={filtradoType === "all" ? false : true}
+                    selected={estadoRegion === "all" ? true : false}
                     value="all"
                   >
-                    Todos los tipos
+                    Todas las regiones
                   </option>
-                  {allTypes?.map((el) => (
+                  {regionesFiltradas?.sort().map((el) => (
                     <option
-                      selected={filtradoType === el ? true : false}
+                      selected={estadoRegion === el ? true : false}
+                      key={el}
+                      value={el}
+                    >
+                      {" "}
+                      {el}{" "}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <select
+                  onChange={(e) => handleChange(e)}
+                  id="searchDestinations"
+                  className={s.create_input}
+                >
+                  <option
+                    value=""
+                    selected={estadoDestino === "" ? true : false}
+                    disabled="disabled"
+                  >
+                    Destinos
+                  </option>
+                  <option
+                    selected={estadoDestino === "all" ? true : false}
+                    value="all"
+                  >
+                    Todos los destinos
+                  </option>
+                  {destinosFiltrados?.sort().map((el) => (
+                    <option
+                      selected={estadoDestino === el ? true : false}
                       key={el}
                       value={el}
                     >
@@ -291,7 +489,7 @@ export default function FilteredSearch() {
                     </option>
                   ))}
                 </select>
-              </label>
+              </div>
               <div className={s.create_input_date}>
                 <input
                   type="date"
@@ -314,143 +512,36 @@ export default function FilteredSearch() {
                   className={s.create_input}
                 />
               </div>
-              <label>
-                <select
-                  id="precioDesde"
-                  className={s.create_input}
-                  onChange={(e) => handleChange(e)}
-                >
-                  <option
-                    value=""
-                    selected={estadoPrecioMin === "" ? true : false}
-                    disabled="disabled"
-                  >
-                    Precio minimo
-                  </option>
-                  <option
-                    selected={estadoPrecioMin === 0 ? true : false}
-                    value={0}
-                    disabled={precioHasta < 0 ? true : false}
-                  >
-                    U$S 0
-                  </option>
-                  <option
-                    selected={estadoPrecioMin === 1000 ? true : false}
-                    value={1000}
-                    disabled={precioHasta < 1000 ? true : false}
-                  >
-                    U$S 1.000
-                  </option>
-
-                  <option
-                    selected={estadoPrecioMin === 2000 ? true : false}
-                    value={2000}
-                    disabled={precioHasta < 2000 ? true : false}
-                  >
-                    U$S 2.000
-                  </option>
-
-                  <option
-                    selected={estadoPrecioMin === 3000 ? true : false}
-                    value={3000}
-                    disabled={precioHasta < 3000 ? true : false}
-                  >
-                    U$S 3.000
-                  </option>
-                  <option
-                    selected={estadoPrecioMin === 4000 ? true : false}
-                    value={4000}
-                    disabled={precioHasta < 4000 ? true : false}
-                  >
-                    U$S 4.000
-                  </option>
-                </select>
-              </label>
-              <label>
-                <select
-                  id="precioHasta"
-                  onChange={(e) => handleChange(e)}
-                  className={s.create_input}
-                >
-                  <option
-                    value=""
-                    selected={estadoPrecioMax > 5000 ? true : false}
-                    disabled="disabled"
-                  >
-                    Precio maximo
-                  </option>
-                  <option
-                    selected={estadoPrecioMax === 5000 ? true : false}
-                    value={5000}
-                  >
-                    U$S 5.000
-                  </option>
-                  <option
-                    selected={estadoPrecioMax === 4000 ? true : false}
-                    value={4000}
-                  >
-                    U$S 4.000
-                  </option>
-                  <option
-                    selected={estadoPrecioMax === 3000 ? true : false}
-                    value={3000}
-                    disabled={estadoPrecioMin > 3000 ? true : false}
-                  >
-                    U$S 3.000
-                  </option>
-                  <option
-                    selected={estadoPrecioMax === 2000 ? true : false}
-                    value={2000}
-                    disabled={estadoPrecioMin > 2000 ? true : false}
-                  >
-                    U$S 2.000
-                  </option>
-                  <option
-                    selected={estadoPrecioMax === 1000 ? true : false}
-                    value={1000}
-                    disabled={estadoPrecioMin > 1000 ? true : false}
-                  >
-                    U$S 1.000
-                  </option>
-                </select>
-              </label>
-              <button
-                className={s.create_btn}
-                id="reset"
-                onClick={(e) => handleChange(e)}
-              >
-                Reiniciar Filtros
-              </button>
             </div>
-          </div>
-          <div className={s.contenedorOrdenar}>
-            <SortPrice setOrder={setOrder} setCurrentPage={setCurrentPage} />
-            <div onClick={() => setMostrar(!mostrar)}>
-              filtros
-              <VscChevronDown
-                className={s.flechaFiltros}
-                display={mostrar ? "none" : true}
-              />
-              <VscChevronUp
-                className={s.flechaFiltros}
-                display={mostrar ? true : "none"}
-              />
+          ) : (
+            " "
+          )}
+          {currentPackage ? (
+            <div className={s.pag}>
+              <div className={s.divVacio}></div>
+              <div className={s.paginadoSearch}>
+                <Paginado
+                  packagesPerPage={packagesPerPage}
+                  allPackages={filteredPackages.length}
+                  paginado={paginado}
+                  currentPage={currentPage}
+                />
+              </div>
+              <div className={s.viewComponent}>
+                <View
+                  currentPackage={currentPackage}
+                  allPackages={allPackages}
+                  indexOfFirstPackage={indexOfFirstPackage}
+                  setPackagesPerPage={setPackagesPerPage}
+                  setCurrentPage={setCurrentPage}
+                  currentPage={currentPage}
+                />
+              </div>
             </div>
-            <View
-              currentPackage={currentPackage}
-              allPackages={allPackages}
-              indexOfFirstPackage={indexOfFirstPackage}
-              setPackagesPerPage={setPackagesPerPage}
-              setCurrentPage={setCurrentPage}
-              currentPage={currentPage}
-            />
-          </div>
-          <Paginado
-            packagesPerPage={packagesPerPage}
-            allPackages={filteredPackages.length}
-            paginado={paginado}
-            currentPage={currentPage}
-          />
+          ) : (
+            " "
+          )}
+          {/* </div> */}
           <div className={s.cards}>
             {currentPackage ? (
               currentPackage.map((p) => {

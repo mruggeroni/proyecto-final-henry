@@ -59,11 +59,10 @@ export function filtrarRegion(arrayAFiltrar, region) {
   let respuesta = [];
   region === "all"
     ? arrayAFiltrar.forEach((e) => respuesta.push(e))
-    : arrayAFiltrar.filter((p) =>
-        p.destinations.forEach((el) => {
-          el.region === region && respuesta.push(p);
-        })
-      );
+    : arrayAFiltrar.filter((p) => {
+        let match = p.destinations.some( (el) => el.region === region )
+        match && respuesta.push(p)
+      });
   return respuesta;
 }
 

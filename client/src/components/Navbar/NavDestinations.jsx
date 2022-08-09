@@ -6,41 +6,38 @@ import {
   getAllDestinations,
   filterPackagesByDestination,
   getDestinationsWithPackages,
-  filtrar
+  filtrar,
+  getAllPackage
 } from "../../redux/actions/index";
 import style from "./Navbar.module.css";
 
-export default function NavDestinations({ handleClose }) {
+export default function NavDestinations({ showNavMenuDestinations, handleOpen, handleClose }) {
   const dispatch = useDispatch(); 
   const navigate = useNavigate();
-  // const params = props.match.params; 
-  // const allDestinations = useSelector((state) => state.destinations);
   const allDestinations = useSelector((state) => state.destinationsWithPackages);
 
   useEffect(() => {
-    dispatch(getAllDestinations());
-    dispatch(getDestinationsWithPackages());
+    const fetch = async () => {
+      await dispatch(getAllDestinations());
+      await dispatch(getAllPackage(10000))
+      dispatch(getDestinationsWithPackages());
+    }
+    fetch().catch(console.log("error"))
   }, [dispatch]);
 
   function handleClick(e) {
     e.preventDefault();
     dispatch(filtrar(e.target.innerText, "searchDestinations"));
-    // dispatch(filterPackagesByDestination(e.target.innerText));
-    // console.log(params)
-
     navigate("/search");
-    // navigate(`/search/${e.target.innerText}`);
     handleClose();
   }
 
   function handleBackMenu() {
-    document
-      .getElementById("nav_menu_destinations")
-      .classList.remove(`${style.is_active}`);
+    handleOpen('nav_menu_items');
   }
 
   return (
-    <nav id="nav_menu_destinations" className={`${style.nav_menu}`}>
+    <nav id="nav_menu_destinations" className={`${style.nav_menu} ${showNavMenuDestinations ? style.is_active : null }`}>
       <div className={style.nav_menu_container_close}>
         <button onClick={() => handleClose()} className={style.nav_menu_close}>
           X

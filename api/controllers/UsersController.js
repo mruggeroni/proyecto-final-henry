@@ -4,12 +4,13 @@ import axios from 'axios';
 import { Order } from '../models/Orders.js';
 import { OrderItem } from '../models/OrderItems.js';
 import { Package } from '../models/Packages.js';
+import { WebAuth } from 'auth0-js';
 import { Activity } from '../models/Activities.js';
 
 export const getUsers = async (req, res) => {
 	const { limitRender, page, destroyTime, is_admin } = req.query;
 	//console.log(token)
-	console.log('HERE')
+	//console.log('HERE')
 	//console.log(req)
 	try {
 		//console.log(respuesta)
@@ -61,7 +62,6 @@ export const getUserDetail = async (req, res) => {
 		// const permissions = req.auth.permissions[0]
 		const accessToken = req.headers.authorization.split(" ")[1];
 		// console.log("token: ", accessToken);
-
 		const respuesta = await axios.get(
 			"https://dev-33fzkaw8.us.auth0.com/userinfo",
 			{
@@ -72,7 +72,9 @@ export const getUserDetail = async (req, res) => {
 		);
 
 		const userInfo = respuesta.data;
+
 		const idUser = parseInt(id);
+
 		const user = await User.findByPk(idUser, {
 			include: [
 				{
@@ -179,22 +181,24 @@ export const createUser = async (req, res) => {
 				},
 			}
 		);
+		console.log(respuesta)
 
-		//console.log(respuesta)
 		const userInfo = respuesta.data;
-		const usuarioDB = await User.findOrCreate({where: {email: userInfo.email},
-		defaults: {first_name: userInfo.given_name || userInfo.nickname,
-			last_name: userInfo.family_name || "missing",
-			photo: userInfo.picture,
-			is_admin: false,
-	}})
-	const role = usuarioDB[0].dataValues.is_admin === true? 'Admin': 'Client'
-	let usuario = usuarioDB[1] === false? "login": "register"
-	const currentUsuario = [usuario, role]
-	//console.log(usuarioDB[0])
-	res.status(200).json(usuarioDB[0]);
+		const usuarioDB = await User.findOrCreate({
+			where: { email: userInfo.email },
+			defaults: {
+				first_name: userInfo.given_name || userInfo.nickname,
+				last_name: userInfo.family_name || "missing",
+				photo: userInfo.picture,
+				is_admin: false,
+			}
+		})
+		const role = usuarioDB[0].dataValues.is_admin === true ? 'Admin' : 'Client'
+		let usuario = usuarioDB[1] === false ? "login" : "register"
+		const currentUsuario = [usuario, role]
+		console.log(usuarioDB[0])
+		res.status(200).json(usuarioDB[0]);
 	} catch (error) {
-		console.log(error)
 		return res.status(400).json({ message: error.message });
 	}
 }
@@ -218,7 +222,7 @@ export const LoginLocal = async (req, res) => {
 	const email = req.body.email
 	const password = req.body.password
 	const usuario= User.findOne({where:{email: email}})
-	usuario.password === password?  res.status(200).json(usuario): res.status(401).json({ message: 'Denied'})
+	usuario.password === password?  res.status(200).json(usuario): res.status(400).json({ message: 'Denied'})
 		
 	} catch (error) {
 		return res.status(400).json({ message: error.message });
@@ -230,18 +234,18 @@ export const LoginLocal = async (req, res) => {
 export const putUser = async (req, res) => {
 	try {
 		// console.log('HERE')
-		// const accessToken = req.headers.authorization.split(" ")[1];
+		 const accessToken = req.headers.authorization.split(" ")[1];
 		// console.log(accessToken)
-		// const user = await axios.get(
-		// 	"https://dev-33fzkaw8.us.auth0.com/userinfo",
-		// 	{
-		// 		headers: {
-		// 			authorization: `Bearer ${accessToken}`,
-		// 		},
-		// 	}
-		// );
+		 const user = await axios.get(
+		 	"https://dev-33fzkaw8.us.auth0.com/userinfo",
+		 	{
+		 		headers: {
+		 			authorization: `Bearer ${accessToken}`,
+		 		},
+		 	}
+		 );
 		// const idU= user.data.sub
-		// const email = user.data.email
+		 const emailU = user.data.email
 		// try {
 		// 	const respuesta = await axios.patch(
 		// 		`https://dev-33fzkaw8.us.auth0.com/api/v2/users/${idU}`,
@@ -262,12 +266,18 @@ export const putUser = async (req, res) => {
 		// }
 		
 		const email = req.query.email
-		const newUser = req.body;
-		await User.update(newUser, {
-			where: {email: email}
-		})
-		const usuario = await User.findOne({where: {email: email}})
-		res.status(200).send(usuario)
+		if(email === emailU){
+			const newUser = req.body;
+			await User.update(newUser, {
+				where: {email: email}
+			})
+			const usuario = await User.findOne({where: {email: email}})
+			res.status(200).send(usuario)
+		}
+		else {
+			res.status(401).send('Unauthorized')
+		}
+
 	} catch (e) {
 		res.status(400).send({ data: e.message })
 	}

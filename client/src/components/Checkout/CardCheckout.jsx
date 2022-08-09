@@ -6,30 +6,35 @@ import { useAuth0 } from "@auth0/auth0-react";
 import {useDispatch, useSelector } from "react-redux";
 
 
-export default function Card({ name, image, qty, price, total, id, activities }) {
+export default function Card({ name, image, qty, price, total, id, activities, on_sale }) {
 
-    // const [modify, setModify] = useState(false);
-    const user = useSelector( (state) => state.user )
-    // function handleModify(e){
+    const [modify, setModify] = useState(false);
+    const user = useSelector((state) => state.user);
+    let sumAct = 0;
+    activities.forEach((a) => sumAct += a.price*qty);
+
+    
+    // async function handleModify(e){
     //     e.preventDefault();
     //     setModify(!modify);
-    //     let sQty = document.getElementById(`select${qty}`)
+    //     let sQty = document.getElementById(`select${qty}`);
+    //     console.log(sQty)
     //     sQty?.setAttribute('selected', true);
     // }
 
     const { getAccessTokenSilently} = useAuth0();
     const dispatch = useDispatch();
 
-    const handlepay = async (e) => {
-       e.preventDefault();
-       console.log(user)
-       const cart = {items: [
-           {id: 1,quantity:2 },
-           {id: 2, quantity: 1}
-        ]}
-        const token = await getAccessTokenSilently()
-        dispatch(Payment(cart, token))
-      };
+    // const handlepay = async (e) => {
+    //    e.preventDefault();
+    //    console.log(user)
+    //    const cart = {items: [
+    //        {id: 1,quantity:2 },
+    //        {id: 2, quantity: 1}
+    //     ]}
+    //     const token = await getAccessTokenSilently()
+    //     dispatch(Payment(cart, token))
+    //   };
 
   return (
     <div className={s.checkoutCard}>    
@@ -59,26 +64,31 @@ export default function Card({ name, image, qty, price, total, id, activities })
                             <option value="8" id='select8'>8</option>
                         </select>
                     </div>} */}
-                    <h4>${price}</h4> 
+                    <h4>${on_sale ? price*((100 - on_sale)/100) : price}</h4> 
                 </div>
             </div>
         </div>
         <div className={s.bottomGroup}>
             <div className={s.deglose}>
-                <p>{qty}x Paquetes {name.length > 30 ? name.slice(0, 310) + "..." : name}</p>
-                <p> ${price*qty}</p>
+                <p>{qty}x Paquetes {name.length > 40 ? name.slice(0, 40) + "..." : name}</p>
+                <p> ${on_sale ? price*qty*((100 - on_sale)/100) : price*qty}</p>
             </div>
-            {activities && activities.map((a) => {
+            {activities.length > 0 && activities.map((a) => {
                 return (
                     <div className={s.deglose}>
                         <p>{qty}x {a.name}</p>
-                        <p> ${a.price*qty}</p>
+                        <p> ${on_sale ? a.price*qty*((100 - on_sale)/100) : a.price*qty}</p>
                     </div>
             )})}
              <div className={s.price}>
                 <hr />
+                {on_sale ?
+                <div className={s.discountTotal}>
+                    <p>Subtotal: ${price*qty + sumAct}</p>
+                    <p>Total Descuento: ${(price*qty + sumAct) - total}</p> 
+                </div> : ''}
                 <div className={s.totalPaq}>
-                    <h3>Total: </h3><h3>${total === 0 ? (price*qty) : total}</h3>
+                    <h3>{total === 0 ? ' ' : 'Total:'}</h3><h3>{total === 0 ? ' ' : '$' + total}</h3>
                     {/* <button onClick={(e) => handlepay(e)}>Go to pay</button> */}
 
                 </div>

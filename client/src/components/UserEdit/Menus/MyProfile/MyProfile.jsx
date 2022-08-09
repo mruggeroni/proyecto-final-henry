@@ -4,7 +4,7 @@ import { AiOutlineArrowRight } from "react-icons/ai";
 import s from "./MyProfile.module.css";
 import { validations } from "./validations";
 import axios from "axios";
-import { getUserById, updateUser, deleteUser } from "../../../../redux/actions";
+import { getUserById, updateUser, deleteUser, createUser } from "../../../../redux/actions";
 import Swal from "sweetalert2";
 import { useAuth0 } from "@auth0/auth0-react";
 import { WebAuth } from "auth0-js";
@@ -70,11 +70,29 @@ export default function MyProfile({ showProfile, setShowProfile }) {
     console.log(change);
   };
 
-  const handleChange = (e) => {
+  const renderImage = async (file) => {
+    if (file) {
+      const data = new FormData();
+      data.append("file", file);
+      data.append("upload_preset", "emhwd5ue");
+      const res = await axios.post(
+        "https://api.cloudinary.com/v1_1/duie0xk67/image/upload",
+        data
+      );
+      console.log(res.data.secure_url)
+      return res.data.secure_url;
+    }
+  } 
+
+  const handleChange = async (e) => {
     e.preventDefault();
     setIsChange(false);
     if (e.target.name === "file") {
       setArchivo(e.target.files);
+      setInput({
+        ...input,
+        photo: await renderImage(e.target.files[0])
+      });
     } else {
       setInput({
         ...input,
@@ -115,12 +133,10 @@ export default function MyProfile({ showProfile, setShowProfile }) {
           const token = await getAccessTokenSilently();
           console.log(token);
           resUpdated = await dispatch(
-            updateUser({ ...input, photo: res.data.secure_url, token })
+            updateUser({ ...input, photo: res.data.secure_url }, token)
           );
         } else {
           const token = await getAccessTokenSilently();
-          console.log(input);
-
           resUpdated = await dispatch(updateUser(input, token));
         }
         Swal.fire(
@@ -132,8 +148,8 @@ export default function MyProfile({ showProfile, setShowProfile }) {
           // reset page
           const fetchData = async () => {
             const token = await getAccessTokenSilently();
-            dispatch(getUserById(user.id, token));
-            setInput({ ...user });
+            const resUser = await dispatch(createUser(token));
+            setInput({ ...resUser.payload });
           };
           fetchData().catch(console.error);
           setShowProfile(true);

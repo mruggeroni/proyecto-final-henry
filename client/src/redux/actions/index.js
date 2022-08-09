@@ -3,6 +3,8 @@ import axios, { AxiosError } from "axios";
 export const GET_PACKAGE_BY_ID = "GET_PACKAGE_BY_ID";
 export const GET_RELATIONATED = "GET_RELATIONATED";
 export const GET_ALL_PACKAGES = "GET_ALL_PACKAGES";
+export const GET_ALL_PACKAGES_DASHBOARD = "GET_ALL_PACKAGES_DASHBOARD";
+export const GET_DELETED_PACKAGES = "GET_DELETED_PACKAGES";
 export const GET_ALL_DESTINATIONS = "GET_ALL_DESTINATIONS";
 export const GET_ON_SALE = "GET_ON_SALE";
 export const GET_ACTIVITIES = "GET_ACTIVITIES";
@@ -55,6 +57,7 @@ export const getOrderDetail = (id) => {
   try {
     return async function (dispatch) {
       let res = await axios.get("/order/" + id);
+      console.log(res)
       return dispatch({ type: GET_ORDER_DETAILS, payload: res.data });
     };
   } catch (error) {
@@ -67,6 +70,37 @@ export const getOrders = () => {
     return async function (dispatch) {
       let res = await axios.get("/orders");
       return dispatch({ type: GET_ORDERS, payload: res.data.results });
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const patchRestorePackages = (id, token) => {
+  return async function (dispatch) {
+    try {
+      const res = await axios.patch("/restoredPackage/" + id, "",{
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
+      dispatch(getDeletedPackages(token));
+      return res;
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+};
+
+export const getDeletedPackages = (token) => {
+  try {
+    return async function (dispatch) {
+      let res = await axios.get("/deletedPackages", {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
+      return dispatch({ type: GET_DELETED_PACKAGES, payload: res.data });
     };
   } catch (error) {
     console.log(error);
@@ -120,8 +154,16 @@ export const deleteUser = (id, token) => {
 
 export const getAllPackage = (limitRender) => {
   return async function (dispatch) {
-    let res = await axios.get("/packages/" + limitRender);
+    let res = await axios.get(`/packages/${limitRender}?available=true`);
+    // let res = await axios.get("/packages/" + limitRender);
     return dispatch({ type: GET_ALL_PACKAGES, payload: res.data });
+  };
+};
+
+export const getAllPackageDashboard = () => {
+  return async function (dispatch) {
+    let res = await axios.get(`/packages/10000`);
+    return dispatch({ type: GET_ALL_PACKAGES_DASHBOARD, payload: res.data });
   };
 };
 
@@ -196,7 +238,7 @@ export const createPackage = (payload, token) => {
       });
       return respuesta;
     } catch (e) {
-      alert(e.message);
+      console.log(e.message);
     }
   };
 };
@@ -215,7 +257,7 @@ export const getUserStatus = (id) => {
 export const patchUserRestore = (id, token) => {
   return async function (dispatch) {
     try {
-      const res = await axios.patch("/restoreUser/" + id, {
+      const res = await axios.patch("/restoreUser/" + id, "",{
         headers: {
           authorization: `Bearer ${token}`,
         },
@@ -254,7 +296,7 @@ export const createUser = (payload) => {
       });
       return dispatch({ type: POST_USER, payload: res.data });
     } catch (e) {
-      alert(e.message);
+      console.log(e.message);
     }
   };
 };
@@ -273,7 +315,7 @@ export const Payment = (payload, token) => {
   return async function (dispatch) {
     try {
       console.log(payload);
-      const res = await axios.post("/payment", {
+      const res = await axios.post("/payment", payload, {
         headers: {
           authorization: `Bearer ${token}`,
         },
@@ -373,7 +415,7 @@ export const crearDestino = (payload, token) => {
       );
       return respuesta;
     } catch (e) {
-      alert(e.message);
+      console.log(e.message);
     }
   };
 };
@@ -390,7 +432,7 @@ export const crearActividad = (payload, token) => {
       });
       return respuesta;
     } catch (e) {
-      alert(e.message);
+      console.log(e.message);
     }
   };
 };
@@ -413,7 +455,7 @@ export function modificarPaquete(payload, id, token) {
       console.log("respuesta2 : ", respuesta2);
       return respuesta2; // como no necesitamos hacer nada podemos no dispachar nada
     } catch (e) {
-      alert(e.message);
+      console.log(e.message);
     }
   };
 }
@@ -435,7 +477,7 @@ export const createCategories = (payload, token) => {
       });
       return respuesta;
     } catch (e) {
-      alert(e.message);
+      console.log(e.message);
     }
   };
 };
@@ -450,7 +492,7 @@ export const createActivities = (payload, token) => {
       });
       return respuesta;
     } catch (e) {
-      alert(e.message);
+      console.log(e.message);
     }
   };
 };
@@ -467,7 +509,7 @@ export function modificarActividad(payload, id, token) {
       });
       return respuesta;
     } catch (e) {
-      alert(e.message);
+      console.log(e.message);
     }
   };
 }
@@ -484,7 +526,7 @@ export function borrarPaquete(payload, token) {
       dispatch(getAllPackage(1000));
       return json;
     } catch (e) {
-      alert("No pudimos borrar el paquete!");
+      console.log("No pudimos borrar el paquete!");
     }
   };
 }
@@ -500,7 +542,7 @@ export function borrarUsuario(payload, token) {
       dispatch(getUsers);
       return json;
     } catch (e) {
-      alert("No pudimos borrar el paquete!");
+      console.log("No pudimos borrar el paquete!");
     }
   };
 }
@@ -569,7 +611,7 @@ export function getAllCart(id) {
       return dispatch({ type: GET_CART, payload: res.data });
     };
   } catch (error) {
-    console.log(error);
+    console.log('ERROR POST ' + error);
   }
 }
 

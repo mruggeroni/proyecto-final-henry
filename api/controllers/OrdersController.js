@@ -70,6 +70,38 @@ export const getOrders = async (req, res) => {
 		return res.status(404).json({ message: error.message });
 	};
 };
+export const get0rderDetailAux = async (id) =>{
+	const orderId = id;
+	console.log('ID DETAIL')
+	console.log(id)
+	try {
+		const orderDetail = await Order.findByPk(orderId,
+			{
+				include: [
+					{
+						model: User,
+					},
+					{
+						model: Package,
+						attributes: {
+							exclude: [
+								'description',
+								'images',
+								'featured',
+								'available',
+								'destroyTime'
+							]
+						},
+						include: [{
+							model: Activity
+						}]
+					},
+				],
+			})
+		return orderDetail
+}catch (error){
+	console.log(error.message)
+}}
 
 export const getOrderDetail = async (req, res) => {
 	const orderId = parseInt(req.params.orderId);
@@ -93,7 +125,6 @@ export const getOrderDetail = async (req, res) => {
 							'images',
 							'featured',
 							'available',
-							'on_sale',
 							'destroyTime'
 						]
 					}
@@ -121,6 +152,7 @@ export const getOrderDetail = async (req, res) => {
 
 		order[0].packages.forEach(packg => {
 			packg.quantity = packg.order_item.quantity;
+			packg.total = packg.order_item.total;
 			const activities = orderItems.find(orderItem => orderItem.id === packg.order_item.id);
 			packg.activities = activities.activities;
 			delete packg.order_item;
@@ -131,6 +163,15 @@ export const getOrderDetail = async (req, res) => {
 	} catch (error) {
 		return res.status(400).json({ message: error.message });
 	};
+};
+
+export const statusOrderFunction = async (orderId, status) => {
+	await Order.update({status: status} ,{
+		where: {
+			
+				id: orderId,
+					
+	}});
 };
 
 export const patchStatusOrder = async (req, res) => {
@@ -145,21 +186,9 @@ export const patchStatusOrder = async (req, res) => {
 		if (existOrder.status === 'shopping cart') return res.status(400).json({ message: "The id entered is not from a order" });
 		if (existOrder.status !== 'pending') return res.status(400).json({ message: "The id entered is not from a order pending" });
 
-		const order = await Order.update({
-			status: status,
-		}, {
-			where: {
-				[Op.and]: [{
-					id: orderId,
-				}, {
-					status: 'pending',
-				}],
-			},
-		});
+		await statusOrderFunction(orderId, status);
 
-		order ? 
-		res.status(200).json({ message: `Order status changed to \'${status}\' successfully` }) : 
-		res.status(404).json({ message: "Order not found" });
+		res.status(200).json({ message: `Order status changed to \'${status}\' successfully` });
 	} catch (error) {
 		return res.status(400).json({ message: error.message });
 	};
@@ -187,7 +216,6 @@ export const getCart = async (req, res) => {
 							'images', 
 							'featured', 
 							'available', 
-							'on_sale', 
 							'destroyTime'
 						],
 					},
@@ -196,8 +224,8 @@ export const getCart = async (req, res) => {
 		});
 		if (!user) return res.status(404).json({ message: 'User does not have a cart' });
 
-		const cart = JSON.parse(JSON.stringify(user.orders));
-		const ids = cart[0].packages.map(p => p.order_item.id)
+		const cart = JSON.parse(JSON.stringify(user.orders[0]));
+		const ids = cart.packages.map(p => p.order_item.id);
 		const orderItems = await OrderItem.findAll({
 			where: {
 				id: ids,
@@ -211,14 +239,23 @@ export const getCart = async (req, res) => {
 			},
 		});
 
-		cart[0].packages.forEach(packg => {
+		cart.packages.forEach(packg => {
 			packg.quantity = packg.order_item.quantity;
+			packg.total = packg.order_item.total;
 			const activities = orderItems.find(orderItem => orderItem.id === packg.order_item.id);
 			packg.activities = activities.activities;
 			delete packg.order_item;
 		});
 
-		return res.status(200).json(cart[0]);
+		cart.total_order_discounted = cart.packages.reduce((sum, pack) => 
+			sum + ((100 - pack.on_sale) / 100) * pack.quantity * (pack.price + pack.activities.reduce((sum, act) => 
+				sum + act.price, 
+				0
+			)), 
+			0
+		);
+
+		return res.status(200).json(cart);
 	} catch (error) {
 		return res.status(400).json({ message: error.message });
 	};
@@ -278,6 +315,7 @@ export const createCart = async (req, res) => {
 		await Promise.all(packagesId.map((packageId, index) => {
 			return OrderItem.update({
 				quantity: quantitiesPackages[index],
+				total: total_packages[index],
 			}, {
 				where: {
 					[Op.and]: [{
@@ -314,7 +352,7 @@ export const createCart = async (req, res) => {
 
 export const updateCart = async (req, res) => {
 	const { cartId } = req.params;
-	const /* cartPackages */ { packageId, activitiesId, quantity, total_package } = req.body;
+	const /* cartPackages */ { packageId, activitiesId, quantity,  total_package } = req.body;
 
 	try {
 		const oldCart = await Order.findByPk(cartId);
@@ -399,9 +437,9 @@ export const updateCart = async (req, res) => {
 			},
 		});
 		if (existPackageInCart) return res.status(400).json({ message: 'The package exist into the user\'s cart' });
-		console.log(oldCart.total_order, parseInt(total_package))
+
 		await Order.update({
-			total_order: oldCart.total_order + parseInt(total_package),
+			total_order: parseFloat(oldCart.total_order) + total_package,
 		}, {
 			where: {
 				id: cartId,
@@ -417,6 +455,7 @@ export const updateCart = async (req, res) => {
 
 		await OrderItem.update({
 			quantity,
+			total: total_package
 		}, {
 			where: {
 				[Op.and]: [{
@@ -479,7 +518,7 @@ export const patchStatusCart = async (req, res) => {
 
 export const deleteCart = async (req, res) => {
 	const cartId = parseInt(req.params.cartId);
-	const packageId = parseInt(req.query.packageId)
+	const packageId = parseInt(req.query.packageId);
 
 	try {
 		const cart = await Order.findByPk(cartId, {
@@ -493,22 +532,31 @@ export const deleteCart = async (req, res) => {
 		if (!cart) return res.status(404).json({ message: "Cart not found" });
 		if (cart.status !== 'shopping cart') return res.status(400).json({ message: "The id entered is not from a cart" });
 
-		// await Order.destroy({
-		// 	where: {
-		// 		id: cartId,
-		// 	},
-		// });
-
 		const paquete = await Package.findByPk(packageId);
-		const orderItemId = cart.packages[0].order_item.id;
 
-		await OrderItem.destroy({
-			where: {
-				id: orderItemId,
-			},
-		});
+        const orderItemId = cart.packages[0].order_item.id;
 
-		cart.removePackage(paquete)
+        const orderItem = await OrderItem.findByPk(orderItemId, {
+            include: {
+                model: Activity,
+            },
+        });
+
+        await Order.update({
+            total_order: parseFloat(cart.total_order) - cart.packages[0].order_item.total,
+        }, {
+            where: {
+                id: cart.id,
+            },
+        });
+
+        await OrderItem.destroy({
+            where: {
+                id: orderItemId,
+            },
+        });
+
+        await cart.removePackage(paquete)
 
 		return res.status(200).json({ message: "Cart deleted successfully" }); 
 	} catch (error) {

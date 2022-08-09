@@ -1,8 +1,65 @@
 import Accordion from "react-bootstrap/Accordion";
 import s from "./CheckoutPassengers.module.css";
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllCart, createUser } from "./../../../redux/actions/index";
+import { useAuth0 } from "@auth0/auth0-react";
 
-export default function PassengerInfo({ cart }) {
+function validate(input) {
+  let error = {};
+
+  if (!input.name) {
+    error.name = "El nombre es requerido";
+  } else if (input.name.length > 20) {
+    error.name = "El nombre debe tener menos de 20 caracteres";
+  }
+  if (input.middleName.length > 20) {
+    error.middleName = "El nombre debe tener menos de 20 caracteres";
+  }
+  if (!input.lastname) {
+    error.lastname = "El apellido es requerido";
+  } else if (input.lastname.length > 20) {
+    error.lastname = "El apellido debe tener menos de 20 caracteres";
+  }
+  if (!input.birthdate) {
+    error.birthdate = "La fecha de nacimiento es requerida";
+  } else if(!/^\d{4}-\d{2}-\d{2}$/.test(input.birthdate))  {
+    error.birthdate = "La fecha es inválida";
+  } 
+  else if (input.birthdate) {
+    let parts = input.birthdate.split('-');
+    let now = new Date();
+    let year = parseInt(parts[0], 10);
+    let currentYear = now.getFullYear();
+    
+    if(year > currentYear) error.birthdate = "La fecha es inválida";
+    // if((currentYear - year) < 18 || (currentYear - year) > 90) error.birthdate = "La fecha es inválida";
+};
+  if (!input.gender) {
+    error.gender = "El género es requerido";
+  }
+
+  if (!input.dni) {
+    error.dni = "La documentación es requerida";
+  } else if(input.dni.length > 10) {
+    error.dni = "La documentación es inválida";
+  }
+  return error;
+}
+
+function firstCap(name) {
+  return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+}
+
+
+
+export default function PassengerInfo() {
+  const dispatch = useDispatch();
+  const cart = useSelector((state) => state.cart);
+  const user = useSelector((state) => state.user);
+  const { getAccessTokenSilently } = useAuth0();
+
+  const [error, setError] = useState({});
   const [input, setInput] = useState({
     firstName: "",
     middleName: "",
@@ -13,80 +70,87 @@ export default function PassengerInfo({ cart }) {
     id: "",
   });
 
-  useEffect(() => {
+  useEffect(async () => {
+    const token = await getAccessTokenSilently();
+    console.log("user");
+    await dispatch(createUser(token));
+    await dispatch(getAllCart(user.id));
+    console.log("cart");
     return () => {
-        localStorage.remove("passenger")
-        setInput({
-            firstName: "",
-            middleName: "",
-            lastName: "",
-            numberDni: "",
-            gender: "",
-            birthdate: "",
-            id: "",
-          });
-    }
-  }, [])
+      localStorage.remove("passenger");
+      setInput({
+        firstName: "",
+        middleName: "",
+        lastName: "",
+        numberDni: "",
+        gender: "",
+        birthdate: "",
+        id: "",
+      });
+    };
+  }, []);
 
   function handlePassenger(e, i) {
     e.preventDefault();
     setInput({
       ...input,
       id: i,
-      [e.target.name]: e.target.value,
+      [e.target.name]: firstCap(e.target.value),
     });
-
-    // console.log(input);
+    setError(validate({
+      ...input,
+      [e.target.name]: e.target.value,
+     }));
   }
 
   function handleNextPassenger(e, index) {
     e.preventDefault();
     let passenger = JSON.parse(localStorage.getItem("passenger")) || [];
     let isMatch = false;
-      for(let i = 0; i < passenger.length; i++) {
-        if(passenger[i].id === index) {
-          isMatch = true;
-          setInput({...passenger[i]})
-          return;
-        }
+    for (let i = 0; i < passenger.length; i++) {
+      if (passenger[i].id === index) {
+        isMatch = true;
+        setInput({ ...passenger[i] });
+        return;
       }
-      if(input.firstName && input.lastName && !isMatch) {        
-        if (!localStorage.getItem("passenger")) {
-          let passenger = [];
-          passenger.push(input);
-          localStorage.setItem("passenger", JSON.stringify(passenger));
-        } else {
-          let passenger = JSON.parse(localStorage.getItem("passenger"));
-          let match = false;
-          for(let i = 0; i < passenger.length; i++) {
-            console.log(passenger[i].id, index )
-            if(passenger[i].id !== index ) {
-                passenger.push(input);
-                localStorage.setItem("passenger", JSON.stringify(passenger));
-                //   match = true;
-              break;
-            }
+    }
+    if (input.firstName && input.lastName && !isMatch) {
+      if (!localStorage.getItem("passenger")) {
+        let passenger = [];
+        passenger.push(input);
+        localStorage.setItem("passenger", JSON.stringify(passenger));
+      } else {
+        let passenger = JSON.parse(localStorage.getItem("passenger"));
+        let match = false;
+        for (let i = 0; i < passenger.length; i++) {
+          console.log(passenger[i].id, index);
+          if (passenger[i].id !== index) {
+            passenger.push(input);
+            localStorage.setItem("passenger", JSON.stringify(passenger));
+            //   match = true;
+            break;
           }
-        //   if(!match) {
-            // passenger.push(input);
-            // localStorage.setItem("passenger", JSON.stringify(passenger));
-        //   } 
         }
-
-        // let passenger = JSON.parse(localStorage.getItem("passenger"));
-        // let title = `Pasajero #${index + 1}: ` + passenger[index - 1].firstName + " " + passenger[index - 1].lastName;
-        // document.getElementById(`titleP${index}`).innerText = title;
-
-        setInput({
-          firstName: "",
-          middleName: "",
-          lastName: "",
-          numberDni: "",
-          gender: "",
-          birthdate: "",
-          id: "",
-        });
+        //   if(!match) {
+        // passenger.push(input);
+        // localStorage.setItem("passenger", JSON.stringify(passenger));
+        //   }
       }
+
+      // let passenger = JSON.parse(localStorage.getItem("passenger"));
+      // let title = `Pasajero #${index + 1}: ` + passenger[index - 1].firstName + " " + passenger[index - 1].lastName;
+      // document.getElementById(`titleP${index}`).innerText = title;
+
+      setInput({
+        firstName: "",
+        middleName: "",
+        lastName: "",
+        numberDni: "",
+        gender: "",
+        birthdate: "",
+        id: "",
+      });
+    }
   }
 
   function handleSelect(e) {
@@ -97,178 +161,110 @@ export default function PassengerInfo({ cart }) {
     });
   }
 
-  return cart.map((p) => (
-    <div className={s.eachAccordion}>
-      <Accordion defaultActiveKey={0}>
-        <h4>{p.paquete.name}</h4>
-        {new Array(parseInt(p.cantidad)).fill(true).map((el, i) => {
-          return (
-            <Accordion.Item eventKey={i}>
-              <Accordion.Header onClick={(e) => handleNextPassenger(e, i)}>
-                <p id={`titleP${i}`}>Pasajero #{i+1}: </p>
-              </Accordion.Header>
-              <Accordion.Body>
-                <div className={s.firstRow}>
-                  <div>
-                    <label className={s.profile_label}>Nombre</label>
-                    <input
-                      type="text"
-                      name='firstName'
-                      onChange={(e) => handlePassenger(e, i)}
-                      value={input.firstName}
-                      className={s.profile_input}
-                    />
-                  </div>
-                  <div>
-                    <label className={s.profile_label}>Segundo Nombre</label>
-                    <input
-                      type="text"
-                      name='middleName'
-                      value={input.middleName}
-                      onChange={(e) => handlePassenger(e, i)}
-                      className={s.profile_input}
-                    />
-                  </div>
-                  <div>
-                    <label className={s.profile_label}>Apellido</label>
-                    <input
-                      type="text"
-                      name='lastName'
-                      value={input.lastName}
-                      onChange={(e) => handlePassenger(e, i)}
-                      className={s.profile_input}
-                    />
-                  </div>
-                </div>
-                <div className={s.firstRow}>
-                  <div>
-                    <label className={s.profile_label}>
-                      Fecha de Nacimiento
-                    </label>
-                    <input
-                      type="date"
-                      name='birthdate'
-                      value={input.birthdate}
-                      onChange={(e) => handlePassenger(e, i)}
-                      className={s.profile_input}
-                    />
-                  </div>
-                  <div>
-                    <label className={s.profile_label}>Sexo</label>
-                    <select>
-                      <option selected hidden>
-                        Seleccionar
-                      </option>
-                      <option value="Femenino">Femenino</option>
-                      <option value="Masculino">Masculino</option>
-                      <option value="No Binario">No Binario</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className={s.profile_label}>
-                      Número de DNI/Pasaporte
-                    </label>
-                    <input
-                      type="number"
-                      name='numberDni'
-                      value={input.numberDni}
-                      onChange={(e) => handlePassenger(e, i)}
-                      className={s.profile_input}
-                    />
-                  </div>
-                </div>
-              </Accordion.Body>
-            </Accordion.Item>
-          );
-        })}
-      </Accordion>
+  return (
+    <div>
+      {cart.packages?.map((p) => (
+        <div className={s.eachAccordion}>
+          <Accordion defaultActiveKey={0}>
+            <h4>{p.name}</h4>
+            {new Array(parseInt(p.quantity)).fill(true).map((el, i) => {
+              return (
+                <Accordion.Item eventKey={i}>
+                  <Accordion.Header onClick={(e) => handleNextPassenger(e, i)}>
+                    <p id={`titleP${i}`}>Pasajero #{i + 1}: </p>
+                  </Accordion.Header>
+                  <Accordion.Body>
+                    <div className={s.firstRow}>
+                      <div>
+                        <label className={s.profile_label}>Nombre</label>
+                        <input
+                          type="text"
+                          name="firstName"
+                          onChange={(e) => handlePassenger(e, i)}
+                          value={input.firstName}
+                          className={s.profile_input}
+                        />
+                      </div>
+                      {error.name ? (<div className={s.error}>{error.name}</div>) : ( <br /> )}
+                      <div>
+                        <label className={s.profile_label}>
+                          Segundo Nombre
+                        </label>
+                        <input
+                          type="text"
+                          name="middleName"
+                          value={input.middleName}
+                          onChange={(e) => handlePassenger(e, i)}
+                          className={s.profile_input}
+                        />
+                      </div>
+                      {error.middleName ? (<div className={s.error}>{error.middleName}</div>) : ( <br /> )}
+                      <div>
+                        <label className={s.profile_label}>Apellido</label>
+                        <input
+                          type="text"
+                          name="lastName"
+                          value={input.lastName}
+                          onChange={(e) => handlePassenger(e, i)}
+                          className={s.profile_input}
+                        />
+                      </div>
+                      {error.lastname ? (<div className={s.error}>{error.lastname}</div>) : ( <br /> )}
+                    </div>
+                    <div className={s.firstRow}>
+                      <div>
+                        <label className={s.profile_label}>
+                          Fecha de Nacimiento
+                        </label>
+                        <input
+                          type="date"
+                          name="birthdate"
+                          value={input.birthdate}
+                          onChange={(e) => handlePassenger(e, i)}
+                          className={s.profile_input}
+                          max= '2022-08-09'
+                          min='1925-01-01'
+                        />
+                      </div>
+                      {error.birthdate ? (<div className={s.error}>{error.birthdate}</div>) : ( <br /> )}
+                      <div>
+                        <label className={s.profile_label}>Sexo</label>
+                        <select onChange={(e) => handlePassenger(e, i)}>
+                          <option selected hidden>
+                            Seleccionar
+                          </option>
+                          <option value="Femenino">Femenino</option>
+                          <option value="Masculino">Masculino</option>
+                          <option value="No Binario">No Binario</option>
+                        </select>
+                      </div>
+                      {error.gender ? (<div className={s.error}>{error.gender}</div>) : ( <br /> )}
+                      <div>
+                        <label className={s.profile_label}>
+                          Número de DNI/Pasaporte
+                        </label>
+                        <input
+                          type="number"
+                          name="numberDni"
+                          value={input.numberDni}
+                          onChange={(e) => handlePassenger(e, i)}
+                          className={s.profile_input}
+                        />
+                      </div>
+                      {error.dni ? (<div className={s.error}>{error.dni}</div>) : ( <br /> )}
+                    </div>
+                  </Accordion.Body>
+                </Accordion.Item>
+              );
+            })}
+          </Accordion>
+        </div>
+      ))}
     </div>
-  ));
+  );
 }
 
-/* 
-cart.length === 1 ? (
-    <Accordion defaultActiveKey={0}>
-      <h2>{cart[0].paquete.name}</h2>
-      {new Array(cart[0].cantidad).fill(true).map((el, i) => {
-        return (
-          <Accordion.Item eventKey={i}>
-            <Accordion.Header onClick={(e) => handlePassenger(e, i)} id="titleP">
-              Pasajero #{i + 1}:{" "}
-            </Accordion.Header>
-            <Accordion.Body>
-              <div className={s.firstRow}>
-                <div>
-                  <label className={s.profile_label}>Nombre</label>
-                  <input type="text" name="name" className={s.profile_input} />
-                </div>
-                <div>
-                  <label className={s.profile_label}>Segundo Nombre</label>
-                  <input
-                    type="text"
-                    name="middleName"
-                    className={s.profile_input}
-                  />
-                </div>
-                <div>
-                  <label className={s.profile_label}>Apellido</label>
-                  <input
-                    type="text"
-                    name="lastName"
-                    className={s.profile_input}
-                  />
-                </div>
-              </div>
-              <div className={s.firstRow}>
-                <div>
-                  <label className={s.profile_label}>Fecha de Nacimiento</label>
-                  <input
-                    type="date"
-                    name="birthdate"
-                    className={s.profile_input}
-                  />
-                </div>
-                <div>
-                  <label className={s.profile_label}>Sexo</label>
-                  <select name="gender" onChange={(e) => handleSelect(e)}>
-                    <option selected hidden>
-                      Seleccionar
-                    </option>
-                    <option value="Femenino">Femenino</option>
-                    <option value="Masculino">Masculino</option>
-                    <option value="NoBinario">No Binario</option>
-                  </select>
-                </div>
-                <div>
-                  <label className={s.profile_label}>
-                    Número de DNI/Pasaporte
-                  </label>
-                  <input
-                    type="number"
-                    name="numberDni"
-                    className={s.profile_input}
-                  />
-                </div>
-              </div>
-            </Accordion.Body>
-          </Accordion.Item>
-        );
-      })}
-    </Accordion>
-  ) : (
-
-*/
-
-
-
-
-
-
-
-
-
-/* import Accordion from 'react-bootstrap/Accordion';
-import s from './CheckoutPassengers.module.css';
+/* import s from './CheckoutPassengers.module.css';
 import React, { useState } from 'react';
 
 export default function PassengerInfo({ cart }) {
@@ -439,4 +435,4 @@ cart.map((p) =>
 </div>
   )
 )}
- */
+  */

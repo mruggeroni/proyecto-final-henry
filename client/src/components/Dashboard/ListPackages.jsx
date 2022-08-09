@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { BsWindowSidebar } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink } from "react-router-dom";
-import { borrarPaquete, cleanAllPackage, getAllPackage, patchPackage } from "../../redux/actions";
+import { borrarPaquete, cleanAllPackage, getAllPackage, getAllPackageDashboard, patchPackage } from "../../redux/actions";
 import Dashboard from "./Dashboard";
 import { MdDelete } from 'react-icons/md';
 import { AiFillEdit } from 'react-icons/ai';
@@ -13,7 +13,7 @@ import Loading from "../Loading/Loading";
 
 export default function ListPackages() {
   const dispatch = useDispatch();
-  const allPackages = useSelector((state) => state.allPackages);
+  const allPackages = useSelector((state) => state.allPackagesDashboard );
   const [loading, setLoading] = useState(true);
   const { getAccessTokenSilently} = useAuth0();
   
@@ -29,9 +29,9 @@ export default function ListPackages() {
     }).then( async (result) => {
       if (result.isConfirmed) {
         try{
-          dispatch(getAllPackage(10000));
           const token = await getAccessTokenSilently()
           dispatch(borrarPaquete(id, token));
+          await dispatch(getAllPackageDashboard());
           Swal.fire(
             `Paquete: ${id} | ${nombre}.`,
             'Eliminado exitosamente!',
@@ -48,14 +48,10 @@ export default function ListPackages() {
     })
   };
 
-  useEffect(() => {
-    if (!allPackages.length) {
+  useEffect( async () => {
       setLoading(true);
-      dispatch(getAllPackage(1000));
+      await dispatch(getAllPackageDashboard());
       setLoading(false);
-    } else {
-      setLoading(false);
-    }
   }, [dispatch]);
 
   const handlePatchPackage = (e, p) => {
@@ -82,7 +78,7 @@ export default function ListPackages() {
         }
         dispatch(cleanAllPackage());
         setTimeout(() => {
-          dispatch(getAllPackage(1000));
+          dispatch(getAllPackageDashboard());
           setLoading(false);
         }, 0);
         Swal.fire(
@@ -108,15 +104,15 @@ export default function ListPackages() {
                   <th>Id</th>
                   <th>Nombre</th>
                   <th>Precio</th>
+                  <th>Promoción</th>
                   <th>Destacado</th>
                   <th>Disponible</th>
-                  <th>Promoción</th>
                   <th>Editar</th>
                   <th>Eliminar</th>
                 </tr>
               </thead>
               <tbody>
-                {allPackages.length &&
+                {allPackages.length > 0 &&
                   allPackages.map((p) => {
                     return (
                       <tr key={"packagesList" + p.name}>
@@ -127,6 +123,7 @@ export default function ListPackages() {
                           </Link>
                           </td>
                         <td>${p.price}</td>
+                        <td>%{p.on_sale}</td>
                         <td onClick={ (e) => handlePatchPackage(e, p) }>
                           {p.featured ? (
                             <div id='destacado' className={s.fl_table_true}>true</div>
@@ -141,7 +138,6 @@ export default function ListPackages() {
                             <div id='disponible' className={s.fl_table_false}>false</div>
                           )}
                         </td>
-                        <td>%{p.on_sale}</td>
                         <td>
                           <NavLink
                             to={`/dashboard/modifyPackage/${p.id}`}

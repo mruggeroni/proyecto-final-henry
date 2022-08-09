@@ -1,20 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 import { BsFillCaretLeftFill } from "react-icons/bs";
 import {
   getAllDestinations,
-  filterPackagesByDestination,
-  paquetesPorRegion,
   filtrar
 } from "../../redux/actions/index";
 import style from "./Navbar.module.css";
 
-export default function NavRegion({ handleClose }) {
+export default function NavRegion({ showNavMenuRegion, handleOpen, handleClose }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const allDestinations = useSelector((state) => state.destinations);
+  const allDestinations = useSelector((state) => state.destinations );
 
   useEffect(() => {
     if(!allDestinations.length) {
@@ -25,20 +23,16 @@ export default function NavRegion({ handleClose }) {
   function handleClickRegion(e) {
     e.preventDefault();
     dispatch(filtrar(e.target.innerText, "region"))
-    // dispatch(paquetesPorRegion(e.target.innerText));
     navigate("/search");
-    // navigate(`/search/${e.target.innerText}`);
     handleClose();
   }
 
   function handleBackMenu() {
-    document
-      .getElementById("nav_menu_region")
-      .classList.remove(`${style.is_active}`);
+    handleOpen('nav_menu_items');
   }
 
   return (
-    <nav id="nav_menu_region" className={`${style.nav_menu}`}>
+    <nav id="nav_menu_region" className={`${style.nav_menu} ${showNavMenuRegion ? style.is_active : null }`}>
       <div className={style.nav_menu_container_close}>
         <button onClick={() => handleClose()} className={style.nav_menu_close}>
           X
