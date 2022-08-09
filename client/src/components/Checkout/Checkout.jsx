@@ -120,7 +120,7 @@ export default function CheckoutCart() {
       // ) : (
       <div className={s.right}>
         <div className={s.containerCarrousel}>
-          {Object.keys(cart).length ? (
+          {Object.keys(cart).length && cart.packages?.length ? (
             cart.packages?.map((p) => {
               return (
                 <div className={s.carrouselTravel}>
@@ -154,7 +154,7 @@ export default function CheckoutCart() {
           )}
         </div>
         <hr />
-        {Object.keys(cart).length ? (
+        {Object.keys(cart) && cart.packages?.length ? (
           cart.packages?.map((p) => {
             return (
               <div className={s.cardCheckoutContainer} key={p.id}>
@@ -185,7 +185,7 @@ export default function CheckoutCart() {
             </div>
           </div>
         )}
-        {Object.keys(cart).length > 0 && cart.total > 0 && isAuthenticated && (
+        {(Object.keys(cart).length > 0 && cart.total_order > 0 && isAuthenticated) && (
           <div className={s.buttonContainer}>
             <Link to={"/checkout"}>
               <button className={s.comprarBtn}>Comprar</button>

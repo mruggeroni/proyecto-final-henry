@@ -19,9 +19,10 @@ export default function Card({ name, image, qty, price, totalPack, id, activitie
     const cart = useSelector((state) => state.cart);
     const { getAccessTokenSilently} = useAuth0();
     let sumAct = 0;
-    activities.forEach((a) => sumAct += a.price*qty);
+    activities.forEach((a) => on_sale ? (sumAct += a.price)*on_sale/100 : sumAct += a.price);
     
     const [input, setInput] = useState({
+
         cantidad: qty,
         total: totalPack,
         actividades: activities,
@@ -46,24 +47,28 @@ export default function Card({ name, image, qty, price, totalPack, id, activitie
 
     async function handleModifyPq(e){
         const token = await getAccessTokenSilently();
-        let newTotal = 0;
+        // let newTotal = 0;
 		await dispatch(deleteCartPackage(cart.id, id));
         await dispatch(getAllCart(user.id));
-        // input.paquete = packageDetail;
-        // setInput({
-        //     ...input,
-        //     cantidad: e.target.value,
-        //     total: totalPack,
-        // });
-        updateCart(cart.id, {
+        input.paquete = packageDetail;
+        setInput({
+            ...input,
+            cantidad: e.target.value,
+            total: totalPack,
+        });
+        console.log('card-checkout-inicio')
+        console.log(e.target.value)
+        console.log(price)
+        console.log(activities.reduce((a, newTotal) => newTotal += a.price*e.target.value, 0))
+        console.log(price*e.target.value + (activities.reduce((a, newTotal) => newTotal += a.price*e.target.value, 0)))
+        console.log('card-checkout-fin')
+        await dispatch(updateCart(cart.id, {
             packageId: id,
-            // activitiesId:
-            //   input.actividades?.map((a) => a.Package_Activity.activityId) ||
-            //   [],
+            activitiesId: activities?.map((a) => a.id) || [],
             quantity: e.target.value,
-            total_package: price*e.target.value + (activities.forEach((a) => newTotal += a.price*e.target.value)),
-          })
-        //   HaHgo un pull de la rama develop  DALEPP 
+            // total: price*e.target.value,
+            total_package: on_sale ? ((price+sumAct)*e.target.value)*(100-on_sale)/100 : (price*e.target.value + sumAct*e.target.value),
+          }));
 		await dispatch(getAllCart(user.id));
     }
 
@@ -113,8 +118,8 @@ export default function Card({ name, image, qty, price, totalPack, id, activitie
                 <hr />
                 {on_sale ?
                 <div className={s.discountTotal}>
-                    <p>Subtotal: ${price*qty + sumAct}</p>
-                    <p>Total Descuento: ${(price*qty + sumAct) - totalPack}</p> 
+                    <p>Subtotal: ${price*qty + (sumAct*qty)}</p>
+                    <p>Total Descuento: ${(price*qty + (sumAct*qty)) *on_sale/100}</p> 
                 </div> : ''}
                 <div className={s.totalPaq}>
                     <h3>{totalPack === 0 ? ' ' : 'Total:'}</h3><h3>{totalPack === 0 ? ' ' : '$' + totalPack}</h3>

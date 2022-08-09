@@ -56,7 +56,7 @@ export default function Detail() {
   });
 
   const { isAuthenticated, getAccessTokenSilently } = useAuth0();
-  const canScore = false;
+  const [canScore, setCanScore] = useState(false);
 
   useEffect(async () => {
     setLoading(true);
@@ -79,6 +79,7 @@ export default function Detail() {
         total: packageDetail.price,
         actividades: [],
       });
+      setCanScore(false);
       setCheckeado(false);
       if (!isAuthenticated) {
         let favorites = JSON.parse(localStorage.getItem("favorites"));
@@ -94,6 +95,7 @@ export default function Detail() {
       if (!packageDetail.available && user.is_admin !== true) {
         navigate("/");
       }
+
       if(user.id) {
         let res = await dispatch(getOrders());
         let userOrders = res.payload.filter( (o) => o.userId === user.id );
@@ -101,9 +103,8 @@ export default function Detail() {
           if(canScore) return;
           let res = await dispatch(getOrderDetail(o.id));
           res.payload.packages?.forEach( (p) => {
-            console.log(p.id)
             if(p.id === parseInt(id)) {
-              canScore = true;
+              setCanScore(true);
               return;
             }
           })
@@ -122,9 +123,9 @@ export default function Detail() {
     dispatch(getAllActivities());
     dispatch(getFavoritesLocalStorage());
     dispatch(getCartLocalStorage());
+    setCanScore(false);
     const fetch = async () => {
       const token = await getAccessTokenSilently();
-      // console.log(token)
       const usuario = await dispatch(createUser(token));
       console.log(usuario.payload);
       dispatch(getAllCart(usuario.payload.id));
@@ -411,6 +412,9 @@ export default function Detail() {
                 }`}
               </b>
             </p>
+            {
+              console.log('Score ', canScore)
+            }
             <Rating
               onClick={(value) => handleEstrellas(value)}
               initialRating={rating}
