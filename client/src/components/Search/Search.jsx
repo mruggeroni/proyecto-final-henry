@@ -29,16 +29,28 @@ export default function FilteredSearch() {
 
   const allPackages = useSelector((state) => state.allPackages);
   const filteredPackages = useSelector((s) => s.filteredPackages);
-  const allDestinations = useSelector((state) => state.destinationsWithPackages );
+  const allDestinations = useSelector(
+    (state) => state.destinationsWithPackages
+  );
 
-  const regionesFiltradas = [];
-  filteredPackages &&
-    filteredPackages.forEach((i) => {
-      i.destinations.forEach((i) => {
-        if (!regionesFiltradas.includes(i.region))
-          regionesFiltradas.push(i.region);
-      });
-    });
+  const regionesFiltradas = [
+    "Europa Occidental",
+    "Europa Central",
+    "Europa Oriental",
+    "Asia Oriental",
+    "Asia del Sur",
+    "Asia Sudoriental Continental",
+    "Norte América",
+    "Sudamérica",
+    "América Central",
+  ];
+  // filteredPackages &&
+  //   filteredPackages.forEach((i) => {
+  //     i.destinations.forEach((i) => {
+  //       if (!regionesFiltradas.includes(i.region))
+  //         regionesFiltradas.push(i.region);
+  //     });
+  //   });
   const destinosFiltrados = [];
   filteredPackages &&
     filteredPackages.forEach((i) => {
@@ -62,16 +74,8 @@ export default function FilteredSearch() {
   const indexOfLastPackages = currentPage * packagesPerPage;
   const indexOfFirstPackage = indexOfLastPackages - packagesPerPage;
   const currentPackage =
-    fechaDesde !== "" &&
-    fechaHasta !== "" &&
-    estadoDestino !== "" &&
-    estadoRegion !== "" &&
-    filtradoType !== "" &&
-    estadoPrecioMin !== "" &&
-    estadoPrecioMax >10000
-      ? allPackages
-      : filteredPackages.length &&
-        filteredPackages.slice(indexOfFirstPackage, indexOfLastPackages);
+    filteredPackages.length &&
+    filteredPackages.slice(indexOfFirstPackage, indexOfLastPackages);
   const paginado = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
@@ -190,10 +194,14 @@ export default function FilteredSearch() {
         </div>
       ) : (
         <div className={s.containerSearch}>
-          <div className={ mostrar ? s.view : s.contenedorFiltrosEsconder }>
+          <div className={mostrar ? s.view : s.contenedorFiltrosEsconder}>
             <div className={s.verticalHideFilter}>
-              <div className={mostrar ? s.contenedorFiltros : s.contenedorFiltrosEsconder}>
-              {/* <label>
+              <div
+                className={
+                  mostrar ? s.contenedorFiltros : s.contenedorFiltrosEsconder
+                }
+              >
+                {/* <label>
                 <select
                   onChange={(e) => handleChange(e)}
                   id="region"
@@ -253,168 +261,175 @@ export default function FilteredSearch() {
                   ))}
                 </select>
               </label> */}
-              <SortPrice setOrder={setOrder} setCurrentPage={setCurrentPage} />
-              <label>
-                <select
-                  className={s.create_input}
-                  id="searchType"
-                  onChange={(e) => handleChange(e)}
-                >
-                  <option
-                    selected={filtradoType === "" ? true : false}
-                    value="all"
-                    disabled
+                <SortPrice
+                  setOrder={setOrder}
+                  setCurrentPage={setCurrentPage}
+                />
+                <label>
+                  <select
+                    className={s.create_input}
+                    id="searchType"
+                    onChange={(e) => handleChange(e)}
                   >
-                    Tipo
-                  </option>
-                  <option
-                    selected={filtradoType === "all" ? false : true}
-                    value="all"
-                  >
-                    Todos los tipos
-                  </option>
-                  {allTypes?.map((el) => (
                     <option
-                      selected={filtradoType === el ? true : false}
-                      key={el}
-                      value={el}
+                      selected={filtradoType === "" ? true : false}
+                      value="all"
+                      disabled
                     >
-                      {el}
+                      Tipo
                     </option>
-                  ))}
-                </select>
-              </label>
-          
-              <label>
-                <select
-                  id="precioDesde"
-                  className={s.create_input}
-                  onChange={(e) => handleChange(e)}
-                >
-                  <option
-                    value=""
-                    selected={estadoPrecioMin === "" ? true : false}
-                    disabled="disabled"
-                  >
-                    Precio minimo
-                  </option>
-                  <option
-                    selected={estadoPrecioMin === 0 ? true : false}
-                    value={0}
-                    disabled={precioHasta < 0 ? true : false}
-                  >
-                    U$S 0
-                  </option>
-                  <option
-                    selected={estadoPrecioMin === 1000 ? true : false}
-                    value={1000}
-                    disabled={precioHasta < 1000 ? true : false}
-                  >
-                    U$S 1.000
-                  </option>
+                    <option
+                      selected={filtradoType === "all" ? false : true}
+                      value="all"
+                    >
+                      Todos los tipos
+                    </option>
+                    {allTypes?.map((el) => (
+                      <option
+                        selected={filtradoType === el ? true : false}
+                        key={el}
+                        value={el}
+                      >
+                        {el}
+                      </option>
+                    ))}
+                  </select>
+                </label>
 
-                  <option
-                    selected={estadoPrecioMin === 2000 ? true : false}
-                    value={2000}
-                    disabled={precioHasta < 2000 ? true : false}
+                <label>
+                  <select
+                    id="precioDesde"
+                    className={s.create_input}
+                    onChange={(e) => handleChange(e)}
                   >
-                    U$S 2.000
-                  </option>
+                    <option
+                      value=""
+                      selected={estadoPrecioMin === "" ? true : false}
+                      disabled="disabled"
+                    >
+                      Precio minimo
+                    </option>
+                    <option
+                      selected={estadoPrecioMin === 0 ? true : false}
+                      value={0}
+                      disabled={precioHasta < 0 ? true : false}
+                    >
+                      U$S 0
+                    </option>
+                    <option
+                      selected={estadoPrecioMin === 1000 ? true : false}
+                      value={1000}
+                      disabled={precioHasta < 1000 ? true : false}
+                    >
+                      U$S 1.000
+                    </option>
 
-                  <option
-                    selected={estadoPrecioMin === 3000 ? true : false}
-                    value={3000}
-                    disabled={precioHasta < 3000 ? true : false}
+                    <option
+                      selected={estadoPrecioMin === 2000 ? true : false}
+                      value={2000}
+                      disabled={precioHasta < 2000 ? true : false}
+                    >
+                      U$S 2.000
+                    </option>
+
+                    <option
+                      selected={estadoPrecioMin === 3000 ? true : false}
+                      value={3000}
+                      disabled={precioHasta < 3000 ? true : false}
+                    >
+                      U$S 3.000
+                    </option>
+                    <option
+                      selected={estadoPrecioMin === 4000 ? true : false}
+                      value={4000}
+                      disabled={precioHasta < 4000 ? true : false}
+                    >
+                      U$S 4.000
+                    </option>
+                  </select>
+                </label>
+                <label>
+                  <select
+                    id="precioHasta"
+                    onChange={(e) => handleChange(e)}
+                    className={s.create_input}
                   >
-                    U$S 3.000
-                  </option>
-                  <option
-                    selected={estadoPrecioMin === 4000 ? true : false}
-                    value={4000}
-                    disabled={precioHasta < 4000 ? true : false}
-                  >
-                    U$S 4.000
-                  </option>
-                </select>
-              </label>
-              <label>
-                <select
-                  id="precioHasta"
-                  onChange={(e) => handleChange(e)}
-                  className={s.create_input}
+                    <option
+                      value=""
+                      selected={estadoPrecioMax > 5000 ? true : false}
+                      disabled="disabled"
+                    >
+                      Precio maximo
+                    </option>
+                    <option
+                      selected={estadoPrecioMax === 5000 ? true : false}
+                      value={5000}
+                    >
+                      U$S 5.000
+                    </option>
+                    <option
+                      selected={estadoPrecioMax === 4000 ? true : false}
+                      value={4000}
+                    >
+                      U$S 4.000
+                    </option>
+                    <option
+                      selected={estadoPrecioMax === 3000 ? true : false}
+                      value={3000}
+                      disabled={estadoPrecioMin > 3000 ? true : false}
+                    >
+                      U$S 3.000
+                    </option>
+                    <option
+                      selected={estadoPrecioMax === 2000 ? true : false}
+                      value={2000}
+                      disabled={estadoPrecioMin > 2000 ? true : false}
+                    >
+                      U$S 2.000
+                    </option>
+                    <option
+                      selected={estadoPrecioMax === 1000 ? true : false}
+                      value={1000}
+                      disabled={estadoPrecioMin > 1000 ? true : false}
+                    >
+                      U$S 1.000
+                    </option>
+                  </select>
+                </label>
+                <button
+                  className={s.create_btn}
+                  id="reset"
+                  onClick={(e) => handleChange(e)}
                 >
-                  <option
-                    value=""
-                    selected={estadoPrecioMax > 5000 ? true : false}
-                    disabled="disabled"
-                  >
-                    Precio maximo
-                  </option>
-                  <option
-                    selected={estadoPrecioMax === 5000 ? true : false}
-                    value={5000}
-                  >
-                    U$S 5.000
-                  </option>
-                  <option
-                    selected={estadoPrecioMax === 4000 ? true : false}
-                    value={4000}
-                  >
-                    U$S 4.000
-                  </option>
-                  <option
-                    selected={estadoPrecioMax === 3000 ? true : false}
-                    value={3000}
-                    disabled={estadoPrecioMin >= 3000 ? true : false}
-                  >
-                    U$S 3.000
-                  </option>
-                  <option
-                    selected={estadoPrecioMax === 2000 ? true : false}
-                    value={2000}
-                    disabled={estadoPrecioMin >= 2000 ? true : false}
-                  >
-                    U$S 2.000
-                  </option>
-                  <option
-                    selected={estadoPrecioMax === 1000 ? true : false}
-                    value={1000}
-                    disabled={estadoPrecioMin >= 1000 ? true : false}
-                  >
-                    U$S 1.000
-                  </option>
-                </select>
-              </label>
-              <button
-                className={s.create_btn}
-                id="reset"
-                onClick={(e) => handleChange(e)}
-              >
-                Reiniciar Filtros
-              </button>
+                  Reiniciar Filtros
+                </button>
               </div>
               <div>
-              <hr />
+                <hr />
               </div>
             </div>
           </div>
-          {currentPackage ? <div onClick={() => setMostrar(!mostrar)} className={s.moreFilters}>
+          {currentPackage ? (
+            <div onClick={() => setMostrar(!mostrar)} className={s.moreFilters}>
               <VscChevronDown
                 className={s.flechaFiltros}
                 display={mostrar ? "none" : true}
-                />
+              />
               <VscChevronUp
                 className={s.flechaFiltros}
                 display={mostrar ? true : "none"}
-                />
-                <p>+ filtros</p>
-          </div> : ' '}
+              />
+              <p>+ filtros</p>
+            </div>
+          ) : (
+            " "
+          )}
           {/* <div className={s.contenedorOrdenar}>
             <SortPrice setOrder={setOrder} setCurrentPage={setCurrentPage} />
           </div> */}
-            { currentPackage ? 
+          {currentPackage ? (
             <div className={s.mainFilters}>
-            <div>
+              <div>
                 <select
                   onChange={(e) => handleChange(e)}
                   id="region"
@@ -431,11 +446,16 @@ export default function FilteredSearch() {
                   {regionesFiltradas?.sort().map((el) => (
                     <option
                       selected={estadoRegion === el ? true : false}
-                      key={el} value={el} > {el} </option>
+                      key={el}
+                      value={el}
+                    >
+                      {" "}
+                      {el}{" "}
+                    </option>
                   ))}
                 </select>
-            </div>
-            <div>
+              </div>
+              <div>
                 <select
                   onChange={(e) => handleChange(e)}
                   id="searchDestinations"
@@ -464,8 +484,8 @@ export default function FilteredSearch() {
                     </option>
                   ))}
                 </select>
-            </div>
-            <div className={s.create_input_date}>
+              </div>
+              <div className={s.create_input_date}>
                 <input
                   type="date"
                   id="from"
@@ -487,29 +507,35 @@ export default function FilteredSearch() {
                   className={s.create_input}
                 />
               </div>
-            </div> : ' '
-            }
-            {currentPackage ? <div className={s.pag}>
+            </div>
+          ) : (
+            " "
+          )}
+          {currentPackage ? (
+            <div className={s.pag}>
               <div className={s.divVacio}></div>
               <div className={s.paginadoSearch}>
-              <Paginado
-              packagesPerPage={packagesPerPage}
-              allPackages={filteredPackages.length}
-              paginado={paginado}
-              currentPage={currentPage}
-            />
-            </div>
-            <div className={s.viewComponent}>
-              <View
-                currentPackage={currentPackage}
-                allPackages={allPackages}
-                indexOfFirstPackage={indexOfFirstPackage}
-                setPackagesPerPage={setPackagesPerPage}
-                setCurrentPage={setCurrentPage}
-                currentPage={currentPage}
-              />
+                <Paginado
+                  packagesPerPage={packagesPerPage}
+                  allPackages={filteredPackages.length}
+                  paginado={paginado}
+                  currentPage={currentPage}
+                />
               </div>
-            </div> : ' '}
+              <div className={s.viewComponent}>
+                <View
+                  currentPackage={currentPackage}
+                  allPackages={allPackages}
+                  indexOfFirstPackage={indexOfFirstPackage}
+                  setPackagesPerPage={setPackagesPerPage}
+                  setCurrentPage={setCurrentPage}
+                  currentPage={currentPage}
+                />
+              </div>
+            </div>
+          ) : (
+            " "
+          )}
           {/* </div> */}
           <div className={s.cards}>
             {currentPackage ? (

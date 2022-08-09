@@ -15,65 +15,72 @@ import {
   getAllCart,
   postCartPackage,
   getCartLocalStorage,
-  getFavoritesLocalStorage
+  getFavoritesLocalStorage,
 } from "../../redux/actions/index";
 import { useAuth0 } from "@auth0/auth0-react";
 import Footer from "../Footer/Footer";
 
 export default function Home() {
   const dispatch = useDispatch();
-  const {
-    isAuthenticated,
-    getAccessTokenSilently,
-  } = useAuth0();
+  const { isAuthenticated, getAccessTokenSilently } = useAuth0();
 
   const [loading, setLoading] = useState(true);
-  const allDestinations = useSelector( (state) => state.destinationsWithPackages );
+  const allDestinations = useSelector(
+    (state) => state.destinationsWithPackages
+  );
   const onSale = useSelector((state) => state.onsale);
-  const user = useSelector( (state) => state.user )
+  const user = useSelector((state) => state.user);
   const featured = useSelector((state) => state.featured);
   const sortDestinations = allDestinations.sort();
 
-  useEffect( async () => {
+  useEffect(async () => {
     setLoading(true);
     const fetch = async () => {
-      await dispatch(getAllPackage(1000));
-      await dispatch(getAllDestinations());
-      await dispatch(getDestinationsWithPackages());
-      await dispatch(getOnSale());
-      await dispatch(getAllActivities());
-      await dispatch(getFeatured())
-      setLoading(false);
+      try {
+        await dispatch(getAllPackage(1000));
+        await dispatch(getAllDestinations());
+        await dispatch(getDestinationsWithPackages());
+        await dispatch(getOnSale());
+        await dispatch(getAllActivities());
+        await dispatch(getFeatured());
+        const token = await getAccessTokenSilently();
+        const usuario = await dispatch(createUser(token));
+        dispatch(getAllCart(usuario.payload.id));
+        dispatch(getAllFavorites(token));
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+      }
       // const token = await getAccessTokenSilently()
       // dispatch(createUser(token))
-    }
-    fetch()
+    };
+    fetch();
     // setLoading(false);
   }, [dispatch]);
 
-  useEffect( async () => {
+  useEffect(async () => {
     const fetch = async () => {
       if (!isAuthenticated) {
-      dispatch(getCartLocalStorage());
-      dispatch(getFavoritesLocalStorage());
-     } else {
-      const token = await getAccessTokenSilently();
-      // const res = await dispatch(createUser(token));
-      await dispatch(getAllFavorites(token))
-      try {
-        await dispatch(getAllCart(user.id));
-      } catch(error) {
-        await dispatch(postCartPackage(user.id, []))
-        await dispatch(getAllCart(user.id));
+        dispatch(getCartLocalStorage());
+        dispatch(getFavoritesLocalStorage());
+      } else {
+        const token = await getAccessTokenSilently();
+        // const res = await dispatch(createUser(token));
+        await dispatch(getAllFavorites(token));
+        try {
+          await dispatch(getAllCart(user.id));
+        } catch (error) {
+          await dispatch(postCartPackage(user.id, []));
+          await dispatch(getAllCart(user.id));
+        }
       }
-     }
-   };
-   fetch();
+    };
+    fetch();
   }, []);
 
   return (
     <div className={style.home_container}>
-      { (loading) ? (
+      {loading ? (
         <div className={style.contenedorSpinner}>
           <div className={style.spinner}></div>
         </div>
@@ -86,11 +93,11 @@ export default function Home() {
           </div>
           <div className={style.promotions_container}>
             <h2 className={style.h2}>Promociones</h2>
-            <CardGenericContainer listCards={onSale} component='promotions' />
+            <CardGenericContainer listCards={onSale} component="promotions" />
           </div>
         </React.Fragment>
       )}
-     <Footer />
+      <Footer />
     </div>
   );
 }
