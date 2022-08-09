@@ -88,10 +88,10 @@ export default function Detail() {
         };
         fetch();
       }
-      console.log(packageDetail.available, user.is_admin)
-      console.log(!packageDetail.available && user.is_admin !== true )
-      if(!packageDetail.available && user.is_admin !== true ) {
-        navigate('/');
+      console.log(packageDetail.available, user.is_admin);
+      console.log(!packageDetail.available && user.is_admin !== true);
+      if (!packageDetail.available && user.is_admin !== true) {
+        navigate("/");
       }
 
       setLoading(false);
@@ -267,7 +267,12 @@ export default function Detail() {
           cart.packages.push(input.paquete);
           localStorage.setItem("cart", JSON.stringify(cart));
         } else {
-          alert("ya esta en el carrito");
+          Swal.fire({
+            icon: "error",
+            title: "Oops algo fallo...",
+            text: "El paquete ya debe estar en el carrito",
+          });
+          // alert("ya esta en el carrito");
         }
       }
       // let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
@@ -347,7 +352,8 @@ export default function Detail() {
 
   return loading ? (
     <Loading />
-  ) : (<div
+  ) : (
+    <div
       style={{
         backgroundImage: `url(${packageDetail.main_image})`,
         backgroundSize: "cover",
