@@ -147,7 +147,7 @@ export default function CheckoutCart() {
       <div className={s.left}>
         <div className={s.headerResumenCheckout}>
           <h3 className={s.resumenCarrito}>Resumen del Carrito</h3>
-          {!Object.keys(cart).total_order > 0 && (
+          {Object.keys(cart).length > 0 && cart.total_order > 0 && (
             <div className={s.totalCartPrice}>
               <h4>{cart.total_order ? "Total: $" + cart.total_order : " "}</h4>
             </div>
@@ -160,11 +160,12 @@ export default function CheckoutCart() {
               <div className={s.cardCheckoutContainer} key={p.id}>
                 <Link to={"/detail/" + p.id} key={p.id}>
                   <CardCheckout
+                    packageDetail={p}
                     name={p.name}
                     image={p.main_image}
                     qty={p.quantity}
                     price={p.price}
-                    total={cart.total_order}
+                    totalPack={p.total}
                     activities={p.activities}
                     on_sale={p.on_sale}
                     id={p.id}
@@ -184,7 +185,7 @@ export default function CheckoutCart() {
             </div>
           </div>
         )}
-        {Object.keys(cart).length > 0 && isAuthenticated && (
+        {Object.keys(cart).length > 0 && cart.total > 0 && isAuthenticated && (
           <div className={s.buttonContainer}>
             <Link to={"/checkout"}>
               <button className={s.comprarBtn}>Comprar</button>

@@ -8,6 +8,11 @@
   margin-bottom: 15px;
 }
 
+.carousel_container {
+  height: 90vh;
+  width: 100%;
+}
+
 .hero_filter {
   width: 100%;
   height: inherit;

@@ -25,6 +25,8 @@ import {
   getAllCart,
   updateCart,
   getRating,
+  getOrders,
+  getOrderDetail,
 } from "../../redux/actions/index";
 import { useAuth0 } from "@auth0/auth0-react";
 import Loading from "../Loading/Loading";
@@ -54,6 +56,7 @@ export default function Detail() {
   });
 
   const { isAuthenticated, getAccessTokenSilently } = useAuth0();
+  const canScore = false;
 
   useEffect(async () => {
     setLoading(true);
@@ -88,12 +91,24 @@ export default function Detail() {
         };
         fetch();
       }
-      console.log(packageDetail.available, user.is_admin);
-      console.log(!packageDetail.available && user.is_admin !== true);
       if (!packageDetail.available && user.is_admin !== true) {
         navigate("/");
       }
-
+      if(user.id) {
+        let res = await dispatch(getOrders());
+        let userOrders = res.payload.filter( (o) => o.userId === user.id );
+        userOrders?.forEach( async (o) => {
+          if(canScore) return;
+          let res = await dispatch(getOrderDetail(o.id));
+          res.payload.packages?.forEach( (p) => {
+            console.log(p.id)
+            if(p.id === parseInt(id)) {
+              canScore = true;
+              return;
+            }
+          })
+        })
+      }
       setLoading(false);
     }
   }, [packageDetail, relationatedPackage, allActivities]);
@@ -399,7 +414,7 @@ export default function Detail() {
             <Rating
               onClick={(value) => handleEstrellas(value)}
               initialRating={rating}
-              readonly={!isAuthenticated}
+              readonly={!canScore}
               emptySymbol={
                 <BsFillStarFill
                   style={{ color: "#fafafa", fontSize: "24px" }}
