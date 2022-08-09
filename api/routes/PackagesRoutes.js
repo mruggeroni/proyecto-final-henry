@@ -9,6 +9,7 @@ import {
   putPackage, 
   patchPackage,
   deletePackage,
+  restoredPackage,
 } from '../controllers/PackagesController.js';
 import { getPackagesDetail } from '../controllers/PackagesDetailController.js';
 import { getPackages } from '../controllers/getPackagesAllFiltersAndSortsController.js';
@@ -24,10 +25,11 @@ router.get('/packages/featured', getFeaturedPackages);
 router.get('/packages/:limitRender', getPackages);
 router.get('/on_sale', getOn_sale);
 router.get('/types', getTypes);
-router.get('/deletedPackages', verifyJwt, /*verifyAdminOrSuperAdminPermission, */ getDeletedPackages);
-router.post('/packages',  verifyJwt, /*verifyAdminOrSuperAdminPermission, */ createPackage);
-router.put('/packages/:id', verifyJwt, /*verifyAdminOrSuperAdminPermission, */ putPackage);
-router.patch('/packages/:id', verifyJwt, /*verifyAdminOrSuperAdminPermission, */ patchPackage);
-router.delete('/packages', verifyJwt, /*verifyAdminOrSuperAdminPermission, */ deletePackage);
+router.get('/deletedPackages', verifyJwt, verifyAdminOrSuperAdminPermission, getDeletedPackages);
+router.post('/packages',  verifyJwt, verifyAdminOrSuperAdminPermission, createPackage);
+router.put('/packages/:id', verifyJwt, verifyAdminOrSuperAdminPermission, putPackage);
+router.patch('/restoredPackage/:id', verifyJwt, verifyAdminOrSuperAdminPermission, restoredPackage);
+router.patch('/packages/:id', verifyJwt, verifyAdminOrSuperAdminPermission, patchPackage);
+router.delete('/packages', verifyJwt, verifyAdminOrSuperAdminPermission, deletePackage);
 
 export default router;

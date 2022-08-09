@@ -51,7 +51,10 @@ export default function Dashboard() {
           Crear categoria
         </div> */}
         <NavLink to="/dashboard/listPackages" className={style.links_item}>
-          Lista paquete
+          Lista paquetes
+        </NavLink>
+        <NavLink to="/dashboard/listDeletedPackages" className={style.links_item}>
+          Paquetes eliminados
         </NavLink>
         <NavLink to="/dashboard/listActivities" className={style.links_item}>
           Lista de actividades

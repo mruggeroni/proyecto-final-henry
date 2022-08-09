@@ -118,6 +118,7 @@ export default function CheckoutCart() {
       //     </div>
       //   </div>
       // ) : (
+      <div className={s.right}>
         <div className={s.containerCarrousel}>
           {Object.keys(cart).length ? (
             cart.packages?.map((p) => {
@@ -140,6 +141,7 @@ export default function CheckoutCart() {
               />
             </div>
           )}
+        </div>
         </div>
       }
       <div className={s.left}>

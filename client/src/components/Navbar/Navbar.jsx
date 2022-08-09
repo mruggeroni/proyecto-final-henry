@@ -107,7 +107,7 @@ export default function Navbar() {
           FAQ
         </NavLink>
         <NavLink
-          to="/about"
+          to="/contact-us"
           onClick={() => handleClose()}
           className={style.nav_menu_item}
         >
