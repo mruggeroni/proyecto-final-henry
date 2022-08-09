@@ -27,7 +27,8 @@ app.use(UsersRoutes);
 app.use(OrderRoutes);
 app.use(FavouritesRoutes)
 app.use(RatingRoutes)
-app.use(PaymentRoutes, PaymentResponse)
+app.use(PaymentRoutes)
+app.use(PaymentResponse)
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*'); // update to match the domain you will make the request from
