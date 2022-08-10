@@ -35,12 +35,17 @@ export const findOneUserFromDataBase = async (data) => {
 export const addFavourite = async (req, res) => {
   try {
 		const id = req.params.id
-		console.log(req)
-    	const userInfo = await getUserInfoByToken(req);
+		const email = req.body.email
+		if(!email) return res.status(400).send('Missing data')
+    
 		const packages = await Package.findByPk(id)
-		const user = await findOneUserFromDataBase(userInfo.email)
-		user.addPackage(packages, { through: { favourite: true } })		
-		res.status(200).send('Added to favourite successfully')
+		const user = await findOneUserFromDataBase(email)
+		if(user) {
+			user.addPackage(packages, { through: { favourite: true } }) 
+			return res.status(200).send('Added to favourite successfully')
+		}else {
+			return res.status(400).send({data: 'Login required'})
+		}
   } catch (e) {
     res.status(400).send({ data: e.message });
   }
@@ -48,8 +53,11 @@ export const addFavourite = async (req, res) => {
 
 export const getFavourites = async (req, res) => {
 	try {
-		const userInfo = await getUserInfoByToken(req);
-		const user = await findOneUserFromDataBase(userInfo.email)
+		const {email} = req.query
+		if(!email) return res.status(400).send('Missing data')
+    
+		const user = await findOneUserFromDataBase(email)
+
 		const favourites = await user.getPackages({ joinTableAttributes: ['favourite']})
 		const filtered = []
 		favourites.forEach(e => {
@@ -64,9 +72,11 @@ export const getFavourites = async (req, res) => {
 export const deleteFavourite = async (req, res) => {
 	try {
 		const id = req.params.id
-		const userInfo = await getUserInfoByToken(req)
-		const user = await findOneUserFromDataBase(userInfo.email)
+		const {email} = req.query
+		if(!email) return res.status(400).send('Missing data')
+    
 		const packages = await Package.findByPk(id)
+		const user = await findOneUserFromDataBase(email)
 		user.addPackage(packages, { through: { favourite: false } })
 		res.status(200).send('Favourite Package removed successfully')
 	} catch (e) {

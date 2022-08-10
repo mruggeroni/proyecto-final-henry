@@ -14,6 +14,7 @@ export default function Favorites() {
     isAuthenticated,
     getAccessTokenSilently,
     } = useAuth0();
+  const user = useSelector( (state) => state.user )
   let favorites = [];
   let stateFavorites = useSelector((state) => state.favorites);
   let stateFavoritesLocalStorage = useSelector((state) => state.favoritesLocalStorage);
@@ -26,7 +27,7 @@ export default function Favorites() {
   useEffect(async () => {
     if(isAuthenticated){
       const token = await getAccessTokenSilently();
-      dispatch(getAllFavorites(token));
+      await dispatch(getAllFavorites(token, user.email));
     } 
   }, [dispatch]);
 

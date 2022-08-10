@@ -57,10 +57,11 @@
   color: #fff;
 }
 
-.backToTop{
+.firstLineFooter{
   display: flex;
   flex-direction: row;
-  width: 100%;
+  justify-content: space-between;
+  width: 95%;
   z-index: 2000;
 }
 
@@ -70,6 +71,11 @@
 
 .topButton{
   width: 30%;
+  margin-top: 1rem;
+  display:flex;
+  flex-direction: row;
+  justify-content: space-between;
+  /* padding-right: 20px; */
 }
 
 @media (max-width: 760px) {
