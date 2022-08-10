@@ -36,7 +36,7 @@ img {
   font-size: 1.2vw;
 }
 
-.both{
+.both {
   display: flex;
   flex-direction: row;
   z-index: 1000;
@@ -83,7 +83,7 @@ img {
   z-index: 1;
 }
 
-.date h3{
+.date h3 {
   font-size: 1.5vw;
 }
 
@@ -118,13 +118,16 @@ img {
   text-decoration: none;
   color: black;
 }
+
 .textDeco:visited {
   text-decoration: none;
   color: black;
 }
+
 .textDeco:hover {
   text-decoration: none;
 }
+
 .textDeco:active {
   text-decoration: none;
   color: black;
@@ -153,17 +156,17 @@ img {
 }
 
 .musRibbon {
-    display: inline-block;
-    position: absolute;
-    top: -11px;
-    left: 5%;
-    box-sizing: border-box;
-    padding: 10px 20px 10px 30px;
-    border-bottom-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    text-transform: uppercase;
-    text-align: center;
-    min-width: 60px;
+  display: inline-block;
+  position: absolute;
+  top: -11px;
+  left: 5%;
+  box-sizing: border-box;
+  padding: 10px 20px 10px 30px;
+  border-bottom-right-radius: 20px;
+  border-bottom-left-radius: 20px;
+  text-transform: uppercase;
+  text-align: center;
+  min-width: 60px;
 }
 
 .optionsRibbon {
@@ -177,14 +180,14 @@ img {
   width: 100%;
 }
 
-.price h4{
+.price h4 {
   display: flex;
   flex-direction: row;
   margin-top: 1vw;
   width: 100%;
 }
 
-.discount h4{
+.discount h4 {
   display: flex;
   flex-direction: row;
 }
@@ -204,6 +207,7 @@ img {
     font-size: 2.5vw;
     margin: 0;
   }
+
   .card h5 {
     font-size: 0.8em;
     align-items: flex-start;
@@ -235,16 +239,57 @@ img {
     text-align: center;
   }
 
+  /* .rightGroup {
+    flex-direction: column-reverse;
+    justify-content: space-around;
+    text-align: center;
+  } */
+
+
+
+  /* .card:hover .hide {
+      margin-top: 0;
+      margin-right: 0;
+    } */
+}
+
+@media (max-width: 925px) {
+  .card h3 {
+    font-size: 3vw;
+    margin-bottom: 0.5vw;
+  }
+
+  .cardBody h5 {
+    display: none;
+  }
+
+  .rectangle {
+    width: 3vw;
+  }
+
+  .card:hover .rectangle {
+    width: 20vw;
+  }
+
+  /* .both {
+    flex-direction: column-reverse;
+    justify-content: center;
+    text-align: center;
+  } */
+}
+
+@media (max-width: 750px) {
   .rightGroup {
     flex-direction: column-reverse;
     justify-content: space-around;
     text-align: center;
   }
 
-  .both{
+  .both {
     flex-direction: column-reverse;
     justify-content: space-around;
     text-align: center;
+    margin-right: 4vw;
   }
 
   .card:hover .hide {
@@ -253,22 +298,8 @@ img {
   }
 }
 
-@media (max-width: 925px) {
-  .card h3 {
-    font-size: 3vw;
-    margin-bottom: 0.5vw;
-  }
-  .cardBody h5 {
-    display: none;
-  }
-
-  .rectangle {
-    width: 3vw;
-  }
-}
-
-@media (max-width: 690px) {
-  .rectangle {
-    width: 5vw;
+@media (max-width: 600px) {
+  .card:hover .rectangle {
+    width: 25vw;
   }
 }

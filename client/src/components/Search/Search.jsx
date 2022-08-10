@@ -27,7 +27,7 @@ import Footer from '../Footer/Footer.jsx';
 export default function FilteredSearch() {
   const dispatch = useDispatch();
   const { isAuthenticated, getAccessTokenSilently } = useAuth0();
-  const user = useSelector( (state) => state.user )
+  const user = useSelector((state) => state.user);
   const allPackages = useSelector((state) => state.allPackages);
   const filteredPackages = useSelector((s) => s.filteredPackages);
   const allDestinations = useSelector(
@@ -203,7 +203,13 @@ export default function FilteredSearch() {
                     mostrar ? s.contenedorFiltros : s.contenedorFiltrosEsconder
                   }
                 >
-                  {/* <label>
+           
+                <SortPrice
+                  setOrder={setOrder}
+                  setCurrentPage={setCurrentPage}
+                />
+                <div className={s.otrodiv}>
+                  <label className={s.create_label}>Filtrar x</label>
                   <select
                     onChange={(e) => handleChange(e)}
                     id="region"
@@ -234,6 +240,7 @@ export default function FilteredSearch() {
                   </select>
                 </label>
                 <label>
+
                   <select
                     onChange={(e) => handleChange(e)}
                     id="searchDestinations"
@@ -432,6 +439,10 @@ export default function FilteredSearch() {
             {currentPackage ? (
               <div className={s.mainFilters}>
                 <div>
+                      U$S 4.000
+                    </option>
+                  </select>
+
                   <select
                     onChange={(e) => handleChange(e)}
                     id="region"
@@ -509,6 +520,138 @@ export default function FilteredSearch() {
                     className={s.create_input}
                   />
                 </div>
+
+                <button
+                  className={s.create_btn}
+                  id="reset"
+                  onClick={(e) => handleChange(e)}
+                >
+                  Reiniciar Filtros
+                </button>
+              </div>
+              <div>
+                <hr />
+              </div>
+            </div>
+          </div>
+
+          <div onClick={() => setMostrar(!mostrar)} className={s.moreFilters}>
+            <VscChevronDown
+              className={s.flechaFiltros}
+              display={mostrar ? "none" : true}
+            />
+            <VscChevronUp
+              className={s.flechaFiltros}
+              display={mostrar ? true : "none"}
+            />
+            <p>+ filtros</p>
+          </div>
+
+          {/* <div className={s.contenedorOrdenar}>
+            <SortPrice setOrder={setOrder} setCurrentPage={setCurrentPage} />
+          </div> */}
+
+          <div className={s.mainFilters}>
+            <div>
+              <select
+                onChange={(e) => handleChange(e)}
+                id="region"
+                className={s.create_input}
+              >
+                <option
+                  value=""
+                  selected={estadoRegion === "" ? true : false}
+                  disabled="disabled"
+                >
+                  Regiones
+                </option>
+
+                {regionesFiltradas?.sort().map((el) => (
+                  <option
+                    selected={estadoRegion === el ? true : false}
+                    key={el}
+                    value={el}
+                  >
+                    {" "}
+                    {el}{" "}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <select
+                onChange={(e) => handleChange(e)}
+                id="searchDestinations"
+                className={s.create_input}
+              >
+                <option
+                  value=""
+                  selected={estadoDestino === "" ? true : false}
+                  disabled="disabled"
+                >
+                  Destinos
+                </option>
+                <option
+                  selected={estadoDestino === "all" ? true : false}
+                  value="all"
+                >
+                  Todos los destinos
+                </option>
+                {destinosFiltrados?.sort().map((el) => (
+                  <option
+                    selected={estadoDestino === el ? true : false}
+                    key={el}
+                    value={el}
+                  >
+                    {el}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className={s.create_input_date}>
+              <input
+                type="date"
+                id="from"
+                value={fechaDesde}
+                min={dataNow}
+                // disabled={destination === "x"}
+                onChange={(e) => handleChange(e)}
+                className={s.create_input}
+              />
+            </div>
+            <div className={s.create_input_date}>
+              <input
+                type="date"
+                id="until"
+                value={untilDate}
+                min={fechaDesde ? fechaDesde : dataNow}
+                // disabled={destination === "x"}
+                onChange={(e) => handleChange(e)}
+                className={s.create_input}
+              />
+            </div>
+          </div>
+
+          {currentPackage ? (
+            <div className={s.pag}>
+              {/* <div className={s.divVacio}></div> */}
+              <div className={s.paginadoSearch}>
+                <Paginado
+                  packagesPerPage={packagesPerPage}
+                  allPackages={filteredPackages.length}
+                  paginado={paginado}
+                  currentPage={currentPage}
+                />
+              </div>
+              <div className={s.viewComponent}>
+                <View
+                  currentPackage={currentPackage}
+                  allPackages={allPackages}
+                  indexOfFirstPackage={indexOfFirstPackage}
+                  setPackagesPerPage={setPackagesPerPage}
+                  setCurrentPage={setCurrentPage}
+                  currentPage={currentPage}
+                />
               </div>
             ) : (
               " "
