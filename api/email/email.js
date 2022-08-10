@@ -8,7 +8,6 @@ import { Activity } from "../models/Activities.js";
 import nodemailer from 'nodemailer';
 
 const orderDetail = async (id) => {
-	// const orderId = parseInt(req.params.orderId);
 	try {
 		const orderDetail = await Order.findByPk(id, {
 			where: {
@@ -59,12 +58,8 @@ const orderDetail = async (id) => {
 			packg.activities = activities.activities;
 			delete packg.order_item;
 		});
-
-
-		// return res.status(200).json(order[0]);
 		return order[0];
 	} catch (error) {
-		// return res.status(400).json({ message: error.message });
 		console.log(error.message);
 	};
 };
@@ -72,13 +67,6 @@ const orderDetail = async (id) => {
 export const paidEmail = async (id, status) => {
 
 	const order = await orderDetail(id);
-	console.log(order);
-
-	// let name = order.user.full_name;
-	// let email = order.user.email;
-	// let phone = '123456789';
-	// let messageOk = 'Su pedido se realizó con éxito.';
-
 
 	let mensajeOk = 'Su pedido ha sido realizado con éxito';
 	let mensajeFail = 'Ha habido un error al procesar su pedido'
@@ -93,7 +81,7 @@ export const paidEmail = async (id, status) => {
 		<ul>
 			<li>Nombre: ${order.user.full_name}</li>
 			<li>Email: ${order.user.email}</li>
-			<li>Phone: ${order.phone}</li>
+			<li>Phone: ${order.phone || ''}</li>
 		</ul>
 		<h3>Su compra:</h3>
 		<ul>

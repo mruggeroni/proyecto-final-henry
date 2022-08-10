@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import Stripe from "stripe";
 import { get0rderDetailAux } from "../controllers/OrdersController.js";
 //import { getUserInfoByToken, findOneUserFromDataBase } from "../controllers/FavouritesController.js";
@@ -73,8 +74,8 @@ export const PaymentCreate = async (req, res) => {
                }
            }),
            client_reference_id: id,
-           success_url: 'http://localhost:3000/checkout/confirmation' ,
-           cancel_url: 'http://localhost:3000/checkout'
+           success_url: process.env.NODE_ENV === 'production' ? 'https://proyecto-final-henry.vercel.app/checkout/confirmation' :'http://localhost:3000/checkout/confirmation',
+           cancel_url: process.env.NODE_ENV === 'production' ? 'https://proyecto-final-henry.vercel.app/checkout' :'http://localhost:3000/checkout'
        })
        console.log(session)
         res.json({url: session.url})
