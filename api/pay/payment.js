@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import Stripe from "stripe";
 import { get0rderDetailAux } from "../controllers/OrdersController.js";
 const stripe = Stripe('sk_test_51LSoUXFrlpRCY5YH7F7s7KDDAOsF4LAeXJyAJrHjUUSObyUbcDECpGu7N2Afj6N9P1aa7hdc1Ca85x4fSDUJebER00IklWuRZ3')
@@ -32,8 +33,8 @@ export const PaymentCreate = async (req, res) => {
                }
            }),
            client_reference_id: id,
-           success_url: 'http://localhost:3000/checkout/confirmation' ,
-           cancel_url: 'http://localhost:3000/checkout'
+           success_url: process.env.NODE_ENV === 'production' ? 'https://proyecto-final-henry.vercel.app/checkout/confirmation' :'http://localhost:3000/checkout/confirmation',
+           cancel_url: process.env.NODE_ENV === 'production' ? 'https://proyecto-final-henry.vercel.app/checkout' :'http://localhost:3000/checkout'
        })
         const paymentIntent = await stripe.paymentIntents.create({
              amount: Number(cart.total_order)*100,

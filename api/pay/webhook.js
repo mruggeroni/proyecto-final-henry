@@ -1,5 +1,7 @@
 import Stripe from "stripe";
 import { statusCartFunction, statusOrderFunction } from '../controllers/OrdersController.js';
+import { paidEmail } from '../email/email.js';
+
 let endpointSecret 
 let idP =[]
 endpointSecret = "whsec_0b5f910e80d53f35ab1415e1b1e44fddd72476ce111c907e4ef053a8f8214f1a";
@@ -39,13 +41,18 @@ export const PaymentResponse = async (req, res)=>{
         console.log(paymentIntent)
         let id= Number(paymentIntent.metadata.order)
         await statusOrderFunction(id, 'cancel')
+        paidEmail(id, 'cancel');
       }
        
       if(eventType === 'checkout.session.completed'){
-          const id = req.body.data.object.client_reference_id;
-          if(data.payment_status === 'paid'){
-              const respuesta = await statusOrderFunction(id, 'paid');
-          }
+        const id = req.body.data.object.client_reference_id;
+        console.log('ID')
+        console.log(req.body.data.object.client_reference_id)
+        if(data.payment_status === 'paid'){
+          console.log(data.payment_status)
+          const respuesta = await statusOrderFunction(id, 'paid');
+		      paidEmail(id, 'paid');
+        }       
       }
         
       res.send(200)
