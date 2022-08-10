@@ -3,7 +3,7 @@ import Footer from "../Footer/Footer";
 import s from './Information.module.css';
 
 export default function Privacy() {
-    const nameCompany = 'Travel'
+    const nameCompany = 'HenryTravel'
     return (
         <div className={s.information_container}>
             <div className={s.information_content}>

@@ -20,6 +20,7 @@
   margin-bottom: 0;
   position: static;
   z-index: 900;
+  font-size: calc(1.7rem + .3vw);
 }
 
 .eachIcon_img_container {
@@ -37,17 +38,17 @@
   height: 35px;
   border-radius: 100%;
   z-index: 900;
+  font-size: calc(1.7rem + .3vw);
 }
 
 .open_favorite {
   position: absolute;
-  top: 49px;
-  right: 30px;
-  width: 28.4vw;
+  top: 50px;
+  right: calc(1rem + .3vw);
+  min-width: calc(20rem + .3vw);
   display: flex;
   flex-direction: column;
   visibility: visible;
-  /* margin-right: 1.06vw; */
   margin-top: 1.3vw;
   color: black;
   font-size: 1.5vw;
@@ -63,10 +64,10 @@
   border: none;
   width: 90%;
   background-color: #fafafa;
-  font-size: 1.3vw;
+  font-size: calc(1rem + .3vw);
   padding: 2%;
   text-decoration: none;
-  margin-bottom: 1vw;
+  margin-bottom: calc(1rem + .3vw);
 }
 
 .allFavorite_btn:hover {
@@ -104,9 +105,9 @@
 }
 
 .favTitle {
-  font-size: 1.5vw;
   color: black;
   margin-top: 1vw;
+  font-size: calc(1.3rem + .3vw);
 }
 
 
@@ -173,7 +174,7 @@
 }
 
 .sadFace{
-  font-size: 5vw;
+  font-size: calc(3rem + .3vw);
   z-index: 900;
 }
 
@@ -182,6 +183,7 @@
   font-size: 1.3vw;
   text-decoration: none;
   z-index: 900;
+  font-size: calc(0.8rem + .3vw);
 }
 
 .noPaq:hover{
@@ -217,19 +219,20 @@
   width: 90%;
   margin: auto;
   margin-bottom: 1vw;
+  font-size: calc(1.7rem + .3vw);
 }
 
 .badgeFav{
   background-color: #e4eaea;
   color: black;
-  font-size: 1vw;
+  font-size: calc(0.6rem + .3vw);
   border-radius: 100%;
   /* position: absolute; */
   z-index: 1000;
   padding: 1px;
   cursor: pointer;
   /* border-radius: 100px; */
-  width: 1.5vw;
+  width: calc(1rem + .3vw);
   height: 40%;
   text-align: center;
   position: relative
@@ -252,4 +255,76 @@
   cursor: pointer;
   width: 80%;
   position: absolute
+}
+
+@media (max-width: 700px) {
+  .popUpContainer {
+    justify-content: flex-end;
+  }
+  .eachIcon {
+    margin-right: 50px;
+    margin-left: 30px;
+    text-align: right;
+    position: static;
+  }
+
+  .userIcon{
+    margin-right: 50px;
+    margin-left: 30px;
+    text-align: right;
+    position: static;
+  }
+
+  .eachIcon_img_container {
+    margin-top: 8px;
+    margin-right: 40px;
+    margin-left: 30px;
+    text-align: right;
+    position: static;
+  }
+
+  .user_image {
+    margin-right: 50px;
+    margin-left: 30px;
+    text-align: right;
+    position: static;
+  }
+
+  .open_favorite {
+    margin-top: 19px;
+  }
+
+}
+
+@media (max-width: 500px) {
+
+  .eachIcon {
+    margin-right: 30px;
+    margin-left: 30px;
+    text-align: right;
+    position: static;
+  }
+
+  .userIcon{
+    margin-right: 30px;
+    margin-left: 30px;
+    text-align: right;
+    position: static;
+  }
+
+  .user_image {
+    margin-right: 30px;
+    margin-left: 30px;
+    text-align: right;
+    position: static;
+  }
+
+  .open_favorite {
+    right: -10px;
+    width: 100vw;
+    min-height: 24vh;
+    max-height: 100vh;
+    /* margin: auto; */
+  }
+
 }

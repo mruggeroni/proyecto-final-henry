@@ -103,33 +103,65 @@ export default function PassengerInfo() {
      }));
   }
 
-  function handleNextPassenger(e, index) {
+  function handleNextPassenger(nameP, e, index) {
     e.preventDefault();
-    let passenger = JSON.parse(localStorage.getItem("passenger")) || [];
     let isMatch = false;
-    for (let i = 0; i < passenger.length; i++) {
-      if (passenger[i].id === index) {
-        isMatch = true;
-        setInput({ ...passenger[i] });
-        return;
-      }
-    }
+    console.log(nameP);
+    console.log(e.target.children[nameP].id);
+    let tagNamePack = (e.target.children[nameP].getAttribute('name'));
+    let tnpnoSpace = tagNamePack.replace(/\s/g, '');
+    let namePack = nameP.replace(/\s/g, '');
+    console.log(namePack);
+    let passenger = [];
+
     if (input.firstName && input.lastName && !isMatch) {
-      if (!localStorage.getItem("passenger")) {
+      if (!localStorage.getItem(`passenger${namePack}`)) {
         let passenger = [];
         passenger.push(input);
-        localStorage.setItem("passenger", JSON.stringify(passenger));
+        localStorage.setItem(`passenger${namePack}`, JSON.stringify(passenger));
       } else {
-        let passenger = JSON.parse(localStorage.getItem("passenger"));
+        let passenger = JSON.parse(localStorage.getItem(`passenger${namePack}`));
         let match = false;
         for (let i = 0; i < passenger.length; i++) {
-          console.log(passenger[i].id, index);
-          if (passenger[i].id !== index) {
+          if (tnpnoSpace === namePack && passenger[i].id !== index) {
             passenger.push(input);
-            localStorage.setItem("passenger", JSON.stringify(passenger));
-            //   match = true;
+            localStorage.setItem(`passenger${namePack}`, JSON.stringify(passenger));
+            setInput({
+              firstName: "",
+              middleName: "",
+              lastName: "",
+              numberDni: "",
+              gender: "",
+              birthdate: "",
+              id: "",
+            });
+              match = true;
             break;
           }
+
+          let passenger = JSON.parse(localStorage.getItem(`passenger${namePack}`)) || [];
+          // COMO HAGO XA TRAERME EL NOMBRE DEL ACORDION
+         
+          for (let i = 0; i < passenger.length; i++) {
+            if (tnpnoSpace === namePack && passenger[i].id === index){
+              isMatch = true;
+              setInput({ ...passenger[i] });
+              document.getElementById(`titleP${parseInt(passenger[i].id) + 1}`).innerHTML = `Pasajero #${parseInt(passenger[i].id) + 1}: ` + passenger[i].firstName + " " + passenger[i].lastName;
+              return;
+            }
+          }
+        }
+
+        if(!isMatch) {
+          setInput({
+            firstName: "",
+            middleName: "",
+            lastName: "",
+            numberDni: "",
+            gender: "",
+            birthdate: "",
+            id: "",
+          });
         }
         //   if(!match) {
         // passenger.push(input);
@@ -138,18 +170,9 @@ export default function PassengerInfo() {
       }
 
       // let passenger = JSON.parse(localStorage.getItem("passenger"));
-      // let title = `Pasajero #${index + 1}: ` + passenger[index - 1].firstName + " " + passenger[index - 1].lastName;
-      // document.getElementById(`titleP${index}`).innerText = title;
-
-      setInput({
-        firstName: "",
-        middleName: "",
-        lastName: "",
-        numberDni: "",
-        gender: "",
-        birthdate: "",
-        id: "",
-      });
+      
+      
+      
     }
   }
 
@@ -170,10 +193,10 @@ export default function PassengerInfo() {
             {new Array(parseInt(p.quantity)).fill(true).map((el, i) => {
               return (
                 <Accordion.Item eventKey={i}>
-                  <Accordion.Header onClick={(e) => handleNextPassenger(e, i)}>
-                    <p id={`titleP${i}`}>Pasajero #{i + 1}: </p>
+                  <Accordion.Header name={p.name} onClick={(e) => handleNextPassenger(p.name, e, i)}>
+                    <p id={`titleP${i}`} name={p.name}>Pasajero #{i + 1}: </p>
                   </Accordion.Header>
-                  <Accordion.Body>
+                  <Accordion.Body name={p.name}>
                     <div className={s.firstRow}>
                       <div>
                         <label className={s.profile_label}>Nombre</label>
@@ -229,13 +252,13 @@ export default function PassengerInfo() {
                       {error.birthdate ? (<div className={s.error}>{error.birthdate}</div>) : ( <br /> )}
                       <div>
                         <label className={s.profile_label}>Sexo</label>
-                        <select onChange={(e) => handlePassenger(e, i)}>
+                        <select onChange={(e) => handlePassenger(e, i)} name='gender'>
                           <option selected hidden>
                             Seleccionar
                           </option>
-                          <option value="Femenino">Femenino</option>
-                          <option value="Masculino">Masculino</option>
-                          <option value="No Binario">No Binario</option>
+                          <option name= 'gender' value="Femenino">Femenino</option>
+                          <option name= 'gender' value="Masculino">Masculino</option>
+                          <option name= 'gender' value="No Binario">No Binario</option>
                         </select>
                       </div>
                       {error.gender ? (<div className={s.error}>{error.gender}</div>) : ( <br /> )}
@@ -302,7 +325,7 @@ export default function PassengerInfo({ cart }) {
 
 
         // console.log(title)        
-        if(!localStorage.getItem('passenger')){
+        if(!localStorage.getItem('passenger')){ 
             let passenger = [];
             passenger.push(input);
             localStorage.setItem('passenger', JSON.stringify(passenger));

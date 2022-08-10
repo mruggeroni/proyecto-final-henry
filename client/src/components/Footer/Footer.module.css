@@ -62,7 +62,7 @@
   flex-direction: row;
   justify-content: space-between;
   width: 95%;
-  z-index: 2000;
+  z-index: 200;
 }
 
 .emptyDiv4Styles{
@@ -84,5 +84,27 @@
   }
   .footer_links {
     flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 500px){
+  .emptyDiv4Styles{
+    display: none;
+  }
+
+  .firstLineFooter{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 90%;
+    text-align: right;
+  }
+
+  .footer_social {
+    width: 85%;
+  }
+
+  .topButton{
+    width: 15%;
   }
 }

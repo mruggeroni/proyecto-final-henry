@@ -1,5 +1,11 @@
+.searchContainerFull{
+  padding-top: 90px;
+  width: 100%;
+  min-height: 100vh;
+}
+
 .container {
-  margin-top: 90px;
+  /* margin-top: 90px; */
   display: flex;
   flex-direction: column;
   padding: 5%;
