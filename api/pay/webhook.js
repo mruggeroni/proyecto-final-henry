@@ -1,5 +1,6 @@
 import Stripe from "stripe";
 import { statusCartFunction, statusOrderFunction } from '../controllers/OrdersController.js';
+import { paidEmail } from '../email/email.js'
 //const stripeKey = 
 let endpointSecret 
 
@@ -41,6 +42,7 @@ export const PaymentResponse = async (req, res)=>{
           console.log(data.payment_status)
          const respuesta = await statusOrderFunction(id, 'paid');
          //console.log(respuesta)
+		 paidEmail(id, 'paid');
         }
         
 

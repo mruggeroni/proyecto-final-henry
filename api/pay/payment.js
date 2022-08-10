@@ -16,7 +16,8 @@ export const PaymentCreate = async (req, res) => {
         console.log('CART FINAL')
         console.log(cart.packages[0].dataValues.order_item.dataValues)
         const itemsCart = cart.packages?.map( (p) => ({
-            quantity: p.dataValues.order_item.dataValues.quantity,
+            // quantity: p.dataValues.order_item.dataValues.quantity,
+			quantity: 1,
             packageId: p.dataValues.id,
             packageName: p.dataValues.name,
             totalPerUnitCents: p.dataValues.order_item.dataValues.total*100,
