@@ -70,6 +70,38 @@ export const getOrders = async (req, res) => {
 		return res.status(404).json({ message: error.message });
 	};
 };
+export const get0rderDetailAux = async (id) =>{
+	const orderId = id;
+	console.log('ID DETAIL')
+	console.log(id)
+	try {
+		const orderDetail = await Order.findByPk(orderId,
+			{
+				include: [
+					{
+						model: User,
+					},
+					{
+						model: Package,
+						attributes: {
+							exclude: [
+								'description',
+								'images',
+								'featured',
+								'available',
+								'destroyTime'
+							]
+						},
+						include: [{
+							model: Activity
+						}]
+					},
+				],
+			})
+		return orderDetail
+}catch (error){
+	console.log(error.message)
+}}
 
 export const getOrderDetail = async (req, res) => {
 	const orderId = parseInt(req.params.orderId);
@@ -93,7 +125,6 @@ export const getOrderDetail = async (req, res) => {
 							'images',
 							'featured',
 							'available',
-							'on_sale',
 							'destroyTime'
 						]
 					}
@@ -121,6 +152,7 @@ export const getOrderDetail = async (req, res) => {
 
 		order[0].packages.forEach(packg => {
 			packg.quantity = packg.order_item.quantity;
+			packg.total = packg.order_item.total;
 			const activities = orderItems.find(orderItem => orderItem.id === packg.order_item.id);
 			packg.activities = activities.activities;
 			delete packg.order_item;
@@ -134,17 +166,12 @@ export const getOrderDetail = async (req, res) => {
 };
 
 export const statusOrderFunction = async (orderId, status) => {
-	await Order.update({
-		status: status,
-	}, {
+	await Order.update({status: status} ,{
 		where: {
-			[Op.and]: [{
+			
 				id: orderId,
-			}, {
-				status: 'pending',
-			}],
-		},
-	});
+					
+	}});
 };
 
 export const patchStatusOrder = async (req, res) => {
@@ -214,6 +241,7 @@ export const getCart = async (req, res) => {
 
 		cart.packages.forEach(packg => {
 			packg.quantity = packg.order_item.quantity;
+			packg.total = packg.order_item.total;
 			const activities = orderItems.find(orderItem => orderItem.id === packg.order_item.id);
 			packg.activities = activities.activities;
 			delete packg.order_item;
@@ -287,6 +315,7 @@ export const createCart = async (req, res) => {
 		await Promise.all(packagesId.map((packageId, index) => {
 			return OrderItem.update({
 				quantity: quantitiesPackages[index],
+				total: total_packages[index],
 			}, {
 				where: {
 					[Op.and]: [{
@@ -323,7 +352,7 @@ export const createCart = async (req, res) => {
 
 export const updateCart = async (req, res) => {
 	const { cartId } = req.params;
-	const /* cartPackages */ { packageId, activitiesId, quantity, total_package } = req.body;
+	const /* cartPackages */ { packageId, activitiesId, quantity,  total_package } = req.body;
 
 	try {
 		const oldCart = await Order.findByPk(cartId);
@@ -426,6 +455,7 @@ export const updateCart = async (req, res) => {
 
 		await OrderItem.update({
 			quantity,
+			total: total_package
 		}, {
 			where: {
 				[Op.and]: [{
@@ -510,10 +540,10 @@ export const deleteCart = async (req, res) => {
             include: {
                 model: Activity,
             },
-        }); 
+        });
 
         await Order.update({
-            total_order: parseFloat(cart.total_order) - cart.packages[0].order_item.quantity * (paquete.price + orderItem.activities.reduce((sum, act) => sum + act.price, 0)),
+            total_order: parseFloat(cart.total_order) - cart.packages[0].order_item.total,
         }, {
             where: {
                 id: cart.id,
@@ -526,7 +556,7 @@ export const deleteCart = async (req, res) => {
             },
         });
 
-        await cart.removePackage(paquete);
+        await cart.removePackage(paquete)
 
 		return res.status(200).json({ message: "Cart deleted successfully" }); 
 	} catch (error) {

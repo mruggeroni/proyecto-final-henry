@@ -45,7 +45,7 @@ export const getPackageData = async () =>{
                 };
                 const actividadesfind = await Activity.findOne({
                     where: {
-                        name: "Tour de Highlights",
+                        name: "Tour de Monumentos",
                     },
                 });
                 const actividadesfind2 = await Activity.findOne({
@@ -53,6 +53,8 @@ export const getPackageData = async () =>{
                         name: "Tour de Museos",
                     },
                 });
+                console.log('Actividad')
+                console.log(actividadesfind)
                 await newPaquete[0].addActivities(actividadesfind);
                 await newPaquete[0].addActivities(actividadesfind2);
             });

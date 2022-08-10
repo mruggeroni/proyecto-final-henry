@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import {
   getAllActivities,
   getAllDestinations,
+  getAllPackageDashboard,
   getPackageById,
   getTypes,
   modificarPaquete,
@@ -296,6 +297,7 @@ export default function ModifyPackages() {
           icon: 'success',
           title: 'Paquete modificado!',
         })
+        await dispatch(getAllPackageDashboard());
         setInput({
           name: "",
           price: "",

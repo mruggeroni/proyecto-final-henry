@@ -1,53 +1,25 @@
+import 'dotenv/config';
 import Stripe from "stripe";
-//const stripeKey = 
+import { get0rderDetailAux } from "../controllers/OrdersController.js";
 const stripe = Stripe('sk_test_51LSoUXFrlpRCY5YH7F7s7KDDAOsF4LAeXJyAJrHjUUSObyUbcDECpGu7N2Afj6N9P1aa7hdc1Ca85x4fSDUJebER00IklWuRZ3')
 
 
 export const PaymentCreate = async (req, res) => {
     let cart = req.body;
+    let id = cart.payload.id.toString()
     try {
-
+        const cart = await get0rderDetailAux(id)
         const itemsCart = cart.packages?.map( (p) => ({
-            quantity: p.quantity,
-            packageId: p.id,
-            packageName: p.name,
-            packagePriceCents: 101000,
-            activities: p.activities?.map( (a) => ({
-                activityId: a.id,
-                activityName: a.name,
-                activityPriceCents: a.price
-            })),
-            totalPerUnitCents: p.price*100
-        }) )
-
-        //FUNCION PARA FORMATEAR EL CARRITO ENVIADO POR REQ DARIA UN RESULTADO COMO EL REPRESENTADO EN ITEMSCART    
-        /* const itemsCart = [
-            {
-                "quantity": "7",
-                "packageId": 4,
-                "packageName": "Joyas de Rusia Imperial en tren 8 días de San Petersburgo a Moscú",
-                "packagePriceCents": 101000,
-                "activities": [
-                    {
-                        "activityId": 1,
-                        "activityName": "Tour de Museos",
-                        "activityPriceCents": 15000
-                    },
-                    {
-                        "activityId": 2,
-                        "activityName": "Tour de Highlights",
-                        "activityPriceCents": 10000
-                    }
-                ],
-                "totalPerUnitCents": 126000
-            }
-        ] */
-
-
-        //console.log(req.body.body.items)
+            quantity: 1,
+            packageId: p.dataValues.id,
+            packageName: p.dataValues.name,
+            totalPerUnitCents: p.dataValues.order_item.dataValues.total*100,
+            
+        }))
        const session = await stripe.checkout.sessions.create({
            payment_method_types: ['card'],
            mode: 'payment',
+            metadata:{'order': id},
            line_items: itemsCart.map(item => {
                return {
                     price_data: {
@@ -57,13 +29,20 @@ export const PaymentCreate = async (req, res) => {
                        },
                        unit_amount: item.totalPerUnitCents
                    },
-                   quantity: item.quantity
+                   quantity: item.quantity,  
                }
            }),
-           success_url: 'http://localhost:3000/checkout/confirmation' ,
-           cancel_url: 'http://localhost:3000/checkout'
+           client_reference_id: id,
+           success_url: process.env.NODE_ENV === 'production' ? 'https://proyecto-final-henry.vercel.app/checkout/confirmation' :'http://localhost:3000/checkout/confirmation',
+           cancel_url: process.env.NODE_ENV === 'production' ? 'https://proyecto-final-henry.vercel.app/checkout' :'http://localhost:3000/checkout'
        })
-       console.log(session)
+        const paymentIntent = await stripe.paymentIntents.create({
+             amount: Number(cart.total_order)*100,
+             currency: 'usd',
+             payment_method_types: ['card'],
+             metadata: {'order': id},
+           });
+
         res.json({url: session.url})
     } catch (error) {
         console.log(error)

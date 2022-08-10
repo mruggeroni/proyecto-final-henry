@@ -5,12 +5,61 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllCart, createUser } from "./../../../redux/actions/index";
 import { useAuth0 } from "@auth0/auth0-react";
 
+function validate(input) {
+  let error = {};
+
+  if (!input.name) {
+    error.name = "El nombre es requerido";
+  } else if (input.name.length > 20) {
+    error.name = "El nombre debe tener menos de 20 caracteres";
+  }
+  if (input.middleName.length > 20) {
+    error.middleName = "El nombre debe tener menos de 20 caracteres";
+  }
+  if (!input.lastname) {
+    error.lastname = "El apellido es requerido";
+  } else if (input.lastname.length > 20) {
+    error.lastname = "El apellido debe tener menos de 20 caracteres";
+  }
+  if (!input.birthdate) {
+    error.birthdate = "La fecha de nacimiento es requerida";
+  } else if(!/^\d{4}-\d{2}-\d{2}$/.test(input.birthdate))  {
+    error.birthdate = "La fecha es inválida";
+  } 
+  else if (input.birthdate) {
+    let parts = input.birthdate.split('-');
+    let now = new Date();
+    let year = parseInt(parts[0], 10);
+    let currentYear = now.getFullYear();
+    
+    if(year > currentYear) error.birthdate = "La fecha es inválida";
+    // if((currentYear - year) < 18 || (currentYear - year) > 90) error.birthdate = "La fecha es inválida";
+};
+  if (!input.gender) {
+    error.gender = "El género es requerido";
+  }
+
+  if (!input.dni) {
+    error.dni = "La documentación es requerida";
+  } else if(input.dni.length > 10) {
+    error.dni = "La documentación es inválida";
+  }
+  return error;
+}
+
+function firstCap(name) {
+  return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+}
+
+
+
 export default function PassengerInfo() {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
   const user = useSelector((state) => state.user);
   const { getAccessTokenSilently } = useAuth0();
 
+  const [error, setError] = useState({});
   const [input, setInput] = useState({
     firstName: "",
     middleName: "",
@@ -46,8 +95,12 @@ export default function PassengerInfo() {
     setInput({
       ...input,
       id: i,
-      [e.target.name]: e.target.value,
+      [e.target.name]: firstCap(e.target.value),
     });
+    setError(validate({
+      ...input,
+      [e.target.name]: e.target.value,
+     }));
   }
 
   function handleNextPassenger(e, index) {
@@ -132,6 +185,7 @@ export default function PassengerInfo() {
                           className={s.profile_input}
                         />
                       </div>
+                      {error.name ? (<div className={s.error}>{error.name}</div>) : ( <br /> )}
                       <div>
                         <label className={s.profile_label}>
                           Segundo Nombre
@@ -144,6 +198,7 @@ export default function PassengerInfo() {
                           className={s.profile_input}
                         />
                       </div>
+                      {error.middleName ? (<div className={s.error}>{error.middleName}</div>) : ( <br /> )}
                       <div>
                         <label className={s.profile_label}>Apellido</label>
                         <input
@@ -154,6 +209,7 @@ export default function PassengerInfo() {
                           className={s.profile_input}
                         />
                       </div>
+                      {error.lastname ? (<div className={s.error}>{error.lastname}</div>) : ( <br /> )}
                     </div>
                     <div className={s.firstRow}>
                       <div>
@@ -166,11 +222,14 @@ export default function PassengerInfo() {
                           value={input.birthdate}
                           onChange={(e) => handlePassenger(e, i)}
                           className={s.profile_input}
+                          max= '2022-08-09'
+                          min='1925-01-01'
                         />
                       </div>
+                      {error.birthdate ? (<div className={s.error}>{error.birthdate}</div>) : ( <br /> )}
                       <div>
                         <label className={s.profile_label}>Sexo</label>
-                        <select>
+                        <select onChange={(e) => handlePassenger(e, i)}>
                           <option selected hidden>
                             Seleccionar
                           </option>
@@ -179,6 +238,7 @@ export default function PassengerInfo() {
                           <option value="No Binario">No Binario</option>
                         </select>
                       </div>
+                      {error.gender ? (<div className={s.error}>{error.gender}</div>) : ( <br /> )}
                       <div>
                         <label className={s.profile_label}>
                           Número de DNI/Pasaporte
@@ -191,6 +251,7 @@ export default function PassengerInfo() {
                           className={s.profile_input}
                         />
                       </div>
+                      {error.dni ? (<div className={s.error}>{error.dni}</div>) : ( <br /> )}
                     </div>
                   </Accordion.Body>
                 </Accordion.Item>

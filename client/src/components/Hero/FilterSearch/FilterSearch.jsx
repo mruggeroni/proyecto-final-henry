@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { RiPlaneLine } from 'react-icons/ri';
 import {
   filterPackagesByDate,
   filterPackagesByDestination,
@@ -16,16 +17,17 @@ export default function FilterSearch({ destinations }) {
   const [destination, setDestination] = useState("x");
   const [fromDate, setFromDate] = useState(dataNow);
   const [untilDate, setUntilDate] = useState(dataNow);
+  const destinationsFilter = document.getElementById('searchDestinations')?.value;
 
   const handleChange = (e) => {
     console.log(e.target.id);
     e.preventDefault();
+
     if (e.target.id === "searchDestinations") {
       dispatch(getAllPackage(10000));
       setDestination(e.target.value);
       // dispatch(filterPackagesByDestination(e.target.value));
       dispatch(filtrar(e.target.value, e.target.id));
-      console.log("jklasdhvbipasjdvbapi");
     }
 
     if (e.target.id === "from") {
@@ -37,7 +39,6 @@ export default function FilterSearch({ destinations }) {
         dispatch(filtrar(e.target.value, e.target.id));
       } else {
         setFromDate(e.target.value);
-        console.log(e.target.value, e.target.id);
         dispatch(filtrar(e.target.value, e.target.id));
       }
     } else if (e.target.id === "until") {
@@ -96,7 +97,7 @@ export default function FilterSearch({ destinations }) {
         className={style.form_date}
       />
 
-      <button onClick={(e) => handleClick(e)} className={style.form_button}>
+      <button onClick={(e) => handleClick(e)} className={style.form_button} disabled={destinationsFilter ===  'x'}>
         Buscar
       </button>
     </form>

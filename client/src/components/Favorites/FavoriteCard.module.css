@@ -41,6 +41,11 @@
   font-weight: bold;
 }
 
+/* .cardText:hover{
+  color: #4a9eab;
+  transition: .2s;
+} */
+
 .cardText:hover{
   color: #4a9eab;
   transition: .2s;

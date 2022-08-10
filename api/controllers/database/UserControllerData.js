@@ -6,10 +6,10 @@ export const getUserData = async () => {
         if (!(await User.findAndCountAll())?.count) {
             console.log("\n", "uploading database Users", "\n");
             const infoDelJson = data.default;
-            infoDelJson.map(({ first_name, last_name,
+            infoDelJson.map(async({ first_name, last_name,
                 email, phone, city, state, postal_code, is_admin,
                 photo, created_date, update_date, destroyTime }) => {
-                User.findOrCreate({
+                    const usuario = await User.findOrCreate({
                     where: {
                         email, 
                     },

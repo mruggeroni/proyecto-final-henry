@@ -81,7 +81,7 @@ export const Package = sequelize.define('package', {
 		defaultValue: 0,
 	},
 }, {
-	timestamps: false,
+	timestamps: true,
 	paranoid: true,
 	deletedAt: 'destroyTime',
 });

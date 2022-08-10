@@ -118,8 +118,9 @@ export default function CheckoutCart() {
       //     </div>
       //   </div>
       // ) : (
+      <div className={s.right}>
         <div className={s.containerCarrousel}>
-          {Object.keys(cart).length ? (
+          {Object.keys(cart).length && cart.packages?.length ? (
             cart.packages?.map((p) => {
               return (
                 <div className={s.carrouselTravel}>
@@ -141,29 +142,32 @@ export default function CheckoutCart() {
             </div>
           )}
         </div>
+        </div>
       }
       <div className={s.left}>
         <div className={s.headerResumenCheckout}>
           <h3 className={s.resumenCarrito}>Resumen del Carrito</h3>
-          {!Object.keys(cart).total_order > 0 && (
+          {Object.keys(cart).length > 0 && cart.total_order > 0 && (
             <div className={s.totalCartPrice}>
               <h4>{cart.total_order ? "Total: $" + cart.total_order : " "}</h4>
             </div>
           )}
         </div>
         <hr />
-        {Object.keys(cart).length ? (
+        {Object.keys(cart) && cart.packages?.length ? (
           cart.packages?.map((p) => {
             return (
               <div className={s.cardCheckoutContainer} key={p.id}>
                 <Link to={"/detail/" + p.id} key={p.id}>
                   <CardCheckout
+                    packageDetail={p}
                     name={p.name}
                     image={p.main_image}
                     qty={p.quantity}
                     price={p.price}
-                    total={cart.total_order}
+                    totalPack={p.total}
                     activities={p.activities}
+                    on_sale={p.on_sale}
                     id={p.id}
                     key={p.id}
                   />
@@ -181,11 +185,11 @@ export default function CheckoutCart() {
             </div>
           </div>
         )}
-        {Object.keys(cart).length > 0 && isAuthenticated && (
+        {(Object.keys(cart).length > 0 && cart.total_order > 0 && isAuthenticated) && (
           <div className={s.buttonContainer}>
-            {/* <Link to={"/checkout"}> */}
-              <button onClick={(e) => handlePay(e) } className={s.comprarBtn}>Comprar</button>
-            {/* </Link> */}
+            <Link to={"/checkout"}>
+              <button className={s.comprarBtn}>Comprar</button>
+            </Link>
           </div>
         )}
       </div>

@@ -1,30 +1,92 @@
 .information_container {
-    width: 100%;
-    margin-top: 100px;
+  width: 100%;
+  margin-top: 100px;
 }
 
 .information_content {
-    width: 80%;
-    margin: 110px auto 50px;
-    margin-top: 110px;
+  width: 80%;
+  margin: 110px auto 50px;
+  margin-top: 110px;
 }
 
 .information_title {
-    color: #396fa5;
-    font-size: 24;
-    margin: 20px 0;
+  color: #396fa5;
+  font-size: 24;
+  margin: 20px 0;
 }
 
 .information_caption {
-    color: #454548;
-    font-size: 18px;
-    margin: 20px 0;
+  color: #454548;
+  font-size: 18px;
+  margin: 20px 0;
 }
 
 .information_text {
-    font-size: 14px;
-    color: #5a5a5a;
+  font-size: 14px;
+  color: #5a5a5a;
 }
 
 /* -------------- */
 
+.textarea_container {
+  padding-left: 0.5625rem;
+  padding-right: 0.5625rem;
+  padding-top: 0.5625rem;
+  border: 1px solid #cdcfd1;
+  border-radius: 0;
+  line-height: normal;
+  background-color: #fff;
+  margin: 5px;
+  z-index: 1;
+  resize: none;
+  width: 87%;
+}
+
+.input_container {
+  padding-left: 0.5625rem;
+  padding-right: 0.5625rem;
+  border: 1px solid #cdcfd1;
+  border-radius: 0;
+  height: 2.625rem;
+  line-height: normal;
+  background-color: #fff;
+  margin: 5px;
+  z-index: 1;
+  width: 16.75vw;
+}
+
+.callus {
+  margin-bottom: 40px;
+}
+
+.callus_item {
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.form {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 40px;
+  justify-content: center;
+}
+
+.form_btn {
+  z-index: 988;
+  border: none;
+  background-color: #4a9eaae6;
+  color: #fafafa;
+  font-size: 1.3vw;
+  padding: 0.8% 2%;
+  text-decoration: none;
+  margin: 5px;
+  margin-bottom: 1vw;
+  float: right;
+  margin-right: 5.5vw;
+}
+
+/* ----------- About ----------- */

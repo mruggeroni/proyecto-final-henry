@@ -88,10 +88,10 @@ export default function CheckoutSteps() {
             setShowCheckoutPayment={setShowCheckoutPayment}
             handleCheckoutConfirmation={handleCheckoutConfirmation}
           />
-          <CheckoutConfirmation
+          {/* <CheckoutConfirmation
             showCheckoutConfirmation={showCheckoutConfirmation}
             setShowCheckoutConfirmation={setShowCheckoutConfirmation}
-          />
+          /> */}
         </div>
       </div>
     </div>
