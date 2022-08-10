@@ -26,7 +26,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 export default function FilteredSearch() {
   const dispatch = useDispatch();
   const { isAuthenticated, getAccessTokenSilently } = useAuth0();
-  const user = useSelector( (state) => state.user )
+  const user = useSelector((state) => state.user);
   const allPackages = useSelector((state) => state.allPackages);
   const filteredPackages = useSelector((s) => s.filteredPackages);
   const allDestinations = useSelector(
@@ -265,7 +265,8 @@ export default function FilteredSearch() {
                   setOrder={setOrder}
                   setCurrentPage={setCurrentPage}
                 />
-                <label>
+                <div className={s.otrodiv}>
+                  <label className={s.create_label}>Filtrar x</label>
                   <select
                     className={s.create_input}
                     id="searchType"
@@ -294,9 +295,7 @@ export default function FilteredSearch() {
                       </option>
                     ))}
                   </select>
-                </label>
 
-                <label>
                   <select
                     id="precioDesde"
                     className={s.create_input}
@@ -347,8 +346,7 @@ export default function FilteredSearch() {
                       U$S 4.000
                     </option>
                   </select>
-                </label>
-                <label>
+
                   <select
                     id="precioHasta"
                     onChange={(e) => handleChange(e)}
@@ -395,7 +393,8 @@ export default function FilteredSearch() {
                       U$S 1.000
                     </option>
                   </select>
-                </label>
+                </div>
+
                 <button
                   className={s.create_btn}
                   id="reset"
@@ -409,111 +408,107 @@ export default function FilteredSearch() {
               </div>
             </div>
           </div>
-          {currentPackage ? (
-            <div onClick={() => setMostrar(!mostrar)} className={s.moreFilters}>
-              <VscChevronDown
-                className={s.flechaFiltros}
-                display={mostrar ? "none" : true}
-              />
-              <VscChevronUp
-                className={s.flechaFiltros}
-                display={mostrar ? true : "none"}
-              />
-              <p>+ filtros</p>
-            </div>
-          ) : (
-            " "
-          )}
+
+          <div onClick={() => setMostrar(!mostrar)} className={s.moreFilters}>
+            <VscChevronDown
+              className={s.flechaFiltros}
+              display={mostrar ? "none" : true}
+            />
+            <VscChevronUp
+              className={s.flechaFiltros}
+              display={mostrar ? true : "none"}
+            />
+            <p>+ filtros</p>
+          </div>
+
           {/* <div className={s.contenedorOrdenar}>
             <SortPrice setOrder={setOrder} setCurrentPage={setCurrentPage} />
           </div> */}
-          {currentPackage ? (
-            <div className={s.mainFilters}>
-              <div>
-                <select
-                  onChange={(e) => handleChange(e)}
-                  id="region"
-                  className={s.create_input}
+
+          <div className={s.mainFilters}>
+            <div>
+              <select
+                onChange={(e) => handleChange(e)}
+                id="region"
+                className={s.create_input}
+              >
+                <option
+                  value=""
+                  selected={estadoRegion === "" ? true : false}
+                  disabled="disabled"
                 >
+                  Regiones
+                </option>
+
+                {regionesFiltradas?.sort().map((el) => (
                   <option
-                    value=""
-                    selected={estadoRegion === "" ? true : false}
-                    disabled="disabled"
+                    selected={estadoRegion === el ? true : false}
+                    key={el}
+                    value={el}
                   >
-                    Regiones
+                    {" "}
+                    {el}{" "}
                   </option>
-        
-                  {regionesFiltradas?.sort().map((el) => (
-                    <option
-                      selected={estadoRegion === el ? true : false}
-                      key={el}
-                      value={el}
-                    >
-                      {" "}
-                      {el}{" "}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <select
-                  onChange={(e) => handleChange(e)}
-                  id="searchDestinations"
-                  className={s.create_input}
-                >
-                  <option
-                    value=""
-                    selected={estadoDestino === "" ? true : false}
-                    disabled="disabled"
-                  >
-                    Destinos
-                  </option>
-                  <option
-                    selected={estadoDestino === "all" ? true : false}
-                    value="all"
-                  >
-                    Todos los destinos
-                  </option>
-                  {destinosFiltrados?.sort().map((el) => (
-                    <option
-                      selected={estadoDestino === el ? true : false}
-                      key={el}
-                      value={el}
-                    >
-                      {el}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className={s.create_input_date}>
-                <input
-                  type="date"
-                  id="from"
-                  value={fechaDesde}
-                  min={dataNow}
-                  // disabled={destination === "x"}
-                  onChange={(e) => handleChange(e)}
-                  className={s.create_input}
-                />
-              </div>
-              <div className={s.create_input_date}>
-                <input
-                  type="date"
-                  id="until"
-                  value={untilDate}
-                  min={fechaDesde ? fechaDesde : dataNow}
-                  // disabled={destination === "x"}
-                  onChange={(e) => handleChange(e)}
-                  className={s.create_input}
-                />
-              </div>
+                ))}
+              </select>
             </div>
-          ) : (
-            " "
-          )}
+            <div>
+              <select
+                onChange={(e) => handleChange(e)}
+                id="searchDestinations"
+                className={s.create_input}
+              >
+                <option
+                  value=""
+                  selected={estadoDestino === "" ? true : false}
+                  disabled="disabled"
+                >
+                  Destinos
+                </option>
+                <option
+                  selected={estadoDestino === "all" ? true : false}
+                  value="all"
+                >
+                  Todos los destinos
+                </option>
+                {destinosFiltrados?.sort().map((el) => (
+                  <option
+                    selected={estadoDestino === el ? true : false}
+                    key={el}
+                    value={el}
+                  >
+                    {el}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className={s.create_input_date}>
+              <input
+                type="date"
+                id="from"
+                value={fechaDesde}
+                min={dataNow}
+                // disabled={destination === "x"}
+                onChange={(e) => handleChange(e)}
+                className={s.create_input}
+              />
+            </div>
+            <div className={s.create_input_date}>
+              <input
+                type="date"
+                id="until"
+                value={untilDate}
+                min={fechaDesde ? fechaDesde : dataNow}
+                // disabled={destination === "x"}
+                onChange={(e) => handleChange(e)}
+                className={s.create_input}
+              />
+            </div>
+          </div>
+
           {currentPackage ? (
             <div className={s.pag}>
-              <div className={s.divVacio}></div>
+              {/* <div className={s.divVacio}></div> */}
               <div className={s.paginadoSearch}>
                 <Paginado
                   packagesPerPage={packagesPerPage}

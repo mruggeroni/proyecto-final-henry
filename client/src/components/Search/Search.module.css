@@ -6,7 +6,7 @@
   padding-top: 0;
 }
 
-.containerSearch{
+.containerSearch {
   margin-top: 0;
 }
 
@@ -33,7 +33,7 @@
   margin-bottom: 8vw;
 }
 
-.eachcard > * {
+.eachcard>* {
   text-decoration: none;
 }
 
@@ -52,6 +52,7 @@
   flex-wrap: wrap;
   transition: 0s 1s all easeOutSine;
   align-items: center;
+  position: relative;
 }
 
 .contenedorFiltrosEsconder {
@@ -92,7 +93,7 @@
   padding-right: 10px; */
   min-width: 60px;
   margin-right: 20px;
-  
+  margin-bottom: 3px;
 }
 
 .create_input_date {
@@ -129,28 +130,31 @@
     0 17px 50px 0 rgba(0, 0, 0, 0.19);
 }
 
-.pag{
+.pag {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
   margin: auto;
-  padding-top: 2%
+  padding-top: 2%;
+  padding-bottom: 2%;
 }
 
-.viewComponent{
-  margin: auto;
+.viewComponent {
+  /* margin: auto; */
+  margin-right: 30px;
+  width: 10%;
+  min-height: 30px;
+}
+
+.divVacio {
   width: 10%;
 }
 
-.divVacio{
-  width: 10%;
-}
-
-.paginadoSearch{
+.paginadoSearch {
   width: 80%;
 }
 
-.moreFilters{
+.moreFilters {
   margin: auto;
   display: flex;
   flex-direction: column;
@@ -158,16 +162,17 @@
   cursor: pointer;
 }
 
-.moreFilters:hover{
+.moreFilters:hover {
   color: #4a9eaa;
 }
 
-.mainFilters{
+.mainFilters {
   background-color: #e4eaea;
   width: 90%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  flex-wrap: wrap;
   padding-left: 2%;
   padding-right: 2%;
   margin: auto;
@@ -179,9 +184,26 @@
     0 17px 50px 0 rgba(0, 0, 0, 0.19);
 }
 
-.verticalHideFilter{
+.verticalHideFilter {
   display: flex;
   flex-direction: column;
+}
+
+.create_label {
+  position: absolute;
+  top: -10px;
+  left: 8px;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+
+.otrodiv {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
 }
 
 /* .flechaFiltros {
@@ -194,17 +216,30 @@
   .noPaq {
     font-size: 2vw;
   }
+
+  .mainFilters {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 @media (max-width: 825px) {
   .noPaq {
     font-size: 2vw;
   }
+
+  .contenedorFiltros {
+    flex-direction: column;
+  }
 }
 
-@media (max-width: 780px){
-  .divVacio{
+@media (max-width: 780px) {
+  .divVacio {
     display: none;
+  }
+
+  .mainFilters {
+    height: fit-content;
   }
 }
 
@@ -212,6 +247,8 @@
   .noPaq {
     font-size: 3vw;
   }
+
+
 }
 
 /* SPINNER */
@@ -237,8 +274,10 @@
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
   }
 }
+
 /* SPINNER FIN*/
