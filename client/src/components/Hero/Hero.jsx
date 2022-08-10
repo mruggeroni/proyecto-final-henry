@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import style from "./Hero.module.css";
 import FilterSearch from "./FilterSearch/FilterSearch.jsx";
 import Poster from "./Poster/Poster";
@@ -10,14 +10,24 @@ import YouTube from "@u-wave/react-youtube";
 
 export default function Hero({ destinations }) {
   const [isMuted, setIsMuted] = useState(false);
+  const [backgroundV, setBackgroundV] = useState(true);
 
   function handleSound(e){
     e.preventDefault();
     setIsMuted(!isMuted);
   }
 
+  // function changeBackground(){
+  //   setBackgroundV(false);
+  // }
+
+  const changeBackground = useCallback(() => {
+    setBackgroundV(false);
+  }, []);
+
   return (
     <div className={style.hero_container}>
+      {backgroundV ?
         <YouTube
           video="Q8Zx6e8NiK8"
           autoplay={true}
@@ -28,21 +38,22 @@ export default function Hero({ destinations }) {
           showRelatedVideos={false}
           showInfo={false}
           allowFullscreen={false}
-          suggestedQuality={1060}
+          suggestedQuality='1060'
           muted={!isMuted}
           volume={0.3}
           onPause={() => console.log("no se puede poner pausa")}
           widht='100%'
           height='100%'
-          // playerVars= { {loop: 1} }
-          loop= {true}
+          onEnd={changeBackground}
           className={style.video_container}
-        />
+        /> 
+        : <div className={style.backgroundImgHero}></div>} 
+
       <div className={style.hero_filter}>
         <div className={style.filter_container}>
-          <div className={style.soundContainer}></div>
+          <div className={setBackgroundV ? style.soundContainer : style.displayNone}></div>
           <FilterSearch destinations={destinations} />
-      <div onClick={(e) => handleSound(e)} className={style.soundContainer}>{!isMuted ? <BiVolumeMute /> : <AiOutlineSound /> }</div>
+          <div onClick={(e) => handleSound(e)} className={setBackgroundV ? style.soundContainer : style.displayNone}>{!isMuted && setBackgroundV ? <BiVolumeMute /> : <AiOutlineSound /> }</div>
         </div>
       </div>
     </div>

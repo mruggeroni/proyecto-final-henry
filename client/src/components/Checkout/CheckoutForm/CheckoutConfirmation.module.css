@@ -37,6 +37,10 @@
   margin-bottom: 1vw;
 }
 
+.confirmation_btn:hover {
+  background-color: #4a9daa;
+}
+
 .textConfirmation {
   margin: auto;
   display: flex;

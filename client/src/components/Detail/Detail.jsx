@@ -427,7 +427,6 @@ export default function Detail() {
                   style={{ color: "#fafafa", fontSize: "24px" }}
                 />
               }
-              // No hagas cambios, no se van a guardar
               placeholderSymbol={<BsFillStarFill style={{ color: "red" }} />}
               fullSymbol={
                 <BsFillStarFill

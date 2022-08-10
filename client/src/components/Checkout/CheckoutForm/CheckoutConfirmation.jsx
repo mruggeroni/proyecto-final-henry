@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import { BsFillPatchCheckFill } from "react-icons/bs";
 import s from "./CheckoutConfirmation.module.css";
@@ -11,6 +12,7 @@ export default function CheckoutConfirmation({
   setShowCheckoutConfirmation,
 }) {
   const user = useSelector((state) => state.user);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { getAccessTokenSilently } = useAuth0();
 
@@ -32,7 +34,7 @@ export default function CheckoutConfirmation({
         </span>
         <h1>Su compra fue realizada con éxito!</h1>
         <p>Recibirá un mail a {user.email} con los datos de su compra.</p>
-        <button className={s.confirmation_btn}>Inicio</button>
+        <button onClick={ () => navigate('/') } className={s.confirmation_btn}>Inicio</button>
       </div>
     </div>
   );
