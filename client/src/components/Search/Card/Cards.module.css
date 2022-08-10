@@ -171,8 +171,6 @@ img {
   color: #fff;
 }
 
-<<<<<<< HEAD
-=======
 .discount{
   display: flex;
   flex-direction: row;
@@ -191,7 +189,6 @@ img {
   flex-direction: row;
 }
 
->>>>>>> 6619fdc4664f95d4d74e30022e796b228847e293
 @keyframes fade_in_show {
   0% {
     opacity: 0;

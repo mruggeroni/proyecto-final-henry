@@ -270,8 +270,7 @@ export default function Detail() {
           packages: [],
         };
         cart.total_order = descuento != 0 ? descuento : parseInt(input.total);
-        input.paquete.total =
-          descuento != 0 ? descuento : parseInt(input.total);
+        input.paquete.total = descuento != 0 ? descuento : parseInt(input.total);
         input.paquete.quantity = input.cantidad;
         input.paquete.activities = input.actividades;
         cart.packages.push(input.paquete);
@@ -281,10 +280,8 @@ export default function Detail() {
         let match = false;
         cart.packages?.forEach((p) => p.id === parseInt(id) && (match = true));
         if (!match) {
-          cart.total_order +=
-            descuento != 0 ? descuento : parseInt(input.total);
-          input.paquete.total =
-            descuento != 0 ? descuento : parseInt(input.total);
+          cart.total_order += descuento != 0 ? descuento : parseInt(input.total);
+          input.paquete.total = descuento != 0 ? descuento : parseInt(input.total);
           input.paquete.quantity = input.cantidad;
           input.paquete.activities = input.actividades;
           cart.packages.push(input.paquete);
@@ -425,11 +422,13 @@ export default function Detail() {
               onClick={(value) => handleEstrellas(value)}
               initialRating={rating}
               readonly={!canScore}
+              
               emptySymbol={
                 <BsFillStarFill
                   style={{ color: "#fafafa", fontSize: "24px" }}
                 />
               }
+              // No hagas cambios, no se van a guardar
               placeholderSymbol={<BsFillStarFill style={{ color: "red" }} />}
               fullSymbol={
                 <BsFillStarFill
