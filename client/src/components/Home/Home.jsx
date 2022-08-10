@@ -46,7 +46,7 @@ export default function Home() {
         const token = await getAccessTokenSilently();
         const usuario = await dispatch(createUser(token));
         dispatch(getAllCart(usuario.payload.id));
-        dispatch(getAllFavorites(token));
+        dispatch(getAllFavorites(token, usuario.payload.email));
         setLoading(false);
       } catch (error) {
         setLoading(false);
@@ -66,7 +66,7 @@ export default function Home() {
       } else {
         const token = await getAccessTokenSilently();
         // const res = await dispatch(createUser(token));
-        await dispatch(getAllFavorites(token));
+        await dispatch(getAllFavorites(token, user.email));
         try {
           await dispatch(getAllCart(user.id));
         } catch (error) {

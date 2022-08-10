@@ -29,6 +29,7 @@ import ListOrders from "./components/Dashboard/ListOrders.jsx";
 import CheckoutConfirmation from './components/Checkout/CheckoutForm/CheckoutConfirmation.jsx'
 import ListDeletedPackages from "./components/Dashboard/ListDeletedPackages.jsx";
 import Contact from "./components/Information/Contact.jsx";
+import About from "./components/Information/About.jsx";
 // import Footer from './components/Footer/Footer.jsx';
 
 function App() {
@@ -59,6 +60,7 @@ function App() {
         <Route path="/terms-and-conditions" element={<Terms />} />
         <Route path="/contact-us" element={<Contact />} />
         <Route path="/faq" element={<Faq />} />
+        <Route path="/about" element={<About />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/search" element={<Search />} />
         <Route path="/profile" element={<Home />} />
@@ -68,6 +70,7 @@ function App() {
         <Route path="/contact" element={<Home />} />
         <Route path="*" element={<Error404 />} />
       </Routes>
+      {/* <BacktoTop /> */}
       {/* <Footer /> */}
     </BrowserRouter>
   );
