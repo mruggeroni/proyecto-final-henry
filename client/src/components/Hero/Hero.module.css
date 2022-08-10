@@ -5,7 +5,16 @@
   object-fit: cover;
   height: 90vh;
   width: 100%;
-  background: #ffff;
+  margin-bottom: 15px;
+}
+
+.backgroundImgHero{
+  background-image: url("./../../assets/img/background-image.jpg");
+  background-position: bottom left;
+  background-size: cover;
+  object-fit: cover;
+  height: 90vh;
+  width: 100%;
   margin-bottom: 15px;
 }
 
@@ -110,6 +119,10 @@ input[type="date"]::-webkit-clear-button {
 
 .soundContainer svg{
   font-size: calc(1.7rem + .3vw);
+}
+
+.displayNone{
+  display: none;
 }
 
 
