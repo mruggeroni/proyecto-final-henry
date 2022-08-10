@@ -2,7 +2,6 @@ import Stripe from "stripe";
 import { statusCartFunction, statusOrderFunction } from '../controllers/OrdersController.js';
 let endpointSecret 
 let idP =[]
-
 endpointSecret = "whsec_0b5f910e80d53f35ab1415e1b1e44fddd72476ce111c907e4ef053a8f8214f1a";
 const stripe = Stripe('sk_test_51LSoUXFrlpRCY5YH7F7s7KDDAOsF4LAeXJyAJrHjUUSObyUbcDECpGu7N2Afj6N9P1aa7hdc1Ca85x4fSDUJebER00IklWuRZ3')
 export const PaymentResponse = async (req, res)=>{
@@ -30,10 +29,14 @@ export const PaymentResponse = async (req, res)=>{
 
        }
        if(eventType ==='charge.failed'){
-        let idA = idP[0]
+         console.log('HERE')
+         let idA
+        if(idP.length>1){idA=idP[idP.length-1]}
+        else{idA=idP[0]}
         const paymentIntent = await stripe.paymentIntents.retrieve(
           idA
         );
+        console.log(paymentIntent)
         let id= Number(paymentIntent.metadata.order)
         await statusOrderFunction(id, 'cancel')
       }
