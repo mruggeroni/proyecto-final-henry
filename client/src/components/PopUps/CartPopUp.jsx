@@ -75,7 +75,8 @@ export default function CartPopOut({
                     <Card
                       name={p.name}
                       image={p.main_image}
-                      price={p.total}
+                      price={p.total/p.quantity}
+                      total={p.total}
                       id={p.id}
                       key={p.id}
                       popUp={"cart"}

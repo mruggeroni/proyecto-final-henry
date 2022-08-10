@@ -68,7 +68,7 @@ export const getOrderDetail = (id) => {
 export const getOrders = () => {
   try {
     return async function (dispatch) {
-      let res = await axios.get("/orders");
+      let res = await axios.get("/orders?limit=10000");
       return dispatch({ type: GET_ORDERS, payload: res.data.results });
     };
   } catch (error) {
@@ -554,26 +554,31 @@ export function getFavoritesLocalStorage(payload, id) {
   };
 }
 
-export const getAllFavorites = (token) => {
-  return async function (dispatch) {
-    let res = await axios.get("/favourites", {
-      headers: {
-        authorization: `Bearer ${token}`,
-      },
-    });
-    return dispatch({ type: GET_FAVORITES, payload: res.data });
-  };
-};
-
-export const postFavorites = (id, token) => {
+export const getAllFavorites = (token, email) => {
   return async function (dispatch) {
     try {
-      let res = await axios.post("/favourites/" + id, "", {
+
+      let res = await axios.get(`/favourites/?email=${email}`, {
         headers: {
           authorization: `Bearer ${token}`,
         },
       });
-      dispatch(getAllFavorites(token));
+      return dispatch({ type: GET_FAVORITES, payload: res.data });
+    } catch(error) {
+      console.log(error)
+    }
+  };
+};
+
+export const postFavorites = (id, token, email) => {
+  return async function (dispatch) {
+    try {
+      let res = await axios.post("/favourites/" + id, {email}, {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
+      dispatch(getAllFavorites(token, email));
       return res;
     } catch (error) {
       console.log(error.message);
@@ -581,15 +586,15 @@ export const postFavorites = (id, token) => {
   };
 };
 
-export const deleteFavorites = (id, token) => {
+export const deleteFavorites = (id, token, email) => {
   return async function (dispatch) {
     try {
-      let res = await axios.delete("/favourites/" + id, {
+      let res = await axios.delete(`/favourites/${id}/?email=${email}`, {
         headers: {
           authorization: `Bearer ${token}`,
         },
       });
-      dispatch(getAllFavorites(token));
+      dispatch(getAllFavorites(token, email));
       return res;
     } catch (error) {
       console.log(error);

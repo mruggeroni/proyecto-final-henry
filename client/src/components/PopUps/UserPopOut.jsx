@@ -27,7 +27,7 @@ export default function UserPopOut({ showProfile, setShowProfile, divBackground 
     console.log(isAuthenticated);
     if(isAuthenticated){
       favorites.forEach((f) => dispatch(postFavorites(f.id, token)))
-      dispatch(getAllFavorites(token));
+      dispatch(getAllFavorites(token, user.email));
       localStorage.removeItem('favorites');
       cart.forEach((c) => dispatch(postCartPackage(user.id)))
       dispatch(getAllCart(user.id));

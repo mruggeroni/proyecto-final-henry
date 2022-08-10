@@ -9,7 +9,8 @@ export default function Card({ name, image, date, price, id, start_date, end_dat
       <div className={s.cardBody}>
         <h3>{name}</h3>
         <br />
-        <h5>{date.split("-").reverse().join("-")}</h5>
+        <h5>Fecha de compra: {date.split("-").reverse().join("-")}</h5>
+        <h5>Total: ${price}</h5>
         {/* <h5>
           {description?.length > 310
             ? description.slice(0, 310) + "..."

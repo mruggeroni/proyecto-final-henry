@@ -25,6 +25,8 @@ import {
   getAllCart,
   updateCart,
   getRating,
+  getOrders,
+  getOrderDetail,
 } from "../../redux/actions/index";
 import { useAuth0 } from "@auth0/auth0-react";
 import Loading from "../Loading/Loading";
@@ -54,6 +56,7 @@ export default function Detail() {
   });
 
   const { isAuthenticated, getAccessTokenSilently } = useAuth0();
+  const [canScore, setCanScore] = useState(false);
 
   useEffect(async () => {
     setLoading(true);
@@ -76,6 +79,7 @@ export default function Detail() {
         total: packageDetail.price,
         actividades: [],
       });
+      setCanScore(false);
       setCheckeado(false);
       if (!isAuthenticated) {
         let favorites = JSON.parse(localStorage.getItem("favorites"));
@@ -83,17 +87,33 @@ export default function Detail() {
       } else {
         const fetch = async () => {
           const token = await getAccessTokenSilently();
-          await dispatch(getAllFavorites(token));
-          favorites.forEach((f) => f.id === parseInt(id) && setCheckeado(true));
+          try {
+            await dispatch(getAllFavorites(token, user.email));
+            favorites.forEach((f) => f.id === parseInt(id) && setCheckeado(true));
+          } catch(error) {
+            alert('No se puede realizar esta acción')
+          }
         };
         fetch();
       }
-      console.log(packageDetail.available, user.is_admin);
-      console.log(!packageDetail.available && user.is_admin !== true);
       if (!packageDetail.available && user.is_admin !== true) {
         navigate("/");
       }
 
+      if(user.id) {
+        let res = await dispatch(getOrders());
+        let userOrders = res.payload.filter( (o) => o.userId === user.id );
+        userOrders?.forEach( async (o) => {
+          if(canScore) return;
+          let res = await dispatch(getOrderDetail(o.id));
+          res.payload.packages?.forEach( (p) => {
+            if(p.id === parseInt(id)) {
+              setCanScore(true);
+              return;
+            }
+          })
+        })
+      }
       setLoading(false);
     }
   }, [packageDetail, relationatedPackage, allActivities]);
@@ -107,9 +127,9 @@ export default function Detail() {
     dispatch(getAllActivities());
     dispatch(getFavoritesLocalStorage());
     dispatch(getCartLocalStorage());
+    setCanScore(false);
     const fetch = async () => {
       const token = await getAccessTokenSilently();
-      // console.log(token)
       const usuario = await dispatch(createUser(token));
       console.log(usuario.payload);
       dispatch(getAllCart(usuario.payload.id));
@@ -175,10 +195,12 @@ export default function Detail() {
     } else {
       const token = await getAccessTokenSilently();
       if (checkeado) {
-        await dispatch(deleteFavorites(id, token));
+        console.log(token)
+        await dispatch(deleteFavorites(id, token, user.email));
         setCheckeado(false);
       } else {
-        await dispatch(postFavorites(id, token));
+
+        await dispatch(postFavorites(id, token, user.email));
         setCheckeado(true);
       }
     }
@@ -396,10 +418,13 @@ export default function Detail() {
                 }`}
               </b>
             </p>
+            {
+              console.log('Score ', canScore)
+            }
             <Rating
               onClick={(value) => handleEstrellas(value)}
               initialRating={rating}
-              readonly={!isAuthenticated}
+              readonly={!canScore}
               emptySymbol={
                 <BsFillStarFill
                   style={{ color: "#fafafa", fontSize: "24px" }}

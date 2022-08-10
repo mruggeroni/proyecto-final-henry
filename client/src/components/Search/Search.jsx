@@ -26,7 +26,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 export default function FilteredSearch() {
   const dispatch = useDispatch();
   const { isAuthenticated, getAccessTokenSilently } = useAuth0();
-
+  const user = useSelector( (state) => state.user )
   const allPackages = useSelector((state) => state.allPackages);
   const filteredPackages = useSelector((s) => s.filteredPackages);
   const allDestinations = useSelector(
@@ -164,7 +164,7 @@ export default function FilteredSearch() {
       dispatch(getFavoritesLocalStorage());
     } else {
       const token = await getAccessTokenSilently();
-      dispatch(getAllFavorites(token));
+      dispatch(getAllFavorites(token, user.email));
     }
     // const fetch = async () => {
     //   const token = await getAccessTokenSilently();
@@ -442,12 +442,7 @@ export default function FilteredSearch() {
                   >
                     Regiones
                   </option>
-                  <option
-                    selected={estadoRegion === "all" ? true : false}
-                    value="all"
-                  >
-                    Todas las regiones
-                  </option>
+        
                   {regionesFiltradas?.sort().map((el) => (
                     <option
                       selected={estadoRegion === el ? true : false}

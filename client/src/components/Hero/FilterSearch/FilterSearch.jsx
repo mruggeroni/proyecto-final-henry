@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { RiPlaneLine } from 'react-icons/ri';
 import {
   filterPackagesByDate,
   filterPackagesByDestination,
@@ -16,7 +17,7 @@ export default function FilterSearch({ destinations }) {
   const [destination, setDestination] = useState("x");
   const [fromDate, setFromDate] = useState(dataNow);
   const [untilDate, setUntilDate] = useState(dataNow);
-  const destinationsFilter = document.getElementById('searchDestinations')?.value
+  const destinationsFilter = document.getElementById('searchDestinations')?.value;
 
   const handleChange = (e) => {
     console.log(e.target.id);

@@ -41,8 +41,8 @@ export default function RemoveFavorite({ id, popUp, componente }){
 				await dispatch(getFavoritesLocalStorage());
 			} else {
 				const token = await getAccessTokenSilently();
-				await dispatch(deleteFavorites(id, token));
-				await dispatch(getAllFavorites(token));
+				await dispatch(deleteFavorites(id, token, user.email));
+				await dispatch(getAllFavorites(token, user.email));
 			}
 		}	
 	}

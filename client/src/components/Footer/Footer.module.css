@@ -8,6 +8,7 @@
   justify-content: space-between;
   align-items: center;
   background-color: #4A9EAA;
+  z-index: 1000;
 }
 
 .footer_social {
@@ -54,6 +55,27 @@
 
 .footer_copyright {
   color: #fff;
+}
+
+.firstLineFooter{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 95%;
+  z-index: 2000;
+}
+
+.emptyDiv4Styles{
+  width: 30%;
+}
+
+.topButton{
+  width: 30%;
+  margin-top: 1rem;
+  display:flex;
+  flex-direction: row;
+  justify-content: space-between;
+  /* padding-right: 20px; */
 }
 
 @media (max-width: 760px) {

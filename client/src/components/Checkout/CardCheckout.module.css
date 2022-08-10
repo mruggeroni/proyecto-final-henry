@@ -19,8 +19,20 @@
 }
 
 .removeCard{
-    text-align: right;
-    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 1vw;
+}
+
+.modifybutton{
+    color: #788080;
+    text-decoration: underline;
+	font-size: 1vw;
+}
+
+.modifybutton:hover{
+	color: #4a9eab;
 }
 
 .topGroup{
@@ -34,25 +46,26 @@
     margin: auto;
     text-align: right;
     height: 100%;
+    padding: 1vw;
 }
 
-.checkoutPackTitle{
-    height: 80%;
-    font-size: 1.7vw;
-    padding: 5%;
-}
+/* .checkoutPackTitle{
+    /* height: 70%; */
+    /* font-size: 1.7vw; */
+    /* padding: 5%; */
 
-.inlineGroup{
+
+/* .inlineGroup{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     margin: auto;
-}
+} */
 
-.inlineGroup h4{
+/* .inlineGroup h4{
     padding-left: 5%;
     font-size: 1.5vw;
-}
+} */
 
 .bottomGroup{
     padding: 1vw;
@@ -77,3 +90,54 @@
     margin-bottom: 1vw;
     font-size: 1.5vw;
 }
+
+.qtySelect{
+    display: flex;
+    flex-direction: row;
+}
+
+.qtyInput{
+    display: flex;
+    flex-direction: row;
+    margin: auto;
+}
+
+.qtyInput select{
+    border:none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    -ms-appearance: none;
+    padding-left: 8%;
+    padding-top: 0%;
+    padding-bottom: 0%;
+    font-size: calc(1.275rem + .3vw);
+    background: transparent;
+}
+
+.qtySelect select{
+    margin-left: 4.5%;
+    padding: 2%;
+    padding-top: 0%;
+    padding-bottom: 0%;
+    font-size: calc(1.275rem + .3vw);
+}
+
+@media (max-width: 1000px) {
+    .modifybutton{
+        font-size: 1.5vw;
+    }
+  }
+  
+  @media (max-width: 850px) {
+      .modifybutton{
+        font-size: 2vw;
+    }
+  }
+  
+  @media (max-width: 500px) {
+  
+    .modifybutton{
+      font-size: 2vw;
+      }
+  }

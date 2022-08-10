@@ -6,6 +6,6 @@ const router = Router();
 
 router.post('/favourites/:id', verifyJwt, addFavourite)
 router.get('/favourites', verifyJwt, getFavourites)
-router.delete('/favourites/:id', verifyJwt, deleteFavourite)
+router.delete('/favourites/:id'/* , verifyJwt */, deleteFavourite)
 
 export default router;
