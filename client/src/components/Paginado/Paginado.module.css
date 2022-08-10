@@ -55,7 +55,7 @@
 */
 /* .paginado_btn, */
 /* .number a { */
-  /* border-radius: 100%; */
+/* border-radius: 100%; */
 /* } */
 
 /*.number a.active {
@@ -65,34 +65,57 @@
 /*como hago para que quede current page seleccionada??*/
 
 @media (max-width: 1300px) {
+
   .selectedNum,
   .number {
     width: 2.5vw;
   }
+
   .container {
     height: 5vw;
   }
 }
 
 @media (max-width: 1050px) {
+
   .selectedNum,
   .number {
     width: 3vw;
   }
+
   .container {
     height: 5vw;
   }
 }
 
 @media (max-width: 780px) {
+
   .selectedNum,
   .number {
     width: 4vw;
   }
+
   .paginado {
     justify-content: flex-start;
   }
+
   .container {
     height: 5vw;
+  }
+
+  .paginado li {
+    display: none;
+  }
+
+  .paginado .selectedNum {
+    display: inline-block;
+  }
+
+  .number:first-of-type {
+    display: inline-block;
+  }
+
+  .number:last-of-type {
+    display: inline-block;
   }
 }
