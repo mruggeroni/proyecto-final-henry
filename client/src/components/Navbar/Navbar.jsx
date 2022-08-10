@@ -24,7 +24,7 @@ export default function Navbar() {
       // dispatch(getFavoritesLocalStorage());
     } else {
       const token = await getAccessTokenSilently();
-      await dispatch(getAllFavorites(token))
+      await dispatch(getAllFavorites(token, user.email));
       try {
         await dispatch(getAllCart(user.id));
       } catch(error) {

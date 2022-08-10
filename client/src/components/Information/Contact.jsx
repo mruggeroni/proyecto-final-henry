@@ -7,10 +7,10 @@ export default function Contact() {
     <div className={s.information_container}>
       <div className={s.information_content}>
         <h2 className={s.information_title}>Contacto</h2>
-        <p className={s.information_text}>
+        {/* <p className={s.information_text}>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Ratione sed
           ea, aut similique maiores quo.
-        </p>
+        </p> */}
         <h4>Llamanos</h4>
         <hr />
         <div className={s.callus}>

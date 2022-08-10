@@ -14,6 +14,7 @@ export default function FavoritesPopOut({ showProfile, setShowProfile, divBackgr
   const dispatch = useDispatch();
   const [isActive, setIsActive] = useState(false);
   const { isAuthenticated, getAccessTokenSilently, } = useAuth0();
+  const user = useSelector( (state) => state.user );
   let favorites = [];
   let stateFavorites = useSelector((state) => state.favorites);
   let stateFavoritesLocalStorage = useSelector((state) => state.favoritesLocalStorage);
@@ -28,7 +29,7 @@ export default function FavoritesPopOut({ showProfile, setShowProfile, divBackgr
       dispatch(getFavoritesLocalStorage());
     } else{
       const token = await getAccessTokenSilently();
-      dispatch(getAllFavorites(token))
+      dispatch(getAllFavorites(token, user.email))
     }
   }, [dispatch])
   

@@ -116,10 +116,10 @@ export default function PopUpsComponent() {
           return;
         }
       });
-      if (matchFav) await dispatch(postFavorites(fLocal.id, token));
+      if (matchFav) await dispatch(postFavorites(fLocal.id, token, res.payload.email));
     });
     localStorage.getItem("favorites") && localStorage.removeItem("favorites");
-    await dispatch(getAllFavorites(token));
+    await dispatch(getAllFavorites(token, res.payload.email));
 
     // Cart
     let matchCart = true;

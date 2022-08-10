@@ -11,7 +11,7 @@ import BacktoTop from "../BacktoTop/BacktoTop";
 export default function Footer() {
   return (
     <div className={s.footer_container}>
-      <div className={s.backToTop}>
+      <div className={s.firstLineFooter}>
         <div className={s.emptyDiv4Styles}></div>
         <div className={s.footer_social}>
           <a href="/" className={s.footer_social_icon}>
@@ -31,9 +31,12 @@ export default function Footer() {
           </a>
         </div>
         <div className={s.topButton}>
-          
-      </div>
+          <div></div>
+          <div>
+            <BacktoTop />
+          </div>
         </div>
+      </div>
       <div className={s.footer_links}>
         <NavLink to='/about' className={s.footer_link}>Nosotros</NavLink> 
         |<NavLink to='/privacy' className={s.footer_link}>Politica de privacidad</NavLink> 

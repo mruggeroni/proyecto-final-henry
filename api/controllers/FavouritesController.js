@@ -53,8 +53,11 @@ export const addFavourite = async (req, res) => {
 
 export const getFavourites = async (req, res) => {
 	try {
-		const userInfo = await getUserInfoByToken(req);
-		const user = await findOneUserFromDataBase(userInfo.email)
+		const {email} = req.query
+		if(!email) return res.status(400).send('Missing data')
+    
+		const user = await findOneUserFromDataBase(email)
+
 		const favourites = await user.getPackages({ joinTableAttributes: ['favourite']})
 		const filtered = []
 		favourites.forEach(e => {
@@ -69,9 +72,11 @@ export const getFavourites = async (req, res) => {
 export const deleteFavourite = async (req, res) => {
 	try {
 		const id = req.params.id
-		const userInfo = await getUserInfoByToken(req)
-		const user = await findOneUserFromDataBase(userInfo.email)
+		const {email} = req.query
+		if(!email) return res.status(400).send('Missing data')
+    
 		const packages = await Package.findByPk(id)
+		const user = await findOneUserFromDataBase(email)
 		user.addPackage(packages, { through: { favourite: false } })
 		res.status(200).send('Favourite Package removed successfully')
 	} catch (e) {

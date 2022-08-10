@@ -87,8 +87,12 @@ export default function Detail() {
       } else {
         const fetch = async () => {
           const token = await getAccessTokenSilently();
-          await dispatch(getAllFavorites(token));
-          favorites.forEach((f) => f.id === parseInt(id) && setCheckeado(true));
+          try {
+            await dispatch(getAllFavorites(token, user.email));
+            favorites.forEach((f) => f.id === parseInt(id) && setCheckeado(true));
+          } catch(error) {
+            alert('No se puede realizar esta acción')
+          }
         };
         fetch();
       }
@@ -191,10 +195,12 @@ export default function Detail() {
     } else {
       const token = await getAccessTokenSilently();
       if (checkeado) {
-        await dispatch(deleteFavorites(id, token));
+        console.log(token)
+        await dispatch(deleteFavorites(id, token, user.email));
         setCheckeado(false);
       } else {
-        await dispatch(postFavorites(id, token));
+
+        await dispatch(postFavorites(id, token, user.email));
         setCheckeado(true);
       }
     }

@@ -9,6 +9,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 export default function Card({ name, image, description, price, on_sale, id }) {
   const [checked, setChecked] = useState(false);
   const favPackage = { name, image, description, price, id };
+  const user = useSelector( (state) => state.user )
   const dispatch = useDispatch();
   const {
     isAuthenticated,
@@ -62,13 +63,13 @@ export default function Card({ name, image, description, price, on_sale, id }) {
     } else{
       const token = await getAccessTokenSilently();
       if (checked) {
-        await dispatch(deleteFavorites(id, token));
+        await dispatch(deleteFavorites(id, token, user.email));
         setChecked(false);
       } else {
-        await dispatch(postFavorites(id, token));
+        await dispatch(postFavorites(id, token, user.email));
         setChecked(true);
       }
-      dispatch(getAllFavorites(token));
+      await dispatch(getAllFavorites(token, user.email));
     }
 
     // if(!checked){
