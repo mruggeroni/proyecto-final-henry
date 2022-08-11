@@ -262,16 +262,6 @@ export default function CheckoutCart() {
               </div>
             </div>
           )}
-
-          {Object.keys(cart).length > 0 &&
-            cart.packages.length > 0 &&
-            isAuthenticated && (
-              <div className={s.buttonContainer}>
-                <Link to={"/checkout"}>
-                  <button className={s.comprarBtn}>Comprar</button>
-                </Link>
-              </div>
-            )}
         </div>
       </div>
     </div>
