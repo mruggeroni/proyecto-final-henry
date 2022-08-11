@@ -25,14 +25,12 @@ export default function Historial() {
   const orderDetails = useSelector( (state) => state.orderDetails );
     
   useEffect( async () => {
-    // if(Object.keys(orderDetails).length) {
-    //   await dispatch(cleanOrderDetail());
-    // }
-    if(!Object.keys(orderDetails).length) {
-      await dispatch(getOrders());
-      await dispatch(getOrderDetail(id));
-    }
-  }, []);
+      await dispatch(cleanOrderDetail());
+      setTimeout( async () => {
+        await dispatch(getOrders());
+        await dispatch(getOrderDetail(id));
+      }, 0);
+  }, [id]);
 
   return (
     <div className={s.containerHistorial}>
