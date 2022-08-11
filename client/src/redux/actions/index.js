@@ -28,7 +28,7 @@ export const ORDENAR = "ORDENAR";
 export const UPDATE_USER = "UPDATE_USER";
 export const DELETE_USER = "DELETE_USER";
 export const GET_USER_BY_ID = "GET_USER_BY_ID";
-export const STATUS_USER = 'STATUS_USER';
+export const STATUS_USER = "STATUS_USER";
 export const GET_ORDERS = "GET_ORDERS";
 export const PATCH_ORDER = "PATCH_ORDER";
 export const GET_CART = "GET_CART";
@@ -38,10 +38,10 @@ export const DELETE_CART = "DELETE_CART";
 export const PATCH_PACKAGE = "PATCH_PACKAGE";
 export const CLEAN_PACKAGE_BY_ID = "CLEAN_PACKAGE_BY_ID";
 export const CLEAN_ALL_PACKAGE = "CLEAN_ALL_PACKAGE";
+export const CLEAN_ORDER_DETAIL = "CLEAN_ORDER_DETAIL";
 export const GET_RATING = "GET_RATING";
 export const GET_FEATURED = "GET_FEATURED";
 export const GET_ORDER_DETAILS = "GET_ORDER_DETAILS";
-
 
 /* export const patchOrders = (id) => {
   try {
@@ -58,7 +58,7 @@ export const getOrderDetail = (id) => {
   try {
     return async function (dispatch) {
       let res = await axios.get("/order/" + id);
-      console.log(res)
+      console.log(res);
       return dispatch({ type: GET_ORDER_DETAILS, payload: res.data });
     };
   } catch (error) {
@@ -80,7 +80,7 @@ export const getOrders = () => {
 export const patchRestorePackages = (id, token) => {
   return async function (dispatch) {
     try {
-      const res = await axios.patch("/restoredPackage/" + id, "",{
+      const res = await axios.patch("/restoredPackage/" + id, "", {
         headers: {
           authorization: `Bearer ${token}`,
         },
@@ -151,7 +151,7 @@ export const deleteUser = (id, token) => {
         },
       });
       return dispatch({ type: DELETE_USER, payload: res.data });
-    } catch(error) {
+    } catch (error) {
       Swal.fire(`Acesso denegado.`, ` `, "error");
     }
   };
@@ -262,7 +262,7 @@ export const getUserStatus = (id) => {
 export const patchUserRestore = (id, token) => {
   return async function (dispatch) {
     try {
-      const res = await axios.patch("/restoreUser/" + id, "",{
+      const res = await axios.patch("/restoreUser/" + id, "", {
         headers: {
           authorization: `Bearer ${token}`,
         },
@@ -367,6 +367,12 @@ export const getUserById = (id, token) => {
     }
   };
 };
+
+export function cleanOrderDetail() {
+  return {
+    type: "CLEAN_ORDER_DETAIL",
+  };
+}
 
 export function orderByPrice(payload) {
   return {
@@ -563,15 +569,14 @@ export function getFavoritesLocalStorage(payload, id) {
 export const getAllFavorites = (token, email) => {
   return async function (dispatch) {
     try {
-
       let res = await axios.get(`/favourites/?email=${email}`, {
         headers: {
           authorization: `Bearer ${token}`,
         },
       });
       return dispatch({ type: GET_FAVORITES, payload: res.data });
-    } catch(error) {
-      console.log(error)
+    } catch (error) {
+      console.log(error);
     }
   };
 };
@@ -579,11 +584,15 @@ export const getAllFavorites = (token, email) => {
 export const postFavorites = (id, token, email) => {
   return async function (dispatch) {
     try {
-      let res = await axios.post("/favourites/" + id, {email}, {
-        headers: {
-          authorization: `Bearer ${token}`,
-        },
-      });
+      let res = await axios.post(
+        "/favourites/" + id,
+        { email },
+        {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        }
+      );
       dispatch(getAllFavorites(token, email));
       return res;
     } catch (error) {
@@ -622,7 +631,7 @@ export function getAllCart(id) {
       return dispatch({ type: GET_CART, payload: res.data });
     };
   } catch (error) {
-    console.log('ERROR POST ' + error);
+    console.log("ERROR POST " + error);
   }
 }
 

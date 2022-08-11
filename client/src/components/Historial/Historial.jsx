@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { HiOutlineEmojiSad } from "react-icons/hi";
 import {
+  cleanOrderDetail,
   filterPackagesByDestination,
   getAllPackage,
   getOrderDetail,
@@ -23,6 +24,9 @@ export default function Historial() {
   const orderDetails = useSelector( (state) => state.orderDetails );
     
   useEffect( async () => {
+    if(Object.keys(orderDetails).length) {
+      await dispatch(cleanOrderDetail());
+    }
     await dispatch(getOrders());
     await dispatch(getOrderDetail(id)); 
   }, [])
