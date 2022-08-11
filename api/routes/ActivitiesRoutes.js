@@ -6,7 +6,7 @@ import { verifyAdminOrSuperAdminPermission, verifyJwt, verifySuperAdminPermissio
 const router = Router();
 
 router.get('/activities', getActivities);
-router.post('/activities',verifyJwt, verifyAdminOrSuperAdminPermission, createActivity);
-router.put('/activities/:id',verifyJwt, verifyAdminOrSuperAdminPermission, putActivity)
+router.post('/activities',verifyJwt, /* verifyAdminOrSuperAdminPermission, */ createActivity);
+router.put('/activities/:id',verifyJwt, /* verifyAdminOrSuperAdminPermission, */ putActivity)
 
 export default router;

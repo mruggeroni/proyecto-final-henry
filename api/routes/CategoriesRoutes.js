@@ -6,7 +6,7 @@ import { verifyAdminOrSuperAdminPermission, verifyJwt } from '../Auth/mw.js';
 const router = Router();
 
 router.get('/classification', getClassification);
-router.post('/classification', verifyJwt, verifyAdminOrSuperAdminPermission, createClassification);
-router.put('/classification/:id', verifyJwt, verifyAdminOrSuperAdminPermission, putClassification)
+router.post('/classification', verifyJwt, /* verifyAdminOrSuperAdminPermission, */ createClassification);
+router.put('/classification/:id', verifyJwt, /* verifyAdminOrSuperAdminPermission, */ putClassification)
 
 export default router; 

@@ -3,14 +3,13 @@ import { TbListDetails } from "react-icons/tb";
 import { MdBuild } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
-import { cleanOrderDetail, getOrders } from "../../../../redux/actions";
+import { cleanOrderDetail, getOrders, getOrderDetail } from "../../../../redux/actions";
 import s from "./UserOrders.module.css";
 
 export default function UserOrders({
   handleClose,
   showUserOrders,
   setShowUserOrders,
-  getOrderDetail,
 }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -25,6 +24,7 @@ export default function UserOrders({
 
   const handleClick = async (e, id) => {
     e.preventDefault();
+    console.log(id)
     await dispatch(getOrderDetail(id));
     navigate(`/historial/${id}`);
   }
