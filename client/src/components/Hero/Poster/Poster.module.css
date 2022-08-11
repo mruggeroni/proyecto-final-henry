@@ -100,7 +100,7 @@
 }
 
 .container {
-    padding-top: 120px;
+  padding-top: 120px;
 }
 
 .header_wrapper {
@@ -112,11 +112,12 @@
 .header {
   position: relative;
   box-sizing: border-box;
-  width: calc(55rem + .3vw); /* Para modificar el tamaño */
+  max-width: calc(55rem + .3vw);
+  /* Para modificar el tamaño */
   height: calc(12rem + .3vw);
   margin: 0 auto;
   transform: rotate(-0.5deg);
-  clip-path: polygon(25px 100%, 0 0, 100% 0, 830px 90%);
+  clip-path: polygon(1.563rem 100%, 0 0, 100% 0, 51.875rem 90%);
   background: #ffffffcc;
   color: #292929;
   padding: 50px 60px 0;
@@ -124,6 +125,7 @@
 
 .header_subtitle {
   display: block;
+  max-width: 50%;
   font-size: calc(2.6rem + .3vw);
   transform: rotate(-1deg);
   line-height: 0;
@@ -131,10 +133,11 @@
 
 .header_title {
   margin: 0;
-  font-size: calc(5.3rem + .3vw);
+  max-width: 100%;
+  font-size: 7.1vw;
   text-transform: uppercase;
   transform: rotate(-1.5deg);
-  letter-spacing: 5px;
+  letter-spacing: 0.313;
   font-weight: 900;
 }
 
@@ -147,11 +150,9 @@
   padding-top: 90px;
   transform: rotate(1deg);
 
-  background: radial-gradient(
-      circle at 0 100%,
+  background: radial-gradient(circle at 0 100%,
       transparent 15px,
-      #4a9eaae6 15px
-    ),
+      #4a9eaae6 15px),
     radial-gradient(circle at 100% 100%, rgba(0, 0, 0, 0) 15px, #4a9eaae6 15px),
     radial-gradient(circle at 100% 0, rgba(0, 0, 0, 0) 15px, #4a9eaae6 15px),
     radial-gradient(circle at 0 0, rgba(0, 0, 0, 0) 15px, #4a9eaae6 15px);
@@ -180,4 +181,56 @@
   color: white;
   font-weight: 700;
   font-size: 30px;
+}
+
+@media (max-width: 1000px) {
+  .header_title {
+    font-size: 8.7vw;
+  }
+}
+
+@media (max-width: 802px) {
+  .header_title {
+    font-size: 8.5vw;
+    margin-top: 1vw;
+  }
+}
+
+@media (max-width: 739px) {
+  .header_title {
+    font-size: 8.3vw;
+    margin-top: 1vw;
+  }
+
+  @media (max-width: 682px) {
+    .header_title {
+      font-size: 8.1vw;
+      margin-top: 2vw;
+    }
+  }
+
+  @media (max-width: 631px) {
+    .header_wrapper {
+      max-width: 70%;
+      margin: auto;
+      text-align: center;
+      padding-bottom: 1vw;
+    }
+
+    .header_title {
+      font-size: 8.7vw;
+    }
+
+    .header_subtitle {
+      font-size: 5.7vw;
+      max-width: 100%;
+    }
+  }
+
+  @media (max-width: 500px) {
+    .header_title {
+      font-size: 10vw;
+      margin-top: 2vw;
+    }
+  }
 }
