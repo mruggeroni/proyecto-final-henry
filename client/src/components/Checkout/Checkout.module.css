@@ -34,9 +34,17 @@
 .botones {
   margin-top: 2vh;
   display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 2vh;
+}
+
+
+
+.metodoPago {
+  font-size: 3vw;
 }
 
 .botonPasarela {
@@ -276,6 +284,8 @@
     font-size: 3vw;
   }
 
+
+
   .buttonContainer {
     display: block;
     width: 95%;
@@ -298,12 +308,6 @@
 @media (max-width: 575px) {
   .noPaq {
     font-size: 3vw;
-  }
-
-  .botones {
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
   }
 
   .botonPasarela {

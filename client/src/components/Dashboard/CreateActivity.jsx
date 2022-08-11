@@ -9,7 +9,7 @@ import {
 } from "../../redux/actions";
 import ModalCategorias from "./ModalCategoria";
 import { useAuth0 } from "@auth0/auth0-react";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 
 function validate(input) {
   let error = {};
@@ -89,14 +89,41 @@ export default function ActivityCreate({
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = await getAccessTokenSilently();
-    console.log('HERE')
-    console.log(token)
+    console.log("HERE");
+    console.log(token);
     e.price = parseInt(e.price);
     const valida = validate({ ...input });
-    setError(valida)
-    console.log(valida)
-    console.log(error)
-    if (!Object.keys(error).length) {
+    setError(valida);
+
+    // if (!Object.keys(error).length) {
+    if (
+      valida.name ||
+      valida.price ||
+      valida.description ||
+      valida.image ||
+      valida.classification
+    ) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops algo fallo...",
+        text: "Presta mas atencion al completar!",
+      });
+    } else {
+      try {
+        dispatch(getAllActivities());
+        dispatch(createActivities(input, token));
+        // Alert bootstrap
+        Swal.fire({
+          icon: "success",
+          title: "Actividad creada!",
+        });
+      } catch (error) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops algo fallo...",
+          text: error.message,
+        });
+      }
       setInput({
         name: "",
         description: "",
@@ -104,30 +131,8 @@ export default function ActivityCreate({
         image: "",
         classification: "",
       });
-
-      try {
-        dispatch(getAllActivities());
-        dispatch(createActivities(input, token));
-        // Alert bootstrap
-        Swal.fire({
-          icon: 'success',
-          title: 'Actividad creada!',
-        })
-      } catch (error) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops algo fallo...',
-          text: error.message,
-        })
-      }
-    } else {
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops algo fallo...',
-        text: 'Presta mas atencion al completar!',
-      })
     }
-  }
+  };
 
   const categorias = useSelector((state) => state.categories);
   useEffect(() => {
@@ -209,7 +214,7 @@ export default function ActivityCreate({
                 value="default"
                 selected={
                   input.classification === "default" ||
-                    input.classification === ""
+                  input.classification === ""
                     ? true
                     : false
                 }
@@ -261,7 +266,13 @@ export default function ActivityCreate({
             type="submit"
             className={style.create_btn}
             id="create"
-            disabled={!input.name || !input.price || !input.description || !input.classification || !input.image}
+            disabled={
+              !input.name ||
+              !input.price ||
+              !input.description ||
+              !input.classification ||
+              !input.image
+            }
           >
             Crear actividad
           </button>
