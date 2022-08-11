@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { getDeletedPackages, patchRestorePackages } from "../../redux/actions";
 import Dashboard from "./Dashboard";
 import { FaTrashRestoreAlt } from 'react-icons/fa';
@@ -14,11 +14,21 @@ export default function ListDeletedPackages() {
   const deletedPackages = useSelector((state) => state.deletedPackages );
   const [loading, setLoading] = useState(true);
   const { getAccessTokenSilently} = useAuth0();
-  
+  const navigate = useNavigate();
+
   useEffect( async () => {
       setLoading(true);
-      const token = await getAccessTokenSilently();
-      await dispatch(getDeletedPackages(token));
+      try {
+        const token = await getAccessTokenSilently();
+        await dispatch(getDeletedPackages(token));
+      } catch(error) {
+        navigate('/dashboard');
+        Swal.fire(
+          `Acesso denegado.`,
+          ` `,
+          'error'
+        )
+      }
       setLoading(false);
   }, [dispatch]);
 

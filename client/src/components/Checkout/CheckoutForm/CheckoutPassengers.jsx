@@ -54,6 +54,12 @@ export default function CheckoutPassengers({
             <div className={s.avioncito}>
               <FaPlane />
             </div>
+            //<div>
+            //        <PassengerInfo cart={cart}/>
+          //  </div>   
+        //    <button className={s.profile_btn} onClick={(e) => handlepay(e)}>Siguiente</button>
+      //  </div> 
+    //</div>   
             <h3>¿Quién viaja?</h3>
           </div>
           <p>

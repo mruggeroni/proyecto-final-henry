@@ -54,7 +54,7 @@ export default function ListOrders() {
                 {orders.length &&
                   orders.map((o) => {
                     return (
-                      <tr key={"orderList" + o.first_name}>
+                      <tr key={"orderList" + o.user.first_name + o.id}>
                         <td>{o.id}</td>
                         <td>{o.date}</td>
                         <td>$ {o.total_order}</td>
