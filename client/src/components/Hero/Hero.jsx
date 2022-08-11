@@ -47,13 +47,13 @@ export default function Hero({ destinations }) {
           onEnd={changeBackground}
           className={style.video_container}
         /> 
-        : <div className={style.backgroundImgHero}></div>} 
+        : <div className={style.backgroundImgHero}><Poster /></div> } 
 
       <div className={style.hero_filter}>
         <div className={style.filter_container}>
-          <div className={setBackgroundV ? style.soundContainer : style.displayNone}></div>
+          <div className={backgroundV ? style.soundContainer : style.displayNone}></div>
           <FilterSearch destinations={destinations} />
-          <div onClick={(e) => handleSound(e)} className={setBackgroundV ? style.soundContainer : style.displayNone}>{!isMuted && setBackgroundV ? <BiVolumeMute /> : <AiOutlineSound /> }</div>
+          <div onClick={(e) => handleSound(e)} className={backgroundV ? style.soundContainer : style.displayNone}>{!isMuted ? <BiVolumeMute /> : <AiOutlineSound /> }</div>
         </div>
       </div>
     </div>

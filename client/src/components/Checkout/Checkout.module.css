@@ -144,6 +144,8 @@
 .comprarBtn:hover {
   background-color: #4a9eaae6;
   color: #fafafa;
+  box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24),
+  0 17px 50px 0 rgba(0, 0, 0, 0.19);
 }
 
 .noPaqCheckout:hover{
@@ -245,6 +247,18 @@
   .resumenCarrito{
     font-size: 3vw;
   } 
+
+  .buttonContainer{
+    display: block;
+    width: 95%;
+    margin: auto;
+    align-self: center;
+  }
+
+  .comprarBtn {
+    padding-top: 0;
+    width: 100%;
+  }
 }
 
 @media (max-width: 825px) {

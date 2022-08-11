@@ -1,13 +1,14 @@
 .container {
   width: 80%;
   margin: auto;
-  margin-top: 8vw;
+  margin-top: 90px;
   display: flex;
   flex-direction: column;
 }
 
 .historialTitle {
   text-align: center;
+  margin-top: 20px;
   margin-bottom: 1.5vw;
 }
 
@@ -59,9 +60,13 @@
   }
 }
 
-@media (max-width: 575px) {
+@media (max-width: 700px) {
   .view {
     margin-top: 12vw;
+  }
+
+  .container{
+    width: 100%;
   }
 
   .noPaq {

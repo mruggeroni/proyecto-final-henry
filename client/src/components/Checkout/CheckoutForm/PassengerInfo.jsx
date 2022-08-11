@@ -51,8 +51,6 @@ function firstCap(name) {
   return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
 }
 
-
-
 export default function PassengerInfo() {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
@@ -72,12 +70,10 @@ export default function PassengerInfo() {
 
   useEffect(async () => {
     const token = await getAccessTokenSilently();
-    console.log("user");
     await dispatch(createUser(token));
     await dispatch(getAllCart(user.id));
-    console.log("cart");
     return () => {
-      localStorage.remove("passenger");
+      // localStorage.remove("passenger");
       setInput({
         firstName: "",
         middleName: "",
@@ -90,8 +86,10 @@ export default function PassengerInfo() {
     };
   }, []);
 
-  function handlePassenger(e, i) {
+  function handlePassenger(namePack, e, i) {
     e.preventDefault();
+
+    // if()
     setInput({
       ...input,
       id: i,
@@ -106,13 +104,12 @@ export default function PassengerInfo() {
   function handleNextPassenger(nameP, e, index) {
     e.preventDefault();
     let isMatch = false;
-    console.log(nameP);
-    console.log(e.target.children[nameP].id);
     let tagNamePack = (e.target.children[nameP].getAttribute('name'));
-    let tnpnoSpace = tagNamePack.replace(/\s/g, '');
+    let tagNamePackageNoSpace = tagNamePack.replace(/\s/g, '');
     let namePack = nameP.replace(/\s/g, '');
-    console.log(namePack);
-    let passenger = [];
+    let passenger = JSON.parse(localStorage.getItem(`passenger${namePack}`)) || [];
+    
+    // let passenger = [];
 
     if (input.firstName && input.lastName && !isMatch) {
       if (!localStorage.getItem(`passenger${namePack}`)) {
@@ -123,9 +120,11 @@ export default function PassengerInfo() {
         let passenger = JSON.parse(localStorage.getItem(`passenger${namePack}`));
         let match = false;
         for (let i = 0; i < passenger.length; i++) {
-          if (tnpnoSpace === namePack && passenger[i].id !== index) {
+          if (tagNamePackageNoSpace === namePack && passenger[i].id !== index) {
             passenger.push(input);
             localStorage.setItem(`passenger${namePack}`, JSON.stringify(passenger));
+            match = true;
+            
             setInput({
               firstName: "",
               middleName: "",
@@ -135,34 +134,41 @@ export default function PassengerInfo() {
               birthdate: "",
               id: "",
             });
-              match = true;
+              
             break;
           }
 
-          let passenger = JSON.parse(localStorage.getItem(`passenger${namePack}`)) || [];
-          // COMO HAGO XA TRAERME EL NOMBRE DEL ACORDION
-         
-          for (let i = 0; i < passenger.length; i++) {
-            if (tnpnoSpace === namePack && passenger[i].id === index){
-              isMatch = true;
-              setInput({ ...passenger[i] });
-              document.getElementById(`titleP${parseInt(passenger[i].id) + 1}`).innerHTML = `Pasajero #${parseInt(passenger[i].id) + 1}: ` + passenger[i].firstName + " " + passenger[i].lastName;
+          
+          
+          
+        }
+        
+        setInput({
+          firstName: "",
+          middleName: "",
+          lastName: "",
+          numberDni: "",
+          gender: "",
+          birthdate: "",
+          id: "",
+        });
+
+        
+        if(localStorage.getItem(`passenger${namePack}`)){
+          let thisPaq = localStorage.getItem(`passenger${namePack}`);
+          for (let i = 0; i < thisPaq.length; i++) {
+            if (thisPaq[i].id === index){
+              // isMatch = true;
+              setInput({ ...thisPaq[i] });
+              document.getElementById(`titleP${parseInt(thisPaq[i].id) + 1}`).innerHTML = `Pasajero #${parseInt(thisPaq[i].id) + 1}: ` + thisPaq[i].firstName + " " + thisPaq[i].lastName;
               return;
             }
-          }
         }
+      }
 
-        if(!isMatch) {
-          setInput({
-            firstName: "",
-            middleName: "",
-            lastName: "",
-            numberDni: "",
-            gender: "",
-            birthdate: "",
-            id: "",
-          });
-        }
+        // if(!isMatch) {
+         
+        // }
         //   if(!match) {
         // passenger.push(input);
         // localStorage.setItem("passenger", JSON.stringify(passenger));
@@ -173,6 +179,16 @@ export default function PassengerInfo() {
       
       
       
+    } else {
+      setInput({
+        firstName: "",
+        middleName: "",
+        lastName: "",
+        numberDni: "",
+        gender: "",
+        birthdate: "",
+        id: "",
+      });
     }
   }
 
@@ -203,7 +219,7 @@ export default function PassengerInfo() {
                         <input
                           type="text"
                           name="firstName"
-                          onChange={(e) => handlePassenger(e, i)}
+                          onChange={(e) => handlePassenger(p.name, e, i)}
                           value={input.firstName}
                           className={s.profile_input}
                         />
@@ -217,7 +233,7 @@ export default function PassengerInfo() {
                           type="text"
                           name="middleName"
                           value={input.middleName}
-                          onChange={(e) => handlePassenger(e, i)}
+                          onChange={(e) => handlePassenger(p.name, e, i)}
                           className={s.profile_input}
                         />
                       </div>
@@ -228,7 +244,7 @@ export default function PassengerInfo() {
                           type="text"
                           name="lastName"
                           value={input.lastName}
-                          onChange={(e) => handlePassenger(e, i)}
+                          onChange={(e) => handlePassenger(p.name, e, i)}
                           className={s.profile_input}
                         />
                       </div>
@@ -243,7 +259,7 @@ export default function PassengerInfo() {
                           type="date"
                           name="birthdate"
                           value={input.birthdate}
-                          onChange={(e) => handlePassenger(e, i)}
+                          onChange={(e) => handlePassenger(p.name, e, i)}
                           className={s.profile_input}
                           max= '2022-08-09'
                           min='1925-01-01'
@@ -252,7 +268,7 @@ export default function PassengerInfo() {
                       {error.birthdate ? (<div className={s.error}>{error.birthdate}</div>) : ( <br /> )}
                       <div>
                         <label className={s.profile_label}>Sexo</label>
-                        <select onChange={(e) => handlePassenger(e, i)} name='gender'>
+                        <select onChange={(e) => handlePassenger(p.name, e, i)} name='gender'>
                           <option selected hidden>
                             Seleccionar
                           </option>
@@ -270,7 +286,7 @@ export default function PassengerInfo() {
                           type="number"
                           name="numberDni"
                           value={input.numberDni}
-                          onChange={(e) => handlePassenger(e, i)}
+                          onChange={(e) => handlePassenger(p.name, e, i)}
                           className={s.profile_input}
                         />
                       </div>

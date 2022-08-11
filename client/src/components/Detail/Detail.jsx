@@ -133,9 +133,8 @@ export default function Detail() {
     const fetch = async () => {
       const token = await getAccessTokenSilently();
       const usuario = await dispatch(createUser(token));
-      console.log(usuario.payload);
       dispatch(getAllCart(usuario.payload.id));
-      dispatch(getAllFavorites(token));
+      dispatch(getAllFavorites(token, usuario.payload.email));
     };
     fetch();
   }, [dispatch]);

@@ -71,8 +71,10 @@ export default function UserEdit({ handleClickUser }) {
                 <hr className={s.create_line} />
                 <div className={s.profile_btn}>
                   <div className={s.profile_main_btn}>
+                    <div>
                     <button className={s.profile_menu_btn} onClick={(handleShowProfile)} >Configuración</button>
                     <button className={s.profile_menu_btn} onClick={(handleShowUserOrders)}>Lista de ordenes</button>
+                    </div>
                     {/* <button className={s.profile_menu_btn} onClick={(handleShowPaymentDetails)}>Datos de pago</button> */}
                     {/* <button className={s.profile_menu_btn} onClick={(handleShowSettings)}>Configuraciones</button> */}
                   </div>
