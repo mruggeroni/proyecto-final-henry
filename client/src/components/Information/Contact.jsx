@@ -38,34 +38,38 @@ export default function Contact() {
         </div>
         <hr />
         <h4>Envianos un mensaje</h4>
-        <form action="https://formsubmit.co/ezetestpf@gmail.com" method="POST" className={s.form}>
+        <form
+          action="https://formsubmit.co/ezetestpf@gmail.com"
+          method="POST"
+          className={s.form}
+        >
           <div>
             <input type="hidden" name="_template" value="table" />
 
             <input
               type="text"
-              name='Nombre'
+              name="Nombre"
               className={s.input_container}
               placeholder="Nombre"
               required
-              />
+            />
             <input
               type="text"
-              name='Apellido'
+              name="Apellido"
               className={s.input_container}
               placeholder="Apellido"
               required
             />
             <input
               type="text"
-              name='Email'
+              name="Email"
               className={s.input_container}
               placeholder="Email"
               required
             />
             <input
               type="text"
-              name='Telefono'
+              name="Telefono"
               className={s.input_container}
               placeholder="Telefono"
               required
@@ -74,11 +78,11 @@ export default function Contact() {
           <textarea
             cols="51"
             rows="10"
-            name='Asunto'
+            name="Asunto"
             className={s.textarea_container}
             placeholder="Por favor describe el asunto"
           ></textarea>
-        <input type='submit' className={s.form_btn} value='Enviar' />
+          <input type="submit" className={s.form_btn} value="Enviar" />
         </form>
         {/* <button className={s.form_btn}>Enviar</button> */}
       </div>
