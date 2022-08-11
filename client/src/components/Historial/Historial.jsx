@@ -30,8 +30,7 @@ export default function Historial() {
         await dispatch(getOrders());
         await dispatch(getOrderDetail(id));
       }, 0);
-
-  }, []);
+  }, [id]);
 
   return (
     <div className={s.containerHistorial}>
