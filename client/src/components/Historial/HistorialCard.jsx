@@ -25,6 +25,8 @@ export default function Card({
             : description}
         </h5> */}
       </div>
+      <div className={s.cardHistorialBody}>
+      </div>
       {/* <div className={s.rightGroup}>
       <div className={s.date}>
           <h3>{start_date}</h3>
