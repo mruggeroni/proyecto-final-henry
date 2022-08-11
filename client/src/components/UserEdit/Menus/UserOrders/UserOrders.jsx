@@ -14,7 +14,7 @@ export default function UserOrders({ handleClose, showUserOrders, setShowUserOrd
   
     useEffect( async () => {
       await dispatch(getOrders());
-      await dispatch(cleanOrderDetail());
+      // await dispatch(cleanOrderDetail());
     }, [])
 
   const validateStatus = (status) => {
