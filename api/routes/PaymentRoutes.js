@@ -52,6 +52,11 @@ router.post("/paymentML/respuesta", (req, res) => {
             estado
           );
           console.log("status", status);
+          if (estado === "paid") {
+            paidEmail(id, "paid");
+          } else {
+            paidEmail(id, "cancel");
+          }
         }
       } catch (error) {
         res.status(400).send("algo fallo");
