@@ -95,7 +95,7 @@ export default function CreatePackage({
 
   const handleAddImage = (e) => {
     e.preventDefault();
-    if (input.images.length < 3) {
+    if (input.images?.length < 3) {
       setInput({ ...input, images: [...input.images, ""] });
     }
   };
@@ -240,6 +240,7 @@ export default function CreatePackage({
           price: "",
           description: "",
           main_image: "",
+          images: [],
           images0: "",
           images1: "",
           images2: "",
