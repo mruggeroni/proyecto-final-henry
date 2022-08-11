@@ -246,6 +246,7 @@ export default function CheckoutCart() {
 
           {Object.keys(cart).length > 0 && cart.packages.length > 0 && (
             <div className={s.botones}>
+              <h3 className={s.metodoPago}>Metodos de pago</h3>
               <div className={s.botonPasarela} onClick={(e) => handlePayML(e)}>
                 <img
                   className={s.botonImg}
