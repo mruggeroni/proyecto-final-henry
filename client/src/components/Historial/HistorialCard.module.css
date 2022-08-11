@@ -6,7 +6,7 @@
   flex-direction: row;
   justify-content: space-evenly;
   color: black;
-  width: calc(40rem + .3vw);
+  width: 100%;
   border: none;
   background-color: #fafafa;
   box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24),
@@ -22,163 +22,47 @@
   color: black;
 }
 
+.cardHistorial img {
+  margin-left: 0;
+  width: calc(20rem + .3vw);
+}
+
 .cardBodyHistorial h3 {
   font-size: calc(8rem + .3vw);
   color: black;
 }
 
 .cardBodyHistorial h5 {
-  font-size:  calc(5rem + .3vw);
+  font-size: calc(5rem + .3vw);
 }
 
-/* ---------------------- */
 
-.cardHistorial {
-  position: relative;
-  margin: auto;
-  margin-top: 4vw;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  color: black;
-  width: 100%;
-  border: none;
-  background-color: #fafafa;
-  box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24),
-    0 17px 50px 0 rgba(0, 0, 0, 0.19);
-}
-
-.cardHistorial img {
-  margin-left: 0;
-  width: calc(20rem + .3vw);
-}
-
-.cardBody {
-  margin: auto;
-  margin-left: 3vw;
-  z-index: 5;
-  /* word-wrap: break-word; */
-  /* width: calc(20rem + .3vw); */
-  color: black;
-  background-color: #fafafa;
-}
-
-.cardBody h3 {
-  font-size: calc(1.5rem + .3vw);
-  color: black;
-}
-
-.cardBody h5 {
-  font-size: calc(0.9rem + .3vw);
-}
-
-.both{
-  display: flex;
-  flex-direction: row;
-  z-index: 1000;
-}
-
-.hide {
-  visibility: hidden;
-  width: 50%;
-}
-
-.price {
-  visibility: visible;
-  margin-right: 4vw;
-  z-index: 1;
-  margin-top: 2vw;
-  width: 100%;
-}
-
-/* .price h3 {
-  font-size: 2vw;
-} */
-
-/* .price h5 {
-  font-size: 1.2vw;
-} */
-
-.rectangle {
-  width: 2vw;
-  height: 100%;
-  background-color: #4a9eaa;
-  color: #fafafa;
-  border: none;
-  z-index: 0;
-  transform: translate(0, 0);
-  transition: all 1s cubic-bezier(1, 0.96, 0, 0.01) 250ms;
-  text-align: right;
-  position: absolute;
-  right: 0;
-}
-
-.rightGroup {
-  display: flex;
-  flex-direction: row;
-  z-index: 1;
-}
-
-.date h3{
-  font-size: 1.5vw;
-}
-
-.textDeco:link {
-  text-decoration: none;
-  color: black;
-}
-.textDeco:visited {
-  text-decoration: none;
-  color: black;
-}
-.textDeco:hover {
-  text-decoration: none;
-}
-.textDeco:active {
-  text-decoration: none;
-  color: black;
-}
-
-.discount{
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-}
-
-.price h4{
-  display: flex;
-  flex-direction: row;
-  margin-top: 1vw;
-  width: 100%;
-}
-
-.discount h4{
-  display: flex;
-  flex-direction: row;
-}
 
 @media (max-width: 704px) {
-  .cardBody h3 {
+  .cardBodyHistorial h3 {
     font-size: calc(1.3rem + .3vw);
     color: black;
   }
+
   .cardHistorial img {
     margin-left: 0;
     width: calc(17rem + .3vw);
   }
+
   .cardHistorial {
     width: 100%;
   }
-  
+
 }
 
 @media (max-width: 600px) {
-  .cardBody h3 {
+  .cardBodyHistorial h3 {
     margin-top: 5px;
     font-size: calc(1.3rem + .3vw);
     color: black;
     margin-bottom: 0px;
   }
+
   .cardHistorial img {
     margin-left: 0;
     width: calc(15rem + .3vw);

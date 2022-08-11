@@ -67,7 +67,9 @@ export default function CheckoutPassengers({
           </p>
         </div>
         <div>
-          <PassengerInfo cart={cart} />
+          {cart.packages?.map((p) => (
+            <PassengerInfo packageCart={p} />
+          ))}
         </div>
         <button className={s.profile_btn} onClick={(e) => handlepay(e)}>
           Pago con STRIPE
