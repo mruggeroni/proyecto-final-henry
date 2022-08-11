@@ -34,6 +34,7 @@ import {
   GET_FEATURED,
   GET_ORDER_DETAILS,
   STATUS_USER,
+  CLEAN_ORDER_DETAIL,
   GET_ALL_PACKAGES_DASHBOARD,
   GET_DELETED_PACKAGES
 } from "./../actions/index.js";
@@ -91,6 +92,11 @@ const initialState = {
 
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
+    case CLEAN_ORDER_DETAIL:
+      return {
+        ...state,
+        orderDetails: {}
+      };
     case GET_ALL_PACKAGES:
       return {
         ...state,
