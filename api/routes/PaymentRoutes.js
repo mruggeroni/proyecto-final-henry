@@ -53,9 +53,15 @@ router.post("/paymentML/respuesta", (req, res) => {
           );
           console.log("status", status);
           if (estado === "paid") {
-            paidEmail(id, "paid");
+            paidEmail(
+              infoPago.data.additional_info.items[0].description,
+              "paid"
+            );
           } else {
-            paidEmail(id, "cancel");
+            paidEmail(
+              infoPago.data.additional_info.items[0].description,
+              "cancel"
+            );
           }
         }
       } catch (error) {
