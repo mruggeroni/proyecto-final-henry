@@ -14,11 +14,11 @@
 }
 
 .cardBodyHistorial {
+  margin: auto;
+  margin-left: 3vw;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: auto;
-  margin-left: 3vw;
   width: 50%;
   z-index: 1;
   word-wrap: break-word;
