@@ -134,7 +134,7 @@
 .header_title {
   margin: 0;
   max-width: 100%;
-  font-size: 7.1vw;
+  font-size: 6vw;
   text-transform: uppercase;
   transform: rotate(-1.5deg);
   letter-spacing: 0.313;
@@ -183,22 +183,30 @@
   font-size: 30px;
 }
 
-@media (max-width: 1000px) {
+/* @media (max-width: 1100px) {
   .header_title {
-    font-size: 8.7vw;
+    font-size: 200px;
+  }
+} */
+
+
+
+@media (max-width: 950px) {
+  .header_title {
+    font-size: 8vw;
   }
 }
 
 @media (max-width: 802px) {
   .header_title {
-    font-size: 8.5vw;
+    font-size: 8vw;
     margin-top: 1vw;
   }
 }
 
 @media (max-width: 739px) {
   .header_title {
-    font-size: 8.3vw;
+    font-size: 8vw;
     margin-top: 1vw;
   }
 
