@@ -22,10 +22,13 @@ export default function UserOrders({
     // await dispatch(cleanOrderDetail());
   }, []);
 
-  const handleClick = async (e, route) => {
+  const handleClick = async (e, id) => {
     e.preventDefault();
     await dispatch(cleanOrderDetail());
-    navigate(route);
+    setTimeout(() => {
+      await dispatch(getOrderDetail(id));
+      navigate(`/historial/${id}`);
+    }, 1);
   }
 
   const validateStatus = (status) => {
@@ -72,7 +75,7 @@ export default function UserOrders({
                       </td>
                       <td onClick={handleClose}>
                         <div
-                          onClick={ (e) => handleClick(e, `/historial/${o.id}`) }
+                          onClick={ (e) => handleClick(e, o.id) }
                           className={s.fl_table_btn}
                         >
                           <TbListDetails />
