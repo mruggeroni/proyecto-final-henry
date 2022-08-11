@@ -27,7 +27,7 @@ export default function Hero({ destinations }) {
 
   return (
     <div className={style.hero_container}>
-      {backgroundV ?
+      {/* {backgroundV ?
         <YouTube
           video="Q8Zx6e8NiK8"
           autoplay={true}
@@ -47,8 +47,8 @@ export default function Hero({ destinations }) {
           onEnd={changeBackground}
           className={style.video_container}
         /> 
-        : <div className={style.backgroundImgHero}><Poster /></div> } 
-
+        : <div className={style.backgroundImgHero}><Poster /></div> }  */}
+<div className={style.backgroundImgHero}><Poster /></div>
       <div className={style.hero_filter}>
         <div className={style.filter_container}>
           <div className={backgroundV ? style.soundContainer : style.displayNone}></div>

@@ -1,4 +1,5 @@
 import axios, { AxiosError } from "axios";
+import Swal from "sweetalert2";
 
 export const GET_PACKAGE_BY_ID = "GET_PACKAGE_BY_ID";
 export const GET_RELATIONATED = "GET_RELATIONATED";
@@ -143,12 +144,16 @@ export const updateUser = (newUser, token) => {
 
 export const deleteUser = (id, token) => {
   return async function (dispatch) {
-    let res = await axios.delete("/user/" + id, {
-      headers: {
-        authorization: `Bearer ${token}`,
-      },
-    });
-    return dispatch({ type: DELETE_USER, payload: res.data });
+    try {
+      let res = await axios.delete("/user/" + id, {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
+      return dispatch({ type: DELETE_USER, payload: res.data });
+    } catch(error) {
+      Swal.fire(`Acesso denegado.`, ` `, "error");
+    }
   };
 };
 
@@ -265,7 +270,7 @@ export const patchUserRestore = (id, token) => {
       dispatch(getUsers(token));
       return res;
     } catch (error) {
-      console.log(error.message);
+      throw error;
     }
   };
 };
@@ -281,6 +286,7 @@ export const patchUserAdmin = (id, isAdmin, token) => {
       dispatch(getUsers(token));
       return res;
     } catch (error) {
+      Swal.fire(`Acesso denegado.`, ` `, "error");
       console.log(error.message);
     }
   };

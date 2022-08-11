@@ -43,9 +43,9 @@ export default function Card({ name, image, description, price, on_sale, id }) {
 
   async function handleFavorite(e) {
     e.preventDefault();
-    if (checkPackageInCart(id)) {
-      return alert("ya esta en el carrito");
-    }
+    // if (checkPackageInCart(id)) {
+    //   return alert("ya esta en el carrito");
+    // }
     setChecked(!checked);
 
     if (!isAuthenticated) {

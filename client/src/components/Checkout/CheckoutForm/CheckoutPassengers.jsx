@@ -37,7 +37,7 @@ export default function CheckoutPassengers({ showCheckoutPassengers, handleCheck
                 <p>Asegurese de usar el nombre tal cual aparezca en su documentación</p>
             </div>
             <div>
-                <PassengerInfo cart={cart}/>
+                    <PassengerInfo cart={cart}/>
             </div>   
             <button className={s.profile_btn} onClick={(e) => handlepay(e)}>Siguiente</button>
         </div> 
