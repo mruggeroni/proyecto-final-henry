@@ -30,6 +30,7 @@ import CheckoutConfirmation from './components/Checkout/CheckoutForm/CheckoutCon
 import ListDeletedPackages from "./components/Dashboard/ListDeletedPackages.jsx";
 import Contact from "./components/Information/Contact.jsx";
 import About from "./components/Information/About.jsx";
+import CheckoutCancel from "./components/Checkout/CheckoutForm/CheckoutCancel.jsx";
 // import Footer from './components/Footer/Footer.jsx';
 
 function App() {
@@ -55,6 +56,7 @@ function App() {
         {/* <Route path="/checkout" element={ Object.keys(user).length ? <CheckoutParent /> : <Navigate to='/' />} /> */}
         <Route path="/checkout" element={ <CheckoutParent /> } />
         <Route path="/checkout/confirmation" element={ <CheckoutConfirmation /> } />
+        <Route path="/checkout/cancel" element={ <CheckoutCancel /> } />
         <Route path="/historial/:id" element={ Object.keys(user).length ? <Historial /> : <Navigate to='/' />} />
         <Route path='/createaccount' element={ Object.keys(user).length ? <CreateAccountModal /> : <Navigate to='/' />} />
         <Route path="/terms-and-conditions" element={<Terms />} />

@@ -4,7 +4,7 @@ import Footer from "../Footer/Footer";
 import s from './Information.module.css';
 
 export default function Terms() {
-    const nameCompany = 'Travel';
+    const nameCompany = 'HenryTravel';
     const url = 'proyecto-final-henry.vercel.app';
     return (
         <div className={s.information_container}>

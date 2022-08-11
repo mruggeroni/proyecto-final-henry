@@ -7,6 +7,7 @@
     "@testing-library/jest-dom": "^5.11.10",
     "@testing-library/react": "^11.2.6",
     "@testing-library/user-event": "^13.1.1",
+    "@u-wave/react-youtube": "^0.7.4",
     "auth0-js": "^9.19.0",
     "axios": "^0.27.2",
     "bootstrap": "^5.2.0",

@@ -1,15 +1,63 @@
-.confirmation_container{
+/* .confirmation_container{
     margin: auto;
     margin-top: 10vw;
     background-color: #e4eaea;
     width: 70%;
     height: 20vw;
     text-align: center;
+} */
+
+.confirmation_container {
+  width: 100%;
+  height: 100vh;
+  position: absolute;
+  z-index: 1300;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
 }
 
-.textConfirmation{
-    margin: auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
+.cancel_icon,
+.confirmation_icon {
+  margin-bottom: 30px;
+  font-size: 64px;
+  color: #4a9eab;
+}
+
+.cancel_icon {
+  color: #fd1313;
+}
+
+.error_btn,
+.confirmation_btn {
+  z-index: 988;
+  border: none;
+  background-color: #4a9eaae6;
+  color: #fafafa;
+  font-size: 1.3vw;
+  padding: 0.8% 4%;
+  text-decoration: none;
+  margin: auto;
+  margin-bottom: 1vw;
+}
+
+.confirmation_btn:hover {
+  background-color: #4a9daa;
+}
+
+.error_btn {
+  background-color: #4a9daa;
+}
+
+.error_btn:hover {
+  background-color: #4a9eaae6;
+}
+
+.textConfirmation {
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
 }

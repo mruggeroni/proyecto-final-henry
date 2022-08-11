@@ -1,6 +1,7 @@
 .fullContainer{
   flex-wrap: wrap;
   margin-top: 10vw;
+  padding: 2%;
 }
 
 .favTitle{

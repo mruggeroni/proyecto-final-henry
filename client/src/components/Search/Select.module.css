@@ -1,5 +1,7 @@
 .select {
   height: 2.5vw;
+  min-height: 30px;
+  min-width: 70px;
   box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24),
     0 17px 50px 0 rgba(0, 0, 0, 0.19);
   appearance: none;
@@ -32,11 +34,12 @@ label {
   flex-direction: row;
 }
 
-.sortPriceContainer{
+.sortPriceContainer {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
-  width: 30%
+  position: relative;
+  /* width: 30% */
 }
 
 @media (max-width: 1000px) {
@@ -54,10 +57,10 @@ label {
 @media (max-width: 575px) {
   .select {
     height: 4vw;
-    font-size: 2vw;
+    /* font-size: 2vw; */
   }
 
   label {
-    font-size: 3vw;
+    /* font-size: 3vw; */
   }
 }

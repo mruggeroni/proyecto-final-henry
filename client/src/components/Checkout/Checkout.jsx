@@ -16,9 +16,11 @@ import CreateAccount from "./CrateAccount.jsx";
 import s from "./Checkout.module.css";
 import { HiOutlineEmojiSad } from "react-icons/hi";
 import Carousel from "../Detail/Carousel";
+import Footer from '../Footer/Footer.jsx'
 
 export default function CheckoutCart() {
   let cart = {};
+  let carrouselImg = [];
   const allPackage = useSelector((state) => state.allPackages);
   const [showLogin, setShowLogin] = useState(true);
   const [showCreateAccount, setShowCreateAccount] = useState(false);
@@ -85,113 +87,115 @@ export default function CheckoutCart() {
   //   }
 
   return (
-    <div className={s.checkoutContainer}>
-      {
-        // !isAuthenticated ? (
-      //   <div className={s.logInCreateAcc}>
-            //<div className={s.right}>
-      //       <div className={s.headerCheckout}>
-      //         <button>Login</button>
-      //         {/* <button ></button> */}
-      //         {/* <button onClick={(handleShowLogin)} >Login</button> */}
-      //         {/* <button onClick={(handleShowCreateAccount)}>Crear Cuenta</button> */}
-      //       </div>
-      //       {!showLogin ? (
-      //         <div className={s.lines}>
-      //           <hr className={s.line} />
-      //           <hr className={s.create_line} />
-      //         </div>
-      //       ) : (
-      //         <div className={s.lines}>
-      //           <hr className={s.create_line} />
-      //           <hr className={s.line} />
-      //         </div>
-      //       )}
-      //     </div>
-      //     <div>
-      //       <Login
-      //         showProfile={showLogin}
-      //         setShowProfile={setShowLogin}
-      //         loginWithPopup={loginWithPopup}
-      //       />
-      //       {/* <CreateAccount showSettings={showCreateAccount} setShowSettings={setShowCreateAccount} /> */}
-      //     </div>
-      //   </div>
-      // ) : (
-      <div className={s.right}>
-        <div className={s.containerCarrousel}>
-          {Object.keys(cart).length && cart.packages?.length ? (
+    <div>
+      <div className={s.checkoutContainer}>
+        {
+          // !isAuthenticated ? (
+        //   <div className={s.logInCreateAcc}>
+              //<div className={s.right}>
+        //       <div className={s.headerCheckout}>
+        //         <button>Login</button>
+        //         {/* <button ></button> */}
+        //         {/* <button onClick={(handleShowLogin)} >Login</button> */}
+        //         {/* <button onClick={(handleShowCreateAccount)}>Crear Cuenta</button> */}
+        //       </div>
+        //       {!showLogin ? (
+        //         <div className={s.lines}>
+        //           <hr className={s.line} />
+        //           <hr className={s.create_line} />
+        //         </div>
+        //       ) : (
+        //         <div className={s.lines}>
+        //           <hr className={s.create_line} />
+        //           <hr className={s.line} />
+        //         </div>
+        //       )}
+        //     </div>
+        //     <div>
+        //       <Login
+        //         showProfile={showLogin}
+        //         setShowProfile={setShowLogin}
+        //         loginWithPopup={loginWithPopup}
+        //       />
+        //       {/* <CreateAccount showSettings={showCreateAccount} setShowSettings={setShowCreateAccount} /> */}
+        //     </div>
+        //   </div>
+        // ) : (
+        <div className={s.right}>
+          <div className={s.containerCarrousel}>
+            {Object.keys(cart).length && cart.packages?.length ? (
+                  <div className={s.carrouselTravel}>
+                    {
+                    cart.packages.length > 1 && cart.packages.map((p, i) => i !== 0 && carrouselImg.push(p.main_image)) &&
+
+                    <Carousel
+                      main_image={cart.packages[0].main_image}
+                      images={carrouselImg}
+                      componente={"checkout"}
+                    />
+                    }
+                  </div>
+            ) : (
+              <div className={s.carrouselTravel}>
+                <Carousel
+                  main_image={allPackage?.length && allPackage[0].main_image}
+                  images={allPackage?.length && allPackage[0].images}
+                  componente={"checkout"}
+                />
+              </div>
+            )}
+          </div>
+          </div>
+        }
+        <div className={s.left}>
+          <div className={s.headerResumenCheckout}>
+            <h3 className={s.resumenCarrito}>Resumen del Carrito</h3>
+            {Object.keys(cart).length > 0 && cart.total_order > 0 && (
+              <div className={s.totalCartPrice}>
+                <h4>{cart.total_order ? "Total: $" + cart.total_order : " "}</h4>
+              </div>
+            )}
+          </div>
+          <hr />
+          {Object.keys(cart) && cart.packages?.length ? (
             cart.packages?.map((p) => {
               return (
-                <div className={s.carrouselTravel}>
-                  <Carousel
-                    main_image={p.main_image}
-                    images={p.images}
-                    componente={"checkout"}
-                  />
+                <div className={s.cardCheckoutContainer} key={p.id}>
+                  <Link to={"/detail/" + p.id} key={p.id}>
+                    <CardCheckout
+                      packageDetail={p}
+                      name={p.name}
+                      image={p.main_image}
+                      qty={p.quantity}
+                      price={p.price}
+                      totalPack={p.total}
+                      activities={p.activities}
+                      on_sale={p.on_sale}
+                      id={p.id}
+                      key={p.id}
+                    />
+                  </Link>
                 </div>
               );
             })
           ) : (
-            <div className={s.carrouselTravel}>
-              <Carousel
-                main_image={allPackage?.length && allPackage[0].main_image}
-                images={allPackage?.length && allPackage[0].images}
-                componente={"checkout"}
-              />
+            <div className={s.noPaqCheckout}>
+              <div className={s.noPaq}>
+                <div className={s.sadFace}>
+                  <HiOutlineEmojiSad />
+                </div>
+                <p className={s.vacioPaq}>Tu carrito se encuentra vacío</p>
+              </div>
+            </div>
+          )}
+          {(Object.keys(cart).length > 0 && cart.packages.length > 0 && isAuthenticated) && (
+            <div className={s.buttonContainer}>
+              <Link to={"/checkout"}>
+                <button className={s.comprarBtn}>Comprar</button>
+              </Link>
             </div>
           )}
         </div>
-        </div>
-      }
-      <div className={s.left}>
-        <div className={s.headerResumenCheckout}>
-          <h3 className={s.resumenCarrito}>Resumen del Carrito</h3>
-          {Object.keys(cart).length > 0 && cart.total_order > 0 && (
-            <div className={s.totalCartPrice}>
-              <h4>{cart.total_order ? "Total: $" + cart.total_order : " "}</h4>
-            </div>
-          )}
-        </div>
-        <hr />
-        {Object.keys(cart) && cart.packages?.length ? (
-          cart.packages?.map((p) => {
-            return (
-              <div className={s.cardCheckoutContainer} key={p.id}>
-                <Link to={"/detail/" + p.id} key={p.id}>
-                  <CardCheckout
-                    packageDetail={p}
-                    name={p.name}
-                    image={p.main_image}
-                    qty={p.quantity}
-                    price={p.price}
-                    totalPack={p.total}
-                    activities={p.activities}
-                    on_sale={p.on_sale}
-                    id={p.id}
-                    key={p.id}
-                  />
-                </Link>
-              </div>
-            );
-          })
-        ) : (
-          <div className={s.noPaqCheckout}>
-            <div className={s.noPaq}>
-              <div className={s.sadFace}>
-                <HiOutlineEmojiSad />
-              </div>
-              <p className={s.vacioPaq}>Tu carrito se encuentra vacío</p>
-            </div>
-          </div>
-        )}
-        {(Object.keys(cart).length > 0 && cart.total_order > 0 && isAuthenticated) && (
-          <div className={s.buttonContainer}>
-            <Link to={"/checkout"}>
-              <button className={s.comprarBtn}>Comprar</button>
-            </Link>
-          </div>
-        )}
       </div>
     </div>
   );
