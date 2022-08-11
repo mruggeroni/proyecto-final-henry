@@ -1,6 +1,12 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { FaFacebookF, FaInstagram, FaLinkedinIn, FaTwitter, FaYoutube } from 'react-icons/fa'
+import {
+  FaFacebookF,
+  FaInstagram,
+  FaLinkedinIn,
+  FaTwitter,
+  FaYoutube,
+} from "react-icons/fa";
 import s from "./Footer.module.css";
 import BacktoTop from "../BacktoTop/BacktoTop";
 // import iconoFacebook from "../../assets/img/facebook.png";
@@ -9,6 +15,14 @@ import BacktoTop from "../BacktoTop/BacktoTop";
 // import "bootstrap/dist/css/bootstrap.min.css";
 
 export default function Footer() {
+  function handleToTop(e) {
+    e.preventDefault();
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
+
   return (
     <div className={s.footer_container}>
       <div className={s.firstLineFooter}>
@@ -38,10 +52,37 @@ export default function Footer() {
         </div>
       </div>
       <div className={s.footer_links}>
-        <NavLink to='/about' className={s.footer_link}>Nosotros</NavLink> 
-        |<NavLink to='/privacy' className={s.footer_link}>Politica de privacidad</NavLink> 
-        |<NavLink to='/terms-and-conditions' className={s.footer_link}>Terminos y condiciones</NavLink> 
-        |<NavLink to='/faq' className={s.footer_link}>Preguntas frecuentes</NavLink> 
+        <NavLink
+          to="/about"
+          className={s.footer_link}
+          onClick={(e) => handleToTop(e)}
+        >
+          Nosotros
+        </NavLink>
+        |
+        <NavLink
+          to="/privacy"
+          className={s.footer_link}
+          onClick={(e) => handleToTop(e)}
+        >
+          Politica de privacidad
+        </NavLink>
+        |
+        <NavLink
+          to="/terms-and-conditions"
+          className={s.footer_link}
+          onClick={(e) => handleToTop(e)}
+        >
+          Terminos y condiciones
+        </NavLink>
+        |
+        <NavLink
+          to="/faq"
+          className={s.footer_link}
+          onClick={(e) => handleToTop(e)}
+        >
+          Preguntas frecuentes
+        </NavLink>
       </div>
       <hr className={s.footer_line} />
       <div className={s.footer_copyright}>

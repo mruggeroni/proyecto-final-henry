@@ -37,15 +37,15 @@ export default function Card({ name, image, description, price, on_sale, id }) {
   const checkPackageInCart = (id) => {
     let cart = JSON.parse(localStorage.getItem("cart"));
     let match = false;
-    cart?.forEach((p) => p.paquete.id === parseInt(id) && (match = true));
+    // cart?.forEach((p) => p.paquete.id === parseInt(id) && (match = true));
     return match;
   };
 
   async function handleFavorite(e) {
     e.preventDefault();
-    if (checkPackageInCart(id)) {
-      return alert("ya esta en el carrito");
-    }
+    // if (checkPackageInCart(id)) {
+    //   return alert("ya esta en el carrito");
+    // }
     setChecked(!checked);
 
     if (!isAuthenticated) {
