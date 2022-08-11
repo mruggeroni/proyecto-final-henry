@@ -28,8 +28,10 @@ export default function Historial() {
     // if(Object.keys(orderDetails).length) {
     //   await dispatch(cleanOrderDetail());
     // }
-    await dispatch(getOrders());
-    await dispatch(getOrderDetail(id));
+    if(!Object.keys(orderDetails).length) {
+      await dispatch(getOrders());
+      await dispatch(getOrderDetail(id));
+    }
   }, []);
 
   return (

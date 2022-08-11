@@ -6,6 +6,7 @@ import { PaymentService } from "../Services/PaymentsService.js";
 import axios from "axios";
 import { statusOrderFunction } from "../controllers/OrdersController.js";
 const { ACCESS_TOKEN_MP } = process.env;
+import { paidEmail } from '../email/email.js';
 
 const router = Router();
 router.post("/payment", PaymentCreate);
