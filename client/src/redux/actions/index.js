@@ -38,6 +38,7 @@ export const DELETE_CART = "DELETE_CART";
 export const PATCH_PACKAGE = "PATCH_PACKAGE";
 export const CLEAN_PACKAGE_BY_ID = "CLEAN_PACKAGE_BY_ID";
 export const CLEAN_ALL_PACKAGE = "CLEAN_ALL_PACKAGE";
+export const CLEAN_ORDER_DETAIL = "CLEAN_ORDER_DETAIL";
 export const GET_RATING = "GET_RATING";
 export const GET_FEATURED = "GET_FEATURED";
 export const GET_ORDER_DETAILS = "GET_ORDER_DETAILS";
@@ -150,7 +151,7 @@ export const deleteUser = (id, token) => {
         },
       });
       return dispatch({ type: DELETE_USER, payload: res.data });
-    } catch(error) {
+    } catch (error) {
       Swal.fire(`Acesso denegado.`, ` `, "error");
     }
   };
@@ -366,6 +367,12 @@ export const getUserById = (id, token) => {
     }
   };
 };
+
+export function cleanOrderDetail() {
+  return {
+    type: "CLEAN_ORDER_DETAIL",
+  };
+}
 
 export function orderByPrice(payload) {
   return {

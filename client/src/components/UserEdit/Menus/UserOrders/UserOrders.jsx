@@ -3,7 +3,7 @@ import { TbListDetails } from 'react-icons/tb';
 import { MdBuild } from 'react-icons/md';
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
-import { getOrders } from "../../../../redux/actions";
+import { cleanOrderDetail, getOrders } from "../../../../redux/actions";
 import s from './UserOrders.module.css';
 
 export default function UserOrders({ handleClose, showUserOrders, setShowUserOrders }) {
@@ -12,8 +12,9 @@ export default function UserOrders({ handleClose, showUserOrders, setShowUserOrd
   const orders = useSelector( (state) => state.orders );
   const ordersUser = orders.filter( (o) => o.userId === user.id );
   
-    useEffect( () => {
-        dispatch(getOrders());
+    useEffect( async () => {
+      await dispatch(getOrders());
+      await dispatch(cleanOrderDetail());
     }, [])
 
   const validateStatus = (status) => {
