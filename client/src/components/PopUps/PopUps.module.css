@@ -45,7 +45,7 @@
   position: absolute;
   top: 50px;
   right: calc(1rem + .3vw);
-  min-width: calc(20rem + .3vw);
+  min-width: calc(25rem + .3vw);
   display: flex;
   flex-direction: column;
   visibility: visible;

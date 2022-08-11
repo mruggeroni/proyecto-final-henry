@@ -262,6 +262,12 @@ select {
   margin: auto
 }
 
+@media(max-width: 1000px){
+  .create_container{
+    margin-top: 90px;
+  }
+}
+
 @media (max-width: 760px) {
   .create_form_container {
     width: 100%;

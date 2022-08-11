@@ -106,33 +106,32 @@
 .header_wrapper {
   position: relative;
   top: 90px;
+  max-width: 80%;
 }
 
 .header {
   position: relative;
   box-sizing: border-box;
-  width: 850px;
-  height: 200px;
+  width: calc(55rem + .3vw); /* Para modificar el tamaño */
+  height: calc(12rem + .3vw);
   margin: 0 auto;
   transform: rotate(-0.5deg);
   clip-path: polygon(25px 100%, 0 0, 100% 0, 830px 90%);
-
   background: #ffffffcc;
   color: #292929;
-
   padding: 50px 60px 0;
 }
 
 .header_subtitle {
   display: block;
-  font-size: 45px;
+  font-size: calc(2.6rem + .3vw);
   transform: rotate(-1deg);
   line-height: 0;
 }
 
 .header_title {
   margin: 0;
-  font-size: 105px;
+  font-size: calc(5.3rem + .3vw);
   text-transform: uppercase;
   transform: rotate(-1.5deg);
   letter-spacing: 5px;

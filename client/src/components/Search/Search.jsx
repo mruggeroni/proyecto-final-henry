@@ -17,6 +17,7 @@ import {
   getTypes,
   getAllFavorites,
   createUser,
+  getAllCart,
 } from "./../../redux/actions/index";
 import Paginado from "../Paginado/paginado";
 import s from "./Search.module.css";
@@ -162,15 +163,14 @@ export default function FilteredSearch() {
     await dispatch(getTypes());
     if (!isAuthenticated) {
       dispatch(getFavoritesLocalStorage());
-    } else {
-      const token = await getAccessTokenSilently();
-      dispatch(getAllFavorites(token, user.email));
     }
-    // const fetch = async () => {
-    //   const token = await getAccessTokenSilently();
-    //   dispatch(createUser(token));
-    // };
-    // fetch();
+    const fetch = async () => {
+      const token = await getAccessTokenSilently();
+      const usuario = await dispatch(createUser(token));
+      dispatch(getAllCart(usuario.payload.id));
+      dispatch(getAllFavorites(token, usuario.payload.email));
+    };
+    fetch();
     setLoading(false);
   }, []);
 

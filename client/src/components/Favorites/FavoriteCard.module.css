@@ -32,12 +32,12 @@
 }
 
 .cardInfo h3 {
-  font-size: 1.3vw;
+  font-size: calc(0.9rem + .3vw);
   margin-bottom: 1vw;
 }
 
 .cardInfo h5 {
-  font-size: 1vw;
+  font-size: calc(0.7rem + .3vw);
   font-weight: bold;
 }
 
@@ -60,7 +60,7 @@
 }
 
 @media (max-width: 1130px) {
-  img {
+  /* img {
     margin: auto;
     margin-left: 0;
     margin-right: 0;
@@ -70,25 +70,30 @@
 
   .cardInfo h3 {
     font-weight: bold;
-  }
+  } */
 }
 
 @media (max-width: 850px) {
-  img {
+  /* img {
     margin: auto;
     margin-left: 0;
     margin-right: 0;
-    /* width: 30vw;
-    height: 25vw; */
-  }
+   
+  } */
 
-  .cardInfo h3 {
+  /* .cardInfo h3 {
     font-size: 3vw;
     padding: 3%;
   }
 
   .cardInfo h5 {
     font-size: 2vw;
-  }
+  } */
 
+}
+
+@media (max-width: 500px){
+  .favContainerCard {
+    width: 90%;
+  }
 }

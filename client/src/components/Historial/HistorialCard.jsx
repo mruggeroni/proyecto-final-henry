@@ -4,7 +4,7 @@ import s from "./HistorialCard.module.css";
 
 export default function Card({ name, image, date, price, id, start_date, end_date }) {
   return (
-    <div className={s.card}>
+    <div className={s.cardHistorial}>
       <img src={image} alt="img not found" width="300vw" height="250vw" />
       <div className={s.cardBody}>
         <h3>{name}</h3>
