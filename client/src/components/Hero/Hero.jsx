@@ -12,7 +12,7 @@ export default function Hero({ destinations }) {
   const [isMuted, setIsMuted] = useState(false);
   const [backgroundV, setBackgroundV] = useState(true);
 
-  function handleSound(e){
+  function handleSound(e) {
     e.preventDefault();
     setIsMuted(!isMuted);
   }
@@ -27,7 +27,7 @@ export default function Hero({ destinations }) {
 
   return (
     <div className={style.hero_container}>
-      {/* {backgroundV ?
+      {backgroundV ? (
         <YouTube
           video="Q8Zx6e8NiK8"
           autoplay={true}
@@ -38,22 +38,32 @@ export default function Hero({ destinations }) {
           showRelatedVideos={false}
           showInfo={false}
           allowFullscreen={false}
-          suggestedQuality='1060'
+          suggestedQuality="1060"
           muted={!isMuted}
           volume={0.3}
           onPause={() => console.log("no se puede poner pausa")}
-          widht='100%'
-          height='100%'
+          widht="100%"
+          height="100%"
           onEnd={changeBackground}
           className={style.video_container}
-        /> 
-        : <div className={style.backgroundImgHero}><Poster /></div> }  */}
-<div className={style.backgroundImgHero}><Poster /></div>
+        />
+      ) : (
+        <div className={style.backgroundImgHero}>
+          <Poster />
+        </div>
+      )}
       <div className={style.hero_filter}>
         <div className={style.filter_container}>
-          <div className={backgroundV ? style.soundContainer : style.displayNone}></div>
+          <div
+            className={backgroundV ? style.soundContainer : style.displayNone}
+          ></div>
           <FilterSearch destinations={destinations} />
-          <div onClick={(e) => handleSound(e)} className={backgroundV ? style.soundContainer : style.displayNone}>{!isMuted ? <BiVolumeMute /> : <AiOutlineSound /> }</div>
+          <div
+            onClick={(e) => handleSound(e)}
+            className={backgroundV ? style.soundContainer : style.displayNone}
+          >
+            {!isMuted ? <BiVolumeMute /> : <AiOutlineSound />}
+          </div>
         </div>
       </div>
     </div>
