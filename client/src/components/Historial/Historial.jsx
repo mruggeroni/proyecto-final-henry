@@ -26,12 +26,13 @@ export default function Historial() {
     
   useEffect( async () => {
     // if(Object.keys(orderDetails).length) {
-    //   await dispatch(cleanOrderDetail());
+      await dispatch(cleanOrderDetail());
     // }
-    if(!Object.keys(orderDetails).length) {
-      await dispatch(getOrders());
-      await dispatch(getOrderDetail(id));
-    }
+      setTimeout( async () => {
+        await dispatch(getOrders());
+        await dispatch(getOrderDetail(id));
+      }, 0);
+
   }, []);
 
   return (
