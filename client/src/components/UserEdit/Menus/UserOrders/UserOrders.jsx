@@ -10,6 +10,7 @@ export default function UserOrders({
   handleClose,
   showUserOrders,
   setShowUserOrders,
+  getOrderDetail,
 }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
