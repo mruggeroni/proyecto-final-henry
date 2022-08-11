@@ -4,6 +4,7 @@
   margin-top: 4vw;
   display: flex;
   flex-direction: row;
+  align-items: center;
   justify-content: space-between;
   color: black;
   width: 100%;
@@ -24,48 +25,45 @@
 
 .cardHistorial img {
   margin-left: 0;
-  width: calc(20rem + .3vw);
+  width: calc(20rem + 0.3vw);
 }
 
 .cardBodyHistorial h3 {
-  font-size: calc(8rem + .3vw);
+  font-size: 1.4rem; /* calc(8rem + .3vw); */
   color: black;
 }
 
 .cardBodyHistorial h5 {
-  font-size: calc(5rem + .3vw);
+  font-size: 1.2rem; /* calc(5rem + .3vw); */
 }
-
-
 
 @media (max-width: 704px) {
   .cardBodyHistorial h3 {
-    font-size: calc(1.3rem + .3vw);
+    font-size: calc(1.3rem + 0.3vw);
     color: black;
   }
 
   .cardHistorial img {
     margin-left: 0;
-    width: calc(17rem + .3vw);
+    width: calc(17rem + 0.3vw);
   }
 
   .cardHistorial {
     width: 100%;
   }
-
 }
 
 @media (max-width: 600px) {
   .cardBodyHistorial h3 {
     margin-top: 5px;
-    font-size: calc(1.3rem + .3vw);
+    font-size: 0.8rem;/* calc(1.3rem + 0.3vw); */
     color: black;
     margin-bottom: 0px;
   }
 
   .cardHistorial img {
     margin-left: 0;
-    width: calc(15rem + .3vw);
-    height: calc(13.5rem + .3vw);
+    width: calc(15rem + 0.3vw);
+    height: calc(13.5rem + 0.3vw);
   }
 }
