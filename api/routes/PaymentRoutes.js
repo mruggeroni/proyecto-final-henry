@@ -52,6 +52,17 @@ router.post("/paymentML/respuesta", (req, res) => {
             estado
           );
           console.log("status", status);
+          if (estado === "paid") {
+            paidEmail(
+              infoPago.data.additional_info.items[0].description,
+              "paid"
+            );
+          } else {
+            paidEmail(
+              infoPago.data.additional_info.items[0].description,
+              "cancel"
+            );
+          }
         }
       } catch (error) {
         res.status(400).send("algo fallo");
