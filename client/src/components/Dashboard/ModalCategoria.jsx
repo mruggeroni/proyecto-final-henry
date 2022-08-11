@@ -13,7 +13,7 @@ import {
   getAllDestinations,
   getCategories,
 } from "../../redux/actions";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 
 const schema = yup.object().shape({
@@ -38,7 +38,7 @@ export default function ModalCategoria({ show, setShow, setInput, input }) {
     //   price: 0,
     // });
   };
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(getCategories());
@@ -48,7 +48,7 @@ export default function ModalCategoria({ show, setShow, setInput, input }) {
 
   const handleCrearCategoria = async (e) => {
     try {
-      const token = await getAccessTokenSilently()
+      const token = await getAccessTokenSilently();
       const respuesta = await dispatch(createCategories(e, token));
       await dispatch(getAllDestinations());
       await dispatch(getAllActivities());
@@ -59,18 +59,16 @@ export default function ModalCategoria({ show, setShow, setInput, input }) {
         classification: e.name,
       });
       Swal.fire({
-        icon: 'success',
+        icon: "success",
         title: respuesta.data.message,
-      })
-      navigate("/dashboard/listActivities")
+      });
     } catch (error) {
       Swal.fire({
-        icon: 'error',
-        title: 'Oops algo fallo...',
+        icon: "error",
+        title: "Oops algo fallo...",
         text: error.message,
-      })
+      });
     }
-
   };
 
   return (
