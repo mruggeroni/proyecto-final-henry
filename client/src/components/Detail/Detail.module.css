@@ -215,11 +215,28 @@
 .total {
   align-self: flex-end;
   margin-right: 30px;
+  margin-top: 1%;
   min-height: 50px;
   color: black;
   font-size: 1.8em;
   padding: 1%;
 }
+
+.discountTotal {
+  /* left: auto; */
+  /* right: 10%; */
+  /* width: 30%; */
+
+  align-self: flex-end;
+  /* margin-top: 30px;
+  min-height: 50px; */
+  color: black;
+  font-size: 0.5em;
+  /* padding: 1%; */
+  text-align: right;
+  font-weight: 400;
+}
+
 
 /* DETALLE ACTIVIDADES FIN */
 .contenedorBotonComprar {
@@ -246,20 +263,14 @@
   padding-top: 1%;
 }
 
-.pricePaq{
+.pricePaq {
   display: flex;
   flex-direction: row;
 }
 
-.pricePaq h4{
+.pricePaq h4 {
   margin: auto;
   margin-left: 1vw;
-}
-
-.discountTotal{
-  left: auto;
-  right: 10%;
-  width: 30%;
 }
 
 @media (max-width: 1000px) {
@@ -315,6 +326,10 @@
   .descriptionActividad {
     transition: 0s;
   }
+
+  .contenedor {
+    padding-top: 30px;
+  }
 }
 
 .card_text {
@@ -359,17 +374,17 @@
 }
 
 .musRibbon {
-    display: inline-block;
-    position: absolute;
-    top: -11px;
-    left: 5%;
-    box-sizing: border-box;
-    padding: 10px 20px 10px 30px;
-    border-bottom-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    text-transform: uppercase;
-    text-align: center;
-    min-width: 60px;
+  display: inline-block;
+  position: absolute;
+  top: -11px;
+  left: 5%;
+  box-sizing: border-box;
+  padding: 10px 20px 10px 30px;
+  border-bottom-right-radius: 20px;
+  border-bottom-left-radius: 20px;
+  text-transform: uppercase;
+  text-align: center;
+  min-width: 60px;
 }
 
 .optionsRibbon {

@@ -142,6 +142,7 @@ export default function PopUpsComponent() {
             total_package: pLocal.total,
           })
         );
+      await dispatch(getAllCart(res.payload.id));
     });
     localStorage.getItem("cart") && localStorage.removeItem("cart");
     await dispatch(getCartLocalStorage());

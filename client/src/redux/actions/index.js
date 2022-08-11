@@ -27,7 +27,7 @@ export const ORDENAR = "ORDENAR";
 export const UPDATE_USER = "UPDATE_USER";
 export const DELETE_USER = "DELETE_USER";
 export const GET_USER_BY_ID = "GET_USER_BY_ID";
-export const STATUS_USER = 'STATUS_USER';
+export const STATUS_USER = "STATUS_USER";
 export const GET_ORDERS = "GET_ORDERS";
 export const PATCH_ORDER = "PATCH_ORDER";
 export const GET_CART = "GET_CART";
@@ -40,7 +40,6 @@ export const CLEAN_ALL_PACKAGE = "CLEAN_ALL_PACKAGE";
 export const GET_RATING = "GET_RATING";
 export const GET_FEATURED = "GET_FEATURED";
 export const GET_ORDER_DETAILS = "GET_ORDER_DETAILS";
-
 
 /* export const patchOrders = (id) => {
   try {
@@ -57,7 +56,7 @@ export const getOrderDetail = (id) => {
   try {
     return async function (dispatch) {
       let res = await axios.get("/order/" + id);
-      console.log(res)
+      console.log(res);
       return dispatch({ type: GET_ORDER_DETAILS, payload: res.data });
     };
   } catch (error) {
@@ -79,7 +78,7 @@ export const getOrders = () => {
 export const patchRestorePackages = (id, token) => {
   return async function (dispatch) {
     try {
-      const res = await axios.patch("/restoredPackage/" + id, "",{
+      const res = await axios.patch("/restoredPackage/" + id, "", {
         headers: {
           authorization: `Bearer ${token}`,
         },
@@ -257,7 +256,7 @@ export const getUserStatus = (id) => {
 export const patchUserRestore = (id, token) => {
   return async function (dispatch) {
     try {
-      const res = await axios.patch("/restoreUser/" + id, "",{
+      const res = await axios.patch("/restoreUser/" + id, "", {
         headers: {
           authorization: `Bearer ${token}`,
         },
@@ -557,15 +556,14 @@ export function getFavoritesLocalStorage(payload, id) {
 export const getAllFavorites = (token, email) => {
   return async function (dispatch) {
     try {
-
       let res = await axios.get(`/favourites/?email=${email}`, {
         headers: {
           authorization: `Bearer ${token}`,
         },
       });
       return dispatch({ type: GET_FAVORITES, payload: res.data });
-    } catch(error) {
-      console.log(error)
+    } catch (error) {
+      console.log(error);
     }
   };
 };
@@ -573,11 +571,15 @@ export const getAllFavorites = (token, email) => {
 export const postFavorites = (id, token, email) => {
   return async function (dispatch) {
     try {
-      let res = await axios.post("/favourites/" + id, {email}, {
-        headers: {
-          authorization: `Bearer ${token}`,
-        },
-      });
+      let res = await axios.post(
+        "/favourites/" + id,
+        { email },
+        {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        }
+      );
       dispatch(getAllFavorites(token, email));
       return res;
     } catch (error) {
@@ -616,7 +618,7 @@ export function getAllCart(id) {
       return dispatch({ type: GET_CART, payload: res.data });
     };
   } catch (error) {
-    console.log('ERROR POST ' + error);
+    console.log("ERROR POST " + error);
   }
 }
 
@@ -717,5 +719,18 @@ export function getRating(id) {
   return async function (dispatch) {
     const rating = await axios.get(`/rating/${id}`);
     return dispatch({ type: GET_RATING, payload: rating.data });
+  };
+}
+
+export function crearPago(payload) {
+  return async function (dispatch) {
+    console.log(payload);
+    const respuesta = await axios({
+      method: "post",
+      url: "/paymentML", // <--- aqui la url: /favourites/${idDelPackete}
+      data: payload, // <--- aqui envian la info por body
+    });
+    console.log(respuesta.data);
+    return respuesta;
   };
 }

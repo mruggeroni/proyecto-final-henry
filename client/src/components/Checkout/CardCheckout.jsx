@@ -17,12 +17,11 @@ export default function Card({ name, image, qty, price, totalPack, id, activitie
     const [modify, setModify] = useState(false);
     const user = useSelector((state) => state.user);
     const cart = useSelector((state) => state.cart);
-    const { getAccessTokenSilently} = useAuth0();
+    const { getAccessTokenSilently, isAuthenticated } = useAuth0();
     let sumAct = 0;
     activities.forEach((a) => on_sale ? (sumAct += a.price)*on_sale/100 : sumAct += a.price);
     
     const [input, setInput] = useState({
-
         cantidad: qty,
         total: totalPack,
         actividades: activities,
@@ -50,18 +49,12 @@ export default function Card({ name, image, qty, price, totalPack, id, activitie
         // let newTotal = 0;
 		await dispatch(deleteCartPackage(cart.id, id));
         await dispatch(getAllCart(user.id));
-        input.paquete = packageDetail;
-        setInput({
-            ...input,
-            cantidad: e.target.value,
-            total: totalPack,
-        });
-        console.log('card-checkout-inicio')
-        console.log(e.target.value)
-        console.log(price)
-        console.log(activities.reduce((a, newTotal) => newTotal += a.price*e.target.value, 0))
-        console.log(price*e.target.value + (activities.reduce((a, newTotal) => newTotal += a.price*e.target.value, 0)))
-        console.log('card-checkout-fin')
+        // input.paquete = packageDetail;
+        // setInput({
+        //     ...input,
+        //     cantidad: e.target.value,
+        //     total: totalPack,
+        // });
         await dispatch(updateCart(cart.id, {
             packageId: id,
             activitiesId: activities?.map((a) => a.id) || [],
@@ -75,7 +68,7 @@ export default function Card({ name, image, qty, price, totalPack, id, activitie
   return (
     <div className={s.checkoutCard}>    
         <div className={s.removeCard}>
-            <a onClick={(e) => handleModify(e)} className={s.modifybutton}>Modificar</a>
+            {isAuthenticated ? <a onClick={(e) => handleModify(e)} className={s.modifybutton}>Modificar</a> : <a></a>}
             <Remove popUp={'cart'} id={id}/>
         </div>
         <div className={s.topGroup}>

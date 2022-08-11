@@ -6,15 +6,15 @@ export default function Poster() {
     <div className={s.container}>
       <div className={s.header_wrapper}>
         <header className={s.header}>
-          <span className={s.header_subtitle}>Lorem lorem</span>
-          <h1 className={s.header_title}>loremmmm</h1>
+          <span className={s.header_subtitle}>Viaja con</span>
+          <h1 className={s.header_title}>HENRY TRAVEL</h1>
         </header>
 
-        <header className={s.header_ribbon}>
+        {/* <header className={s.header_ribbon}>
           <div className={s.header_ribbon_inner}>
             <span className={s.header_title_small}>Lorem ipsum dolor sit amet</span>
           </div>
-        </header>
+        </header> */}
       </div>
     </div>
   );

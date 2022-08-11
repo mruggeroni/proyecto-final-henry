@@ -112,6 +112,7 @@
   text-decoration: none;
   color: #000;
   margin-top: 10px;
+  min-height: calc(9rem + .3vw);
   max-height: 50vh;
   overflow-y: auto;
   overflow-x: none;

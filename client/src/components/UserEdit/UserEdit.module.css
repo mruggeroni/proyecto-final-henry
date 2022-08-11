@@ -100,7 +100,7 @@
     font-size: 22px;
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 1002px) {
     .profile_container {
       display: initial;
     }

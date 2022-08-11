@@ -1,6 +1,5 @@
 .home_container {
   width: 100%;
-  background-color: #eee;
 }
 
 .promotions_container,
@@ -9,6 +8,7 @@
   flex-direction: column;
   align-items: center;
   padding: 40px 0;
+  padding-bottom: 0px;
 }
 
 .feature_container .h2 {
@@ -42,21 +42,35 @@
   animation: spin 1s linear infinite;
 }
 
+.homeH2{
+  margin-top: -60px;
+  padding-top: 90px;
+  z-index: 3;
+  background-color: #ffff;
+  width: 100%;
+  text-align: center;
+  margin-bottom: 0;
+  padding-bottom: 2%;
+}
+
 @keyframes spin {
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
   }
 }
+
 /* SPINNER FIN*/
 
 @media (max-width: 700px) {
   .feature_container .h2 {
     font-size: 30px;
   }
+
   .promotions_container .h2 {
-    font-size: 50px;
+    font-size: 30px;
   }
 }

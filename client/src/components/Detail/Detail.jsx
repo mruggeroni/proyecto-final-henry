@@ -89,9 +89,11 @@ export default function Detail() {
           const token = await getAccessTokenSilently();
           try {
             await dispatch(getAllFavorites(token, user.email));
-            favorites.forEach((f) => f.id === parseInt(id) && setCheckeado(true));
-          } catch(error) {
-            alert('No se puede realizar esta acción')
+            favorites.forEach(
+              (f) => f.id === parseInt(id) && setCheckeado(true)
+            );
+          } catch (error) {
+            alert("No se puede realizar esta acción");
           }
         };
         fetch();
@@ -100,19 +102,19 @@ export default function Detail() {
         navigate("/");
       }
 
-      if(user.id) {
+      if (user.id) {
         let res = await dispatch(getOrders());
-        let userOrders = res.payload.filter( (o) => o.userId === user.id );
-        userOrders?.forEach( async (o) => {
-          if(canScore) return;
+        let userOrders = res.payload.filter((o) => o.userId === user.id);
+        userOrders?.forEach(async (o) => {
+          if (canScore) return;
           let res = await dispatch(getOrderDetail(o.id));
-          res.payload.packages?.forEach( (p) => {
-            if(p.id === parseInt(id)) {
+          res.payload.packages?.forEach((p) => {
+            if (p.id === parseInt(id)) {
               setCanScore(true);
               return;
             }
-          })
-        })
+          });
+        });
       }
       setLoading(false);
     }
@@ -131,9 +133,8 @@ export default function Detail() {
     const fetch = async () => {
       const token = await getAccessTokenSilently();
       const usuario = await dispatch(createUser(token));
-      console.log(usuario.payload);
       dispatch(getAllCart(usuario.payload.id));
-      dispatch(getAllFavorites(token));
+      dispatch(getAllFavorites(token, usuario.payload.email));
     };
     fetch();
   }, [dispatch]);
@@ -195,11 +196,10 @@ export default function Detail() {
     } else {
       const token = await getAccessTokenSilently();
       if (checkeado) {
-        console.log(token)
+        console.log(token);
         await dispatch(deleteFavorites(id, token, user.email));
         setCheckeado(false);
       } else {
-
         await dispatch(postFavorites(id, token, user.email));
         setCheckeado(true);
       }
@@ -270,8 +270,7 @@ export default function Detail() {
           packages: [],
         };
         cart.total_order = descuento != 0 ? descuento : parseInt(input.total);
-        input.paquete.total =
-          descuento != 0 ? descuento : parseInt(input.total);
+        input.paquete.total = descuento != 0 ? descuento : parseInt(input.total);
         input.paquete.quantity = input.cantidad;
         input.paquete.activities = input.actividades;
         cart.packages.push(input.paquete);
@@ -281,10 +280,8 @@ export default function Detail() {
         let match = false;
         cart.packages?.forEach((p) => p.id === parseInt(id) && (match = true));
         if (!match) {
-          cart.total_order +=
-            descuento != 0 ? descuento : parseInt(input.total);
-          input.paquete.total =
-            descuento != 0 ? descuento : parseInt(input.total);
+          cart.total_order += descuento != 0 ? descuento : parseInt(input.total);
+          input.paquete.total = descuento != 0 ? descuento : parseInt(input.total);
           input.paquete.quantity = input.cantidad;
           input.paquete.activities = input.actividades;
           cart.packages.push(input.paquete);
@@ -411,20 +408,19 @@ export default function Detail() {
                 Rating:{" "}
                 {`${
                   isNaN(parseInt(rating))
-                    ? isAuthenticated
+                    ? canScore
                       ? "Se el primero en puntuar este paquete"
                       : "S/R"
                     : rating
                 }`}
               </b>
             </p>
-            {
-              console.log('Score ', canScore)
-            }
+            {console.log("Score ", canScore)}
             <Rating
               onClick={(value) => handleEstrellas(value)}
               initialRating={rating}
               readonly={!canScore}
+              
               emptySymbol={
                 <BsFillStarFill
                   style={{ color: "#fafafa", fontSize: "24px" }}
@@ -545,8 +541,21 @@ export default function Detail() {
                 </div>
               );
             })}
+            {packageDetail.on_sale ? (
+              <div className={s.total}>
+                <div className={s.discountTotal}>
+                  Subtotal: U$S{input.total ? input.total : packageDetail.price}
+                </div>
+                <div className={s.discountTotal}>
+                  Total Descuento: U$S
+                  {input.total -
+                    input.total * ((100 - packageDetail.on_sale) / 100)}
+                </div>
+              </div>
+            ) : (
+              " "
+            )}
             <div className={s.total}>
-              {" "}
               <span>TOTAL U$S </span>
               {/* <span>{input.total ? input.total : packageDetail.price}</span> */}
               {packageDetail.on_sale ? (
@@ -559,20 +568,7 @@ export default function Detail() {
               )}
             </div>
           </div>
-          {packageDetail.on_sale ? (
-            <div className={s.discountTotal}>
-              <p>
-                Subtotal: U$S{input.total ? input.total : packageDetail.price}
-              </p>
-              <p>
-                Total Descuento: U$S
-                {input.total -
-                  input.total * ((100 - packageDetail.on_sale) / 100)}
-              </p>
-            </div>
-          ) : (
-            " "
-          )}
+
           <div className={s.contenedorBotonComprar}>
             <button
               onClick={(e) => handleBotonComprar(e)}
@@ -590,7 +586,6 @@ export default function Detail() {
     </div>
   );
 }
-
 
 /* 
 

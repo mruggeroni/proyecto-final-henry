@@ -18,10 +18,19 @@ export default function FilterSearch({ destinations }) {
   const [fromDate, setFromDate] = useState(dataNow);
   const [untilDate, setUntilDate] = useState(dataNow);
   const destinationsFilter = document.getElementById('searchDestinations')?.value;
+  const [disableBtn, setDisableBtn] = useState(true);
+
+  // useEffect(async () => {
+   
+  // }, []);
 
   const handleChange = (e) => {
     console.log(e.target.id);
     e.preventDefault();
+    let value = document.getElementById("searchDestinations").value;
+    if (value !== "x") {
+      setDisableBtn(false);
+    }
 
     if (e.target.id === "searchDestinations") {
       dispatch(getAllPackage(10000));
@@ -52,6 +61,7 @@ export default function FilterSearch({ destinations }) {
     e.preventDefault();
     let value = document.getElementById("searchDestinations").value;
     if (value !== "x") {
+      // setDisableBtn(true);
       if (fromDate === "" && untilDate === "") {
         alert("Los calendario no pueden estar vacios");
       } else {
@@ -62,6 +72,7 @@ export default function FilterSearch({ destinations }) {
   };
 
   return (
+    <div className={style.filterSearchLine}>
     <form className={style.form_container}>
       <select
         id="searchDestinations"
@@ -97,9 +108,10 @@ export default function FilterSearch({ destinations }) {
         className={style.form_date}
       />
 
-      <button onClick={(e) => handleClick(e)} className={style.form_button} disabled={destinationsFilter ===  'x'}>
+      <button onClick={(e) => handleClick(e)} className={style.form_date} disabled={disableBtn}>
         Buscar
       </button>
     </form>
+    </div>
   );
 }

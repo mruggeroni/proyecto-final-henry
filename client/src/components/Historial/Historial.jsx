@@ -51,12 +51,12 @@ export default function Historial() {
                 );
               }) :
             <div>
-              <div className={s.noPaq}>
+              {/* <div className={s.noPaq}>
                 <div className={s.sadFace}>
                   <HiOutlineEmojiSad />
                 </div>
                 <p className={s.vacioPaq}>No tienes compras pasadas, pero no te preocupes que eso se puede solucionar! COMPRANOS PAQUETEEEEEES!!!!!!!!!!!!!!!</p>
-              </div>
+              </div> */}
             </div>
             }
           </div>
