@@ -16,9 +16,7 @@
 .cardBodyHistorial {
   margin: auto;
   margin-left: 3vw;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  margin-top: 1vw;
   width: 50%;
   z-index: 1;
   word-wrap: break-word;
