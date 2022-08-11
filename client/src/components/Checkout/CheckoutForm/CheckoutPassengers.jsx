@@ -1,4 +1,4 @@
-import { useAuth0 } from "@auth0/auth0-react";
+/* import { useAuth0 } from "@auth0/auth0-react";
 import React, { useState } from "react";
 import { FaPlane } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
@@ -54,6 +54,12 @@ export default function CheckoutPassengers({
             <div className={s.avioncito}>
               <FaPlane />
             </div>
+            //<div>
+            //        <PassengerInfo cart={cart}/>
+          //  </div>   
+        //    <button className={s.profile_btn} onClick={(e) => handlepay(e)}>Siguiente</button>
+      //  </div> 
+    //</div>   
             <h3>¿Quién viaja?</h3>
           </div>
           <p>
@@ -75,3 +81,4 @@ export default function CheckoutPassengers({
     </div>
   );
 }
+ */

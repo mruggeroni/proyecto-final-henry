@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { HiOutlineEmojiSad } from "react-icons/hi";
 import {
+  cleanOrderDetail,
   filterPackagesByDestination,
   getAllPackage,
   getOrderDetail,
@@ -19,10 +20,15 @@ import Paginado from "../Paginado/paginado";
 export default function Historial() {
   const dispatch = useDispatch();
   const { id } = useParams();
-  const user = useSelector((state) => state.user);
-  const orderDetails = useSelector((state) => state.orderDetails);
 
-  useEffect(async () => {
+  const user = useSelector( (state) => state.user );
+  const orderDetails = useSelector( (state) => state.orderDetails );
+    
+  useEffect( async () => {
+    if(Object.keys(orderDetails).length) {
+      await dispatch(cleanOrderDetail());
+    }
+
     await dispatch(getOrders());
     await dispatch(getOrderDetail(id));
   }, []);
