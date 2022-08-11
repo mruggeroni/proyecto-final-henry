@@ -31,6 +31,7 @@ export default function Historial() {
         await dispatch(getOrderDetail(id));
       }, 0);
     }
+
   }, []);
 
   return (
