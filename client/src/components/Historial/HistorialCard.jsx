@@ -14,7 +14,7 @@ export default function Card({
   return (
     <div className={s.cardHistorial}>
       <img src={image} alt="img not found" width="300vw" height="250vw" />
-      <div className={s.cardHistorialBody}>
+      <div className={s.cardBodyHistorial}>
         <h3>{name}</h3>
         <br />
         <h5>Fecha de compra: {date.split("-").reverse().join("-")}</h5>
@@ -25,7 +25,7 @@ export default function Card({
             : description}
         </h5> */}
       </div>
-      <div className={s.cardHistorialBody}>
+      <div className={s.cardBodyHistorial}>
       </div>
       {/* <div className={s.rightGroup}>
       <div className={s.date}>
