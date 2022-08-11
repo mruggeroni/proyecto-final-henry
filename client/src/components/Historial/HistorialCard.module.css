@@ -4,6 +4,7 @@
   margin-top: 4vw;
   display: flex;
   flex-direction: row;
+  align-items: center;
   justify-content: space-between;
   color: black;
   width: 100%;
@@ -16,7 +17,6 @@
 .cardBodyHistorial {
   margin: auto;
   margin-left: 3vw;
-  margin-top: 1vw;
   width: 50%;
   z-index: 1;
   word-wrap: break-word;
