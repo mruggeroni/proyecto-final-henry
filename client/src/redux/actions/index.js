@@ -734,3 +734,16 @@ export function getRating(id) {
     return dispatch({ type: GET_RATING, payload: rating.data });
   };
 }
+
+export function crearPago(payload) {
+  return async function (dispatch) {
+    console.log(payload);
+    const respuesta = await axios({
+      method: "post",
+      url: "/paymentML", // <--- aqui la url: /favourites/${idDelPackete}
+      data: payload, // <--- aqui envian la info por body
+    });
+    console.log(respuesta.data);
+    return respuesta;
+  };
+}
