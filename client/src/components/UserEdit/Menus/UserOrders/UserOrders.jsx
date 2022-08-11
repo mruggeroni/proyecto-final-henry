@@ -25,6 +25,7 @@ export default function UserOrders({
 
   const handleClick = async (e, id) => {
     e.preventDefault();
+    console.log(id)
     await dispatch(getOrderDetail(id));
     navigate(`/historial/${id}`);
   }
