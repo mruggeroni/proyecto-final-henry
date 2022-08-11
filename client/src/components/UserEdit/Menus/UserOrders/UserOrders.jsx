@@ -25,11 +25,7 @@ export default function UserOrders({
 
   const handleClick = async (e, id) => {
     e.preventDefault();
-    await dispatch(cleanOrderDetail());
-    setTimeout(async () => {
-      await dispatch(getOrderDetail(id));
-      navigate(`/historial/${id}`);
-    }, 1);
+    navigate(`/historial/${id}`);
   }
 
   const validateStatus = (status) => {
