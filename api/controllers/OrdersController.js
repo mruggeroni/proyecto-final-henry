@@ -125,9 +125,9 @@ export const getOrderDetail = async (req, res) => {
 							'images',
 							'featured',
 							'available',
-							'destroyTime'
 						]
-					}
+					},
+					paranoid: false,
 				},
 			],
 		});
