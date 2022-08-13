@@ -16,7 +16,7 @@ import Dashboard from "./Dashboard";
 import validationModifyPackage from "./validationModifyPackage.js";
 import ModalActividades from "./ModalActividades";
 import ModalDestinos from "./ModalDestinos";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 
 export default function ModifyPackages() {
   const { id } = useParams();
@@ -45,7 +45,6 @@ export default function ModifyPackages() {
     activities: [],
     start_date: dataNow,
     end_date: dataNow,
-    region: "",
     seasson: "",
     type: "",
     featured: "false",
@@ -68,7 +67,6 @@ export default function ModifyPackages() {
         activities: paquete.activities?.map((i) => i.name),
         start_date: paquete.start_date,
         end_date: paquete.end_date,
-        region: paquete.region,
         seasson: paquete.seasson,
         type: paquete.type,
         featured: paquete.featured,
@@ -116,7 +114,6 @@ export default function ModifyPackages() {
     end_date: "",
     available: "",
     on_sale: "",
-    region: "",
     seasson: "",
     type: "",
   });
@@ -158,16 +155,16 @@ export default function ModifyPackages() {
         } else {
           e.target.value = "default";
           return Swal.fire({
-            icon: 'error',
-            title: 'El país ya fue seleccionado',
-          })
+            icon: "error",
+            title: "El país ya fue seleccionado",
+          });
         }
       } else {
         e.target.value = "default";
         return Swal.fire({
-          icon: 'error',
-          title: 'Maximo 5 destinos...',
-        })
+          icon: "error",
+          title: "Maximo 5 destinos...",
+        });
       }
     }
   };
@@ -186,16 +183,16 @@ export default function ModifyPackages() {
         } else {
           e.target.value = "default";
           return Swal.fire({
-            icon: 'error',
-            title: 'La actividad ya fue seleccionada!',
-          })
+            icon: "error",
+            title: "La actividad ya fue seleccionada!",
+          });
         }
       } else {
         e.target.value = "default";
         return Swal.fire({
-          icon: 'error',
-          title: 'Maximo 10 actividades!',
-        })
+          icon: "error",
+          title: "Maximo 10 actividades!",
+        });
       }
     }
   };
@@ -251,7 +248,7 @@ export default function ModifyPackages() {
     input.on_sale = parseInt(input.on_sale);
     input.available = input.available === "true" ? true : false;
     input.featured = input.featured === "true" ? true : false;
-    const token = await getAccessTokenSilently()
+    const token = await getAccessTokenSilently();
     const valida = validationModifyPackage({ ...input });
     setError(valida);
     if (
@@ -263,16 +260,15 @@ export default function ModifyPackages() {
       valida.featured ||
       valida.available ||
       valida.on_sale ||
-      valida.region ||
       valida.type ||
       valida.seasson ||
       valida.destinations
     ) {
       Swal.fire({
-        icon: 'error',
-        title: 'Oops algo fallo...',
-        text: 'Presta mas atencion al completar!',
-      })
+        icon: "error",
+        title: "Oops algo fallo...",
+        text: "Presta mas atencion al completar!",
+      });
     } else {
       const patch = {};
       patch.featured = input.featured;
@@ -294,9 +290,9 @@ export default function ModifyPackages() {
       try {
         dispatch(modificarPaquete(modificar, id, token));
         Swal.fire({
-          icon: 'success',
-          title: 'Paquete modificado!',
-        })
+          icon: "success",
+          title: "Paquete modificado!",
+        });
         await dispatch(getAllPackageDashboard());
         setInput({
           name: "",
@@ -313,17 +309,16 @@ export default function ModifyPackages() {
           end_date: "",
           available: "",
           on_sale: "",
-          region: "",
           seasson: "",
           type: "",
         });
         navigate("/dashboard/listPackages");
       } catch (error) {
         Swal.fire({
-          icon: 'error',
-          title: 'Oops algo fallo...',
+          icon: "error",
+          title: "Oops algo fallo...",
           text: error.message,
-        })
+        });
       }
     }
   };
@@ -476,80 +471,6 @@ export default function ModifyPackages() {
           </div>
 
           <div className={style.create_input_container}>
-            <label className={style.create_label}>Región</label>
-            <select
-              name="region"
-              onChange={(e) => handleSelect(e)}
-              className={style.create_input}
-            >
-              <option disabled="disabled" hidden>
-                Seleccionar una Región...
-              </option>
-              <option
-                selected={paquete.region === "Europa Occidental" ? true : false}
-                value="Europa Occidental"
-              >
-                Europa Occidental
-              </option>
-              <option
-                selected={paquete.region === "Europa Central" ? true : false}
-                value="Europa Central"
-              >
-                Europa Central
-              </option>
-              <option
-                selected={paquete.region === "Europa Oriental" ? true : false}
-                value="Europa Oriental"
-              >
-                Europa Oriental
-              </option>
-              <option
-                selected={paquete.region === "Asia Oriental" ? true : false}
-                value="Asia Oriental"
-              >
-                Asia Oriental
-              </option>
-              <option
-                selected={paquete.region === "Asia del Sur" ? true : false}
-                value="Asia del Sur"
-              >
-                Asia del Sur
-              </option>
-              <option
-                selected={
-                  paquete.region === "Asia Sudoriental Continental"
-                    ? true
-                    : false
-                }
-                value="Asia Sudoriental Continental"
-              >
-                Asia Sudoriental Continental
-              </option>
-              <option
-                selected={paquete.region === "Norte América" ? true : false}
-                value="Norte América"
-              >
-                Norte América
-              </option>
-              <option
-                selected={paquete.region === "Sudamérica" ? true : false}
-                value="Sudamérica"
-              >
-                Sudamérica
-              </option>
-              <option
-                selected={paquete.region === "América Central" ? true : false}
-                value="América Central"
-              >
-                América Central
-              </option>
-            </select>
-            {error.region && (
-              <span className={style.error}>{error.region}</span>
-            )}
-          </div>
-
-          <div className={style.create_input_container}>
             <label className={style.create_label}>Destinos</label>
             <select
               id="destinationsSelect"
@@ -600,7 +521,10 @@ export default function ModifyPackages() {
               return 0;
             })
             .map((i, o) => (
-              <div className={style.create_destinations_contenedor} key={"destinations" + o}>
+              <div
+                className={style.create_destinations_contenedor}
+                key={"destinations" + o}
+              >
                 <div
                   key={"destination" + o}
                   id="input_destinations"
@@ -610,10 +534,14 @@ export default function ModifyPackages() {
                 >
                   {i}
                 </div>
-                <div className={style.create_destinations_X} onClick={(e) => handleBorrarDestinations(e, i)}>X</div>
+                <div
+                  className={style.create_destinations_X}
+                  onClick={(e) => handleBorrarDestinations(e, i)}
+                >
+                  X
+                </div>
               </div>
             ))}
-
 
           {/* Final destinos */}
 
@@ -663,7 +591,10 @@ export default function ModifyPackages() {
               return 0;
             })
             .map((i, o) => (
-              <div className={style.create_destinations_contenedor} key={"activities" + o}>
+              <div
+                className={style.create_destinations_contenedor}
+                key={"activities" + o}
+              >
                 <div
                   key={"activitie" + o}
                   id="input_activities"
@@ -673,7 +604,12 @@ export default function ModifyPackages() {
                 >
                   {i}
                 </div>
-                <div className={style.create_destinations_X} onClick={(e) => handleBorrarActividades(e, i)}>X</div>
+                <div
+                  className={style.create_destinations_X}
+                  onClick={(e) => handleBorrarActividades(e, i)}
+                >
+                  X
+                </div>
               </div>
             ))}
 
@@ -772,23 +708,24 @@ export default function ModifyPackages() {
               )}
             </div>
 
-            {input.images && input.images?.map((i, index) => {
-              return (
-                <div key={i + index} className={style.create_input_images}>
-                  <label className={style.create_label}>
-                    Imágen {index + 1}
-                  </label>
-                  <input
-                    id={index}
-                    name={"images" + index}
-                    value={input["images" + index]}
-                    type="text"
-                    onChange={(e) => handleChangeInputs(e)}
-                    className={style.create_input}
-                  />
-                </div>
-              );
-            })}
+            {input.images &&
+              input.images?.map((i, index) => {
+                return (
+                  <div key={i + index} className={style.create_input_images}>
+                    <label className={style.create_label}>
+                      Imágen {index + 1}
+                    </label>
+                    <input
+                      id={index}
+                      name={"images" + index}
+                      value={input["images" + index]}
+                      type="text"
+                      onChange={(e) => handleChangeInputs(e)}
+                      className={style.create_input}
+                    />
+                  </div>
+                );
+              })}
           </div>
 
           <div className={style.create_input_container}>
@@ -796,13 +733,13 @@ export default function ModifyPackages() {
               type="submit"
               disabled={
                 !input.name.length &&
-                  !input.price.length &&
-                  !input.description.length &&
-                  !input.main_image.length &&
-                  !input.images0.length &&
-                  !input.images1.length &&
-                  !input.images2.length &&
-                  !input.destinations?.length
+                !input.price.length &&
+                !input.description.length &&
+                !input.main_image.length &&
+                !input.images0.length &&
+                !input.images1.length &&
+                !input.images2.length &&
+                !input.destinations?.length
                   ? true
                   : false
               }

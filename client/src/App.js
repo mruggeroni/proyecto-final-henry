@@ -14,9 +14,9 @@ import ListPackages from "./components/Dashboard/ListPackages.jsx";
 import ModifyActivity from "./components/Dashboard/ModifyActivity.jsx";
 import ListActivities from "./components/Dashboard/ListActivities.jsx";
 import ListUsers from "./components/Dashboard/ListUsers.jsx";
-import PopUpParent from './components/PopUps/PopUpParent.jsx'
-import CreateAccountModal from './components/CreateAccount Modal/CreateAccountModal.jsx'
-import CheckoutParent from './components/Checkout/CheckoutForm/CheckoutParent.jsx'
+import PopUpParent from "./components/PopUps/PopUpParent.jsx";
+import CreateAccountModal from "./components/CreateAccount Modal/CreateAccountModal.jsx";
+import CheckoutParent from "./components/Checkout/CheckoutForm/CheckoutParent.jsx";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import ListCategories from "./components/Dashboard/ListCategories.jsx";
@@ -26,39 +26,96 @@ import Faq from "./components/Information/Faq.jsx";
 import Error404 from "./components/Error404/Error404.jsx";
 import { useSelector } from "react-redux";
 import ListOrders from "./components/Dashboard/ListOrders.jsx";
-import CheckoutConfirmation from './components/Checkout/CheckoutForm/CheckoutConfirmation.jsx'
+import CheckoutConfirmation from "./components/Checkout/CheckoutForm/CheckoutConfirmation.jsx";
 import ListDeletedPackages from "./components/Dashboard/ListDeletedPackages.jsx";
 import Contact from "./components/Information/Contact.jsx";
 import About from "./components/Information/About.jsx";
 import CheckoutCancel from "./components/Checkout/CheckoutForm/CheckoutCancel.jsx";
 // import Footer from './components/Footer/Footer.jsx';
+import ListDestinations from "./components/Dashboard/ListDestinations";
 
 function App() {
-  const user = useSelector( (state) => state.user )
- 
+  const user = useSelector((state) => state.user);
+
   return (
     <BrowserRouter>
       <Navbar />
       <PopUpParent />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/dashboard" element={ user.is_admin ? <CreatePackage /> : <Navigate to='/' /> } />
-        <Route path="/dashboard/orders" element={ user.is_admin ? <ListOrders /> : <Navigate to='/' />} />
-        <Route path="/dashboard/listPackages" element={ user.is_admin ? <ListPackages /> : <Navigate to='/' />} />
-        <Route path="/dashboard/listDeletedPackages" element={ user.is_admin ? <ListDeletedPackages /> : <Navigate to='/' />} />
-        <Route path="/dashboard/listActivities" element={ user.is_admin ? <ListActivities /> : <Navigate to='/' />} />
-        <Route path="/dashboard/listCategories" element={ user.is_admin ? <ListCategories /> : <Navigate to='/' />} />
-        <Route path="/dashboard/listUsers" element={ user.is_admin ? <ListUsers /> : <Navigate to='/' />} />
-        <Route path="/dashboard/packages" element={ user.is_admin ? <CreatePackage /> : <Navigate to='/' />} />
-        <Route path="/dashboard/activities" element={ user.is_admin ? <CreateActivity /> : <Navigate to='/' />} />
-        <Route path="/dashboard/modifyPackage/:id" element={ user.is_admin ? <ModifyPackages /> : <Navigate to='/' />} />
-        <Route path="/dashboard/modifyActivities/:id" element={ user.is_admin ? <ModifyActivity /> : <Navigate to='/' />} />
+        <Route
+          path="/dashboard"
+          element={user.is_admin ? <CreatePackage /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/dashboard/orders"
+          element={user.is_admin ? <ListOrders /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/dashboard/listPackages"
+          element={user.is_admin ? <ListPackages /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/dashboard/listDeletedPackages"
+          element={
+            user.is_admin ? <ListDeletedPackages /> : <Navigate to="/" />
+          }
+        />
+        <Route
+          path="/dashboard/listActivities"
+          element={user.is_admin ? <ListActivities /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/dashboard/listCategories"
+          element={user.is_admin ? <ListCategories /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/dashboard/listUsers"
+          element={user.is_admin ? <ListUsers /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/dashboard/packages"
+          element={user.is_admin ? <CreatePackage /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/dashboard/activities"
+          element={user.is_admin ? <CreateActivity /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/dashboard/modifyPackage/:id"
+          element={user.is_admin ? <ModifyPackages /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/dashboard/modifyActivities/:id"
+          element={user.is_admin ? <ModifyActivity /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/dashboard/listDestinations"
+          element={user.is_admin ? <ListDestinations /> : <Navigate to="/" />}
+        />
         {/* <Route path="/checkout" element={ Object.keys(user).length ? <CheckoutParent /> : <Navigate to='/' />} /> */}
-        <Route path="/checkout" element={ <CheckoutParent /> } />
-        <Route path="/checkout/confirmation" element={ <CheckoutConfirmation /> } />
-        <Route path="/checkout/cancel" element={ <CheckoutCancel /> } />
-        <Route path="/historial/:id" element={ Object.keys(user).length ? <Historial /> : <Navigate to='/' />} />
-        <Route path='/createaccount' element={ Object.keys(user).length ? <CreateAccountModal /> : <Navigate to='/' />} />
+        <Route path="/checkout" element={<CheckoutParent />} />
+        <Route
+          path="/checkout/confirmation"
+          element={<CheckoutConfirmation />}
+        />
+        <Route path="/checkout/cancel" element={<CheckoutCancel />} />
+        <Route
+          path="/historial/:id"
+          element={
+            Object.keys(user).length ? <Historial /> : <Navigate to="/" />
+          }
+        />
+        <Route
+          path="/createaccount"
+          element={
+            Object.keys(user).length ? (
+              <CreateAccountModal />
+            ) : (
+              <Navigate to="/" />
+            )
+          }
+        />
         <Route path="/terms-and-conditions" element={<Terms />} />
         <Route path="/contact-us" element={<Contact />} />
         <Route path="/faq" element={<Faq />} />

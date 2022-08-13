@@ -26,18 +26,18 @@ export default function Dashboard() {
       await dispatch(getUsers(token));
       dispatch(getAllActivities());
       dispatch(getAllPackage(1000));
-    }
-  
+    };
+
     // call the function
     fetchData()
       // make sure to catch any error
       .catch(console.error);
-  }, [dispatch])
+  }, [dispatch]);
 
   return (
     <div className={style.dashboard_container}>
       <div className={style.dashboard_panel}>
-      {/* <div className={style.dashboard_panel_title}>
+        {/* <div className={style.dashboard_panel_title}>
         <h1>Dashboard</h1>
         <hr className={style.dashboard_line} />
       </div> */}
@@ -53,11 +53,17 @@ export default function Dashboard() {
         <NavLink to="/dashboard/listPackages" className={style.links_item}>
           Lista paquetes
         </NavLink>
-        <NavLink to="/dashboard/listDeletedPackages" className={style.links_item}>
+        <NavLink
+          to="/dashboard/listDeletedPackages"
+          className={style.links_item}
+        >
           Paquetes eliminados
         </NavLink>
         <NavLink to="/dashboard/listActivities" className={style.links_item}>
           Lista de actividades
+        </NavLink>
+        <NavLink to="/dashboard/listDestinations" className={style.links_item}>
+          Lista de destinos
         </NavLink>
         <NavLink to="/dashboard/listCategories" className={style.links_item}>
           Lista de categorias

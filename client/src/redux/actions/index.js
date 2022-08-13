@@ -432,6 +432,22 @@ export const crearDestino = (payload, token) => {
   };
 };
 
+export const modificarDestino = (id, payload, token) => {
+  return async function (dispatch) {
+    console.log(id, payload, token);
+    try {
+      const respuesta = await axios.put("/destinations/" + id, payload, {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
+      return respuesta;
+    } catch (e) {
+      console.log(e.message);
+    }
+  };
+};
+
 export const crearActividad = (payload, token) => {
   return async function (dispatch) {
     try {
