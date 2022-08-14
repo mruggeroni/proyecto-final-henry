@@ -391,7 +391,7 @@ export function filterPackagesByDestination(payload) {
 export function paquetesPorRegion(payload) {
   return async function (dispatch) {
     try {
-      let res = await axios.get(`/packages/1000?region=${payload}`);
+      let res = await axios.get(`/packages/1000?region=${payload}?available=true`);
       return dispatch({ type: GET_PK_REGION, payload: res.data });
     } catch (error) {
       console.log(error.message);
@@ -403,7 +403,7 @@ export function filterPackagesByDate(value) {
   return async function (dispatch) {
     try {
       let res = await axios.get(
-        `/packages/1000?dateMin=${value[0]}&dateMax=${value[1]}`
+        `/packages/1000?dateMin=${value[0]}&dateMax=${value[1]}?available=true`
       );
       return dispatch({ type: FILTER_PACKAGES_BY_DATE, payload: res.data });
     } catch (error) {
@@ -707,7 +707,7 @@ export function modificarCategoria(id, payload, token) {
 
 export function filtrar(target, id) {
   return async function (dispatch) {
-    const paquetes = await axios.get("/packages/10000");
+    const paquetes = await axios.get("/packages/10000?available=true");
     return dispatch({ type: FILTRAR, payload: paquetes.data, target, id });
   };
   // return { type: FILTRAR, target, id };

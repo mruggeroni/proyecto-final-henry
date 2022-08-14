@@ -150,7 +150,11 @@ export default function ActivityCreate({
           className={style.create_form_container}
         >
           <div className={style.create_input_container}>
-            <label className={style.create_label}>
+            <label
+              className={
+                error.name ? style.create_label_error : style.create_label
+              }
+            >
               <b>Nombre</b>
             </label>
             <input
@@ -160,12 +164,12 @@ export default function ActivityCreate({
               name="name"
               onChange={(e) => handleInputChange(e)}
             />
-            {/* {error.name && <span className={style.error}>{error.name}</span> } */}
-            {error.name ? (
+            {error.name && <span className={style.error}>{error.name}</span>}
+            {/* {error.name ? (
               <div className={style.error}>{error.name}</div>
             ) : (
               <br />
-            )}
+            )} */}
           </div>
           <div className={style.create_textarea_container}>
             <label className={style.create_label}>
@@ -179,14 +183,21 @@ export default function ActivityCreate({
               value={input.description}
               className={style.create_input_textarea}
             ></textarea>
-            {error.description ? (
+            {error.description && (
+              <span className={style.error}>{error.description}</span>
+            )}
+            {/* {error.description ? (
               <div className={style.error}>{error.description}</div>
             ) : (
               <br />
-            )}
+            )} */}
           </div>
           <div className={style.create_input_container}>
-            <label className={style.create_label}>
+            <label
+              className={
+                error.price ? style.create_label_error : style.create_label
+              }
+            >
               <b>Precio</b>
             </label>
             <input
@@ -197,11 +208,12 @@ export default function ActivityCreate({
               min="0"
               onChange={(e) => handleInputChange(e)}
             />
-            {error.price ? (
+            {error.price && <span className={style.error}>{error.price}</span>}
+            {/* {error.price ? (
               <div className={style.error}>{error.price}</div>
             ) : (
               <br />
-            )}
+            )} */}
           </div>
           <div className={style.create_input_container}>
             <label className={style.create_label}>Categoria</label>
@@ -251,7 +263,13 @@ export default function ActivityCreate({
             className={style.create_input_images_container}
           >
             <div className={style.create_input_images}>
-              <label className={style.create_label}>Imágen</label>
+              <label
+                className={
+                  error.image ? style.create_label_error : style.create_label
+                }
+              >
+                Imágen
+              </label>
               <input
                 onChange={(e) => handleInputChange(e)}
                 name="image"

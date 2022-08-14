@@ -1,8 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Footer from "../Footer/Footer";
 import s from "./Information.module.css";
 
 export default function Contact() {
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, []);
+
   return (
     <div className={s.information_container}>
       <div className={s.information_content}>

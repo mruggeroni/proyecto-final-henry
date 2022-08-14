@@ -80,12 +80,17 @@ select {
   background-color: #4a9eaa;
 }
 
+.create_label_error,
 .create_label {
   position: absolute;
-  top: 8px;
+  top: 10px;
   left: 8px;
   font-weight: bold;
   font-size: 12px;
+}
+
+.create_label_error {
+  top: 4px;
 }
 
 .create_input {

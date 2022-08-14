@@ -15,14 +15,6 @@ import BacktoTop from "../BacktoTop/BacktoTop";
 // import "bootstrap/dist/css/bootstrap.min.css";
 
 export default function Footer() {
-  function handleToTop(e) {
-    e.preventDefault();
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  }
-
   return (
     <div className={s.footer_container}>
       <div className={s.firstLineFooter}>
@@ -52,35 +44,19 @@ export default function Footer() {
         </div>
       </div>
       <div className={s.footer_links}>
-        <NavLink
-          to="/about"
-          className={s.footer_link}
-          onClick={(e) => handleToTop(e)}
-        >
+        <NavLink to="/about" className={s.footer_link}>
           Nosotros
         </NavLink>
         |
-        <NavLink
-          to="/privacy"
-          className={s.footer_link}
-          onClick={(e) => handleToTop(e)}
-        >
+        <NavLink to="/privacy" className={s.footer_link}>
           Politica de privacidad
         </NavLink>
         |
-        <NavLink
-          to="/terms-and-conditions"
-          className={s.footer_link}
-          onClick={(e) => handleToTop(e)}
-        >
+        <NavLink to="/terms-and-conditions" className={s.footer_link}>
           Terminos y condiciones
         </NavLink>
         |
-        <NavLink
-          to="/faq"
-          className={s.footer_link}
-          onClick={(e) => handleToTop(e)}
-        >
+        <NavLink to="/faq" className={s.footer_link}>
           Preguntas frecuentes
         </NavLink>
       </div>

@@ -49,11 +49,13 @@ export default function ListDestinations() {
                         <td>{a.name}</td>
                         <td>{a.image}</td>
                         <td>{a.region}</td>
-                        <td
-                          className={s.fl_table_btn}
-                          onClick={(e) => handleShow(e, a.id)}
-                        >
-                          <AiFillEdit />
+                        <td>
+                          <div
+                            className={s.fl_table_btn}
+                            onClick={(e) => handleShow(e, a.id)}
+                          >
+                            <AiFillEdit />
+                          </div>
                         </td>
                       </tr>
                     );

@@ -13,6 +13,11 @@
     0 17px 50px 0 rgba(0, 0, 0, 0.19);
 }
 
+.card img {
+  width: 300px;
+  height: 250px;
+}
+
 img {
   margin-left: 0;
 }
@@ -158,7 +163,7 @@ img {
 .musRibbon {
   display: inline-block;
   position: absolute;
-  top: -11px;
+  top: -10px;
   left: 5%;
   box-sizing: border-box;
   padding: 10px 20px 10px 30px;
@@ -175,15 +180,23 @@ img {
 }
 
 .discount {
+  position: relative;
   display: flex;
   flex-direction: row;
   width: 100%;
+  height: inherit;
+}
+
+.discountPrice {
+  width: 100%;
+  position: absolute;
+  text-align: right;
 }
 
 .price h4 {
   display: flex;
   flex-direction: row;
-  margin-top: 1vw;
+  margin-top: 1.5vw;
   width: 100%;
 }
 
@@ -254,6 +267,10 @@ img {
 }
 
 @media (max-width: 925px) {
+  .cardBody {
+    width: 25vw;
+  }
+
   .card h3 {
     font-size: 3vw;
     margin-bottom: 0.5vw;
@@ -296,9 +313,29 @@ img {
     margin-top: 0;
     margin-right: 0;
   }
+
+  .cardBody {
+    width: 15vw;
+  }
+
+  .discountPrice {
+   width: 75%; 
+  }
+}
+
+@media (max-width: 670px) {
+  .card img {
+    width: 250px;
+    height: 200px;
+  }
 }
 
 @media (max-width: 600px) {
+  .card img {
+    width: 200px;
+    height: 150px;
+  }
+
   .card:hover .rectangle {
     width: 25vw;
   }

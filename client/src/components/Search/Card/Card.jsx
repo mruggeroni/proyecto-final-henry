@@ -91,7 +91,7 @@ export default function Card({ name, image, description, price, on_sale, id }) {
           <span>{on_sale}% OFF</span>
         </div>
       )}
-      <img src={image} alt="img not found" width="300vw" height="250vw" />
+      <img src={image} alt="img not found" />
       <div className={s.cardBody}>
         <h3>{name}</h3>
         <br />
@@ -106,9 +106,11 @@ export default function Card({ name, image, description, price, on_sale, id }) {
           <div className={s.price}>
             <div className={s.discount}>
               <h4>${on_sale ? <s>{price}</s> : price}</h4>
-              {on_sale ? <h5>{price * ((100 - on_sale) / 100)}</h5> : " "}
+              <div className={s.discountPrice}>
+                {on_sale ? <h5>{price * ((100 - on_sale) / 100)}</h5> : " "}
+              </div>
             </div>
-            <h5>por cabeza</h5>
+            <h5>por persona</h5>
           </div>
           <div className={s.hide} onClick={(e) => handleFavorite(e)}>
             <BotonFav

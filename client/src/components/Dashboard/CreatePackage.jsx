@@ -15,7 +15,7 @@ import validationPackage from "./validationPackage.js";
 import ModalActividades from "./ModalActividades";
 import ModalDestinos from "./ModalDestinos";
 import { useAuth0 } from "@auth0/auth0-react";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 
 export default function CreatePackage({
   showCreatePackage,
@@ -130,10 +130,10 @@ export default function CreatePackage({
         } else {
           e.target.value = "default";
           return Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'El pais ya fue agregado!',
-          })
+            icon: "error",
+            title: "Oops...",
+            text: "El pais ya fue agregado!",
+          });
         }
       }
     }
@@ -153,10 +153,10 @@ export default function CreatePackage({
         } else {
           e.target.value = "default";
           return Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'La actividad ya fue agregada!',
-          })
+            icon: "error",
+            title: "Oops...",
+            text: "La actividad ya fue agregada!",
+          });
         }
       }
     }
@@ -184,8 +184,6 @@ export default function CreatePackage({
   };
 
   function handleBorrarDestinations(e, nombre) {
-
-
     setInput({
       ...input,
       destinations: input.destinations.filter((i) => i !== nombre),
@@ -224,17 +222,17 @@ export default function CreatePackage({
       valida.destinations
     ) {
       Swal.fire({
-        icon: 'error',
-        title: 'Oops algo fallo...',
-        text: 'Presta mas atencion al completar!',
-      })
+        icon: "error",
+        title: "Oops algo fallo...",
+        text: "Presta mas atencion al completar!",
+      });
     } else {
       try {
         dispatch(createPackage(input, token));
         Swal.fire({
-          icon: 'success',
-          title: 'Paquete creado!',
-        })
+          icon: "success",
+          title: "Paquete creado!",
+        });
         setInput({
           name: "",
           price: "",
@@ -257,10 +255,10 @@ export default function CreatePackage({
         navigate("/dashboard");
       } catch (error) {
         Swal.fire({
-          icon: 'error',
-          title: 'Oops algo fallo...',
+          icon: "error",
+          title: "Oops algo fallo...",
           text: error.message,
-        })
+        });
       }
     }
   };
@@ -282,7 +280,13 @@ export default function CreatePackage({
           className={style.create_form_container}
         >
           <div className={style.create_input_container}>
-            <label className={style.create_label}>Nombre</label>
+            <label
+              className={
+                error.name ? style.create_label_error : style.create_label
+              }
+            >
+              Nombre
+            </label>
             <input
               type="text"
               className={style.create_input}
@@ -293,7 +297,13 @@ export default function CreatePackage({
             {error.name && <span className={style.error}>{error.name}</span>}
           </div>
           <div className={style.create_input_container}>
-            <label className={style.create_label}>Precio</label>
+            <label
+              className={
+                error.price ? style.create_label_error : style.create_label
+              }
+            >
+              Precio
+            </label>
             <input
               value={input.price}
               name="price"
@@ -345,7 +355,13 @@ export default function CreatePackage({
             </div>
           </div>
           <div className={style.create_input_container}>
-            <label className={style.create_label}>% Descuento</label>
+            <label
+              className={
+                error.on_sale ? style.create_label_error : style.create_label
+              }
+            >
+              % Descuento
+            </label>
             <input
               value={input.on_sale}
               name="on_sale"
@@ -363,7 +379,13 @@ export default function CreatePackage({
           </div>
 
           <div className={style.create_input_container}>
-            <label className={style.create_label}>Paquete destacado</label>
+            <label
+              className={
+                error.featured ? style.create_label_error : style.create_label
+              }
+            >
+              Paquete destacado
+            </label>
             <select
               name="featured"
               onChange={(e) => handleSelect(e)}
@@ -379,7 +401,13 @@ export default function CreatePackage({
             )}
           </div>
           <div className={style.create_input_container}>
-            <label className={style.create_label}>Paquete en stock</label>
+            <label
+              className={
+                error.available ? style.create_label_error : style.create_label
+              }
+            >
+              Paquete en stock
+            </label>
             <select
               name="available"
               onChange={(e) => handleSelect(e)}
@@ -421,7 +449,15 @@ export default function CreatePackage({
           </div> */}
 
           <div className={style.create_input_container}>
-            <label className={style.create_label}>Destinos</label>
+            <label
+              className={
+                error.destinations
+                  ? style.create_label_error
+                  : style.create_label
+              }
+            >
+              Destinos
+            </label>
             <select
               id="destinationsSelect"
               name="destinations"
@@ -468,7 +504,10 @@ export default function CreatePackage({
               return 0;
             })
             .map((i, o) => (
-              <div className={style.create_destinations_contenedor} key={"destinations" + o}>
+              <div
+                className={style.create_destinations_contenedor}
+                key={"destinations" + o}
+              >
                 <div
                   key={"destination" + o}
                   id="input_destinations"
@@ -478,14 +517,25 @@ export default function CreatePackage({
                 >
                   {i}
                 </div>
-                <div className={style.create_destinations_X} onClick={(e) => handleBorrarDestinations(e, i)}>X</div>
+                <div
+                  className={style.create_destinations_X}
+                  onClick={(e) => handleBorrarDestinations(e, i)}
+                >
+                  X
+                </div>
               </div>
             ))}
 
           {/* Final destinos */}
 
           <div className={style.create_input_container}>
-            <label className={style.create_label}>Actividades</label>
+            <label
+              className={
+                error.activities ? style.create_label_error : style.create_label
+              }
+            >
+              Actividades
+            </label>
             <select
               id="actividadesSelect"
               name="actividadesSelect"
@@ -530,7 +580,10 @@ export default function CreatePackage({
               return 0;
             })
             .map((i, o) => (
-              <div className={style.create_destinations_contenedor} key={"activities" + o}>
+              <div
+                className={style.create_destinations_contenedor}
+                key={"activities" + o}
+              >
                 <div
                   key={"activitie" + o}
                   id="input_activities"
@@ -540,18 +593,25 @@ export default function CreatePackage({
                 >
                   {i}
                 </div>
-                <div className={style.create_destinations_X} onClick={(e) => handleBorrarActividades(e, i)}>X</div>
+                <div
+                  className={style.create_destinations_X}
+                  onClick={(e) => handleBorrarActividades(e, i)}
+                >
+                  X
+                </div>
               </div>
             ))}
-
-
-
-
 
           {/* Final actividades */}
 
           <div className={style.create_input_container}>
-            <label className={style.create_label}>Estación</label>
+            <label
+              className={
+                error.seasson ? style.create_label_error : style.create_label
+              }
+            >
+              Estación
+            </label>
             <select
               name="seasson"
               onChange={(e) => handleSelect(e)}
@@ -571,7 +631,13 @@ export default function CreatePackage({
             )}
           </div>
           <div className={style.create_input_container}>
-            <label className={style.create_label}>Tipo</label>
+            <label
+              className={
+                error.type ? style.create_label_error : style.create_label
+              }
+            >
+              Tipo
+            </label>
             <select
               name="type"
               onChange={(e) => handleSelect(e)}
@@ -593,7 +659,15 @@ export default function CreatePackage({
             className={style.create_input_images_container}
           >
             <div className={style.create_input_images}>
-              <label className={style.create_label}>Imágen Principal</label>
+              <label
+                className={
+                  error.main_image
+                    ? style.create_label_error
+                    : style.create_label
+                }
+              >
+                Imágen Principal
+              </label>
               <input
                 onChange={(e) => handleChangeInputs(e)}
                 name="main_image"
@@ -620,7 +694,6 @@ export default function CreatePackage({
 
             {input.images?.map((i, index) => {
               return (
-
                 <div key={i + index} className={style.create_input_images}>
                   <label className={style.create_label}>
                     Imágen {index + 1}
@@ -639,7 +712,6 @@ export default function CreatePackage({
                     </span>
                   )}
                 </div>
-
               );
             })}
           </div>

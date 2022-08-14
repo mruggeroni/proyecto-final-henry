@@ -85,7 +85,7 @@ export default function Home() {
           <div className={style.spinner}></div>
         </div>
       ) : (
-        <React.Fragment>
+        <div className={style.home_content}>
           <Hero destinations={sortDestinations} />
           <div className={style.feature_container}>
             <h2 className={style.homeH2}>Destacados</h2>
@@ -97,7 +97,7 @@ export default function Home() {
             {/* <hr /> */}
             <CardGenericContainer listCards={onSale} component="promotions" />
           </div>
-        </React.Fragment>
+        </div>
       )}
       <Footer />
     </div>

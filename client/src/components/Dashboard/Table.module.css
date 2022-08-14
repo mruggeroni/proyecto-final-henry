@@ -37,6 +37,7 @@
     font-size: 20px;
     margin: 0 5px;
     color: #000;
+    cursor: pointer;
 }
 
 .fl_table_link {

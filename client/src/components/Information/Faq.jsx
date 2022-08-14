@@ -1,9 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Footer from "../Footer/Footer";
 import s from "./Information.module.css";
 import Accordion from "react-bootstrap/Accordion";
 
 export default function Faq() {
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, []);
   const nameCompany = "HenryTravel";
   const faq = [
     "¿Cómo cambiar mi reserva?",

@@ -1,9 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import Footer from "../Footer/Footer";
 import s from './Information.module.css';
 
 export default function Terms() {
+    useEffect(() => {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      }, []);
     const nameCompany = 'HenryTravel';
     const url = 'proyecto-final-henry.vercel.app';
     return (
