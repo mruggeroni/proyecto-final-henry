@@ -106,6 +106,7 @@ Create an app where you can display travel packages information, filter by count
 * User authentication on Back-end.
 * User roles authorization on Back-end.
 * Back-end payment gateway with __Stripe__.
+* Send purchase email with __nodemailer__.
 * Use of terminal / Console.
 * __Error management__.
 * __Test__ of rutes with postman.
